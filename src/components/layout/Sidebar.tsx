@@ -13,6 +13,7 @@ import {
     Search,
     Flame,
     Sparkles,
+    Wallet,
 } from "lucide-react";
 import { APP_CONFIG, UI_STRINGS } from "@/config/app";
 import { SentimentGauge } from "@/components/analysis/SentimentGauge";
@@ -25,6 +26,7 @@ const navItems = [
     { icon: Home, label: UI_STRINGS.home, href: "/" },
     { icon: Sparkles, label: UI_STRINGS.discovery, href: "/upptack", isNew: true },
     { icon: TrendingUp, label: UI_STRINGS.markets, href: "/marknad" },
+    { icon: Wallet, label: "Portfölj", href: "/portfolio" },
     { icon: Star, label: UI_STRINGS.watchlist, href: "/watchlist" },
     { icon: Bell, label: UI_STRINGS.alerts, href: "/alerts" },
     { icon: User, label: UI_STRINGS.profile, href: "/profil" },

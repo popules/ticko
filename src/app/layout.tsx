@@ -4,6 +4,8 @@ import "./globals.css";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { APP_CONFIG } from "@/config/app";
+import { MobileNav } from "@/components/layout/MobileNav";
+import { OnboardingModal } from "@/components/onboarding/OnboardingModal";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,7 +26,11 @@ export default function RootLayout({
     <html lang="sv" className="dark">
       <body className={`${inter.variable} font-sans antialiased`}>
         <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            {children}
+            <MobileNav />
+            <OnboardingModal />
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

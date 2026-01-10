@@ -5,7 +5,8 @@ import { AIValuationCard } from "@/components/analysis/AIValuationCard";
 import { AlertButton } from "@/components/alerts/AlertButton";
 import { StockChart } from "@/components/charts/StockChart";
 import { NewsFeed } from "@/components/news/NewsFeed";
-import { ArrowLeft, ExternalLink, Star } from "lucide-react";
+import { PortfolioButton } from "@/components/portfolio/PortfolioButton";
+import { ArrowLeft, Star } from "lucide-react";
 import Link from "next/link";
 import { UI_STRINGS } from "@/config/app";
 import { fetchStockData } from "@/lib/stocks-api";
@@ -74,10 +75,12 @@ export default async function AktiePage({ params }: AktiePageProps) {
                             <button className="p-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-white/60 hover:text-white transition-colors border border-white/10">
                                 <Star className="w-5 h-5" />
                             </button>
-                            <button className="flex items-center gap-2 px-5 py-2.5 btn-gradient text-white rounded-xl font-semibold text-sm">
-                                <ExternalLink className="w-4 h-4" />
-                                {UI_STRINGS.trade}
-                            </button>
+                            <PortfolioButton
+                                symbol={upperTicker}
+                                name={stock.name}
+                                currentPrice={stock.price}
+                                currencySymbol={stock.currencySymbol}
+                            />
                         </div>
                     </div>
                 </header>
