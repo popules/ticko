@@ -1,0 +1,196 @@
+/* Import Inter font - MUST be first */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* Custom colors */
+  --color-bullish: #10B981;
+  --color-bearish: #F43F5E;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+/* Glassmorphic iOS 2026 Theme */
+:root {
+  --radius: 1rem;
+  /* Midnight Blue Background */
+  --background: #020617;
+  --foreground: #FFFFFF;
+  /* Glass Cards */
+  --card: rgba(255, 255, 255, 0.05);
+  --card-foreground: #FFFFFF;
+  --popover: rgba(255, 255, 255, 0.08);
+  --popover-foreground: #FFFFFF;
+  /* Primary accent - keep emerald for prices */
+  --primary: #10B981;
+  --primary-foreground: #FFFFFF;
+  /* Secondary - glass surface */
+  --secondary: rgba(255, 255, 255, 0.08);
+  --secondary-foreground: #FFFFFF;
+  --muted: rgba(255, 255, 255, 0.06);
+  --muted-foreground: rgba(255, 255, 255, 0.6);
+  --accent: rgba(255, 255, 255, 0.1);
+  --accent-foreground: #FFFFFF;
+  --destructive: #F43F5E;
+  /* Borders - subtle glass edge */
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: rgba(255, 255, 255, 0.2);
+  /* Charts */
+  --chart-1: #10B981;
+  --chart-2: #F43F5E;
+  --chart-3: #3B82F6;
+  --chart-4: #F59E0B;
+  --chart-5: #8B5CF6;
+  /* Sidebar - glass */
+  --sidebar: rgba(255, 255, 255, 0.03);
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #10B981;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: rgba(255, 255, 255, 0.08);
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: rgba(255, 255, 255, 0.2);
+}
+
+/* Background with radial gradients */
+body {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(88, 28, 135, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(30, 58, 138, 0.12) 0%, transparent 50%),
+    #020617;
+  min-height: 100vh;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+
+  /* Glass card effect with gradient border */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 1rem;
+    border: 1px solid;
+    border-image: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.1) 100%) 1;
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Alternative glass card with solid border for better compatibility */
+  .glass-card-solid {
+    @apply bg-white/[0.04] backdrop-blur-xl rounded-2xl;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  /* Bullish/Bearish badges */
+  .badge-bullish {
+    @apply bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full;
+  }
+
+  .badge-bearish {
+    @apply bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-full;
+  }
+
+  /* Gradient Post button */
+  .btn-gradient {
+    background: linear-gradient(135deg, #10B981 0%, #059669 50%, #047857 100%);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+    transition: all 0.2s ease;
+  }
+
+  .btn-gradient:hover {
+    background: linear-gradient(135deg, #34D399 0%, #10B981 50%, #059669 100%);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-gradient:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Subtle glow effects */
+  .glow-emerald {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  }
+
+  .glow-rose {
+    box-shadow: 0 0 20px rgba(244, 63, 94, 0.3);
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
