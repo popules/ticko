@@ -9,22 +9,22 @@ const ONBOARDING_KEY = "ticko_has_seen_onboarding";
 
 const slides = [
     {
-        icon: Sparkles,
+        icon: TrendingUp,
         color: "from-emerald-400 to-emerald-600",
         title: "Välkommen till Ticko! 🚀",
-        description: "Din nya plattform för smart aktiehandel. Kombinera AI-insikter med sociala diskussioner.",
-    },
-    {
-        icon: Zap,
-        color: "from-violet-400 to-violet-600",
-        title: "Upptäck nya aktier",
-        description: "Svep genom aktier Tinder-style i Upptäck-läget. AI genererar unika insikter för varje aktie.",
+        description: "Din nya plattform för smart aktieanalys. Kombinera kraftfull data med sociala diskussioner i realtid.",
     },
     {
         icon: TrendingUp,
-        color: "from-amber-400 to-orange-500",
-        title: "Ticko Analys",
-        description: "Vår AI analyserar marknadssentiment i realtid. Se heatmapen för att hitta möjligheter.",
+        color: "from-emerald-400 to-emerald-600",
+        title: "Upptäck marknaden",
+        description: "Navigera enkelt genom intressanta aktier med vårt innovativa gränssnitt. Få unika Ticko-insikter för varje bolag.",
+    },
+    {
+        icon: TrendingUp,
+        color: "from-emerald-400 to-emerald-600",
+        title: "Följ sentimentet",
+        description: "Håll koll på vad marknaden tycker. Se trender och diskussioner för att fatta bättre beslut.",
     },
 ];
 
@@ -113,8 +113,8 @@ export function OnboardingModal() {
                                 <div
                                     key={index}
                                     className={`w-2 h-2 rounded-full transition-all ${index === currentSlide
-                                            ? "w-8 bg-emerald-400"
-                                            : "bg-white/20"
+                                        ? "w-8 bg-emerald-400"
+                                        : "bg-white/20"
                                         }`}
                                 />
                             ))}

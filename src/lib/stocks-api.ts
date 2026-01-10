@@ -96,16 +96,27 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
     try {
         // Use trending symbols to find interesting stocks
         const trending = await yf.trendingSymbols('SE'); // Start with Swedish trending
-        const symbols = trending.quotes.map((q: any) => q.symbol).slice(0, 5);
+        const symbols = trending.quotes.map((q: any) => q.symbol);
 
-        // Add some US big tech as fallback or variety
-        if (symbols.length < 5) {
-            symbols.push('TSLA', 'NVDA', 'AAPL', 'MSFT', 'AMZN');
-        }
+        // Curated list of high-profile stocks to ensure the app feels "full"
+        const curated = [
+            'VOLV-B.ST', 'AZN.ST', 'SEB-A.ST', 'ERIC-B.ST', 'HM-B.ST', 'ABB.ST', 'TELIA.ST', 'INVE-B.ST', 'SAND.ST', // SE
+            'TSLA', 'NVDA', 'AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META', 'NFLX', 'AMD', 'PLTR', 'COST', 'V', 'UBER' // US
+        ];
+
+        // Combine and limit
+        const allSymbols = Array.from(new Set([...symbols, ...curated]));
+
+        // Pick 12 random symbols from the pool to keep discovery fresh
+        const selectedSymbols = [...allSymbols]
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 12);
 
         const stocks = await Promise.all(
-            Array.from(new Set(symbols)).slice(0, 8).map(symbol => fetchStockData(symbol as string))
+            selectedSymbols.map(symbol => fetchStockData(symbol as string))
         );
+        Greenland
+        Greenland
 
         const validStocks = stocks.filter((s): s is StockData => s !== null);
 

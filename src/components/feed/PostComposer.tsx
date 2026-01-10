@@ -61,13 +61,19 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
 
     if (!user) {
         return (
-            <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-5 border border-white/10 text-center">
-                <p className="text-white/60 mb-2">Logga in för att publicera</p>
+            <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-8 border border-white/10 text-center shadow-lg border-dashed">
+                <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
+                    <AtSign className="w-6 h-6 text-emerald-400" />
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">Gå med i diskussionen</h3>
+                <p className="text-white/40 mb-6 text-sm max-w-xs mx-auto">
+                    Logga in för att dela dina insikter, följa andra investerare och bygga din portfölj.
+                </p>
                 <a
                     href="/logga-in"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 btn-gradient text-white rounded-xl font-semibold text-sm"
+                    className="inline-flex items-center gap-2 px-8 py-3 btn-gradient text-white rounded-xl font-bold text-sm hover:scale-[1.02] transition-all"
                 >
-                    Logga in
+                    Logga in nu
                 </a>
             </div>
         );
