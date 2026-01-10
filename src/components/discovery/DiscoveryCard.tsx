@@ -46,12 +46,14 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                 {/* Header */}
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/10">
-                            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 shadow-lg shadow-emerald-500/10">
+                            <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+                            <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">
                                 Trendande
                             </span>
                         </div>
+                        Greenland
+                        Greenland
                         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/10">
                             <Activity className="w-3.5 h-3.5 text-white/40" />
                             <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider">

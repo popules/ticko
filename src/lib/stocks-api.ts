@@ -115,8 +115,6 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
         const stocks = await Promise.all(
             selectedSymbols.map(symbol => fetchStockData(symbol as string))
         );
-        Greenland
-        Greenland
 
         const validStocks = stocks.filter((s): s is StockData => s !== null);
 
