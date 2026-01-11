@@ -55,11 +55,11 @@ export function LandingPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-8 backdrop-blur-sm"
+                    className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-emerald-500/20 to-violet-500/20 border border-emerald-500/30 mb-8 backdrop-blur-sm shadow-[0_0_30px_-10px_rgba(16,185,129,0.3)]"
                 >
                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-400">
-                        Framtidens Investeringsplattform
+                    <span className="text-[11px] font-black uppercase tracking-widest text-emerald-400">
+                        Sveriges #1 Investeringscommunity
                     </span>
                 </motion.div>
 
@@ -67,11 +67,11 @@ export function LandingPage() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.8 }}
-                    className="text-5xl md:text-7xl font-black tracking-tighter mb-8 leading-[1.0] md:leading-[0.95] max-w-4xl"
+                    className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.95] max-w-5xl"
                 >
-                    <span className="block text-white mb-2">SLUTA GISSA.</span>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-200 to-white">
-                        BÖRJA VETA.
+                    <span className="block text-white mb-2">INVESTERA SMARTARE.</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
+                        TILLSAMMANS.
                     </span>
                 </motion.h1>
 
@@ -79,9 +79,9 @@ export function LandingPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="text-lg text-white/50 max-w-xl font-medium leading-relaxed mb-12"
+                    className="text-lg md:text-xl text-white/50 max-w-2xl font-medium leading-relaxed mb-12"
                 >
-                    Få tillgång till marknadens vassaste analyser, realtidsdata och ett community som faktiskt levererar. <span className="text-white">Ditt övertag börjar här.</span>
+                    Realtidsanalyser, marknadens vassaste traders och AI-drivna insikter – allt på en plats. <span className="text-white font-semibold">Ditt nya hem på börsen.</span>
                 </motion.p>
 
                 <motion.div
@@ -92,16 +92,16 @@ export function LandingPage() {
                 >
                     <Link
                         href="/registrera"
-                        className="group min-w-[200px] px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-[#020617] rounded-full font-bold text-lg shadow-[0_0_40px_-10px_rgba(16,185,129,0.3)] transition-all flex items-center justify-center gap-2"
+                        className="group min-w-[200px] px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-[#020617] rounded-full font-bold text-lg shadow-[0_0_50px_-10px_rgba(16,185,129,0.4)] transition-all flex items-center justify-center gap-2 hover:scale-105"
                     >
-                        Skapa Konto
+                        Gå med gratis
                         <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                     </Link>
                     <Link
                         href="/upptack"
-                        className="min-w-[200px] px-8 py-4 bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] text-white rounded-full font-bold text-lg backdrop-blur-lg transition-all"
+                        className="min-w-[200px] px-8 py-4 bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 text-white rounded-full font-bold text-lg backdrop-blur-lg transition-all"
                     >
-                        Se Demo
+                        Utforska communityt
                     </Link>
                 </motion.div>
 
@@ -112,9 +112,9 @@ export function LandingPage() {
             <section id="features" className="px-6 py-32 bg-white/[0.01] border-y border-white/[0.05]">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-20">
-                        <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-6">DÄRFÖR VÄLJER PROFFSEN TICKO</h2>
+                        <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-6">DÄRFÖR VÄLJER STOCKHOLMS BÄSTA TRADERS TICKO</h2>
                         <p className="text-white/40 font-medium text-lg max-w-2xl mx-auto">
-                            Vi har skalat bort bruset. Kvar är datan, verktygen och nätverket du behöver för att maximera din avkastning.
+                            Vi har skalat bort bruset. Kvar är datan, verktygen och nätverket du behöver för att ta dina investeringar till nästa nivå.
                         </p>
                     </div>
 
@@ -173,21 +173,20 @@ export function LandingPage() {
                 </div>
             </section>
 
-            {/* Final CTA */}
             <section className="relative px-6 py-40 flex flex-col items-center text-center overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-[#020617] to-emerald-900/20 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-emerald-900/10 to-emerald-900/20 pointer-events-none" />
                 <div className="relative z-10 max-w-3xl">
                     <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8">
-                        REDO ATT TA NÄSTA STEG?
+                        GÅ MED I COMMUNITYT IDAG
                     </h2>
                     <p className="text-xl text-white/50 mb-10 font-medium">
-                        Det kostar inget att börja. Men det kan kosta att stå utanför.
+                        Det kostar inget att gå med. Men det kan kosta att stå utanför.
                     </p>
                     <Link
                         href="/registrera"
-                        className="px-10 py-5 bg-white text-black rounded-full font-bold text-xl hover:scale-105 transition-transform inline-flex items-center gap-2 shadow-2xl shadow-white/10"
+                        className="px-10 py-5 bg-gradient-to-r from-emerald-500 to-teal-400 text-[#020617] rounded-full font-bold text-xl hover:scale-105 transition-transform inline-flex items-center gap-2 shadow-[0_0_60px_-15px_rgba(16,185,129,0.5)]"
                     >
-                        Starta din resa nu <ArrowRight className="w-6 h-6" />
+                        Skapa konto gratis <ArrowRight className="w-6 h-6" />
                     </Link>
                 </div>
             </section>
