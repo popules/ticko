@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { SearchDialog } from "./SearchDialog";
 import {
@@ -45,6 +46,7 @@ import { useSearch } from "@/providers/SearchProvider";
 export function Sidebar() {
     const { open } = useSearch();
     const { signOut } = useAuth();
+    const pathname = usePathname();
 
     // Fetch live trending snippets
     const { data: trendingData, isLoading: isTrendingLoading } = useQuery({
@@ -83,23 +85,30 @@ export function Sidebar() {
 
             {/* Navigation */}
             <nav className="p-3">
-                {navItems.map((item) => (
-                    <Link
-                        key={item.href}
-                        href={item.href}
-                        className="flex items-center justify-between px-4 py-2.5 rounded-2xl text-white/70 hover:text-white hover:bg-white/[0.06] transition-all group"
-                    >
-                        <div className="flex items-center gap-3">
-                            <item.icon className={`w-4 h-4 ${item.isNew ? "text-emerald-400" : ""}`} />
-                            <span className="text-[13px] font-medium">{item.label}</span>
-                        </div>
-                        {item.isNew && (
-                            <span className="text-[9px] font-bold bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-md border border-emerald-500/20 group-hover:bg-emerald-500/30 transition-colors">
-                                NY
-                            </span>
-                        )}
-                    </Link>
-                ))}
+                {navItems.map((item) => {
+                    const isActive = pathname === item.href ||
+                        (item.href !== "/" && pathname.startsWith(item.href));
+                    return (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`flex items-center justify-between px-4 py-2.5 rounded-2xl transition-all group ${isActive
+                                    ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                                    : "text-white/70 hover:text-white hover:bg-white/[0.06] border border-transparent"
+                                }`}
+                        >
+                            <div className="flex items-center gap-3">
+                                <item.icon className={`w-4 h-4 ${isActive ? "text-emerald-400" : item.isNew ? "text-emerald-400" : ""}`} />
+                                <span className="text-[13px] font-medium">{item.label}</span>
+                            </div>
+                            {item.isNew && (
+                                <span className="text-[9px] font-bold bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-md border border-emerald-500/20 group-hover:bg-emerald-500/30 transition-colors">
+                                    NY
+                                </span>
+                            )}
+                        </Link>
+                    );
+                })}
             </nav>
 
             {/* Trending Section */}
