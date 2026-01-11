@@ -25,7 +25,7 @@ export function AddToPortfolioModal({
 }: AddToPortfolioModalProps) {
     const { user } = useAuth();
     const [shares, setShares] = useState(1);
-    const [buyPrice, setBuyPrice] = useState(currentPrice);
+    const [buyPrice, setBuyPrice] = useState(currentPrice ?? 0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
@@ -146,7 +146,7 @@ export function AddToPortfolioModal({
                                     <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
                                         <p className="text-xs text-white/40 mb-1">Nuvarande pris</p>
                                         <p className="text-2xl font-black text-white tabular-nums">
-                                            {currencySymbol}{currentPrice.toFixed(2)}
+                                            {currencySymbol}{(currentPrice ?? 0).toFixed(2)}
                                         </p>
                                     </div>
 
