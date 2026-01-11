@@ -2,12 +2,13 @@
 
 import { formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
-import { TrendingUp, TrendingDown, MessageCircle, Share2, Clock, Target, CheckCircle2, AlertCircle } from "lucide-react";
+import { TrendingUp, TrendingDown, Share2 } from "lucide-react";
 import { renderWithCashtags } from "@/lib/cashtag";
 import { UI_STRINGS } from "@/config/app";
 import { ReactionButtons } from "./ReactionButtons";
 import { ReactionBar } from "./ReactionBar";
 import { PollView } from "./PollView";
+import { CommentThread } from "./CommentThread";
 import Link from "next/link";
 import type { Post } from "@/types/database";
 
@@ -19,6 +20,7 @@ interface PostCardProps {
             reputation_score: number;
         };
         polls?: any[];
+        comment_count?: number;
     };
 }
 
@@ -167,18 +169,16 @@ export function PostCard({ post }: PostCardProps) {
                             downCount={post.down_count || 0}
                             userReaction={post.user_reaction}
                         />
-                        <div className="flex items-center gap-4 text-white/40">
-                            <Link href={`/post/${post.id}`} className="flex items-center gap-2 text-sm hover:text-white transition-colors">
-                                <MessageCircle className="w-4 h-4" />
-                            </Link>
-                            <button className="flex items-center gap-2 text-sm hover:text-white transition-colors">
-                                <Share2 className="w-4 h-4" />
-                            </button>
-                        </div>
+                        <button className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors">
+                            <Share2 className="w-4 h-4" />
+                        </button>
                     </div>
 
                     {/* Emoji Reactions */}
                     <ReactionBar postId={post.id} />
+
+                    {/* Comment Thread */}
+                    <CommentThread postId={post.id} commentCount={post.comment_count || 0} />
 
 
                 </div>

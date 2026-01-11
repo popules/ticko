@@ -18,6 +18,9 @@ type PostWithProfile = Post & {
         avatar_url: string | null;
         reputation_score: number;
     } | null;
+    polls?: any[];
+    comments?: { count: number }[];
+    comment_count?: number;
 };
 
 interface FeedStreamProps {
@@ -52,7 +55,8 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
                             avatar_url,
                             reputation_score
                         ),
-                        polls (*)
+                        polls (*),
+                        comments (count)
                     `
                 );
 
@@ -84,7 +88,14 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
                 .limit(50);
 
             if (error) throw error;
-            return data as PostWithProfile[];
+
+            // Map comment count from nested structure
+            const posts = (data as any[])?.map(post => ({
+                ...post,
+                comment_count: post.comments?.[0]?.count || 0
+            })) || [];
+
+            return posts as PostWithProfile[];
         },
     });
 
