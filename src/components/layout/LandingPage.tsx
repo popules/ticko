@@ -92,12 +92,13 @@ export function LandingPage() {
                         Gå med gratis
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                     </Link>
-                    <Link
-                        href="/logga-in"
+                    <a
+                        href="#features"
                         className="px-6 py-3 bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] text-white rounded-full font-bold text-sm backdrop-blur-lg transition-all"
                     >
-                        Se hur det funkar
-                    </Link>
+                        Läs mer
+                    </a>
+
                 </motion.div>
 
                 <HeroPreview />
