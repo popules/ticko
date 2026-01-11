@@ -2,7 +2,7 @@
 
 import { formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
-import { TrendingUp, TrendingDown, MessageCircle, Share2 } from "lucide-react";
+import { TrendingUp, TrendingDown, MessageCircle, Share2, Clock, Target, CheckCircle2, AlertCircle } from "lucide-react";
 import { renderWithCashtags } from "@/lib/cashtag";
 import { UI_STRINGS } from "@/config/app";
 import { ReactionButtons } from "./ReactionButtons";
@@ -77,6 +77,61 @@ export function PostCard({ post }: PostCardProps) {
                     <p className="text-white whitespace-pre-wrap break-words leading-relaxed">
                         {renderWithCashtags(post.content)}
                     </p>
+
+                    {/* Stock Prediction Box */}
+                    {post.is_prediction && post.ticker_symbol && (
+                        <div className="mt-4 p-4 rounded-2xl bg-white/[0.06] border border-white/10 overflow-hidden relative group/prediction flex flex-wrap gap-4 items-center">
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 blur-[40px] rounded-full -mr-8 -mt-8" />
+
+                            <div className="flex items-center gap-3 pr-4 border-r border-white/10">
+                                <div className={`p-2 rounded-xl bg-opacity-20 border transition-colors ${post.sentiment === "bull" ? "bg-emerald-500 text-emerald-400 border-emerald-500/30" : "bg-rose-500 text-rose-400 border-rose-500/30"
+                                    }`}>
+                                    {post.sentiment === "bull" ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] text-white/40 uppercase font-black tracking-widest">Type</span>
+                                    <span className={`text-xs font-bold uppercase ${post.sentiment === "bull" ? "text-emerald-400" : "text-rose-400"}`}>
+                                        {post.sentiment === "bull" ? "Bull Prediction" : "Bear Prediction"}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col pr-4 border-r border-white/10">
+                                <span className="text-[10px] text-white/40 uppercase font-black tracking-widest">Entry</span>
+                                <span className="text-sm font-bold text-white">
+                                    {post.prediction_price ? `${post.prediction_price.toFixed(2)}` : "—"}
+                                </span>
+                            </div>
+
+                            <div className="flex flex-col pr-4 border-r border-white/10">
+                                <span className="text-[10px] text-white/40 uppercase font-black tracking-widest">Target</span>
+                                <span className="text-sm font-bold text-white">
+                                    {post.target_date ? formatDistanceToNow(new Date(post.target_date), { locale: sv }) : "—"}
+                                </span>
+                            </div>
+
+                            <div className="ml-auto flex items-center gap-3">
+                                {post.prediction_status === 'pending' && post.target_date && new Date(post.target_date) < new Date() && (
+                                    <button
+                                        onClick={async () => {
+                                            const res = await fetch(`/api/ai/evaluate-prediction/${post.id}`, { method: 'POST' });
+                                            if (res.ok) window.location.reload(); // Simple refresh to see update
+                                        }}
+                                        className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-blue-500 text-white hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20"
+                                    >
+                                        Verify Outcome
+                                    </button>
+                                )}
+                                <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border shadow-lg ${post.prediction_status === 'pending' ? "bg-white/10 text-white/60 border-white/10" :
+                                        post.prediction_status === 'correct' ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" :
+                                            "bg-rose-500/20 text-rose-400 border-rose-500/30"
+                                    }`}>
+                                    {post.prediction_status === 'pending' ? 'Pending' :
+                                        post.prediction_status === 'correct' ? 'Success' : 'Failed'}
+                                </span>
+                            </div>
+                        </div>
+                    )}
 
                     {/* GIF display */}
                     {post.gif_url && (

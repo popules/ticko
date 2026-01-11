@@ -13,6 +13,12 @@ EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
 
+DO $$ BEGIN
+    CREATE TYPE prediction_status AS ENUM ('pending', 'correct', 'incorrect');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
 -- 3. TABLES
 -- Profiles
 CREATE TABLE IF NOT EXISTS profiles (
@@ -32,6 +38,10 @@ CREATE TABLE IF NOT EXISTS posts (
   ticker_symbol TEXT,
   sentiment sentiment_type,
   gif_url TEXT,
+  is_prediction BOOLEAN DEFAULT FALSE,
+  prediction_price DECIMAL,
+  target_date TIMESTAMPTZ,
+  prediction_status prediction_status DEFAULT 'pending',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -180,5 +190,23 @@ DO $$ BEGIN
         WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'reactions'
     ) THEN
         ALTER PUBLICATION supabase_realtime ADD TABLE reactions;
+    END IF;
+END $$;
+
+DO $$ BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables 
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'notifications'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE notifications;
+    END IF;
+END $$;
+
+DO $$ BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_publication_tables 
+        WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'follows'
+    ) THEN
+        ALTER PUBLICATION supabase_realtime ADD TABLE follows;
     END IF;
 END $$;

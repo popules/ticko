@@ -2,6 +2,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { FeedStream } from "@/components/feed/FeedStream";
 import { AIValuationCard } from "@/components/analysis/AIValuationCard";
+import { AITickerSummary } from "@/components/analysis/AITickerSummary";
 import { AlertButton } from "@/components/alerts/AlertButton";
 import { StockChart } from "@/components/charts/StockChart";
 import { NewsFeed } from "@/components/news/NewsFeed";

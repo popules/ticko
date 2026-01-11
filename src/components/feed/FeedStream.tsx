@@ -5,9 +5,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import { PostCard } from "./PostCard";
 import { PostComposer } from "./PostComposer";
+import { MorningReport } from "./MorningReport";
 import { Loader2, Radio } from "lucide-react";
 import { UI_STRINGS } from "@/config/app";
 import type { Post } from "@/types/database";
+
+import { useAuth } from "@/providers/AuthProvider";
 
 type PostWithProfile = Post & {
     profiles: {
@@ -22,8 +25,10 @@ interface FeedStreamProps {
 }
 
 export function FeedStream({ tickerFilter }: FeedStreamProps) {
+    const { user } = useAuth();
     const queryClient = useQueryClient();
     const [isLive, setIsLive] = useState(true);
+    const [feedType, setFeedType] = useState<"global" | "following">("global");
 
     // Fetch posts
     const {
@@ -32,30 +37,51 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
         error,
         refetch,
     } = useQuery<PostWithProfile[]>({
-        queryKey: ["posts", tickerFilter],
+        queryKey: ["posts", tickerFilter, feedType, user?.id],
         enabled: isSupabaseConfigured,
         queryFn: async () => {
             if (!supabase) return [];
+
             let query = supabase
                 .from("posts")
                 .select(
                     `
-          *,
-          profiles (
-            username,
-            avatar_url,
-            reputation_score
-          )
-        `
-                )
-                .order("created_at", { ascending: false })
-                .limit(50);
+                        *,
+                        profiles (
+                            username,
+                            avatar_url,
+                            reputation_score
+                        )
+                    `
+                );
 
+            // Filter by ticker if provided
             if (tickerFilter) {
                 query = query.eq("ticker_symbol", tickerFilter);
             }
 
-            const { data, error } = await query;
+            // Filter by following if requested
+            if (feedType === "following" && user) {
+                // First get the list of people the user follows
+                const { data: followedData } = await supabase
+                    .from("follows")
+                    .select("following_id")
+                    .eq("follower_id", user.id);
+
+                const followedIds = (followedData as any[])?.map(f => f.following_id) || [];
+
+                // If following nobody, return empty or handle gracefully
+                if (followedIds.length > 0) {
+                    query = query.in("user_id", followedIds);
+                } else {
+                    return []; // Return empty if following nobody
+                }
+            }
+
+            const { data, error } = await query
+                .order("created_at", { ascending: false })
+                .limit(50);
+
             if (error) throw error;
             return data as PostWithProfile[];
         },
@@ -134,19 +160,46 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
 
     return (
         <div className="space-y-4">
+            {/* Morning Report */}
+            {user && !tickerFilter && <MorningReport />}
+
             {/* Post composer */}
             <PostComposer onNewPost={handleNewPost} tickerFilter={tickerFilter} />
+
+            {/* Feed Type Toggle */}
+            {!tickerFilter && user && (
+                <div className="flex p-1 bg-white/[0.04] rounded-2xl border border-white/10 w-fit">
+                    <button
+                        onClick={() => setFeedType("global")}
+                        className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${feedType === "global"
+                            ? "bg-white text-black shadow-lg"
+                            : "text-white/40 hover:text-white"
+                            }`}
+                    >
+                        Global
+                    </button>
+                    <button
+                        onClick={() => setFeedType("following")}
+                        className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${feedType === "following"
+                            ? "bg-white text-black shadow-lg"
+                            : "text-white/40 hover:text-white"
+                            }`}
+                    >
+                        Följer
+                    </button>
+                </div>
+            )}
 
             {/* Live indicator */}
             <div className="flex items-center justify-between px-2">
                 <h2 className="text-lg font-semibold text-white">
-                    {tickerFilter ? `$${tickerFilter}` : UI_STRINGS.liveFeed}
+                    {tickerFilter ? `$${tickerFilter}` : feedType === "global" ? UI_STRINGS.liveFeed : "Inlägg från personer du följer"}
                 </h2>
                 <button
                     onClick={() => setIsLive(!isLive)}
                     className={`flex items-center gap-2 text-sm px-4 py-2 rounded-full transition-all border ${isLive
-                            ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                            : "bg-white/[0.06] text-white/60 border-white/10"
+                        ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                        : "bg-white/[0.06] text-white/60 border-white/10"
                         }`}
                 >
                     <Radio className={`w-3.5 h-3.5 ${isLive ? "animate-pulse" : ""}`} />

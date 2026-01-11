@@ -1,5 +1,6 @@
 export type SentimentType = "bull" | "bear";
 export type ReactionType = "up" | "down";
+export type PredictionStatus = "pending" | "correct" | "incorrect";
 
 export interface Profile {
     id: string;
@@ -17,6 +18,10 @@ export interface Post {
     ticker_symbol: string | null;
     sentiment: SentimentType | null;
     gif_url: string | null;
+    is_prediction?: boolean;
+    prediction_price?: number | null;
+    target_date?: string | null;
+    prediction_status?: PredictionStatus;
     created_at: string;
     // Joined profile data
     profiles?: Profile;
@@ -32,6 +37,10 @@ export interface PostInsert {
     ticker_symbol?: string | null;
     sentiment?: SentimentType | null;
     gif_url?: string | null;
+    is_prediction?: boolean;
+    prediction_price?: number | null;
+    target_date?: string | null;
+    prediction_status?: PredictionStatus;
 }
 
 export interface Reaction {
@@ -95,6 +104,7 @@ export interface Database {
         };
         Enums: {
             sentiment_type: SentimentType;
+            prediction_status: PredictionStatus;
         };
         Functions: {
             get_ticker_sentiment: {

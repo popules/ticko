@@ -20,6 +20,8 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
     const [sentiment, setSentiment] = useState<SentimentType | null>(null);
     const [gifUrl, setGifUrl] = useState<string | null>(null);
     const [showGiphyPicker, setShowGiphyPicker] = useState(false);
+    const [isPrediction, setIsPrediction] = useState(false);
+    const [predictionPeriod, setPredictionPeriod] = useState("1w");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -33,23 +35,47 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
         const ticker = tickerFilter || extractFirstTicker(content);
 
         try {
+            let predictionPrice = null;
+            let targetDate = null;
+
+            if (isPrediction && ticker) {
+                // Fetch current price for prediction
+                const res = await fetch(`/api/stocks/${ticker}`);
+                const stockData = await res.json();
+                if (stockData && stockData.price) {
+                    predictionPrice = stockData.price;
+
+                    const now = new Date();
+                    if (predictionPeriod === "1w") now.setDate(now.getDate() + 7);
+                    else if (predictionPeriod === "1m") now.setMonth(now.getMonth() + 1);
+                    else if (predictionPeriod === "3m") now.setMonth(now.getMonth() + 3);
+                    targetDate = now.toISOString();
+                } else {
+                    throw new Error("Kunde inte hämta aktuellt pris för prediktion");
+                }
+            }
+
             const { error: insertError } = await supabase.from("posts").insert({
                 user_id: user.id,
                 content: content.trim(),
                 sentiment,
                 ticker_symbol: ticker,
                 gif_url: gifUrl,
-            } as never);
+                is_prediction: isPrediction,
+                prediction_price: predictionPrice,
+                target_date: targetDate,
+            } as any);
 
             if (insertError) throw insertError;
 
             setContent("");
             setSentiment(null);
             setGifUrl(null);
+            setIsPrediction(false);
             onNewPost?.();
-        } catch (err) {
+        } catch (err: any) {
             console.error("Post error:", err);
-            setError("Kunde inte publicera inlägget");
+            setError(err.message || "Kunde inte publicera inlägget");
         }
 
         setIsSubmitting(false);
@@ -153,26 +179,55 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                         <button
                             type="button"
                             onClick={() => setSentiment(sentiment === "bull" ? null : "bull")}
-                            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-all ${sentiment === "bull"
+                            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all ${sentiment === "bull"
                                 ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-lg shadow-emerald-500/10"
                                 : "bg-white/[0.06] text-white/60 hover:bg-white/10 border border-transparent"
                                 }`}
                         >
                             <TrendingUp className="w-3.5 h-3.5" />
-                            {UI_STRINGS.bullish}
+                            Bull
                         </button>
                         <button
                             type="button"
                             onClick={() => setSentiment(sentiment === "bear" ? null : "bear")}
-                            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-all ${sentiment === "bear"
+                            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all ${sentiment === "bear"
                                 ? "bg-rose-500/20 text-rose-400 border border-rose-500/30 shadow-lg shadow-rose-500/10"
                                 : "bg-white/[0.06] text-white/60 hover:bg-white/10 border border-transparent"
                                 }`}
                         >
                             <TrendingDown className="w-3.5 h-3.5" />
-                            {UI_STRINGS.bearish}
+                            Bear
                         </button>
                     </div>
+
+                    {/* Prediction Toggle */}
+                    {sentiment && (
+                        <div className="flex items-center gap-3 ml-2 pl-4 border-l border-white/10">
+                            <button
+                                type="button"
+                                onClick={() => setIsPrediction(!isPrediction)}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${isPrediction
+                                        ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                                        : "bg-white/[0.04] text-white/40 hover:text-white"
+                                    }`}
+                            >
+                                <TrendingUp className={`w-3.5 h-3.5 ${isPrediction ? "animate-pulse" : ""}`} />
+                                Prediction
+                            </button>
+
+                            {isPrediction && (
+                                <select
+                                    value={predictionPeriod}
+                                    onChange={(e) => setPredictionPeriod(e.target.value)}
+                                    className="bg-white/[0.04] border border-white/10 rounded-xl px-3 py-2 text-[10px] font-bold text-white outline-none cursor-pointer hover:bg-white/10 transition-colors"
+                                >
+                                    <option value="1w" className="bg-[#0B0F17]">1 Vecka</option>
+                                    <option value="1m" className="bg-[#0B0F17]">1 Månad</option>
+                                    <option value="3m" className="bg-[#0B0F17]">3 Månader</option>
+                                </select>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 {/* Character count & submit */}

@@ -1,0 +1,78 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { MessageSquare, Loader2, RefreshCw } from "lucide-react";
+import { motion } from "framer-motion";
+
+interface AITickerSummaryProps {
+    ticker: string;
+}
+
+export function AITickerSummary({ ticker }: AITickerSummaryProps) {
+    const [summary, setSummary] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const fetchSummary = async () => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`/api/ai/ticker-summary/${ticker}`);
+            const data = await res.json();
+            setSummary(data.summary);
+        } catch (error) {
+            console.error("Failed to fetch ticker summary:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (ticker) fetchSummary();
+    }, [ticker]);
+
+    return (
+        <div className="p-6 rounded-[2rem] border border-white/10 bg-white/[0.02] backdrop-blur-xl relative overflow-hidden group">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-xl bg-blue-500/10 border border-blue-500/20">
+                        <MessageSquare className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <div>
+                        <h3 className="text-sm font-bold text-white uppercase tracking-widest">Community-snack</h3>
+                        <p className="text-[10px] text-white/40 uppercase tracking-tighter">AI-sammanfattning av flödet</p>
+                    </div>
+                </div>
+                <button
+                    onClick={fetchSummary}
+                    disabled={isLoading}
+                    className="p-2 rounded-lg text-white/20 hover:text-white hover:bg-white/10 transition-all disabled:opacity-50"
+                >
+                    <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
+                </button>
+            </div>
+
+            {/* Content */}
+            <div className="relative min-h-[60px] flex items-center">
+                {isLoading ? (
+                    <div className="flex items-center gap-3 py-4">
+                        <Loader2 className="w-4 h-4 animate-spin text-blue-400" />
+                        <p className="text-xs text-white/30 italic">Läser inlägg...</p>
+                    </div>
+                ) : summary ? (
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-sm text-white/70 leading-relaxed italic"
+                    >
+                        "{summary}"
+                    </motion.p>
+                ) : (
+                    <p className="text-sm text-white/30 italic">Ingen sammanfattning tillgänglig.</p>
+                )}
+            </div>
+
+            {/* Subtle Gradient */}
+            <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-blue-500/5 blur-[40px] rounded-full pointer-events-none" />
+        </div>
+    );
+}

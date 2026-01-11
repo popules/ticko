@@ -6,8 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
+import { useAuth } from "@/providers/AuthProvider";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 
 export function NotificationBell() {
+    const { user } = useAuth();
     const [notifications, setNotifications] = useState<any[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -29,10 +32,32 @@ export function NotificationBell() {
 
     useEffect(() => {
         fetchNotifications();
-        // Polling for new notifications every minute
-        const interval = setInterval(fetchNotifications, 60000);
-        return () => clearInterval(interval);
-    }, []);
+
+        if (!isSupabaseConfigured || !supabase) return;
+
+        // Subscribe to NEW notifications for this user
+        const channel = supabase
+            .channel('realtime_notifications')
+            .on(
+                'postgres_changes',
+                {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'notifications',
+                    filter: `user_id=eq.${user?.id}`
+                },
+                (payload) => {
+                    console.log('New notification received:', payload);
+                    // Fetch full data to get actor profile
+                    fetchNotifications();
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [user?.id]);
 
     const markAsRead = async () => {
         if (unreadCount === 0) return;
