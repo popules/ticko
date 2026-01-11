@@ -3,6 +3,7 @@
 import { Plus, Eye, X, Loader2 } from "lucide-react";
 import { fetchStockData } from "@/lib/stocks-api";
 import { SentimentHeatmap } from "@/components/analysis/SentimentHeatmap";
+import { TrendingTickers } from "@/components/discovery/TrendingTickers";
 import { UI_STRINGS } from "@/config/app";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -72,6 +73,9 @@ export function RightPanel() {
                     ))}
                 </div>
             </div>
+
+            {/* Trending Tickers */}
+            <TrendingTickers />
 
             {/* Watchlist */}
             <div className="flex-1 p-5">
