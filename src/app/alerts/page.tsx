@@ -31,7 +31,7 @@ export default function AlertsPage() {
         if (!user) return;
 
         const fetchNotifications = async () => {
-            const { data } = await supabase
+            const { data } = await (supabase as any)
                 .from("notifications")
                 .select(`
                     *,
@@ -79,7 +79,7 @@ export default function AlertsPage() {
         // Optimistic update
         setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
 
-        await supabase
+        await (supabase as any)
             .from("notifications")
             .update({ is_read: true })
             .eq("user_id", user.id)
@@ -147,8 +147,8 @@ export default function AlertsPage() {
                                 initial={{ opacity: 0, y: 5 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 className={`flex items-start gap-4 p-4 rounded-2xl border transition-all ${n.is_read
-                                        ? "bg-transparent border-transparent hover:bg-white/[0.02]"
-                                        : "bg-white/[0.05] border-white/10 hover:border-emerald-500/30"
+                                    ? "bg-transparent border-transparent hover:bg-white/[0.02]"
+                                    : "bg-white/[0.05] border-white/10 hover:border-emerald-500/30"
                                     }`}
                             >
                                 <div className="mt-1 p-2 rounded-full bg-white/[0.05] border border-white/10">
