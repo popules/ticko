@@ -105,45 +105,45 @@ export function LandingPage() {
             </section>
 
             {/* Value Proposition / "Why" Section */}
-            <section id="features" className="px-6 py-32 bg-white/[0.01] border-y border-white/[0.05]">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-20">
-                        <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-6">DÄRFÖR VÄLJER STOCKHOLMS BÄSTA TRADERS TICKO</h2>
-                        <p className="text-white/40 font-medium text-lg max-w-2xl mx-auto">
-                            Vi har skalat bort bruset. Kvar är datan, verktygen och nätverket du behöver för att ta dina investeringar till nästa nivå.
+            <section id="features" className="px-6 py-24 bg-white/[0.01] border-y border-white/[0.05]">
+                <div className="max-w-5xl mx-auto">
+                    <div className="text-center mb-16">
+                        <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-4">Varför Ticko?</h2>
+                        <p className="text-white/40 font-medium text-base max-w-xl mx-auto">
+                            Vi bygger platsen där svenska investerare samlas för att diskutera, dela analyser och lära av varandra.
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-8">
+                    <div className="grid md:grid-cols-3 gap-6">
                         {[
                             {
-                                icon: BarChart3,
-                                title: "AI-Driven Analys",
-                                desc: "Låt våra modeller göra grovjobbet. Få omedelbara analyser av sentiment, risk och uppsida på tusentals aktier.",
+                                icon: Users,
+                                title: "Community först",
+                                desc: "Diskutera aktier, dela dina takes och följ investerare du litar på. Tänk Reddit möter Avanza.",
                                 color: "text-emerald-400",
                                 bg: "bg-emerald-500/10"
                             },
                             {
-                                icon: Users,
-                                title: "Verifierat Community",
-                                desc: "Inga bottar. Inga anonyma pump-and-dump konton. Bara verifierade profiler med synlig track-record.",
+                                icon: MessageCircle,
+                                title: "Realtidsdiskussioner",
+                                desc: "Se vad andra tycker om marknaden just nu. Ingen fördröjning, inga betalväggar.",
                                 color: "text-violet-400",
                                 bg: "bg-violet-500/10"
                             },
                             {
-                                icon: Lock,
-                                title: "Institutionella Verktyg",
-                                desc: "Realtidsdata, avancerade grafer och portföljhantering som tidigare bara fanns hos dyra terminaler.",
+                                icon: TrendingUp,
+                                title: "Följ sentimentet",
+                                desc: "Se vilka aktier som trendar och vad communityt faktiskt tror på.",
                                 color: "text-blue-400",
                                 bg: "bg-blue-500/10"
                             }
                         ].map((item, i) => (
-                            <div key={i} className="p-8 rounded-[2rem] bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-all group">
-                                <div className={`w-14 h-14 rounded-2xl ${item.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                                    <item.icon className={`w-7 h-7 ${item.color}`} />
+                            <div key={i} className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-all group">
+                                <div className={`w-12 h-12 rounded-xl ${item.bg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}>
+                                    <item.icon className={`w-6 h-6 ${item.color}`} />
                                 </div>
-                                <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                                <p className="text-white/40 leading-relaxed font-medium">
+                                <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+                                <p className="text-white/40 leading-relaxed text-sm">
                                     {item.desc}
                                 </p>
                             </div>
@@ -152,37 +152,46 @@ export function LandingPage() {
                 </div>
             </section>
 
-            {/* Social Proof / Stats */}
-            <section className="px-6 py-24 border-b border-white/[0.05]">
-                <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-                    {[
-                        { label: "Aktiva Traders", value: "12,000+" },
-                        { label: "Dagliga Analyser", value: "850+" },
-                        { label: "Förvaltat Kapital", value: "2.4Mk" }, // Mock value
-                        { label: "Länder", value: "4" }
-                    ].map((stat, i) => (
-                        <div key={i}>
-                            <p className="text-4xl md:text-5xl font-black text-white mb-2">{stat.value}</p>
-                            <p className="text-sm font-bold text-white/30 uppercase tracking-widest">{stat.label}</p>
-                        </div>
-                    ))}
+            {/* Community Pitch - replaces fake stats */}
+            <section className="px-6 py-20">
+                <div className="max-w-3xl mx-auto text-center">
+                    <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-4">
+                        Reddit för svenska investerare 🌟
+                    </h2>
+                    <p className="text-white/40 text-base leading-relaxed mb-8">
+                        Vi tror på transparent diskussion, inte anonyma tips. Här bygger du din track-record och följer de som faktiskt levererar. Inga fejkade siffror – bara äkta community.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-3">
+                        <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-sm text-white/60">
+                            💬 Aktiediskussioner
+                        </span>
+                        <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-sm text-white/60">
+                            📈 Följ sentimentet
+                        </span>
+                        <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-sm text-white/60">
+                            🏆 Topplistan
+                        </span>
+                        <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-sm text-white/60">
+                            🔔 Realtidsnotiser
+                        </span>
+                    </div>
                 </div>
             </section>
 
-            <section className="relative px-6 py-40 flex flex-col items-center text-center overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-emerald-900/10 to-emerald-900/20 pointer-events-none" />
-                <div className="relative z-10 max-w-3xl">
-                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8">
-                        GÅ MED I COMMUNITYT IDAG
+            <section className="relative px-6 py-32 flex flex-col items-center text-center overflow-hidden border-t border-white/[0.05]">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-emerald-900/5 to-emerald-900/10 pointer-events-none" />
+                <div className="relative z-10 max-w-2xl">
+                    <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-4">
+                        Bli en av de första 🚀
                     </h2>
-                    <p className="text-xl text-white/50 mb-10 font-medium">
-                        Det kostar inget att gå med. Men det kan kosta att stå utanför.
+                    <p className="text-base text-white/50 mb-8">
+                        Vi är i tidig beta och letar efter passionerade investerare som vill vara med och forma framtidens plattform.
                     </p>
                     <Link
                         href="/registrera"
-                        className="px-10 py-5 bg-gradient-to-r from-emerald-500 to-teal-400 text-[#020617] rounded-full font-bold text-xl hover:scale-105 transition-transform inline-flex items-center gap-2 shadow-[0_0_60px_-15px_rgba(16,185,129,0.5)]"
+                        className="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-[#020617] rounded-full font-bold text-sm transition-all inline-flex items-center gap-2 hover:scale-105"
                     >
-                        Skapa konto gratis <ArrowRight className="w-6 h-6" />
+                        Skapa konto gratis <ArrowRight className="w-4 h-4" />
                     </Link>
                 </div>
             </section>
