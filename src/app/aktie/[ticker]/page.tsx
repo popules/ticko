@@ -133,7 +133,7 @@ export default async function AktiePage({ params }: AktiePageProps) {
                     {/* TradingView Chart */}
                     <div className="mb-6">
                         <h3 className="text-sm font-bold text-white/40 uppercase tracking-widest mb-4">Prisutveckling</h3>
-                        <StockChart symbol={upperTicker} height={350} />
+                        <StockChart symbol={upperTicker} height={450} />
                     </div>
 
                     {/* AI Analysis Card */}

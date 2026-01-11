@@ -85,16 +85,19 @@ export function StockChart({ symbol, theme = "dark", height = 400 }: StockChartP
             interval: "D",
             timezone: "Europe/Stockholm",
             theme: theme,
-            style: "1",
+            style: "3", // 3 = Area chart (cleaner look like Avanza), 1 = Candles
             locale: "sv",
             enable_publishing: false,
-            backgroundColor: theme === "dark" ? "rgba(11, 15, 23, 1)" : "rgba(255, 255, 255, 1)",
-            gridColor: theme === "dark" ? "rgba(255, 255, 255, 0.06)" : "rgba(0, 0, 0, 0.06)",
-            hide_top_toolbar: false,
-            hide_legend: false,
+            backgroundColor: "rgba(2, 6, 23, 1)", // Match app background
+            gridColor: "rgba(255, 255, 255, 0.03)", // Subtle grid
+            hide_top_toolbar: true, // Cleaner look
+            hide_legend: true, // Cleaner look
+            hide_side_toolbar: true, // Cleaner look
+            allow_symbol_change: false, // Lock to current symbol
             save_image: false,
             calendar: false,
-            hide_volume: false,
+            hide_volume: true, // Cleaner like Avanza
+            withdateranges: true, // Date range selector
             support_host: "https://www.tradingview.com",
         });
 
@@ -105,7 +108,7 @@ export function StockChart({ symbol, theme = "dark", height = 400 }: StockChartP
                 containerRef.current.innerHTML = "";
             }
         };
-    }, [symbol, theme]);
+    }, [tradingViewSymbol, theme]);
 
     return (
         <div className="rounded-2xl overflow-hidden border border-white/10 bg-[#0B0F17]">
