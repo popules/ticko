@@ -37,7 +37,7 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
 
         const fetchComments = async () => {
             setIsLoading(true);
-            const { data } = await supabase
+            const { data } = await (supabase as any)
                 .from("comments")
                 .select(`
                     id,
@@ -64,13 +64,13 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
 
         setIsSubmitting(true);
 
-        const { data, error } = await supabase
+        const { data, error } = await (supabase as any)
             .from("comments")
             .insert({
                 post_id: postId,
                 user_id: user.id,
                 content: newComment.trim(),
-            } as never)
+            })
             .select(`
                 id,
                 content,

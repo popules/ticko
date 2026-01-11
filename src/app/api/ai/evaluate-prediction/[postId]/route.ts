@@ -21,7 +21,7 @@ export async function POST(
 
     try {
         // 1. Fetch the post and prediction data
-        const { data: post, error: fetchError } = await supabase
+        const { data: post, error: fetchError } = await (supabase as any)
             .from("posts")
             .select("*, profiles(reputation_score)")
             .eq("id", postId)
@@ -53,7 +53,7 @@ export async function POST(
         if (sentiment === "bear" && currentPrice < entryPrice) outcome = "correct";
 
         // 4. Update post status
-        const { error: updateError } = await supabase
+        const { error: updateError } = await (supabase as any)
             .from("posts")
             .update({ prediction_status: outcome })
             .eq("id", postId);
@@ -64,7 +64,7 @@ export async function POST(
         const scoreChange = outcome === "correct" ? 10 : -5;
         const currentScore = post.profiles?.reputation_score || 0;
 
-        const { error: profileError } = await supabase
+        const { error: profileError } = await (supabase as any)
             .from("profiles")
             .update({ reputation_score: currentScore + scoreChange })
             .eq("id", post.user_id);
