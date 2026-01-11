@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
-import { OpenAI } from "openai";
+import { openai } from "@/lib/openai";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function GET(
     request: Request,

@@ -1,5 +1,5 @@
 import YahooFinance from 'yahoo-finance2';
-import OpenAI from "openai";
+import { openai } from './openai';
 
 // Create a singleton instance for our app
 const yf = new (YahooFinance as any)();
@@ -121,7 +121,6 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
         const validStocks = stocks.filter((s): s is StockData => s !== null);
 
         // Enhance with AI Discovery Hooks
-        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
         const enhancedStocks = await Promise.all(validStocks.map(async (stock) => {
             try {

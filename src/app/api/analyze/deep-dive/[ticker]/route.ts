@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
+import { openai } from "@/lib/openai";
 import { fetchStockData } from "@/lib/stocks-api";
 
 // Simple in-memory cache
@@ -26,7 +26,6 @@ export async function GET(
             return NextResponse.json({ error: "Stock not found" }, { status: 404 });
         }
 
-        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
         const systemPrompt = `Du är en senior aktieanalytiker som ger djupgående, professionella analyser på svenska. Din uppgift är att ge en balanserad men insiktsfull analys av aktier. Svara ALLTID i följande JSON-format:
 

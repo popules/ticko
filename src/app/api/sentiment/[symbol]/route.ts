@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
-
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
+import { openai } from "@/lib/openai";
 
 // Simple in-memory cache
 const cache = new Map<string, { data: any, timestamp: number }>();

@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import OpenAI from "openai";
+import { openai } from "@/lib/openai";
 import { fetchStockData } from "@/lib/stocks-api";
-
-// Initialize OpenAI client
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
 
 interface AnalysisResult {
     ticker: string;
