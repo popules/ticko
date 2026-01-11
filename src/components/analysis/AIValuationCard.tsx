@@ -106,13 +106,13 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
                     <div>
                         <p className="text-xs text-white/50 mb-1">{UI_STRINGS.currentPrice}</p>
                         <p className="text-2xl font-bold tabular-nums text-white">
-                            {currencySymbol === 'kr' ? `${currentPrice.toFixed(2)} kr` : `${currencySymbol}${currentPrice.toFixed(2)}`}
+                            {currencySymbol === 'kr' ? `${(currentPrice ?? 0).toFixed(2)} kr` : `${currencySymbol}${(currentPrice ?? 0).toFixed(2)}`}
                         </p>
                     </div>
                     <div className="text-right">
                         <p className="text-xs text-white/50 mb-1">{UI_STRINGS.fairValue}</p>
                         <p className="text-2xl font-bold tabular-nums text-emerald-400">
-                            {currencySymbol === 'kr' ? `${fairValue.toFixed(2)} kr` : `${currencySymbol}${fairValue.toFixed(2)}`}
+                            {currencySymbol === 'kr' ? `${(fairValue ?? 0).toFixed(2)} kr` : `${currencySymbol}${(fairValue ?? 0).toFixed(2)}`}
                         </p>
                     </div>
                 </div>
@@ -129,7 +129,7 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
                     )}
                     <span className="tabular-nums">
                         {isUndervalued ? "+" : ""}
-                        {upside.toFixed(1)}% {isUndervalued ? UI_STRINGS.upside : UI_STRINGS.downside}
+                        {(upside ?? 0).toFixed(1)}% {isUndervalued ? UI_STRINGS.upside : UI_STRINGS.downside}
                     </span>
                 </div>
             </div>

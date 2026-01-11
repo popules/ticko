@@ -110,7 +110,7 @@ export function RightPanel() {
                                             ${item.symbol.split('.')[0]}
                                         </span>
                                         <p className="text-[10px] tabular-nums text-white/50">
-                                            {item.currencySymbol === 'kr' ? `${item.price.toFixed(2)} kr` : `${item.currencySymbol}${item.price.toFixed(2)}`}
+                                            {item.currencySymbol === 'kr' ? `${(item.price ?? 0).toFixed(2)} kr` : `${item.currencySymbol}${(item.price ?? 0).toFixed(2)}`}
                                         </p>
                                     </div>
                                 </Link>
@@ -120,7 +120,7 @@ export function RightPanel() {
                                             }`}
                                     >
                                         {item.changePercent >= 0 ? "+" : ""}
-                                        {item.changePercent.toFixed(2)}%
+                                        {(item.changePercent ?? 0).toFixed(2)}%
                                     </span>
                                     <button
                                         onClick={() => toggleWatch.mutate(item.symbol)}
