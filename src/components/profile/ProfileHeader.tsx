@@ -1,26 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User, Shield, TrendingUp, Calendar, MapPin, Pencil, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { EditProfileModal } from "./EditProfileModal";
 
 interface ProfileHeaderProps {
     profile: {
+        id: string;
         username: string;
         bio?: string | null;
         location?: string | null;
         created_at: string;
         accuracy?: number;
-        followers_count?: number;
-        following_count?: number;
     };
     isOwnProfile?: boolean;
 }
 
+import { FollowButton } from "../social/FollowButton";
+import { useAuth } from "@/providers/AuthProvider";
+
 export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderProps) {
+    const { user } = useAuth();
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [currentProfile, setCurrentProfile] = useState(profile);
+    const [stats, setStats] = useState({ followers: 0, following: 0 });
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            const res = await fetch(`/api/follow?targetUserId=${profile.id}${user ? `&userId=${user.id}` : ""}`);
+            const data = await res.json();
+            setStats({ followers: data.followers, following: data.following });
+        };
+        fetchStats();
+    }, [profile.id, user]);
 
     const joinedDate = new Date(currentProfile.created_at).toLocaleDateString('sv-SE', {
         month: 'long',
@@ -75,6 +88,18 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                                 </div>
                             </div>
 
+                            {!isOwnProfile && (
+                                <FollowButton
+                                    targetUserId={profile.id}
+                                    onFollowChange={(following) => {
+                                        setStats(prev => ({
+                                            ...prev,
+                                            followers: following ? prev.followers + 1 : prev.followers - 1
+                                        }));
+                                    }}
+                                />
+                            )}
+
                             {isOwnProfile && (
                                 <div className="flex gap-2">
                                     <button
@@ -98,11 +123,11 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                         {/* Stats */}
                         <div className="flex gap-8 pt-4">
                             <div>
-                                <p className="text-2xl font-black text-white">{currentProfile.followers_count || 0}</p>
+                                <p className="text-2xl font-black text-white">{stats.followers}</p>
                                 <p className="text-xs font-bold text-white/30 uppercase tracking-widest">Följare</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-black text-white">{currentProfile.following_count || 0}</p>
+                                <p className="text-2xl font-black text-white">{stats.following}</p>
                                 <p className="text-xs font-bold text-white/30 uppercase tracking-widest">Följer</p>
                             </div>
                             <div>

@@ -7,7 +7,7 @@ import { StockChart } from "@/components/charts/StockChart";
 import { NewsFeed } from "@/components/news/NewsFeed";
 import { PortfolioButton } from "@/components/portfolio/PortfolioButton";
 import { WatchButton } from "@/components/watchlist/WatchButton";
-import { ArrowLeft, Star } from "lucide-react";
+import { ArrowLeft, Star, Brain } from "lucide-react";
 import Link from "next/link";
 import { UI_STRINGS } from "@/config/app";
 import { fetchStockData } from "@/lib/stocks-api";
@@ -136,10 +136,29 @@ export default async function AktiePage({ params }: AktiePageProps) {
                     </div>
 
                     {/* AI Analysis Card */}
-                    <AIValuationCard
-                        ticker={upperTicker}
-                        currencySymbol={stock.currencySymbol}
-                    />
+                    <div className="space-y-4">
+                        <AIValuationCard
+                            ticker={upperTicker}
+                            currencySymbol={stock.currencySymbol}
+                        />
+                        <Link
+                            href={`/aktie/${upperTicker}/analys`}
+                            className="flex items-center justify-between p-5 rounded-2xl bg-gradient-to-br from-violet-500/10 to-violet-600/5 border border-violet-500/20 hover:border-violet-500/40 transition-all group"
+                        >
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-violet-500/20 rounded-lg group-hover:scale-110 transition-transform">
+                                    <Brain className="w-5 h-5 text-violet-400" />
+                                </div>
+                                <div>
+                                    <h4 className="font-bold text-white text-sm">Gör en Deep Dive</h4>
+                                    <p className="text-xs text-white/40">Få en djupgående AI-analys av bull/bear case och katalysatorer</p>
+                                </div>
+                            </div>
+                            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+                                <ArrowLeft className="w-4 h-4 text-white rotate-180" />
+                            </div>
+                        </Link>
+                    </div>
                 </div>
 
                 {/* News Section */}

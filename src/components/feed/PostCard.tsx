@@ -9,6 +9,7 @@ import { ReactionButtons } from "./ReactionButtons";
 import { ReactionBar } from "./ReactionBar";
 import { CommentThread } from "./CommentThread";
 import type { Post } from "@/types/database";
+import Link from "next/link";
 
 interface PostCardProps {
     post: Post & {
@@ -38,9 +39,12 @@ export function PostCard({ post }: PostCardProps) {
                 <div className="flex-1 min-w-0">
                     {/* Header */}
                     <div className="flex items-center gap-2 mb-2">
-                        <span className="font-semibold text-white truncate">
+                        <Link
+                            href={`/profil/${post.user_id}`}
+                            className="font-semibold text-white truncate hover:text-emerald-400 transition-colors"
+                        >
                             {profile?.username || "Anonym"}
-                        </span>
+                        </Link>
                         {profile?.reputation_score !== undefined && profile.reputation_score > 0 && (
                             <span className="text-xs text-white/60 bg-white/[0.08] px-2 py-0.5 rounded-full">
                                 +{profile.reputation_score}

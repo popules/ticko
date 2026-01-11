@@ -16,23 +16,26 @@ CREATE TABLE IF NOT EXISTS notifications (
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 
 -- Users can only see their own notifications
+DROP POLICY IF EXISTS "Users can view their own notifications" ON notifications;
 CREATE POLICY "Users can view their own notifications"
   ON notifications FOR SELECT
   TO authenticated
   USING (auth.uid() = user_id);
 
 -- System can create notifications (via service role or triggers)
+DROP POLICY IF EXISTS "Authenticated users can create notifications" ON notifications;
 CREATE POLICY "Authenticated users can create notifications"
   ON notifications FOR INSERT
   TO authenticated
   WITH CHECK (true);
 
 -- Users can mark their own notifications as read
+DROP POLICY IF EXISTS "Users can update their own notifications" ON notifications;
 CREATE POLICY "Users can update their own notifications"
   ON notifications FOR UPDATE
   TO authenticated
   USING (auth.uid() = user_id);
 
 -- Index for fast lookups
-CREATE INDEX idx_notifications_user_id ON notifications(user_id);
-CREATE INDEX idx_notifications_created_at ON notifications(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_created_at ON notifications(created_at DESC);

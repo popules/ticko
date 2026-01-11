@@ -21,6 +21,7 @@ import { APP_CONFIG, UI_STRINGS } from "@/config/app";
 import { SentimentGauge } from "@/components/analysis/SentimentGauge";
 import { getTrendingStocks } from "@/lib/stocks";
 import { TickoLogo } from "@/components/ui/TickoLogo";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 
 // Navigation Items
 const navItems = [
@@ -108,11 +109,12 @@ export function Sidebar() {
 
     return (
         <aside className="w-64 h-screen sticky top-0 flex flex-col border-r border-white/10 bg-white/[0.02] backdrop-blur-xl">
-            {/* Logo */}
-            <div className="p-5 border-b border-white/10">
+            {/* Logo & Notifications */}
+            <div className="p-5 border-b border-white/10 flex items-center justify-between">
                 <Link href="/" className="flex items-center">
                     <TickoLogo />
                 </Link>
+                <NotificationBell />
             </div>
 
             {/* Search */}
