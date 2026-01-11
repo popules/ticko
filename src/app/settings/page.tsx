@@ -17,15 +17,18 @@ export default function SettingsPage() {
     useEffect(() => {
         const fetchProfile = async () => {
             if (!user) return;
-            const { data, error } = await supabase
+            // Cast supabase to any to avoid type issues with .from().select() chain
+            const { data, error } = await (supabase as any)
                 .from("profiles")
                 .select("*")
                 .eq("id", user.id)
                 .single();
 
             if (data) {
-                setUsername(data.username || "");
-                setAvatarUrl(data.avatar_url);
+                // Cast data to Profile type for better type safety
+                const profileData = data as any;
+                setUsername(profileData.username || "");
+                setAvatarUrl(profileData.avatar_url);
             }
             setIsLoading(false);
         };
@@ -40,7 +43,7 @@ export default function SettingsPage() {
         setMessage(null);
 
         try {
-            const { error } = await supabase
+            const { error } = await (supabase as any)
                 .from("profiles")
                 .update({ username })
                 .eq("id", user.id);

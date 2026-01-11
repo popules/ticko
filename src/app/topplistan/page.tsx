@@ -19,14 +19,14 @@ export default function LeaderboardPage() {
 
     useEffect(() => {
         const fetchLeaderboard = async () => {
-            const { data, error } = await supabase
+            const { data, error } = await (supabase as any)
                 .from("profiles")
                 .select("*")
                 .order("reputation_score", { ascending: false })
                 .limit(20);
 
             if (!error && data) {
-                setUsers(data);
+                setUsers(data as any[]);
             }
             setIsLoading(false);
         };

@@ -6,18 +6,25 @@ import { Trophy, Medal, TrendingUp, User, Crown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+interface Leader {
+    id: string;
+    username: string;
+    avatar_url: string | null;
+    reputation_score: number;
+}
+
 export default function LeaderboardPage() {
-    const { data: leaders, isLoading } = useQuery({
+    const { data: leaders, isLoading } = useQuery<Leader[]>({
         queryKey: ["leaderboard"],
         queryFn: async () => {
-            const { data, error } = await supabase
+            const { data, error } = await (supabase as any)
                 .from("profiles")
                 .select("id, username, avatar_url, reputation_score")
                 .order("reputation_score", { ascending: false })
                 .limit(50);
 
             if (error) throw error;
-            return data;
+            return data as Leader[];
         },
     });
 
