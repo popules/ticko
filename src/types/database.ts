@@ -73,7 +73,7 @@ export interface TickerSentiment {
 }
 
 // Supabase database type definitions
-export interface Database {
+export type Database = {
     public: {
         Tables: {
             profiles: {
@@ -84,12 +84,25 @@ export interface Database {
                     avatar_url?: string | null;
                     reputation_score?: number;
                 };
-                Update: Partial<Omit<Profile, "id" | "created_at" | "updated_at">>;
+                Update: {
+                    username?: string;
+                    avatar_url?: string | null;
+                    reputation_score?: number;
+                };
             };
             posts: {
                 Row: Post;
                 Insert: PostInsert;
-                Update: Partial<Omit<Post, "id" | "user_id" | "created_at">>;
+                Update: {
+                    content?: string;
+                    ticker_symbol?: string | null;
+                    sentiment?: SentimentType | null;
+                    gif_url?: string | null;
+                    is_prediction?: boolean;
+                    prediction_price?: number | null;
+                    target_date?: string | null;
+                    prediction_status?: PredictionStatus;
+                };
             };
             reactions: {
                 Row: Reaction;
@@ -117,4 +130,4 @@ export interface Database {
             };
         };
     };
-}
+};

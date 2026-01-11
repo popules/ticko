@@ -3,7 +3,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
 import { Sparkles, Pen, Eye, Heart, Trophy, Shield } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const ICON_MAP: Record<string, any> = {
     Sparkles,

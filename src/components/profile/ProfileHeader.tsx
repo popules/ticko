@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { User, Shield, TrendingUp, Calendar, MapPin, Pencil, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { BadgeRack } from "./BadgeRack";
-import { EditProfileDialog } from "./EditProfileDialog";
+import { EditProfileModal } from "./EditProfileModal";
 
 interface ProfileHeaderProps {
     profile: {

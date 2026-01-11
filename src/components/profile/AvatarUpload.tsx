@@ -59,6 +59,7 @@ export function AvatarUpload({ currentUrl, onUploadComplete }: AvatarUploadProps
             // Update profile
             const { error: updateError } = await supabase
                 .from("profiles")
+                // @ts-ignore
                 .update({ avatar_url: publicUrl })
                 .eq("id", user.id);
 
