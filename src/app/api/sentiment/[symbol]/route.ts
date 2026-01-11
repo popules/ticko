@@ -5,11 +5,26 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
+// Simple in-memory cache
+const cache = new Map<string, { data: any, timestamp: number }>();
+const CACHE_DURATION = 1000 * 60 * 60 * 24; // 24 hours
+
 export async function GET(
     _request: Request,
     { params }: { params: Promise<{ symbol: string }> }
 ) {
     const { symbol } = await params;
+
+    // Check cache
+    const cached = cache.get(symbol);
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+        return NextResponse.json({
+            symbol,
+            ...cached.data,
+            timestamp: new Date(cached.timestamp).toISOString(),
+            cached: true
+        });
+    }
 
     try {
         // Use OpenAI to generate a sentiment analysis
@@ -44,6 +59,9 @@ export async function GET(
                 confidence: "low",
             };
         }
+
+        // Update cache
+        cache.set(symbol, { data: sentimentData, timestamp: Date.now() });
 
         return NextResponse.json({
             symbol,

@@ -22,10 +22,20 @@ export async function GET() {
         const symbols = (watchlistData as any[]).map(item => item.ticker_symbol);
 
         const stocks = await Promise.all(
-            symbols.map(symbol => fetchStockData(symbol))
+            symbols.map(async symbol => {
+                try {
+                    return await fetchStockData(symbol);
+                } catch (e) {
+                    console.error(`Failed to fetch data for ${symbol}`, e);
+                    return null;
+                }
+            })
         );
 
-        return NextResponse.json({ stocks: stocks.filter(s => s !== null) });
+        return NextResponse.json({
+            stocks: stocks.filter(s => s !== null),
+            symbols: symbols // Return raw symbols for checking status reliably
+        });
     } catch (error) {
         console.error('Watchlist GET failed:', error);
         return NextResponse.json({ error: 'Failed to fetch watchlist' }, { status: 500 });

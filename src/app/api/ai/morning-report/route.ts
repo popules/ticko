@@ -34,41 +34,63 @@ export async function GET(request: Request) {
 
         const tickers = watchlist.map(w => w.ticker_symbol);
 
-        // 2. Fetch data for these tickers (limited to top 5 for speed/token limits)
+        // 2. Fetch data for these tickers (limited to top 5)
         const topTickers = tickers.slice(0, 5);
         const stockDataPromises = topTickers.map(ticker => fetchStockData(ticker));
         const stocks = (await Promise.all(stockDataPromises)).filter(s => s !== null);
 
-        // 3. Prepare AI prompt
-        const stockContext = stocks.map(s => (
-            `- ${s!.symbol}: ${s!.price} ${s!.currency} (${s!.changePercent.toFixed(2)}%). ${s!.name}`
-        )).join("\n");
+        if (stocks.length === 0) {
+            return NextResponse.json({
+                message: "Vi kunde inte hämta marknadsdata just nu. Försök igen senare."
+            });
+        }
 
-        const prompt = `
-        Du är Tickos AI-analytiker. Skapa en kortfatta men proffsig och peppig "Morgonrapport" för en användare baserat på deras watchlist:
-        
-        AKTIE-DATA:
-        ${stockContext}
+        // 3. Prepare AI prompt or Fallback
+        const apiKey = process.env.OPENAI_API_KEY;
+        let report = "";
 
-        INSTRUKTIONER:
-        - Skriv på Svenska.
-        - Fokusera på de viktigaste rörelserna.
-        - Ge en kort sammanfattning av marknadsläget (bullish/bearish).
-        - Avsluta med en uppmuntrande kommentar för dagen.
-        - Håll det under 150 ord.
-        - Använd en ton som känns exklusiv och insiktsfull.
-        `;
+        if (apiKey) {
+            try {
+                const stockContext = stocks.map(s => (
+                    `- ${s!.symbol}: ${s!.price} ${s!.currency} (${s!.changePercent.toFixed(2)}%). ${s!.name}`
+                )).join("\n");
 
-        const response = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [
-                { role: "system", content: "Du är en expert på aktiemarknaden och skriver korta, insiktsfulla morgonrapporter." },
-                { role: "user", content: prompt }
-            ],
-            temperature: 0.7,
-        });
+                const prompt = `
+                Du är Tickos AI-analytiker. Skapa en kortfatta men proffsig och peppig "Morgonrapport" med fokus på användarens aktier:
+                
+                ${stockContext}
 
-        const report = response.choices[0].message.content;
+                INSTRUKTIONER:
+                - Skriv på Svenska.
+                - Max 3 korta stycken. 
+                - Nämn dagens vinnare.
+                - Ton: Exklusiv, insiktsfull.
+                `;
+
+                const response = await openai.chat.completions.create({
+                    model: "gpt-4o",
+                    messages: [
+                        { role: "system", content: "Du är en expert på aktiemarknaden." },
+                        { role: "user", content: prompt }
+                    ],
+                    temperature: 0.7,
+                });
+                report = response.choices[0].message.content || "";
+            } catch (aiError) {
+                console.warn("OpenAI generation failed, using fallback:", aiError);
+            }
+        }
+
+        // 4. Fallback if no AI or AI failed
+        if (!report) {
+            // Find top mover
+            const sorted = [...stocks].sort((a, b) => b!.changePercent - a!.changePercent);
+            const winner = sorted[0];
+            const loser = sorted[sorted.length - 1];
+            const sentiment = winner!.changePercent > 0 ? "positiv" : "försiktig";
+
+            report = `God morgon! Här är din snabbkoll på marknaden.\n\nMarknadsklimatet verkar ${sentiment} just nu. Din portfölj leds idag av ${winner!.name} (${winner!.symbol}) som rör sig ${winner!.changePercent > 0 ? '+' : ''}${winner!.changePercent.toFixed(2)}%.\n\nHåll ett öga på ${loser!.name} som har det lite tuffare. Lycka till med dagens handel!`;
+        }
 
         return NextResponse.json({ report });
 

@@ -5,6 +5,7 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { APP_CONFIG } from "@/config/app";
 import { MobileNav } from "@/components/layout/MobileNav";
+import { SearchProvider } from "@/providers/SearchProvider";
 import { OnboardingModal } from "@/components/onboarding/OnboardingModal";
 
 const inter = Inter({
@@ -27,9 +28,11 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`}>
         <QueryProvider>
           <AuthProvider>
-            {children}
-            <MobileNav />
-            <OnboardingModal />
+            <SearchProvider>
+              {children}
+              <MobileNav />
+              <OnboardingModal />
+            </SearchProvider>
           </AuthProvider>
         </QueryProvider>
       </body>

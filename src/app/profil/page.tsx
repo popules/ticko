@@ -93,7 +93,7 @@ export default function ProfilePage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="max-w-5xl mx-auto space-y-8"
                     >
-                        <ProfileHeader profile={profile} />
+                        {profile && <ProfileHeader profile={profile} />}
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {/* Feed Column */}

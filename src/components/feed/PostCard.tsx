@@ -7,9 +7,9 @@ import { renderWithCashtags } from "@/lib/cashtag";
 import { UI_STRINGS } from "@/config/app";
 import { ReactionButtons } from "./ReactionButtons";
 import { ReactionBar } from "./ReactionBar";
-import { CommentThread } from "./CommentThread";
-import type { Post } from "@/types/database";
+import { PollView } from "./PollView";
 import Link from "next/link";
+import type { Post } from "@/types/database";
 
 interface PostCardProps {
     post: Post & {
@@ -18,6 +18,7 @@ interface PostCardProps {
             avatar_url: string | null;
             reputation_score: number;
         };
+        polls?: any[];
     };
 }
 
@@ -123,8 +124,8 @@ export function PostCard({ post }: PostCardProps) {
                                     </button>
                                 )}
                                 <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border shadow-lg ${post.prediction_status === 'pending' ? "bg-white/10 text-white/60 border-white/10" :
-                                        post.prediction_status === 'correct' ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" :
-                                            "bg-rose-500/20 text-rose-400 border-rose-500/30"
+                                    post.prediction_status === 'correct' ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" :
+                                        "bg-rose-500/20 text-rose-400 border-rose-500/30"
                                     }`}>
                                     {post.prediction_status === 'pending' ? 'Pending' :
                                         post.prediction_status === 'correct' ? 'Success' : 'Failed'}
@@ -142,6 +143,11 @@ export function PostCard({ post }: PostCardProps) {
                                 className="max-h-64 rounded-xl"
                             />
                         </div>
+                    )}
+
+                    {/* Poll Display */}
+                    {post.polls && post.polls.length > 0 && (
+                        <PollView poll={post.polls[0]} />
                     )}
 
                     {/* Ticker tag if present */}
@@ -162,9 +168,9 @@ export function PostCard({ post }: PostCardProps) {
                             userReaction={post.user_reaction}
                         />
                         <div className="flex items-center gap-4 text-white/40">
-                            <button className="flex items-center gap-2 text-sm hover:text-white transition-colors">
+                            <Link href={`/post/${post.id}`} className="flex items-center gap-2 text-sm hover:text-white transition-colors">
                                 <MessageCircle className="w-4 h-4" />
-                            </button>
+                            </Link>
                             <button className="flex items-center gap-2 text-sm hover:text-white transition-colors">
                                 <Share2 className="w-4 h-4" />
                             </button>
@@ -174,8 +180,7 @@ export function PostCard({ post }: PostCardProps) {
                     {/* Emoji Reactions */}
                     <ReactionBar postId={post.id} />
 
-                    {/* Comment Thread */}
-                    <CommentThread postId={post.id} commentCount={0} />
+
                 </div>
             </div>
         </article>

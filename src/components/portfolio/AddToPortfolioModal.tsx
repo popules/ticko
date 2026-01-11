@@ -25,15 +25,16 @@ export function AddToPortfolioModal({
 }: AddToPortfolioModalProps) {
     const { user } = useAuth();
     const [shares, setShares] = useState(1);
+    const [buyPrice, setBuyPrice] = useState(currentPrice);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
 
-    const totalValue = shares * currentPrice;
+    const totalValue = shares * buyPrice;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!user || !supabase || shares <= 0) return;
+        if (!user || !supabase || shares <= 0 || buyPrice <= 0) return;
 
         setIsSubmitting(true);
         setError(null);
@@ -42,18 +43,22 @@ export function AddToPortfolioModal({
             // Check if already in portfolio
             const { data: existing } = await supabase
                 .from("portfolio")
-                .select("id, shares")
+                .select("id, shares, buy_price")
                 .eq("user_id", user.id)
                 .eq("symbol", symbol)
                 .single();
 
             if (existing) {
-                // Update existing position
-                const newShares = Number((existing as any).shares) + shares;
+                // Update existing position (Weighted Average Price)
+                const oldShares = Number(existing.shares);
+                const oldPrice = Number(existing.buy_price);
+                const newShares = oldShares + shares;
+                const newAvgPrice = ((oldShares * oldPrice) + (shares * buyPrice)) / newShares;
+
                 const { error: updateError } = await supabase
                     .from("portfolio")
-                    .update({ shares: newShares } as never)
-                    .eq("id", (existing as any).id);
+                    .update({ shares: newShares, buy_price: newAvgPrice } as never)
+                    .eq("id", existing.id);
 
                 if (updateError) throw updateError;
             } else {
@@ -65,7 +70,7 @@ export function AddToPortfolioModal({
                         symbol,
                         name,
                         shares,
-                        buy_price: currentPrice,
+                        buy_price: buyPrice,
                         currency: currencySymbol === "kr" ? "SEK" : "USD",
                     } as never);
 

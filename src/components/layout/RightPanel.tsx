@@ -1,6 +1,8 @@
 "use client";
 
 import { Plus, Eye, X, Loader2 } from "lucide-react";
+import { fetchStockData } from "@/lib/stocks-api";
+import { SentimentHeatmap } from "@/components/analysis/SentimentHeatmap";
 import { UI_STRINGS } from "@/config/app";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";

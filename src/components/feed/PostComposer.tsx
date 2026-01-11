@@ -1,7 +1,11 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import { checkAndAwardAchievement } from "@/lib/achievements";
+import { getCompanyLogo } from "@/lib/stocks";
+
 import { useState } from "react";
-import { TrendingUp, TrendingDown, Send, AtSign, Image, X } from "lucide-react";
+import { TrendingUp, TrendingDown, Send, AtSign, Image, X, BarChart2, Plus } from "lucide-react";
 import { extractFirstTicker } from "@/lib/cashtag";
 import { UI_STRINGS } from "@/config/app";
 import { GiphyPicker } from "./GiphyPicker";
@@ -20,10 +24,29 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
     const [sentiment, setSentiment] = useState<SentimentType | null>(null);
     const [gifUrl, setGifUrl] = useState<string | null>(null);
     const [showGiphyPicker, setShowGiphyPicker] = useState(false);
+
+    // Poll state
+    const [isPoll, setIsPoll] = useState(false);
+    const [pollOptions, setPollOptions] = useState<string[]>(["", ""]);
     const [isPrediction, setIsPrediction] = useState(false);
     const [predictionPeriod, setPredictionPeriod] = useState("1w");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const ticker = extractFirstTicker(content);
+
+    // Fetch live price for prediction baseline
+    const { data: stockData } = useQuery({
+        queryKey: ['stock-price', ticker],
+        queryFn: async () => {
+            if (!ticker) return null;
+            const res = await fetch(`/api/stocks/${ticker}`);
+            if (!res.ok) return null;
+            return res.json();
+        },
+        enabled: !!ticker && isPrediction,
+        staleTime: 10000 // 10 seconds cache
+    });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -55,23 +78,43 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                 }
             }
 
-            const { error: insertError } = await supabase.from("posts").insert({
+            const { data: postData, error: insertError } = await supabase.from("posts").insert({
                 user_id: user.id,
                 content: content.trim(),
-                sentiment,
+                sentiment: isPoll ? null : sentiment, // Polls shouldn't have sentiment usually
                 ticker_symbol: ticker,
                 gif_url: gifUrl,
                 is_prediction: isPrediction,
                 prediction_price: predictionPrice,
                 target_date: targetDate,
-            } as any);
+            } as any).select().single();
 
             if (insertError) throw insertError;
+
+            // Handle Poll Insertion
+            if (isPoll && postData) {
+                const optionsData = pollOptions
+                    .filter(o => o.trim())
+                    .map((text, i) => ({ id: i, text }));
+
+                const { error: pollError } = await supabase.from("polls").insert({
+                    post_id: postData.id,
+                    question: content.trim(),
+                    options_data: optionsData,
+                } as any);
+
+                if (pollError) console.error("Poll insert error:", pollError);
+            }
+
+            // Trigger Achievement Check
+            await checkAndAwardAchievement(user.id, "first_post");
 
             setContent("");
             setSentiment(null);
             setGifUrl(null);
             setIsPrediction(false);
+            setIsPoll(false);
+            setPollOptions(["", ""]);
             onNewPost?.();
         } catch (err: any) {
             console.error("Post error:", err);
@@ -106,145 +149,168 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-5 border border-white/10 shadow-lg">
-            {/* Composer header */}
-            <div className="flex items-center gap-2 mb-4 text-sm text-white/50">
-                <AtSign className="w-4 h-4" />
-                <span>{UI_STRINGS.composerHint}</span>
-            </div>
+        <form onSubmit={handleSubmit} className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-5 border border-white/10 shadow-lg relative group focus-within:bg-white/[0.06] transition-colors">
 
-            {/* Text area */}
-            <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder={UI_STRINGS.composerPlaceholder}
-                className="w-full bg-transparent border-none outline-none resize-none text-white placeholder:text-white/40 min-h-[100px] text-base"
-                rows={3}
-            />
 
-            {/* GIF preview */}
-            {gifUrl && (
-                <div className="relative inline-block mt-3">
-                    <img
-                        src={gifUrl}
-                        alt="Selected GIF"
-                        className="max-h-40 rounded-xl"
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setGifUrl(null)}
-                        className="absolute -top-2 -right-2 p-1.5 bg-rose-500 rounded-full text-white hover:bg-rose-600 transition-colors"
-                    >
-                        <X className="w-3 h-3" />
-                    </button>
-                </div>
-            )}
 
-            {/* GIPHY Picker */}
-            {showGiphyPicker && (
-                <div className="mt-4">
-                    <GiphyPicker
-                        onSelect={(url) => {
-                            setGifUrl(url);
-                            setShowGiphyPicker(false);
-                        }}
-                        onClose={() => setShowGiphyPicker(false)}
-                    />
-                </div>
-            )}
 
             {/* Error message */}
             {error && (
-                <div className="mt-3 text-rose-400 text-sm">{error}</div>
+                <div className="mt-2 mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm font-medium flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                    {error}
+                </div>
             )}
 
-            {/* Footer */}
-            <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-4">
-                {/* Left actions */}
-                <div className="flex items-center gap-3">
-                    {/* GIF button */}
+            {/* Poll Creator */}
+            {isPoll && (
+                <div className="mt-4 p-4 rounded-xl bg-[#020617] border border-white/10 space-y-3 animate-in fade-in slide-in-from-top-2">
+                    {pollOptions.map((option, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                            <span className="text-white/30 text-xs font-bold w-12 text-right">Val {index + 1}</span>
+                            <input
+                                type="text"
+                                value={option}
+                                onChange={(e) => {
+                                    const newOptions = [...pollOptions];
+                                    newOptions[index] = e.target.value;
+                                    setPollOptions(newOptions);
+                                }}
+                                placeholder={`Alternativ ${index + 1}`}
+                                className="flex-1 bg-white/[0.04] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500/50 outline-none transition-colors"
+                            />
+                            {index > 1 && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const newOptions = pollOptions.filter((_, i) => i !== index);
+                                        setPollOptions(newOptions);
+                                    }}
+                                    className="p-2 text-white/20 hover:text-white/50"
+                                >
+                                    <X className="w-4 h-4" />
+                                </button>
+                            )}
+                        </div>
+                    ))}
+                    {pollOptions.length < 4 && (
+                        <button
+                            type="button"
+                            onClick={() => setPollOptions([...pollOptions, ""])}
+                            className="ml-14 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1"
+                        >
+                            <Plus className="w-3 h-3" />
+                            Lägg till alternativ
+                        </button>
+                    )}
+                </div>
+            )}
+
+            <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-2">
+                <div className="flex items-center gap-2">
+                    {/* Media Tools */}
                     <button
                         type="button"
                         onClick={() => setShowGiphyPicker(!showGiphyPicker)}
-                        className={`p-2 rounded-xl transition-all ${showGiphyPicker || gifUrl
-                            ? "bg-violet-500/20 text-violet-400"
-                            : "bg-white/[0.06] text-white/50 hover:bg-white/10 hover:text-white"
-                            }`}
+                        className={`p-2.5 rounded-full transition-colors ${showGiphyPicker ? 'bg-violet-500/10 text-violet-400' : 'text-emerald-400 hover:bg-emerald-500/10'}`}
+                        title="Lägg till GIF"
                     >
                         <Image className="w-5 h-5" />
                     </button>
 
-                    {/* Sentiment toggles */}
-                    <div className="flex items-center gap-2">
-                        <button
-                            type="button"
-                            onClick={() => setSentiment(sentiment === "bull" ? null : "bull")}
-                            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all ${sentiment === "bull"
-                                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-lg shadow-emerald-500/10"
-                                : "bg-white/[0.06] text-white/60 hover:bg-white/10 border border-transparent"
-                                }`}
-                        >
-                            <TrendingUp className="w-3.5 h-3.5" />
-                            Bull
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setSentiment(sentiment === "bear" ? null : "bear")}
-                            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all ${sentiment === "bear"
-                                ? "bg-rose-500/20 text-rose-400 border border-rose-500/30 shadow-lg shadow-rose-500/10"
-                                : "bg-white/[0.06] text-white/60 hover:bg-white/10 border border-transparent"
-                                }`}
-                        >
-                            <TrendingDown className="w-3.5 h-3.5" />
-                            Bear
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setIsPoll(!isPoll);
+                            setIsPrediction(false); // Mutually exclusive usually
+                            setSentiment(null);
+                        }}
+                        className={`p-2.5 rounded-full transition-colors ${isPoll ? 'bg-blue-500/10 text-blue-400' : 'text-emerald-400 hover:bg-emerald-500/10'}`}
+                        title="Skapa omröstning"
+                    >
+                        <BarChart2 className="w-5 h-5" />
+                    </button>
 
-                    {/* Prediction Toggle */}
-                    {sentiment && (
-                        <div className="flex items-center gap-3 ml-2 pl-4 border-l border-white/10">
+                    <div className="h-6 w-px bg-white/10 mx-2" />
+
+                    {/* Sentiment Pills */}
+                    <button
+                        type="button"
+                        disabled={isPoll}
+                        onClick={() => setSentiment(sentiment === "bull" ? null : "bull")}
+                        className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${sentiment === "bull"
+                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                            : "bg-transparent text-white/40 border-transparent hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed"
+                            }`}
+                    >
+                        Bull
+                    </button>
+                    <button
+                        type="button"
+                        disabled={isPoll}
+                        onClick={() => setSentiment(sentiment === "bear" ? null : "bear")}
+                        className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${sentiment === "bear"
+                            ? "bg-rose-500/10 text-rose-400 border-rose-500/30"
+                            : "bg-transparent text-white/40 border-transparent hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed"
+                            }`}
+                    >
+                        Bear
+                    </button>
+
+                    {/* Prediction Toggle (Contextual) */}
+                    {sentiment && !isPoll && (
+                        <div className="flex items-center gap-2 ml-2">
                             <button
                                 type="button"
                                 onClick={() => setIsPrediction(!isPrediction)}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${isPrediction
-                                        ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
-                                        : "bg-white/[0.04] text-white/40 hover:text-white"
+                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${isPrediction
+                                    ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
+                                    : "bg-transparent text-white/40 border-transparent hover:bg-white/5"
                                     }`}
                             >
-                                <TrendingUp className={`w-3.5 h-3.5 ${isPrediction ? "animate-pulse" : ""}`} />
-                                Prediction
+                                <TrendingUp className="w-3 h-3" />
+                                {isPrediction ? "Kursmål PÅ" : "Kursmål"}
                             </button>
 
                             {isPrediction && (
-                                <select
-                                    value={predictionPeriod}
-                                    onChange={(e) => setPredictionPeriod(e.target.value)}
-                                    className="bg-white/[0.04] border border-white/10 rounded-xl px-3 py-2 text-[10px] font-bold text-white outline-none cursor-pointer hover:bg-white/10 transition-colors"
-                                >
-                                    <option value="1w" className="bg-[#0B0F17]">1 Vecka</option>
-                                    <option value="1m" className="bg-[#0B0F17]">1 Månad</option>
-                                    <option value="3m" className="bg-[#0B0F17]">3 Månader</option>
-                                </select>
+                                <>
+                                    <select
+                                        value={predictionPeriod}
+                                        onChange={(e) => setPredictionPeriod(e.target.value)}
+                                        className="bg-[#020617] border border-white/10 rounded-lg px-2 py-1 text-[10px] font-bold text-white/70 outline-none"
+                                    >
+                                        <option value="1w">1 vecka</option>
+                                        <option value="1m">1 månad</option>
+                                        <option value="3m">3 månader</option>
+                                        <option value="1y">1 år</option>
+                                    </select>
+                                    {stockData && (
+                                        <span className="hidden sm:inline-flex text-[10px] text-emerald-400 font-medium ml-2 bg-emerald-500/10 px-2 py-1 rounded animate-in fade-in">
+                                            Start: {stockData.price} {stockData.currencySymbol || stockData.currency}
+                                        </span>
+                                    )}
+                                </>
                             )}
                         </div>
                     )}
                 </div>
 
-                {/* Character count & submit */}
                 <div className="flex items-center gap-4">
-                    <span
-                        className={`text-xs tabular-nums ${isOverLimit ? "text-rose-400" : "text-white/40"
-                            }`}
-                    >
+                    {/* Char counter */}
+                    <span className={`text-xs font-medium tabular-nums ${isOverLimit ? "text-rose-500" : "text-white/20"}`}>
                         {charCount}/{maxChars}
                     </span>
+
                     <button
                         type="submit"
-                        disabled={!content.trim() || isOverLimit || isSubmitting}
-                        className="flex items-center gap-2 px-5 py-2.5 btn-gradient text-white rounded-xl font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={!content.trim() || isOverLimit || isSubmitting || (isPoll && pollOptions.some(o => !o.trim()))}
+                        className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 disabled:hover:bg-emerald-500 text-[#020617] rounded-full font-bold text-sm transition-all shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.4)]"
                     >
-                        <Send className="w-4 h-4" />
-                        {UI_STRINGS.post}
+                        {isSubmitting ? (
+                            <div className="w-5 h-5 border-2 border-[#020617]/30 border-t-[#020617] rounded-full animate-spin" />
+                        ) : (
+                            "Publicera"
+                        )}
                     </button>
                 </div>
             </div>

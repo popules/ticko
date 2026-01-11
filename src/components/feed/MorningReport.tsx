@@ -93,7 +93,10 @@ export function MorningReport() {
 
             {/* Footer decoration */}
             <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-                <span className="text-[9px] text-white/20 font-bold uppercase tracking-widest">Powered by Ticko AI & GPT-4o</span>
+                <div className="flex flex-col gap-1">
+                    <span className="text-[9px] text-white/20 font-bold uppercase tracking-widest">Powered by Ticko AI</span>
+                    <span className="text-[8px] text-white/10 uppercase tracking-widest">Ej finansiell rådgivning</span>
+                </div>
                 <div className="flex gap-1">
                     {[1, 2, 3].map(i => (
                         <div key={i} className="w-1.5 h-1.5 rounded-full bg-emerald-500/20" />

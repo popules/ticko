@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import { SearchDialog } from "./SearchDialog";
 import {
     Home,
     TrendingUp,
@@ -12,6 +12,7 @@ import {
     Settings,
     Search,
     Flame,
+    Trophy,
     Sparkles,
     Wallet,
     Loader2,
@@ -30,17 +31,17 @@ const navItems = [
     { icon: TrendingUp, label: UI_STRINGS.markets, href: "/marknad" },
     { icon: Wallet, label: "Portfölj", href: "/portfolio" },
     { icon: Star, label: UI_STRINGS.watchlist, href: "/watchlist" },
+    { icon: Trophy, label: "Topplistan", href: "/leaderboard" },
     { icon: Bell, label: UI_STRINGS.alerts, href: "/alerts" },
     { icon: User, label: UI_STRINGS.profile, href: "/profil" },
 ];
 
+import { useSearch } from "@/providers/SearchProvider";
+
+// ...
+
 export function Sidebar() {
-    const router = useRouter();
-    const [searchQuery, setSearchQuery] = useState("");
-    const [searchResults, setSearchResults] = useState<any[]>([]);
-    const [isSearching, setIsSearching] = useState(false);
-    const [showDropdown, setShowDropdown] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const { open } = useSearch();
 
     // Fetch live trending snippets
     const { data: trendingData, isLoading: isTrendingLoading } = useQuery({
@@ -50,65 +51,13 @@ export function Sidebar() {
             const data = await res.json();
             return data.stocks || [];
         },
-        refetchInterval: 60000, // Refresh every minute
+        refetchInterval: 60000,
     });
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setShowDropdown(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
 
-    useEffect(() => {
-        const fetchResults = async () => {
-            if (searchQuery.length < 2) {
-                setSearchResults([]);
-                setShowDropdown(false);
-                return;
-            }
-
-            setIsSearching(true);
-            try {
-                const res = await fetch(`/api/stocks/search?q=${encodeURIComponent(searchQuery)}`);
-                const data = await res.json();
-                setSearchResults(data.results || []);
-                setShowDropdown(true);
-            } catch (error) {
-                console.error("Search failed:", error);
-            } finally {
-                setIsSearching(false);
-            }
-        };
-
-        const timer = setTimeout(fetchResults, 300);
-        return () => clearTimeout(timer);
-    }, [searchQuery]);
-
-    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && searchQuery.trim()) {
-            if (searchResults.length > 0) {
-                router.push(`/aktie/${searchResults[0].symbol}`);
-            } else {
-                const ticker = searchQuery.trim().replace("$", "").toUpperCase();
-                router.push(`/aktie/${ticker}`);
-            }
-            setSearchQuery("");
-            setShowDropdown(false);
-        }
-    };
-
-    const handleSelectResult = (symbol: string) => {
-        router.push(`/aktie/${symbol}`);
-        setSearchQuery("");
-        setShowDropdown(false);
-    };
 
     return (
-        <aside className="w-64 h-screen sticky top-0 flex flex-col border-r border-white/10 bg-white/[0.02] backdrop-blur-xl">
+        <aside className="w-64 h-screen sticky top-0 flex flex-col border-r border-white/10 bg-white/[0.02] backdrop-blur-xl z-50">
             {/* Logo & Notifications */}
             <div className="p-5 border-b border-white/10 flex items-center justify-between">
                 <Link href="/" className="flex items-center">
@@ -117,45 +66,16 @@ export function Sidebar() {
                 <NotificationBell />
             </div>
 
-            {/* Search */}
-            <div className="p-4 relative" ref={dropdownRef}>
-                <div className="flex items-center gap-3 px-4 py-3 bg-white/[0.06] rounded-2xl text-white/60 border border-white/10 focus-within:border-emerald-500/50 transition-all">
-                    <Search className={`w-4 h-4 ${isSearching ? "animate-pulse text-emerald-400" : ""}`} />
-                    <input
-                        type="text"
-                        placeholder={UI_STRINGS.search}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        onKeyDown={handleSearch}
-                        onFocus={() => searchQuery.length >= 2 && setShowDropdown(true)}
-                        className="bg-transparent border-none outline-none text-sm flex-1 placeholder:text-white/40 text-white"
-                    />
-                </div>
-
-                {/* Dropdown Results */}
-                {showDropdown && searchResults.length > 0 && (
-                    <div className="absolute left-4 right-4 top-full mt-2 bg-[#0B0F17]/95 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl z-50 overflow-hidden">
-                        <div className="max-h-[300px] overflow-y-auto py-2 scrollbar-hide">
-                            {searchResults.map((result) => (
-                                <button
-                                    key={result.symbol}
-                                    onClick={() => handleSelectResult(result.symbol)}
-                                    className="w-full flex items-center justify-between px-4 py-3 hover:bg-white/[0.06] transition-all text-left"
-                                >
-                                    <div className="flex flex-col gap-0.5">
-                                        <span className="text-sm font-bold text-white">${result.symbol}</span>
-                                        <span className="text-[10px] text-white/40 truncate max-w-[140px]">
-                                            {result.name}
-                                        </span>
-                                    </div>
-                                    <div className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.04] text-white/30 border border-white/5 uppercase">
-                                        {result.exchDisp}
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                )}
+            {/* Search Trigger */}
+            <div className="p-4">
+                <button
+                    onClick={() => open()}
+                    className="w-full flex items-center gap-3 px-4 py-3 bg-white/[0.06] rounded-2xl text-white/40 border border-white/10 hover:border-emerald-500/50 hover:text-white transition-all text-sm group"
+                >
+                    <Search className="w-4 h-4 group-hover:text-emerald-400 transition-colors" />
+                    <span>{UI_STRINGS.search}</span>
+                    <span className="ml-auto text-xs bg-white/10 px-1.5 py-0.5 rounded text-white/30 font-medium">⌘K</span>
+                </button>
             </div>
 
             {/* Navigation */}

@@ -51,7 +51,8 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
                             username,
                             avatar_url,
                             reputation_score
-                        )
+                        ),
+                        polls (*)
                     `
                 );
 

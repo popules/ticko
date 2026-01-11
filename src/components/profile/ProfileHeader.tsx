@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { User, Shield, TrendingUp, Calendar, MapPin, Pencil, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { EditProfileModal } from "./EditProfileModal";
+import { BadgeRack } from "./BadgeRack";
+import { EditProfileDialog } from "./EditProfileDialog";
 
 interface ProfileHeaderProps {
     profile: {
@@ -26,14 +27,17 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
     const [currentProfile, setCurrentProfile] = useState(profile);
     const [stats, setStats] = useState({ followers: 0, following: 0 });
 
+    if (!profile) return null;
+
     useEffect(() => {
+        if (!profile?.id) return;
         const fetchStats = async () => {
             const res = await fetch(`/api/follow?targetUserId=${profile.id}${user ? `&userId=${user.id}` : ""}`);
             const data = await res.json();
             setStats({ followers: data.followers, following: data.following });
         };
         fetchStats();
-    }, [profile.id, user]);
+    }, [profile?.id, user]);
 
     const joinedDate = new Date(currentProfile.created_at).toLocaleDateString('sv-SE', {
         month: 'long',
@@ -119,6 +123,8 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                         <p className="text-white/70 max-w-2xl text-lg leading-relaxed">
                             {currentProfile.bio || "Ingen biografi ännu. Investerare som älskar trender och AI-analyser."}
                         </p>
+
+                        <BadgeRack userId={profile.id} />
 
                         {/* Stats */}
                         <div className="flex gap-8 pt-4">

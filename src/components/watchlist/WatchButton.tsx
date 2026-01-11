@@ -20,7 +20,8 @@ export function WatchButton({ symbol }: WatchButtonProps) {
         }
     });
 
-    const isWatched = watchlistData?.stocks?.some((s: any) => s.symbol === symbol || s.symbol.replace('.ST', '') === symbol);
+    const isWatched = watchlistData?.symbols?.includes(symbol) ||
+        watchlistData?.stocks?.some((s: any) => s.symbol === symbol || s.symbol.replace('.ST', '') === symbol);
 
     const toggleWatch = useMutation({
         mutationFn: async () => {
@@ -31,8 +32,30 @@ export function WatchButton({ symbol }: WatchButtonProps) {
             });
             return res.json();
         },
-        onSuccess: () => {
-            // Invalidate and refetch
+        onMutate: async () => {
+            await queryClient.cancelQueries({ queryKey: ["watchlist"] });
+            const previousWatchlist = queryClient.getQueryData(["watchlist"]);
+
+            // Optimistically update
+            queryClient.setQueryData(["watchlist"], (old: any) => {
+                if (!old) return { symbols: [symbol], stocks: [] };
+                const isCurrentlyWatched = old.symbols?.includes(symbol);
+
+                return {
+                    ...old,
+                    symbols: isCurrentlyWatched
+                        ? old.symbols.filter((s: string) => s !== symbol)
+                        : [...(old.symbols || []), symbol]
+                };
+            });
+
+            return { previousWatchlist };
+        },
+        onError: (err, newTodo, context) => {
+            queryClient.setQueryData(["watchlist"], context?.previousWatchlist);
+            console.error("Watch toggle failed", err);
+        },
+        onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["watchlist"] });
         },
     });

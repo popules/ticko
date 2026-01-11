@@ -154,3 +154,21 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
         return [];
     }
 }
+
+export async function searchStocks(query: string) {
+    try {
+        const results = await yf.search(query);
+        return results.quotes
+            .filter((q: any) => q.isYahooFinance === true || q.quoteType === 'EQUITY' || q.quoteType === 'INDEX')
+            .map((q: any) => ({
+                symbol: q.symbol,
+                name: q.longname || q.shortname || q.symbol,
+                type: q.quoteType,
+                exchange: q.exchange
+            }))
+            .slice(0, 5); // Limit to top 5
+    } catch (error) {
+        console.error("Stock search failed:", error);
+        return [];
+    }
+}
