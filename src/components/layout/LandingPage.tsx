@@ -6,7 +6,6 @@ import { TrendingUp, Users, MessageCircle, Bell, ArrowRight, Globe, Shield, Zap,
 import { APP_CONFIG } from "@/config/app";
 
 import { TickoLogo } from "@/components/ui/TickoLogo";
-import { LiveTicker } from "@/components/landing/LiveTicker";
 import { HeroPreview } from "@/components/landing/HeroPreview";
 
 export function LandingPage() {
@@ -44,21 +43,18 @@ export function LandingPage() {
                         </Link>
                     </div>
                 </div>
-
-                {/* Live Ticker integrated directly into Nav structure or just below */}
-                <LiveTicker />
             </nav>
 
             {/* Hero Section */}
-            <section className="relative pt-48 pb-10 px-6 flex flex-col items-center text-center z-10">
+            <section className="relative pt-40 pb-10 px-6 flex flex-col items-center text-center z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-emerald-500/20 to-violet-500/20 border border-emerald-500/30 mb-8 backdrop-blur-sm shadow-[0_0_30px_-10px_rgba(16,185,129,0.3)]"
+                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6 backdrop-blur-sm"
                 >
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[11px] font-black uppercase tracking-widest text-emerald-400">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
                         Sveriges #1 Investeringscommunity
                     </span>
                 </motion.div>
@@ -67,11 +63,11 @@ export function LandingPage() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.8 }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.95] max-w-5xl"
+                    className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.1] max-w-3xl"
                 >
-                    <span className="block text-white mb-2">INVESTERA SMARTARE.</span>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
-                        TILLSAMMANS.
+                    <span className="block text-white">Investera smartare.</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
+                        Tillsammans.
                     </span>
                 </motion.h1>
 
@@ -79,27 +75,27 @@ export function LandingPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="text-lg md:text-xl text-white/50 max-w-2xl font-medium leading-relaxed mb-12"
+                    className="text-base md:text-lg text-white/50 max-w-lg font-medium leading-relaxed mb-10"
                 >
-                    Realtidsanalyser, marknadens vassaste traders och AI-drivna insikter – allt på en plats. <span className="text-white font-semibold">Ditt nya hem på börsen.</span>
+                    Realtidsanalyser, marknadens vassaste traders och AI-drivna insikter – allt på en plats. <span className="text-white">Ditt nya hem på börsen.</span>
                 </motion.p>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="flex flex-col sm:flex-row items-center gap-4 mb-20"
+                    className="flex flex-col sm:flex-row items-center gap-3 mb-16"
                 >
                     <Link
                         href="/registrera"
-                        className="group min-w-[200px] px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-[#020617] rounded-full font-bold text-lg shadow-[0_0_50px_-10px_rgba(16,185,129,0.4)] transition-all flex items-center justify-center gap-2 hover:scale-105"
+                        className="group px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-[#020617] rounded-full font-bold text-sm shadow-lg shadow-emerald-500/20 transition-all flex items-center gap-2 hover:scale-105"
                     >
                         Gå med gratis
-                        <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                     </Link>
                     <Link
                         href="/upptack"
-                        className="min-w-[200px] px-8 py-4 bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 text-white rounded-full font-bold text-lg backdrop-blur-lg transition-all"
+                        className="px-6 py-3 bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] text-white rounded-full font-bold text-sm backdrop-blur-lg transition-all"
                     >
                         Utforska communityt
                     </Link>
