@@ -26,7 +26,7 @@ export function LandingPage() {
 
                     {/* Desktop Nav Links */}
                     <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
-                        <Link href="#features" className="hover:text-white transition-colors">Om plattformen</Link>
+                        <Link href="#features" className="hover:text-white transition-colors">Funktioner</Link>
                         <Link href="/om-oss" className="hover:text-white transition-colors">Om oss</Link>
                     </div>
 
@@ -54,7 +54,7 @@ export function LandingPage() {
                 >
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                        Nu i öppen beta
+                        Framtidens community för investerare
                     </span>
                 </motion.div>
 
@@ -93,10 +93,10 @@ export function LandingPage() {
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                     </Link>
                     <Link
-                        href="/upptack"
+                        href="/logga-in"
                         className="px-6 py-3 bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] text-white rounded-full font-bold text-sm backdrop-blur-lg transition-all"
                     >
-                        Utforska communityt
+                        Se hur det funkar
                     </Link>
                 </motion.div>
 
