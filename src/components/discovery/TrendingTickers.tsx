@@ -65,7 +65,7 @@ export function TrendingTickers() {
             <div className="p-5 border-b border-white/10">
                 <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Flame className="w-3.5 h-3.5 text-orange-400" />
-                    Trending just nu
+                    Populärt just nu
                 </h3>
                 <div className="space-y-2">
                     {[1, 2, 3].map((i) => (
@@ -81,7 +81,7 @@ export function TrendingTickers() {
             <div className="p-5 border-b border-white/10">
                 <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Flame className="w-3.5 h-3.5 text-orange-400" />
-                    Trending just nu
+                    Populärt just nu
                 </h3>
                 <p className="text-xs text-white/30 text-center py-4">
                     Inga aktier diskuteras just nu
@@ -94,7 +94,7 @@ export function TrendingTickers() {
         <div className="p-5 border-b border-white/10">
             <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Flame className="w-3.5 h-3.5 text-orange-400" />
-                Trending just nu
+                Populärt just nu
             </h3>
             <div className="space-y-2">
                 {trendingData.map((item, index) => (
@@ -105,9 +105,9 @@ export function TrendingTickers() {
                     >
                         {/* Rank */}
                         <span className={`text-sm font-black w-5 ${index === 0 ? "text-orange-400" :
-                                index === 1 ? "text-white/60" :
-                                    index === 2 ? "text-amber-600" :
-                                        "text-white/30"
+                            index === 1 ? "text-white/60" :
+                                index === 2 ? "text-amber-600" :
+                                    "text-white/30"
                             }`}>
                             {index + 1}
                         </span>
@@ -124,8 +124,8 @@ export function TrendingTickers() {
                             {item.sentiment_score !== 0 && (
                                 <TrendingUp
                                     className={`w-3.5 h-3.5 ${item.sentiment_score > 0
-                                            ? "text-emerald-400"
-                                            : "text-rose-400 rotate-180"
+                                        ? "text-emerald-400"
+                                        : "text-rose-400 rotate-180"
                                         }`}
                                 />
                             )}
