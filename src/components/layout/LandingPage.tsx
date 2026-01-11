@@ -26,9 +26,8 @@ export function LandingPage() {
 
                     {/* Desktop Nav Links */}
                     <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
-                        <Link href="#features" className="hover:text-white transition-colors">Varför Ticko?</Link>
-                        <Link href="#community" className="hover:text-white transition-colors">Community</Link>
-                        <Link href="/for-foretag" className="hover:text-white transition-colors">För Företag</Link>
+                        <Link href="#features" className="hover:text-white transition-colors">Om plattformen</Link>
+                        <Link href="/om-oss" className="hover:text-white transition-colors">Om oss</Link>
                     </div>
 
                     <div className="flex items-center gap-6">
@@ -55,7 +54,7 @@ export function LandingPage() {
                 >
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                        Sveriges #1 Investeringscommunity
+                        Nu i öppen beta
                     </span>
                 </motion.div>
 
@@ -77,7 +76,7 @@ export function LandingPage() {
                     transition={{ delay: 0.4 }}
                     className="text-base md:text-lg text-white/50 max-w-lg font-medium leading-relaxed mb-10"
                 >
-                    Realtidsanalyser, marknadens vassaste traders och AI-drivna insikter – allt på en plats. <span className="text-white">Ditt nya hem på börsen.</span>
+                    Diskutera aktier, följ investerare du litar på och se vad marknaden faktiskt tycker. <span className="text-white">Helt gratis.</span>
                 </motion.p>
 
                 <motion.div
@@ -119,14 +118,14 @@ export function LandingPage() {
                             {
                                 icon: Users,
                                 title: "Community först",
-                                desc: "Diskutera aktier, dela dina takes och följ investerare du litar på. Tänk Reddit möter Avanza.",
+                                desc: "Dela dina tankar, följ investerare du litar på och bygg din egen track-record.",
                                 color: "text-emerald-400",
                                 bg: "bg-emerald-500/10"
                             },
                             {
                                 icon: MessageCircle,
                                 title: "Realtidsdiskussioner",
-                                desc: "Se vad andra tycker om marknaden just nu. Ingen fördröjning, inga betalväggar.",
+                                desc: "Se vad andra tycker om marknaden just nu. Öppet för alla, inga betalväggar.",
                                 color: "text-violet-400",
                                 bg: "bg-violet-500/10"
                             },
@@ -152,14 +151,14 @@ export function LandingPage() {
                 </div>
             </section>
 
-            {/* Community Pitch - replaces fake stats */}
+            {/* Community Pitch */}
             <section className="px-6 py-20">
                 <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-4">
-                        Reddit för svenska investerare 🌟
+                        Byggt av investerare, för investerare 💪
                     </h2>
                     <p className="text-white/40 text-base leading-relaxed mb-8">
-                        Vi tror på transparent diskussion, inte anonyma tips. Här bygger du din track-record och följer de som faktiskt levererar. Inga fejkade siffror – bara äkta community.
+                        Vi tror på transparent diskussion och synliga track-records. Här är du inte anonym – du bygger ditt rykte genom att dela smarta analyser.
                     </p>
                     <div className="flex flex-wrap justify-center gap-3">
                         <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-sm text-white/60">
@@ -169,10 +168,10 @@ export function LandingPage() {
                             📈 Följ sentimentet
                         </span>
                         <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-sm text-white/60">
-                            🏆 Topplistan
+                            🏆 Topplista
                         </span>
                         <span className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-sm text-white/60">
-                            🔔 Realtidsnotiser
+                            🔔 Bevakningar
                         </span>
                     </div>
                 </div>
@@ -205,22 +204,29 @@ export function LandingPage() {
                                 <TickoLogo />
                             </div>
                             <p className="text-white/40 text-sm max-w-sm">
-                                Sveriges mest ambitiösa trading-community.
+                                Ett community för svenska investerare.
                             </p>
                         </div>
 
                         <div className="flex gap-8 text-sm font-medium text-white/40">
-                            <Link href="#" className="hover:text-white transition-colors">För Företag</Link>
-                            <Link href="#" className="hover:text-white transition-colors">Villkor</Link>
-                            <Link href="#" className="hover:text-white transition-colors">Integritet</Link>
+                            <Link href="/om-oss" className="hover:text-white transition-colors">Om oss</Link>
+                            <Link href="/villkor" className="hover:text-white transition-colors">Villkor</Link>
+                            <Link href="/integritet" className="hover:text-white transition-colors">Integritet</Link>
                         </div>
                     </div>
 
-                    <div className="mt-12 pt-8 border-t border-white/[0.05] flex justify-between items-center text-xs text-white/20 font-medium uppercase tracking-wider">
-                        <span>&copy; 2026 {APP_CONFIG.name}.</span>
-                        <div className="flex gap-4">
-                            <Globe className="w-4 h-4" />
-                            <span>Stockholm, SE</span>
+                    {/* Legal Disclaimer */}
+                    <div className="mt-8 pt-6 border-t border-white/[0.03]">
+                        <p className="text-[11px] text-white/20 leading-relaxed max-w-4xl">
+                            <strong className="text-white/30">Disclaimer:</strong> Innehållet på Ticko utgör inte finansiell rådgivning. Alla investeringsbeslut fattas av dig själv och på egen risk. Åsikter som delas av användare är deras egna och representerar inte Tickos ståndpunkt. Historisk avkastning är ingen garanti för framtida resultat.
+                        </p>
+                    </div>
+
+                    <div className="mt-6 pt-6 border-t border-white/[0.03] flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/20 font-medium">
+                        <span>&copy; 2026 {APP_CONFIG.name}. Alla rättigheter förbehållna.</span>
+                        <div className="flex items-center gap-2">
+                            <Globe className="w-3.5 h-3.5" />
+                            <span>Stockholm, Sverige</span>
                         </div>
                     </div>
                 </div>
