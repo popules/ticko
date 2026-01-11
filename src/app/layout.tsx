@@ -6,7 +6,8 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { APP_CONFIG } from "@/config/app";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { SearchProvider } from "@/providers/SearchProvider";
-import { OnboardingModal } from "@/components/onboarding/OnboardingModal";
+import { WelcomeToast } from "@/components/onboarding/WelcomeToast";
+import { CookieConsent } from "@/components/ui/CookieConsent";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,7 +32,8 @@ export default function RootLayout({
             <SearchProvider>
               {children}
               <MobileNav />
-              <OnboardingModal />
+              <WelcomeToast />
+              <CookieConsent />
             </SearchProvider>
           </AuthProvider>
         </QueryProvider>
