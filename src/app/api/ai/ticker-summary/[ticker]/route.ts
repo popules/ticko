@@ -9,9 +9,9 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function GET(
     request: Request,
-    { params }: { params: { ticker: string } }
+    { params }: { params: Promise<{ ticker: string }> }
 ) {
-    const { ticker } = params;
+    const { ticker } = await params;
     const cookieStore = await cookies();
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
         global: { headers: { Cookie: cookieStore.toString() } },
