@@ -42,7 +42,7 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
         queryFn: async () => {
             if (!supabase) return [];
 
-            let query = supabase
+            let query = (supabase as any)
                 .from("posts")
                 .select(
                     `
@@ -64,7 +64,7 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
             // Filter by following if requested
             if (feedType === "following" && user) {
                 // First get the list of people the user follows
-                const { data: followedData } = await supabase
+                const { data: followedData } = await (supabase as any)
                     .from("follows")
                     .select("following_id")
                     .eq("follower_id", user.id);
@@ -104,7 +104,7 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
                 async (payload) => {
                     const insertedPost = payload.new as { id: string };
                     // Fetch the full post with profile data
-                    const { data: newPost } = await supabase
+                    const { data: newPost } = await (supabase as any)
                         .from("posts")
                         .select(
                             `

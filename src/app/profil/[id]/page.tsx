@@ -34,7 +34,7 @@ export default function PublicProfilePage() {
             setIsLoading(true);
             try {
                 // Fetch profile
-                const { data: profileData } = await supabase
+                const { data: profileData } = await (supabase as any)
                     .from("profiles")
                     .select("*")
                     .eq("id", userId)
@@ -42,7 +42,7 @@ export default function PublicProfilePage() {
 
                 if (!profileData) {
                     // Try by username if UUID match fails (fallback)
-                    const { data: byUsername } = await supabase
+                    const { data: byUsername } = await (supabase as any)
                         .from("profiles")
                         .select("*")
                         .eq("username", userId)
@@ -53,7 +53,7 @@ export default function PublicProfilePage() {
                 }
 
                 // Fetch posts
-                const { data: postsData } = await supabase
+                const { data: postsData } = await (supabase as any)
                     .from("posts")
                     .select(`
                         *,

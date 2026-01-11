@@ -33,7 +33,7 @@ export default function PortfolioPage() {
         const fetchPortfolio = async () => {
             setIsLoading(true);
 
-            const { data, error } = await supabase
+            const { data, error } = await (supabase as any)
                 .from("portfolio")
                 .select("*")
                 .eq("user_id", user.id)

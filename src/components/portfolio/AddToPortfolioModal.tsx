@@ -41,7 +41,7 @@ export function AddToPortfolioModal({
 
         try {
             // Check if already in portfolio
-            const { data: existing } = await supabase
+            const { data: existing } = await (supabase as any)
                 .from("portfolio")
                 .select("id, shares, buy_price")
                 .eq("user_id", user.id)
@@ -50,20 +50,21 @@ export function AddToPortfolioModal({
 
             if (existing) {
                 // Update existing position (Weighted Average Price)
-                const oldShares = Number(existing.shares);
-                const oldPrice = Number(existing.buy_price);
+                const existingData = existing as any;
+                const oldShares = Number(existingData.shares);
+                const oldPrice = Number(existingData.buy_price);
                 const newShares = oldShares + shares;
                 const newAvgPrice = ((oldShares * oldPrice) + (shares * buyPrice)) / newShares;
 
-                const { error: updateError } = await supabase
+                const { error: updateError } = await (supabase as any)
                     .from("portfolio")
-                    .update({ shares: newShares, buy_price: newAvgPrice } as never)
-                    .eq("id", existing.id);
+                    .update({ shares: newShares, buy_price: newAvgPrice })
+                    .eq("id", existingData.id);
 
                 if (updateError) throw updateError;
             } else {
                 // Create new position
-                const { error: insertError } = await supabase
+                const { error: insertError } = await (supabase as any)
                     .from("portfolio")
                     .insert({
                         user_id: user.id,
@@ -72,7 +73,7 @@ export function AddToPortfolioModal({
                         shares,
                         buy_price: buyPrice,
                         currency: currencySymbol === "kr" ? "SEK" : "USD",
-                    } as never);
+                    });
 
                 if (insertError) throw insertError;
             }
