@@ -8,20 +8,21 @@ import { useDebounce } from "@/hooks/useDebounce"; // I assume this exists or I'
 
 export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     const [query, setQuery] = useState("");
+    const debouncedQuery = useDebounce(query, 500);
     const [results, setResults] = useState<{ users: any[], stocks: any[] }>({ users: [], stocks: [] });
     const [isLoading, setIsLoading] = useState(false);
 
-    // Simple debounce logic
+    // Fetch results when debounced query changes
     useEffect(() => {
-        const timer = setTimeout(async () => {
-            if (query.length < 2) {
+        const fetchResults = async () => {
+            if (debouncedQuery.length < 2) {
                 setResults({ users: [], stocks: [] });
                 return;
             }
 
             setIsLoading(true);
             try {
-                const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+                const res = await fetch(`/api/search?q=${encodeURIComponent(debouncedQuery)}`);
                 const data = await res.json();
                 setResults(data);
             } catch (error) {
@@ -29,10 +30,10 @@ export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             } finally {
                 setIsLoading(false);
             }
-        }, 500);
+        };
 
-        return () => clearTimeout(timer);
-    }, [query]);
+        fetchResults();
+    }, [debouncedQuery]);
 
     // Close on escape
     useEffect(() => {
