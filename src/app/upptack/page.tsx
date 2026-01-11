@@ -5,7 +5,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { DiscoveryCard } from "@/components/discovery/DiscoveryCard";
 import type { StockData } from "@/lib/stocks-api";
-import { Loader2, RefreshCw, Info } from "lucide-react";
+import { Loader2, RefreshCw, Info, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function DiscoveryPage() {
@@ -31,13 +31,29 @@ export default function DiscoveryPage() {
         loadDiscovery();
     }, []);
 
-    const handleSwipe = (direction: "left" | "right") => {
-        // Here we could handle "liking" or "dismissing" stocks
-        // For now, just move to the next card
+    const [toast, setToast] = useState<string | null>(null);
+
+    const handleSwipe = async (direction: "left" | "right") => {
+        const currentStock = stocks[currentIndex];
+
+        if (direction === "right" && currentStock) {
+            setToast(`Bevakar ${currentStock.symbol}`);
+            setTimeout(() => setToast(null), 2000);
+
+            try {
+                await fetch("/api/watchlist", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ ticker: currentStock.symbol }),
+                });
+            } catch (error) {
+                console.error("Failed to add to watchlist on swipe:", error);
+            }
+        }
+
         if (currentIndex < stocks.length - 1) {
             setCurrentIndex(prev => prev + 1);
         } else {
-            // End of stack - maybe reload or show "Done"
             setCurrentIndex(stocks.length);
         }
     };
@@ -53,10 +69,25 @@ export default function DiscoveryPage() {
                     <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-[120px]" />
                 </div>
 
+                {/* Toast Notification */}
+                <AnimatePresence>
+                    {toast && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 50, x: "-50%" }}
+                            animate={{ opacity: 1, y: 0, x: "-50%" }}
+                            exit={{ opacity: 0, y: 20, x: "-50%" }}
+                            className="absolute bottom-10 left-1/2 z-50 px-6 py-3 bg-emerald-500 text-white font-bold rounded-2xl shadow-2xl shadow-emerald-500/20 flex items-center gap-2"
+                        >
+                            <Star className="w-4 h-4 fill-white" />
+                            {toast}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
                 {/* Header Info */}
                 <div className="absolute top-12 text-center space-y-2">
                     <h1 className="text-2xl font-black text-white tracking-widest uppercase">
-                        Escape Velocity
+                        Trendradarn
                     </h1>
                     <div className="flex items-center gap-2 justify-center text-white/40 text-xs font-medium uppercase tracking-widest">
                         <Info className="w-3.5 h-3.5" />

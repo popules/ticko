@@ -119,7 +119,7 @@ export default function MarketPage() {
                             <div className="absolute bottom-4 left-4 z-10 p-4 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 flex items-center gap-6">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-rose-500" />
-                                    <span className="text-[10px] font-bold text-white/40 uppercase">Fear</span>
+                                    <span className="text-[10px] font-bold text-white/40 uppercase">Rädsla</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-white/20" />
@@ -127,7 +127,7 @@ export default function MarketPage() {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                                    <span className="text-[10px] font-bold text-white/40 uppercase">Greed</span>
+                                    <span className="text-[10px] font-bold text-white/40 uppercase">Girighet</span>
                                 </div>
                             </div>
 
@@ -205,7 +205,7 @@ export default function MarketPage() {
                                 </p>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/5">
-                                        <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">Impact</p>
+                                        <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">Påverkan</p>
                                         <p className="text-lg font-black text-white">Hög</p>
                                     </div>
                                     <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/5">

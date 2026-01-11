@@ -49,11 +49,11 @@ export function AddToPortfolioModal({
 
             if (existing) {
                 // Update existing position
-                const newShares = Number(existing.shares) + shares;
+                const newShares = Number((existing as any).shares) + shares;
                 const { error: updateError } = await supabase
                     .from("portfolio")
                     .update({ shares: newShares } as never)
-                    .eq("id", existing.id);
+                    .eq("id", (existing as any).id);
 
                 if (updateError) throw updateError;
             } else {

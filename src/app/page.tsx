@@ -1,34 +1,25 @@
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
-import { FeedStream } from "@/components/feed/FeedStream";
-import { APP_CONFIG } from "@/config/app";
+"use client";
+
+import { useAuth } from "@/providers/AuthProvider";
+import { LandingPage } from "@/components/layout/LandingPage";
+import { DashboardView } from "@/components/layout/DashboardView";
 
 export default function HomePage() {
-  return (
-    <div className="flex min-h-screen">
-      {/* Left Sidebar - Navigation & Trending */}
-      <Sidebar />
+  const { user, isLoading } = useAuth();
 
-      {/* Main Content - Feed */}
-      <main className="flex-1 border-r border-white/10">
-        {/* Header */}
-        <header className="sticky top-0 z-10 backdrop-blur-xl bg-[#020617]/80 border-b border-white/10 px-6 py-5">
-          <h1 className="text-xl font-bold text-white">
-            {APP_CONFIG.name} Feed
-          </h1>
-          <p className="text-sm text-white/50">
-            {APP_CONFIG.tagline}
-          </p>
-        </header>
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#020617] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
 
-        {/* Feed Content */}
-        <div className="p-6">
-          <FeedStream />
-        </div>
-      </main>
+  // If not logged in, show the Stocktwits-inspired landing page
+  if (!user) {
+    return <LandingPage />;
+  }
 
-      {/* Right Panel - Market Insights & Watchlist */}
-      <RightPanel />
-    </div>
-  );
+  // If logged in, show the actual application dashboard
+  return <DashboardView />;
 }

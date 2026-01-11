@@ -14,14 +14,15 @@ import {
     Flame,
     Sparkles,
     Wallet,
+    Loader2,
 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { APP_CONFIG, UI_STRINGS } from "@/config/app";
 import { SentimentGauge } from "@/components/analysis/SentimentGauge";
 import { getTrendingStocks } from "@/lib/stocks";
+import { TickoLogo } from "@/components/ui/TickoLogo";
 
-// Trending data from library
-const trendingTickers = getTrendingStocks();
-
+// Navigation Items
 const navItems = [
     { icon: Home, label: UI_STRINGS.home, href: "/" },
     { icon: Sparkles, label: UI_STRINGS.discovery, href: "/upptack", isNew: true },
@@ -39,6 +40,17 @@ export function Sidebar() {
     const [isSearching, setIsSearching] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Fetch live trending snippets
+    const { data: trendingData, isLoading: isTrendingLoading } = useQuery({
+        queryKey: ["trending-stocks"],
+        queryFn: async () => {
+            const res = await fetch("/api/stocks/trending");
+            const data = await res.json();
+            return data.stocks || [];
+        },
+        refetchInterval: 60000, // Refresh every minute
+    });
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -98,13 +110,8 @@ export function Sidebar() {
         <aside className="w-64 h-screen sticky top-0 flex flex-col border-r border-white/10 bg-white/[0.02] backdrop-blur-xl">
             {/* Logo */}
             <div className="p-5 border-b border-white/10">
-                <Link href="/" className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                        <TrendingUp className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="text-xl font-bold text-white tracking-tight">
-                        {APP_CONFIG.name}
-                    </span>
+                <Link href="/" className="flex items-center">
+                    <TickoLogo />
                 </Link>
             </div>
 
@@ -177,37 +184,51 @@ export function Sidebar() {
                     <span className="text-sm font-semibold text-white">
                         {UI_STRINGS.trending}
                     </span>
+                    {isTrendingLoading && <Loader2 className="w-3 h-3 animate-spin text-white/20 ml-auto" />}
                 </div>
 
                 <div className="space-y-2">
-                    {trendingTickers.map((ticker) => (
-                        <Link
-                            key={ticker.symbol}
-                            href={`/aktie/${ticker.symbol}`}
-                            className="block p-3 rounded-2xl hover:bg-white/[0.06] transition-all border border-transparent hover:border-white/10"
-                        >
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="font-semibold text-white text-sm">
-                                    ${ticker.symbol}
-                                </span>
-                                <span
-                                    className={`text-xs font-medium tabular-nums ${ticker.change >= 0 ? "text-emerald-400" : "text-rose-400"
-                                        }`}
-                                >
-                                    {ticker.change >= 0 ? "+" : ""}
-                                    {ticker.change.toFixed(2)}%
-                                </span>
+                    {isTrendingLoading ? (
+                        // Skeleton Skeletons
+                        [1, 2, 3, 4, 5].map((i) => (
+                            <div key={i} className="p-3 rounded-2xl bg-white/[0.03] animate-pulse">
+                                <div className="flex justify-between mb-2">
+                                    <div className="h-4 w-12 bg-white/10 rounded" />
+                                    <div className="h-4 w-10 bg-white/10 rounded" />
+                                </div>
+                                <div className="h-3 w-20 bg-white/5 rounded" />
                             </div>
-                            <p className="text-xs text-white/50 mb-2 truncate">
-                                {ticker.name}
-                            </p>
-                            <SentimentGauge
-                                bullishPercent={ticker.sentiment ?? 50}
-                                size="sm"
-                                showLabels={false}
-                            />
-                        </Link>
-                    ))}
+                        ))
+                    ) : (
+                        trendingData?.map((ticker: any) => (
+                            <Link
+                                key={ticker.symbol}
+                                href={`/aktie/${ticker.symbol}`}
+                                className="block p-3 rounded-2xl hover:bg-white/[0.06] transition-all border border-transparent hover:border-white/10"
+                            >
+                                <div className="flex items-center justify-between mb-2">
+                                    <span className="font-semibold text-white text-sm">
+                                        ${ticker.symbol.split('.')[0]}
+                                    </span>
+                                    <span
+                                        className={`text-xs font-medium tabular-nums ${ticker.changePercent >= 0 ? "text-emerald-400" : "text-rose-400"
+                                            }`}
+                                    >
+                                        {ticker.changePercent >= 0 ? "+" : ""}
+                                        {ticker.changePercent.toFixed(2)}%
+                                    </span>
+                                </div>
+                                <p className="text-[10px] text-white/40 mb-2 truncate">
+                                    {ticker.name}
+                                </p>
+                                <SentimentGauge
+                                    bullishPercent={ticker.bullishPercent ?? 50}
+                                    size="sm"
+                                    showLabels={false}
+                                />
+                            </Link>
+                        ))
+                    )}
                 </div>
             </div>
 

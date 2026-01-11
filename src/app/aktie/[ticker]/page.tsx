@@ -6,6 +6,7 @@ import { AlertButton } from "@/components/alerts/AlertButton";
 import { StockChart } from "@/components/charts/StockChart";
 import { NewsFeed } from "@/components/news/NewsFeed";
 import { PortfolioButton } from "@/components/portfolio/PortfolioButton";
+import { WatchButton } from "@/components/watchlist/WatchButton";
 import { ArrowLeft, Star } from "lucide-react";
 import Link from "next/link";
 import { UI_STRINGS } from "@/config/app";
@@ -72,9 +73,7 @@ export default async function AktiePage({ params }: AktiePageProps) {
                                 currentPrice={stock.price}
                                 currencySymbol={stock.currencySymbol}
                             />
-                            <button className="p-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-white/60 hover:text-white transition-colors border border-white/10">
-                                <Star className="w-5 h-5" />
-                            </button>
+                            <WatchButton symbol={upperTicker} />
                             <PortfolioButton
                                 symbol={upperTicker}
                                 name={stock.name}

@@ -22,13 +22,14 @@ export const THEME = {
 export const UI_STRINGS = {
   // Navigation
   home: "Hem",
-  discovery: "Upptäck",
-  markets: "Marknad",
+  discovery: "Trendradarn",
+  markets: "Marknader",
   watchlist: "Bevakningslista",
+  portfolio: "Portfölj",
   alerts: "Aviseringar",
   profile: "Profil",
   settings: "Inställningar",
-  search: "Sök $TICKER...",
+  search: "Sök aktier...",
   trending: "Trendande just nu",
 
   // Feed

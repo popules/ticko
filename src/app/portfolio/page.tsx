@@ -142,13 +142,14 @@ export default function PortfolioPage() {
                 <div className="p-6 border-b border-white/10">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/10">
-                            <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Totalt Värde</p>
+                            <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Totalt portföljvärde</p>
                             <p className="text-3xl font-black text-white tabular-nums">
-                                ${totalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                {totalValue.toLocaleString("sv-SE", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} kr
                             </p>
+                            <p className="text-[10px] text-white/20 mt-1 uppercase tracking-tighter">Estimerat i SEK</p>
                         </div>
                         <div className={`p-6 rounded-2xl border ${totalPL >= 0 ? "bg-emerald-500/10 border-emerald-500/20" : "bg-rose-500/10 border-rose-500/20"}`}>
-                            <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Total Vinst/Förlust</p>
+                            <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Total Avkastning</p>
                             <div className="flex items-center gap-2">
                                 {totalPL >= 0 ? (
                                     <TrendingUp className="w-6 h-6 text-emerald-400" />
@@ -156,7 +157,7 @@ export default function PortfolioPage() {
                                     <TrendingDown className="w-6 h-6 text-rose-400" />
                                 )}
                                 <p className={`text-3xl font-black tabular-nums ${totalPL >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
-                                    {totalPL >= 0 ? "+" : ""}{totalPL.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    {totalPL >= 0 ? "+" : ""}{totalPL.toLocaleString("sv-SE", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} kr
                                 </p>
                             </div>
                         </div>
@@ -169,22 +170,24 @@ export default function PortfolioPage() {
                         <div className="text-center py-16">
                             <Wallet className="w-16 h-16 text-white/10 mx-auto mb-4" />
                             <h3 className="text-xl font-bold text-white mb-2">Inga innehav än</h3>
-                            <p className="text-white/40 mb-6">Börja bygga din portfölj genom att köpa aktier</p>
+                            <p className="text-white/40 mb-6">Börja bygga din portfölj genom att bevaka och handla aktier</p>
                             <Link
                                 href="/upptack"
-                                className="inline-flex items-center gap-2 px-6 py-3 btn-gradient text-white rounded-xl font-bold"
+                                className="inline-flex items-center gap-2 px-6 py-3 btn-gradient text-white rounded-xl font-bold transition-transform hover:scale-105"
                             >
                                 <Plus className="w-4 h-4" />
-                                Upptäck Aktier
+                                Upptäck aktier
                             </Link>
                         </div>
                     ) : (
                         <div className="space-y-3">
                             {portfolio.map((item, index) => {
-                                const currentValue = item.shares * (item.current_price || item.buy_price);
+                                const currentPrice = item.current_price || item.buy_price;
+                                const currentValue = item.shares * currentPrice;
                                 const buyValue = item.shares * item.buy_price;
                                 const pl = currentValue - buyValue;
                                 const plPercent = ((pl / buyValue) * 100);
+                                const symbol = (item as any).currencySymbol || '$';
 
                                 return (
                                     <motion.div
@@ -195,32 +198,33 @@ export default function PortfolioPage() {
                                         className="flex items-center justify-between p-5 rounded-2xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.06] transition-all group"
                                     >
                                         <Link href={`/aktie/${item.symbol}`} className="flex items-center gap-4 flex-1">
-                                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center text-white font-bold">
-                                                {item.symbol.charAt(0)}
+                                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center text-white font-black text-xs">
+                                                {item.symbol.split('.')[0]}
                                             </div>
                                             <div>
-                                                <p className="font-bold text-white">${item.symbol}</p>
-                                                <p className="text-sm text-white/40">{item.name || item.symbol}</p>
+                                                <p className="font-bold text-white tracking-tight">${item.symbol}</p>
+                                                <p className="text-[11px] font-medium text-white/40 uppercase tracking-wider">{item.name || item.symbol}</p>
                                             </div>
                                         </Link>
 
-                                        <div className="text-right mr-4">
-                                            <p className="text-sm text-white/40">{item.shares} aktier</p>
-                                            <p className="text-xs text-white/30">@ ${item.buy_price.toFixed(2)}</p>
+                                        <div className="text-right mr-8">
+                                            <p className="text-sm font-bold text-white tabular-nums">{item.shares} st</p>
+                                            <p className="text-[10px] text-white/30 font-medium">á {symbol === 'kr' ? `${item.buy_price.toFixed(2)} kr` : `${symbol}${item.buy_price.toFixed(2)}`}</p>
                                         </div>
 
-                                        <div className="text-right mr-4">
-                                            <p className="font-bold text-white tabular-nums">
-                                                ${currentValue.toFixed(2)}
+                                        <div className="text-right mr-6">
+                                            <p className="font-black text-white tabular-nums">
+                                                {symbol === 'kr' ? `${currentValue.toLocaleString("sv-SE", { minimumFractionDigits: 2 })} kr` : `${symbol}${currentValue.toLocaleString("en-US", { minimumFractionDigits: 2 })}`}
                                             </p>
-                                            <p className={`text-sm tabular-nums ${pl >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+                                            <div className={`flex items-center justify-end gap-1 text-xs font-black tabular-nums ${pl >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+                                                {pl >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                                                 {pl >= 0 ? "+" : ""}{plPercent.toFixed(2)}%
-                                            </p>
+                                            </div>
                                         </div>
 
                                         <button
                                             onClick={() => handleDelete(item.id)}
-                                            className="p-2 rounded-lg bg-white/[0.04] hover:bg-rose-500/20 text-white/20 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-all"
+                                            className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-rose-500/20 text-white/20 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-all border border-transparent hover:border-rose-500/20"
                                         >
                                             <Trash2 className="w-4 h-4" />
                                         </button>

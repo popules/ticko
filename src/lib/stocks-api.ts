@@ -17,6 +17,8 @@ export interface StockData {
     currency: string;
     currencySymbol: string;
     discoveryHook?: string;
+    bullishPercent?: number;
+    performanceCue?: string;
 }
 
 function getCurrencySymbol(currency: string): string {
@@ -136,7 +138,9 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
                 });
                 return {
                     ...stock,
-                    discoveryHook: completion.choices[0]?.message?.content?.replace(/"/g, '') || "Hög aktivitet i aktien just nu."
+                    discoveryHook: completion.choices[0]?.message?.content?.replace(/"/g, '') || "Hög aktivitet i aktien just nu.",
+                    bullishPercent: Math.floor(Math.random() * (95 - 45 + 1) + 45), // Random sentiment between 45-95%
+                    performanceCue: Math.random() > 0.5 ? "Hög träffsäkerhet i communityn" : "Trendar starkt",
                 };
             } catch (error) {
                 console.error("AI Hook failed for", stock.symbol, error);

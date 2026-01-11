@@ -49,11 +49,9 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 shadow-lg shadow-emerald-500/10">
                             <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
                             <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">
-                                Trendande
+                                {stock.performanceCue || "Alpha Signal"}
                             </span>
                         </div>
-                        Greenland
-                        Greenland
                         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/10">
                             <Activity className="w-3.5 h-3.5 text-white/40" />
                             <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider">
@@ -71,12 +69,26 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                 </div>
 
                 {/* Ticko Discovery Hook Card */}
-                <div className="bg-gradient-to-br from-violet-500/20 to-fuchsia-500/10 rounded-[1.5rem] p-6 border border-violet-500/20 shadow-inner">
-                    <div className="flex items-center gap-2 mb-3">
-                        <Target className="w-4 h-4 text-violet-400" />
-                        <span className="text-[10px] font-black text-violet-400 uppercase tracking-widest">
-                            TICKO INSIGHT
-                        </span>
+                <div className="bg-gradient-to-br from-violet-500/20 to-fuchsia-500/10 rounded-[1.5rem] p-6 border border-violet-500/20 shadow-inner relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                        <Sparkles className="w-12 h-12 text-white" />
+                    </div>
+
+                    <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                            <Target className="w-4 h-4 text-violet-400" />
+                            <span className="text-[10px] font-black text-violet-400 uppercase tracking-widest">
+                                TICKO INSIGHT
+                            </span>
+                        </div>
+                        {stock.bullishPercent && (
+                            <div className="flex items-center gap-1.5">
+                                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                                <span className="text-[10px] font-black text-white/60 uppercase tracking-widest">
+                                    {stock.bullishPercent}% Bullish
+                                </span>
+                            </div>
+                        )}
                     </div>
                     <p className="text-lg font-semibold text-white leading-snug italic">
                         "{stock.discoveryHook}"
