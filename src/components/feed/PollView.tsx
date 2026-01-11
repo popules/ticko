@@ -25,17 +25,18 @@ export function PollView({ poll }: PollViewProps) {
     useEffect(() => {
         const fetchVotes = async () => {
             // Get all votes for this poll
-            const { data, error } = await supabase
+            const { data, error } = await (supabase as any)
                 .from("poll_votes")
                 .select("option_index, user_id")
                 .eq("poll_id", poll.id);
 
             if (data) {
+                const castData = data as any[];
                 const counts: Record<number, number> = {};
                 poll.options_data.forEach(o => counts[o.id] = 0);
 
                 let myVote = null;
-                data.forEach(v => {
+                castData.forEach(v => {
                     counts[v.option_index] = (counts[v.option_index] || 0) + 1;
                     if (user && v.user_id === user.id) myVote = v.option_index;
                 });
@@ -64,7 +65,7 @@ export function PollView({ poll }: PollViewProps) {
         setIsVoting(true);
 
         try {
-            const { error } = await supabase
+            const { error } = await (supabase as any)
                 .from("poll_votes")
                 .insert({
                     poll_id: poll.id,
@@ -100,8 +101,8 @@ export function PollView({ poll }: PollViewProps) {
                         disabled={userVote !== null || isVoting}
                         onClick={() => handleVote(option.id)}
                         className={`relative w-full text-left p-3 rounded-xl border transition-all overflow-hidden group ${userVote === option.id
-                                ? "border-emerald-500/50 bg-emerald-500/10"
-                                : "border-white/10 bg-white/[0.02] hover:bg-white/[0.05]"
+                            ? "border-emerald-500/50 bg-emerald-500/10"
+                            : "border-white/10 bg-white/[0.02] hover:bg-white/[0.05]"
                             }`}
                     >
                         {/* Progress Bar Background */}

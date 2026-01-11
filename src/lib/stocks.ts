@@ -80,3 +80,9 @@ export function getStock(ticker: string): Stock {
 export function getTrendingStocks(): Stock[] {
     return Object.values(STOCKS);
 }
+
+export function getCompanyLogo(ticker: string): string {
+    // Basic helper to get a logo based on ticker
+    // In a real app, this might come from an API or a local mapping
+    return `https://logo.clearbit.com/${ticker.toLowerCase().split('.')[0]}.com`;
+}

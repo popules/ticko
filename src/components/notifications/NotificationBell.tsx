@@ -60,9 +60,9 @@ export function NotificationBell() {
         setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
 
         try {
-            await supabase
+            await (supabase as any)
                 .from("notifications")
-                .update({ is_read: true } as any)
+                .update({ is_read: true })
                 .eq("user_id", user.id)
                 .eq("is_read", false);
         } catch (error) {
