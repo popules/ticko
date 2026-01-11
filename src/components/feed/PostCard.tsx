@@ -42,17 +42,17 @@ export function PostCard({ post }: PostCardProps) {
                     <div className="flex items-center gap-2 mb-2">
                         <Link
                             href={`/profil/${post.user_id}`}
-                            className="font-semibold text-white truncate hover:text-emerald-400 transition-colors"
+                            className="text-[15px] font-bold text-white truncate hover:text-emerald-400 transition-colors"
                         >
                             {profile?.username || "Anonym"}
                         </Link>
                         {profile?.reputation_score !== undefined && profile.reputation_score > 0 && (
-                            <span className="text-xs text-white/60 bg-white/[0.08] px-2 py-0.5 rounded-full">
+                            <span className="text-[10px] text-white/60 bg-white/[0.08] px-2 py-0.5 rounded-full">
                                 +{profile.reputation_score}
                             </span>
                         )}
                         <span className="text-white/30">·</span>
-                        <span className="text-white/50 text-sm">
+                        <span className="text-white/50 text-[12px] font-medium">
                             {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: sv })}
                         </span>
 
@@ -75,7 +75,7 @@ export function PostCard({ post }: PostCardProps) {
                     </div>
 
                     {/* Post content with cashtags */}
-                    <p className="text-white whitespace-pre-wrap break-words leading-relaxed">
+                    <p className="text-white text-[15px] whitespace-pre-wrap break-words leading-relaxed">
                         {renderWithCashtags(post.content)}
                     </p>
 

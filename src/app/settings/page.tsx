@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/lib/supabase/client";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
-import { Save, Loader2 } from "lucide-react";
+import { Save, Loader2, LogOut } from "lucide-react";
 
 export default function SettingsPage() {
-    const { user } = useAuth();
+    const { user, signOut } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [username, setUsername] = useState("");
@@ -70,8 +70,8 @@ export default function SettingsPage() {
     }
 
     return (
-        <div className="max-w-2xl mx-auto p-6">
-            <h1 className="text-2xl font-bold text-white mb-8">Inställningar</h1>
+        <div className="max-w-2xl mx-auto p-6 md:p-12">
+            <h1 className="text-2xl font-extrabold text-white mb-8 tracking-tight">Inställningar</h1>
 
             <div className="bg-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/10 p-8">
                 {/* Avatar Section */}
@@ -92,7 +92,7 @@ export default function SettingsPage() {
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
+                            className="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-[15px] text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
                             placeholder="Ditt användarnamn"
                         />
                     </div>
@@ -105,7 +105,7 @@ export default function SettingsPage() {
                             type="email"
                             value={user?.email || ""}
                             disabled
-                            className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-4 py-3 text-white/40 cursor-not-allowed"
+                            className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-4 py-3 text-[15px] text-white/40 cursor-not-allowed"
                         />
                         <p className="text-[10px] text-white/20 mt-1">Email kan inte ändras.</p>
                     </div>
@@ -120,18 +120,28 @@ export default function SettingsPage() {
                     <button
                         type="submit"
                         disabled={isSaving}
-                        className="w-full flex items-center justify-center gap-2 py-3 btn-gradient text-white rounded-xl font-bold hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center gap-2 py-3.5 btn-gradient text-white rounded-xl font-bold hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-[15px]"
                     >
                         {isSaving ? (
                             <Loader2 className="w-5 h-5 animate-spin" />
                         ) : (
                             <>
-                                <Save className="w-5 h-5" />
+                                <Save className="w-4 h-4" />
                                 Spara ändringar
                             </>
                         )}
                     </button>
                 </form>
+
+                <div className="mt-8 pt-8 border-t border-white/10">
+                    <button
+                        onClick={() => signOut()}
+                        className="w-full flex items-center justify-center gap-2 py-3.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl font-bold transition-all text-sm group"
+                    >
+                        <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                        Logga ut från Ticko
+                    </button>
+                </div>
             </div>
         </div>
     );

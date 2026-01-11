@@ -16,6 +16,7 @@ import {
     Sparkles,
     Wallet,
     Loader2,
+    LogOut,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { APP_CONFIG, UI_STRINGS } from "@/config/app";
@@ -23,6 +24,7 @@ import { SentimentGauge } from "@/components/analysis/SentimentGauge";
 import { getTrendingStocks } from "@/lib/stocks";
 import { TickoLogo } from "@/components/ui/TickoLogo";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
+import { useAuth } from "@/providers/AuthProvider";
 
 // Navigation Items
 const navItems = [
@@ -42,6 +44,7 @@ import { useSearch } from "@/providers/SearchProvider";
 
 export function Sidebar() {
     const { open } = useSearch();
+    const { signOut } = useAuth();
 
     // Fetch live trending snippets
     const { data: trendingData, isLoading: isTrendingLoading } = useQuery({
@@ -84,14 +87,14 @@ export function Sidebar() {
                     <Link
                         key={item.href}
                         href={item.href}
-                        className="flex items-center justify-between px-4 py-3 rounded-2xl text-white/70 hover:text-white hover:bg-white/[0.06] transition-all group"
+                        className="flex items-center justify-between px-4 py-2.5 rounded-2xl text-white/70 hover:text-white hover:bg-white/[0.06] transition-all group"
                     >
                         <div className="flex items-center gap-3">
-                            <item.icon className={`w-5 h-5 ${item.isNew ? "text-emerald-400" : ""}`} />
-                            <span className="font-medium">{item.label}</span>
+                            <item.icon className={`w-4 h-4 ${item.isNew ? "text-emerald-400" : ""}`} />
+                            <span className="text-[13px] font-medium">{item.label}</span>
                         </div>
                         {item.isNew && (
-                            <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-md border border-emerald-500/20 group-hover:bg-emerald-500/30 transition-colors">
+                            <span className="text-[9px] font-bold bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-md border border-emerald-500/20 group-hover:bg-emerald-500/30 transition-colors">
                                 NY
                             </span>
                         )}
@@ -101,9 +104,9 @@ export function Sidebar() {
 
             {/* Trending Section */}
             <div className="flex-1 p-4 overflow-y-auto scrollbar-hide">
-                <div className="flex items-center gap-2 px-3 mb-4">
-                    <Flame className="w-4 h-4 text-orange-400" />
-                    <span className="text-sm font-semibold text-white">
+                <div className="flex items-center gap-2 px-3 mb-3">
+                    <Flame className="w-3.5 h-3.5 text-orange-400" />
+                    <span className="text-[11px] font-bold text-white/40 uppercase tracking-widest">
                         {UI_STRINGS.trending}
                     </span>
                     {isTrendingLoading && <Loader2 className="w-3 h-3 animate-spin text-white/20 ml-auto" />}
@@ -128,12 +131,12 @@ export function Sidebar() {
                                 href={`/aktie/${ticker.symbol}`}
                                 className="block p-3 rounded-2xl hover:bg-white/[0.06] transition-all border border-transparent hover:border-white/10"
                             >
-                                <div className="flex items-center justify-between mb-2">
-                                    <span className="font-semibold text-white text-sm">
+                                <div className="flex items-center justify-between mb-1">
+                                    <span className="font-bold text-white text-[13px]">
                                         ${ticker.symbol.split('.')[0]}
                                     </span>
                                     <span
-                                        className={`text-xs font-medium tabular-nums ${ticker.changePercent >= 0 ? "text-emerald-400" : "text-rose-400"
+                                        className={`text-[11px] font-bold tabular-nums ${ticker.changePercent >= 0 ? "text-emerald-400" : "text-rose-400"
                                             }`}
                                     >
                                         {ticker.changePercent >= 0 ? "+" : ""}
@@ -155,14 +158,21 @@ export function Sidebar() {
             </div>
 
             {/* Footer */}
-            <div className="p-4 border-t border-white/10">
+            <div className="p-3 border-t border-white/10 space-y-1">
                 <Link
                     href="/settings"
-                    className="flex items-center gap-3 px-4 py-3 rounded-2xl text-white/70 hover:text-white hover:bg-white/[0.06] transition-all"
+                    className="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-white hover:bg-white/[0.06] transition-all"
                 >
-                    <Settings className="w-5 h-5" />
-                    <span className="font-medium">{UI_STRINGS.settings}</span>
+                    <Settings className="w-4 h-4" />
+                    <span className="text-[13px] font-medium">{UI_STRINGS.settings}</span>
                 </Link>
+                <button
+                    onClick={() => signOut()}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/40 hover:text-rose-400 hover:bg-rose-400/10 transition-all group"
+                >
+                    <LogOut className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                    <span className="text-[13px] font-medium">Logga ut</span>
+                </button>
             </div>
         </aside>
     );

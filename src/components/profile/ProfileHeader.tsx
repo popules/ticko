@@ -63,7 +63,7 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                     <div className="relative group">
                         <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-gradient-to-br from-emerald-400 to-blue-600 flex items-center justify-center p-[2px]">
                             <div className="w-full h-full rounded-[1.4rem] bg-[#0B0F17] flex items-center justify-center overflow-hidden">
-                                <span className="text-4xl md:text-5xl font-black text-white/80">
+                                <span className="text-3xl md:text-4xl font-black text-white/80">
                                     {currentProfile.username.charAt(0).toUpperCase()}
                                 </span>
                             </div>
@@ -77,7 +77,7 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                     <div className="flex-1 space-y-4">
                         <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
                             <div>
-                                <h1 className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1">
+                                <h1 className="text-2xl md:text-3xl font-black text-white tracking-tighter mb-1">
                                     @{currentProfile.username}
                                 </h1>
                                 <div className="flex items-center gap-4 text-white/50 text-sm font-medium">
@@ -120,7 +120,7 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                             )}
                         </div>
 
-                        <p className="text-white/70 max-w-2xl text-lg leading-relaxed">
+                        <p className="text-white/70 max-w-2xl text-[15px] leading-relaxed">
                             {currentProfile.bio || "Ingen biografi ännu. Investerare som älskar trender och AI-analyser."}
                         </p>
 
@@ -129,19 +129,19 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                         {/* Stats */}
                         <div className="flex gap-8 pt-4">
                             <div>
-                                <p className="text-2xl font-black text-white">{stats.followers}</p>
-                                <p className="text-xs font-bold text-white/30 uppercase tracking-widest">Följare</p>
+                                <p className="text-xl font-black text-white">{stats.followers}</p>
+                                <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Följare</p>
                             </div>
                             <div>
-                                <p className="text-2xl font-black text-white">{stats.following}</p>
-                                <p className="text-xs font-bold text-white/30 uppercase tracking-widest">Följer</p>
+                                <p className="text-xl font-black text-white">{stats.following}</p>
+                                <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Följer</p>
                             </div>
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <p className="text-2xl font-black text-emerald-400">{currentProfile.accuracy || 85}%</p>
-                                    <TrendingUp className="w-5 h-5 text-emerald-400" />
+                                    <p className="text-xl font-black text-emerald-400">{currentProfile.accuracy || 85}%</p>
+                                    <TrendingUp className="w-4 h-4 text-emerald-400" />
                                 </div>
-                                <p className="text-xs font-bold text-white/30 uppercase tracking-widest">Pricksäkerhet</p>
+                                <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Pricksäkerhet</p>
                             </div>
                         </div>
                     </div>

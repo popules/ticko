@@ -65,8 +65,8 @@ export default function WatchlistPage() {
             <div className="flex min-h-screen bg-[#020617]">
                 <Sidebar />
                 <main className="flex-1 flex flex-col items-center justify-center p-6 text-center border-x border-white/5">
-                    <Star className="w-16 h-16 text-white/10 mb-6" />
-                    <h1 className="text-2xl font-black text-white mb-2">Bevakningslista</h1>
+                    <Star className="w-12 h-12 text-white/10 mb-6" />
+                    <h1 className="text-xl font-extrabold text-white mb-2">Bevakningslista</h1>
                     <p className="text-white/50 mb-8 max-w-sm">
                         Logga in för att spara och bevaka dina favoritaktier.
                     </p>
@@ -85,8 +85,8 @@ export default function WatchlistPage() {
 
             <main className="flex-1 border-x border-white/5">
                 <div className="p-8 border-b border-white/5">
-                    <h1 className="text-3xl font-black text-white tracking-tight">Bevakningslista</h1>
-                    <p className="text-white/40 font-medium mt-1">Håll koll på dina favoriter</p>
+                    <h1 className="text-2xl font-extrabold text-white tracking-tight">Bevakningslista</h1>
+                    <p className="text-[13px] text-white/40 font-medium mt-1">Håll koll på dina favoriter</p>
                 </div>
 
                 <div className="p-8">
@@ -113,16 +113,16 @@ export default function WatchlistPage() {
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <h3 className="text-lg font-bold text-white">{stock.symbol}</h3>
-                                                    <p className="text-sm text-white/40 font-medium">{stock.name || 'Aktie'}</p>
+                                                    <h3 className="text-base font-bold text-white">{stock.symbol}</h3>
+                                                    <p className="text-xs text-white/40 font-medium">{stock.name || 'Aktie'}</p>
                                                 </div>
                                             </div>
 
                                             <div className="text-right">
-                                                <p className="text-lg font-bold text-white tabular-nums">
+                                                <p className="text-base font-bold text-white tabular-nums">
                                                     {stock.price.toFixed(2)} {stock.currency}
                                                 </p>
-                                                <p className={`text-sm font-bold tabular-nums flex items-center justify-end gap-1 ${stock.change >= 0 ? 'text-emerald-400' : 'text-rose-400'
+                                                <p className={`text-xs font-bold tabular-nums flex items-center justify-end gap-1 ${stock.change >= 0 ? 'text-emerald-400' : 'text-rose-400'
                                                     }`}>
                                                     {stock.change >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
                                                 </p>
