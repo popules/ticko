@@ -157,15 +157,65 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
 export async function searchStocks(query: string) {
     try {
         const results = await yf.search(query);
-        return results.quotes
-            .filter((q: any) => q.isYahooFinance === true || q.quoteType === 'EQUITY' || q.quoteType === 'INDEX')
-            .map((q: any) => ({
-                symbol: q.symbol,
-                name: q.longname || q.shortname || q.symbol,
-                type: q.quoteType,
-                exchange: q.exchange
-            }))
-            .slice(0, 5); // Limit to top 5
+
+        // Score each result for relevance
+        const scoredResults = results.quotes
+            .filter((q: any) => q.isYahooFinance === true || q.quoteType === 'EQUITY' || q.quoteType === 'INDEX' || q.quoteType === 'ETF')
+            .map((q: any) => {
+                const symbol = q.symbol || '';
+                const type = q.quoteType || '';
+                const name = q.longname || q.shortname || '';
+                const exchange = q.exchange || '';
+                const queryUpper = query.toUpperCase();
+
+                let score = 0;
+
+                // Exact symbol match (highest priority)
+                if (symbol.toUpperCase() === queryUpper) score += 1000;
+                if (symbol.toUpperCase().startsWith(queryUpper + '.')) score += 500; // e.g. SAAB-B.ST matches SAAB
+                if (symbol.toUpperCase().split('.')[0].split('-')[0] === queryUpper) score += 800; // SAAB-B.ST == SAAB
+
+                // EQUITY over ETF (much higher priority)
+                if (type === 'EQUITY') score += 200;
+                if (type === 'INDEX') score += 150;
+                if (type === 'ETF') score += 10; // ETFs get low score
+
+                // Main exchange priority
+                // Swedish stocks on Stockholm (.ST)
+                if (symbol.endsWith('.ST')) score += 100;
+                // US stocks on NASDAQ/NYSE (no suffix usually)
+                if (!symbol.includes('.') && (exchange === 'NMS' || exchange === 'NYQ' || exchange === 'NGM')) score += 100;
+
+                // Penalize OTC/pink sheets and foreign listings
+                if (symbol.endsWith('.F')) score -= 50; // Frankfurt
+                if (symbol.endsWith('.SW')) score -= 30; // Swiss
+                if (exchange === 'PNK') score -= 100; // Pink sheets
+                if (exchange === 'OTC') score -= 100; // OTC
+
+                // Penalize derivatives and complex instruments
+                if (name.toLowerCase().includes('etf')) score -= 50;
+                if (name.toLowerCase().includes('bull 2x')) score -= 100;
+                if (name.toLowerCase().includes('bear 2x')) score -= 100;
+                if (name.toLowerCase().includes('leveraged')) score -= 100;
+                if (name.toLowerCase().includes('yield')) score -= 50;
+                if (name.toLowerCase().includes('option')) score -= 100;
+
+                // Boost if company name contains query
+                if (name.toLowerCase().includes(query.toLowerCase())) score += 50;
+
+                return {
+                    symbol: q.symbol,
+                    name: q.longname || q.shortname || q.symbol,
+                    type: q.quoteType,
+                    exchange: q.exchange,
+                    _score: score
+                };
+            })
+            .sort((a: any, b: any) => b._score - a._score) // Sort by score descending
+            .slice(0, 5) // Limit to top 5
+            .map(({ _score, ...rest }: any) => rest); // Remove internal score
+
+        return scoredResults;
     } catch (error) {
         console.error("Stock search failed:", error);
         return [];
