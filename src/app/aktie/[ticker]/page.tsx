@@ -60,10 +60,10 @@ export default async function AktiePage({ params }: AktiePageProps) {
                                     {stock.currencySymbol === 'kr' ? `${(stock.price ?? 0).toFixed(2)} kr` : `${stock.currencySymbol}${(stock.price ?? 0).toFixed(2)}`}
                                 </span>
                                 <span
-                                    className={`text-sm font-medium tabular-nums ${stock.change >= 0 ? "text-emerald-400" : "text-rose-400"
+                                    className={`text-sm font-medium tabular-nums ${(stock.change ?? 0) >= 0 ? "text-emerald-400" : "text-rose-400"
                                         }`}
                                 >
-                                    {stock.change >= 0 ? "+" : ""}
+                                    {(stock.change ?? 0) >= 0 ? "+" : ""}
                                     {(stock.changePercent ?? 0).toFixed(2)}%
                                 </span>
                             </div>
