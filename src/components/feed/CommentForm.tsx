@@ -21,13 +21,13 @@ export function CommentForm({ postId, onCommentAdded }: CommentFormProps) {
 
         setIsSubmitting(true);
         try {
-            const { error } = await supabase
+            const { error } = await (supabase as any)
                 .from("comments")
                 .insert({
                     post_id: postId,
                     user_id: user.id,
                     content: content.trim()
-                } as any);
+                });
 
             if (error) throw error;
 

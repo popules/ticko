@@ -35,7 +35,7 @@ export function ReactionButtons({
         try {
             if (userReaction === type) {
                 // Remove reaction
-                await supabase
+                await (supabase as any)
                     .from("reactions")
                     .delete()
                     .eq("post_id", postId)
@@ -48,9 +48,9 @@ export function ReactionButtons({
                 // Add or change reaction
                 if (userReaction) {
                     // Update existing
-                    await supabase
+                    await (supabase as any)
                         .from("reactions")
-                        .update({ reaction_type: type } as never)
+                        .update({ reaction_type: type })
                         .eq("post_id", postId)
                         .eq("user_id", user.id);
 
@@ -63,11 +63,11 @@ export function ReactionButtons({
                     }
                 } else {
                     // Insert new
-                    await supabase.from("reactions").insert({
+                    await (supabase as any).from("reactions").insert({
                         post_id: postId,
                         user_id: user.id,
                         reaction_type: type,
-                    } as never);
+                    });
 
                     if (type === "up") setUpCount((c) => c + 1);
                     else setDownCount((c) => c + 1);

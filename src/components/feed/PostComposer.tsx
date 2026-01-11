@@ -78,7 +78,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                 }
             }
 
-            const { data: postData, error: insertError } = await supabase.from("posts").insert({
+            const { data: postData, error: insertError } = await (supabase as any).from("posts").insert({
                 user_id: user.id,
                 content: content.trim(),
                 sentiment: isPoll ? null : sentiment, // Polls shouldn't have sentiment usually
@@ -87,7 +87,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                 is_prediction: isPrediction,
                 prediction_price: predictionPrice,
                 target_date: targetDate,
-            } as any).select().single();
+            }).select().single();
 
             if (insertError) throw insertError;
 
@@ -97,11 +97,11 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                     .filter(o => o.trim())
                     .map((text, i) => ({ id: i, text }));
 
-                const { error: pollError } = await supabase.from("polls").insert({
-                    post_id: postData.id,
+                const { error: pollError } = await (supabase as any).from("polls").insert({
+                    post_id: (postData as any).id,
                     question: content.trim(),
                     options_data: optionsData,
-                } as any);
+                });
 
                 if (pollError) console.error("Poll insert error:", pollError);
             }

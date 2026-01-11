@@ -10,7 +10,7 @@ export const ACHIEVEMENTS = {
 export async function checkAndAwardAchievement(userId: string, key: string) {
     try {
         // 1. Get achievement ID
-        const { data: achievement } = await supabase
+        const { data: achievement } = await (supabase as any)
             .from("achievements")
             .select("id")
             .eq("key", key)
@@ -19,9 +19,9 @@ export async function checkAndAwardAchievement(userId: string, key: string) {
         if (!achievement) return;
 
         // 2. Insert into user_achievements (ignore conflict)
-        const { error } = await supabase
+        const { error } = await (supabase as any)
             .from("user_achievements")
-            .insert({ user_id: userId, achievement_id: achievement.id })
+            .insert({ user_id: userId, achievement_id: (achievement as any).id })
             .ignore();
 
         if (!error) {

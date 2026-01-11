@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 
     try {
         // 1. Get watchlist
-        const { data: watchlist } = await supabase
+        const { data: watchlist } = await (supabase as any)
             .from("watchlists")
             .select("ticker_symbol")
             .eq("user_id", user.id);
@@ -32,11 +32,11 @@ export async function GET(request: Request) {
             });
         }
 
-        const tickers = watchlist.map(w => w.ticker_symbol);
+        const tickers = (watchlist as any[]).map((w: any) => w.ticker_symbol);
 
         // 2. Fetch data for these tickers (limited to top 5)
         const topTickers = tickers.slice(0, 5);
-        const stockDataPromises = topTickers.map(ticker => fetchStockData(ticker));
+        const stockDataPromises = topTickers.map((ticker: string) => fetchStockData(ticker));
         const stocks = (await Promise.all(stockDataPromises)).filter(s => s !== null);
 
         if (stocks.length === 0) {

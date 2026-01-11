@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     }
 
     // Check if already following
-    const { data: existingFollow, error: fetchError } = await supabase
+    const { data: existingFollow, error: fetchError } = await (supabase as any)
         .from("follows")
         .select("*")
         .eq("follower_id", user.id)
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
     if (existingFollow) {
         // Unfollow
-        const { error: deleteError } = await supabase
+        const { error: deleteError } = await (supabase as any)
             .from("follows")
             .delete()
             .eq("follower_id", user.id)
@@ -46,14 +46,14 @@ export async function POST(request: Request) {
         return NextResponse.json({ following: false });
     } else {
         // Follow
-        const { error: insertError } = await supabase
+        const { error: insertError } = await (supabase as any)
             .from("follows")
             .insert({ follower_id: user.id, following_id });
 
         if (insertError) return NextResponse.json({ error: insertError.message }, { status: 500 });
 
         // Create notification for the person being followed
-        await supabase.from("notifications").insert({
+        await (supabase as any).from("notifications").insert({
             user_id: following_id,
             actor_id: user.id,
             type: "follow"
@@ -79,9 +79,9 @@ export async function GET(request: Request) {
 
     // Get followers/following counts
     const [followersCount, followingCount, isFollowing] = await Promise.all([
-        supabase.from("follows").select("*", { count: "exact", head: true }).eq("following_id", targetUserId),
-        supabase.from("follows").select("*", { count: "exact", head: true }).eq("follower_id", targetUserId),
-        userId ? supabase.from("follows").select("*").eq("follower_id", userId).eq("following_id", targetUserId).single() : null
+        (supabase as any).from("follows").select("*", { count: "exact", head: true }).eq("following_id", targetUserId),
+        (supabase as any).from("follows").select("*", { count: "exact", head: true }).eq("follower_id", targetUserId),
+        userId ? (supabase as any).from("follows").select("*").eq("follower_id", userId).eq("following_id", targetUserId).single() : null
     ]);
 
     return NextResponse.json({
