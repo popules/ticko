@@ -57,14 +57,14 @@ export default async function AktiePage({ params }: AktiePageProps) {
                             </div>
                             <div className="flex items-center gap-3 mt-1">
                                 <span className="text-2xl font-bold tabular-nums text-white">
-                                    {stock.currencySymbol === 'kr' ? `${stock.price.toFixed(2)} kr` : `${stock.currencySymbol}${stock.price.toFixed(2)}`}
+                                    {stock.currencySymbol === 'kr' ? `${(stock.price ?? 0).toFixed(2)} kr` : `${stock.currencySymbol}${(stock.price ?? 0).toFixed(2)}`}
                                 </span>
                                 <span
                                     className={`text-sm font-medium tabular-nums ${stock.change >= 0 ? "text-emerald-400" : "text-rose-400"
                                         }`}
                                 >
                                     {stock.change >= 0 ? "+" : ""}
-                                    {stock.changePercent.toFixed(2)}%
+                                    {(stock.changePercent ?? 0).toFixed(2)}%
                                 </span>
                             </div>
                         </div>
@@ -119,7 +119,7 @@ export default async function AktiePage({ params }: AktiePageProps) {
                         <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-5 border border-white/10">
                             <p className="text-xs text-white/50 mb-1">{UI_STRINGS.peRatio}</p>
                             <p className="text-lg font-semibold tabular-nums text-white">
-                                {stock.pe.toFixed(1)}
+                                {stock.pe ? stock.pe.toFixed(1) : 'N/A'}
                             </p>
                         </div>
                         <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-5 border border-white/10">
