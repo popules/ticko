@@ -1,37 +1,37 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Users, MessageCircle, TrendingUp, Zap, Shield, ArrowRight, Mail, Gavel } from "lucide-react";
+import { ArrowLeft, Users, MessageCircle, TrendingUp, Zap, Shield, ArrowRight, Mail, Gavel, Target, Database, Award } from "lucide-react";
 import { TickoLogo } from "@/components/ui/TickoLogo";
 import { APP_CONFIG } from "@/config/app";
 
 export default function OmOssPage() {
-    const features = [
+    const pillars = [
         {
-            icon: Users,
-            title: "Fokuserat Community",
-            desc: "Här finns inget brus. Varje diskussion är kopplad till specifika instrument via $TICKER-taggar för maximal relevans och sökbarhet.",
+            icon: Target,
+            title: "Precisionsdrivet flöde",
+            desc: "Inget brus, ingen spam. Med strikt $TICKER-taggning skapar vi ett sökbart bibliotek av marknadsinsikter som hjälper communityt att följa specifika bolagsresor över tid.",
             color: "text-emerald-400",
             bg: "bg-emerald-500/10"
         },
         {
             icon: Zap,
-            title: "Ticko AI",
-            desc: "Din intelligenta assistent som hjälper dig att sammanfatta rapporter, analysera sentiment och förklara finansiella nyckeltal på sekunder.",
+            title: "Ticko AI – Din personliga analytiker",
+            desc: "Vi har integrerat nästa generations AI direkt i flödet. Den hjälper dig att snabbt bryta ner rapporter och extrahera kärndata för snabbare strategiska beslut.",
             color: "text-violet-400",
             bg: "bg-violet-500/10"
         },
         {
-            icon: TrendingUp,
-            title: "Data för alla",
-            desc: "Vi aggregerar marknadsdata och nyheter så att du har allt du behöver för att fatta välgrundade beslut på ett och samma ställe – helt utan betalväggar.",
+            icon: Database,
+            title: "Öppen tillgång till data",
+            desc: "Vi anser att finansiell infrastruktur ska vara tillgänglig. Därför aggregerar vi kurser, nyheter och nyckeltal helt utan kostnad för våra användare.",
             color: "text-blue-400",
             bg: "bg-blue-500/10"
         },
         {
-            icon: Shield,
-            title: "Byggt för transparens",
-            desc: "Vi jobbar aktivt för att skapa en kultur där ärlighet och track-record väger tyngre än \"hype\".",
+            icon: Award,
+            title: "En meritokratisk kultur",
+            desc: "På Ticko är det substansen i din analys som avgör ditt inflytande. Vi främjar en kultur där transparens, logik och väl underbyggda argument väger tyngst.",
             color: "text-amber-400",
             bg: "bg-amber-500/10"
         }
@@ -55,33 +55,34 @@ export default function OmOssPage() {
                     {/* Hero Section */}
                     <div className="mb-20">
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-8 leading-[1.1]">
-                            Om Ticko – <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Där svenska investerare möts</span>
+                            Om Ticko – <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Framtidens mötesplats för investerare</span>
                         </h1>
 
-                        <div className="space-y-6">
-                            <h2 className="text-2xl font-bold text-white">Varför Ticko?</h2>
-                            <p className="text-white/60 text-lg leading-relaxed">
-                                Sverige har en av världens mest levande kulturer för småsparare och aktieintresserade. Trots det har vi länge varit hänvisade till forumlösningar som känns kvarlämnade i 90-talet eller brusiga sociala medier där seriösa analyser drunknar i memes och ovidkommande diskussioner.
-                            </p>
-                            <p className="text-white/60 text-lg leading-relaxed">
-                                Ticko skapades för att ge det svenska investerarkollektivet det hem de förtjänar. Vi kombinerar modern teknik och realtidsdata med kraftfull AI för att skapa en plattform där kvalitet, transparens och gemenskap står i centrum.
-                            </p>
+                        <div className="space-y-8">
+                            <section>
+                                <h2 className="text-2xl font-bold text-white mb-4">Vision: Ett smartare ekosystem</h2>
+                                <p className="text-white/60 text-lg leading-relaxed">
+                                    Ticko grundades ur en enkel observation: De bästa investeringsinsikterna föds sällan i isolering, utan i gränssnittet mellan data och diskussion. Vi bygger en modern infrastruktur för den nya generationens investerare – de som kräver tillgång till rådata, avancerad AI och ett genuint utbyte av idéer. Vi har ersatt stängda rum och dyra betalväggar med en öppen plattform där analysen får tala för sig själv.
+                                </p>
+                            </section>
+
+                            <section>
+                                <h2 className="text-2xl font-bold text-white mb-4">Mer än bara ett forum – en gemenskap</h2>
+                                <p className="text-white/60 text-lg leading-relaxed mb-4">
+                                    Vi ser Ticko som ett kollektivt analysverktyg. Genom att kombinera institutionell marknadsdata med kraften i en aktiv community skapar vi ett informationsövertag som tidigare varit förbehållet ett fåtal.
+                                </p>
+                                <p className="text-white/60 text-lg leading-relaxed">
+                                    Här möts nybörjaren som precis köpt sin första Investor-aktie och den erfarne tradern som letar efter nästa tillväxtraket på de mindre listorna. På Ticko är gemenskapen motorn; genom att dela analyser, ifrågasätta teser och fira framgångar (och lära av motgångar) tillsammans, höjer vi lägstanivån för alla.
+                                </p>
+                            </section>
                         </div>
                     </div>
 
-                    {/* Vision Section */}
-                    <div className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 mb-20 shadow-2xl">
-                        <h2 className="text-2xl font-bold text-white mb-4">Vår Vision</h2>
-                        <p className="text-white/60 leading-relaxed text-lg italic">
-                            &quot;Vi vill demokratisera tillgången till finansiella insikter. Genom att integrera Ticko AI direkt i diskussionsflödet hjälper vi våra användare att snabbare förstå komplex marknadsdata, identifiera trender och ställa bättre frågor. Vi tror på kraften i &apos;Wisdom of the Crowds&apos; – när vi delar våra analyser och tankar öppet, blir vi alla bättre investerare.&quot;
-                        </p>
-                    </div>
-
-                    {/* Features Grid */}
+                    {/* Pillars Grid */}
                     <div className="mb-20">
-                        <h2 className="text-2xl font-bold text-white mb-10 text-center">Vad gör Ticko unikt?</h2>
+                        <h2 className="text-2xl font-bold text-white mb-10 text-center">Kärnpelarna i Tickos community</h2>
                         <div className="grid md:grid-cols-2 gap-6">
-                            {features.map((item, i) => (
+                            {pillars.map((item, i) => (
                                 <div key={i} className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-all group">
                                     <div className={`w-12 h-12 rounded-xl ${item.bg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}>
                                         <item.icon className={`w-6 h-6 ${item.color}`} />
@@ -98,25 +99,25 @@ export default function OmOssPage() {
                     {/* Swedish Focus Section */}
                     <div className="space-y-8 mb-20">
                         <div className="p-8 rounded-3xl bg-emerald-500/[0.03] border border-emerald-500/10">
-                            <h2 className="text-2xl font-bold text-white mb-4 italic">Byggt i Sverige, för Sverige</h2>
+                            <h2 className="text-2xl font-bold text-white mb-4 italic">Byggt i Sverige för nordiska förutsättningar</h2>
                             <p className="text-white/60 text-lg leading-relaxed">
-                                Ticko är skapat av svenska investerare som förstår den lokala marknaden. Vi vet hur det är att följa en småbolagsresa på First North eller att analysera utdelningsaristokrater på Large Cap. Plattformen utvecklas ständigt och vi bygger den tillsammans med dig.
+                                Ticko är utvecklat i Sverige för att optimera bevakningen av allt från defensiva utdelningsbolag på Large Cap till de mest volatila tillväxtresorna på First North och Spotlight. Vi bygger den plattform vi själva saknade – en plats där analysen tas på allvar men där den mänskliga gemenskapen är fundamentet.
                             </p>
                         </div>
 
                         <div className="space-y-4">
-                            <h2 className="text-2xl font-bold text-white">Vi är i Beta – Din röst räknas</h2>
+                            <h2 className="text-2xl font-bold text-white">Vi bygger detta tillsammans (Beta)</h2>
                             <p className="text-white/60 text-lg leading-relaxed">
-                                Ticko är under aktiv utveckling. Det betyder att du som tidig användare har en unik chans att påverka plattformens framtid. Vi älskar feedback, oavsett om det gäller en bugg du hittat eller en funktion du saknar.
+                                Ticko är under ständig utveckling och vi bygger plattformen tillsammans med våra användare. Som tidig medlem är du inte bara en användare, du är en del av grunden. Vi prioriterar funktioner baserat på vad communityt faktiskt behöver och din feedback går direkt till våra utvecklare.
                             </p>
                         </div>
                     </div>
 
-                    {/* Contact & CTA Section */}
+                    {/* Contact Section */}
                     <div className="grid sm:grid-cols-2 gap-6 mb-20">
                         <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col items-center text-center">
                             <Mail className="w-8 h-8 text-emerald-400 mb-4" />
-                            <h3 className="text-lg font-bold mb-2">Frågor & Idéer</h3>
+                            <h3 className="text-lg font-bold mb-2">Feedback & Idéer</h3>
                             <a href="mailto:hej@ticko.se" className="text-emerald-400 hover:underline">hej@ticko.se</a>
                         </div>
                         <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col items-center text-center">
