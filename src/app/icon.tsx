@@ -17,59 +17,63 @@ export default function Icon() {
             // ImageResponse JSX element
             <div
                 style={{
-                    fontSize: 24,
-                    background: 'transparent',
                     width: '100%',
                     height: '100%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    position: 'relative',
+                    background: 'transparent',
                 }}
             >
-                {/* Background Shield/Box */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        width: '100%',
-                        height: '100%',
-                        background: 'linear-gradient(135deg, #2DD4BF 0%, #0D9488 100%)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                    }}
-                />
+                <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 40 40"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    {/* Vertical Bar */}
+                    <rect
+                        x="14"
+                        y="8"
+                        width="12"
+                        height="24"
+                        rx="4"
+                        fill="#2DD4BF"
+                        style={{ fillOpacity: 0.8 }}
+                        stroke="white"
+                        strokeOpacity="0.3"
+                        strokeWidth="0.5"
+                    />
 
-                {/* The "T" Shape - Horizontal */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '20%',
-                        width: '60%',
-                        height: '25%',
-                        background: 'white',
-                        borderRadius: '2px',
-                        opacity: 0.9,
-                    }}
-                />
+                    {/* Horizontal Bar (Overlapping) - using a slightly darker mint for depth */}
+                    <rect
+                        x="8"
+                        y="8"
+                        width="24"
+                        height="11"
+                        rx="4"
+                        fill="#0D9488"
+                        style={{ fillOpacity: 0.7 }}
+                        stroke="white"
+                        strokeOpacity="0.3"
+                        strokeWidth="0.5"
+                    />
 
-                {/* The "T" Shape - Vertical */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '20%',
-                        width: '25%',
-                        height: '60%',
-                        background: 'white',
-                        borderRadius: '2px',
-                        opacity: 0.9,
-                    }}
-                />
+                    {/* Intersection highlight - matching the overlapping feel of the logo */}
+                    <rect
+                        x="14"
+                        y="8"
+                        width="12"
+                        height="11"
+                        rx="4"
+                        fill="#5EEAD4"
+                        style={{ fillOpacity: 0.5 }}
+                    />
+                </svg>
             </div>
         ),
-        // ImageResponse options
         {
-            // For convenience, we can re-use the exported icons size metadata
-            // config to also set the ImageResponse's width and height.
             ...size,
         }
     )
