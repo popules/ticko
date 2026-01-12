@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import YahooFinance from "yahoo-finance2";
-
-const yf = new (YahooFinance as any)();
+import yf from "yahoo-finance2";
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
@@ -12,7 +10,7 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        const results = await yf.search(query, {
+        const results: any = await yf.search(query, {
             newsCount: 0,
             quotesCount: 5
         });

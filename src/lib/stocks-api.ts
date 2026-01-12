@@ -1,8 +1,5 @@
-import YahooFinance from 'yahoo-finance2';
+import yf from 'yahoo-finance2';
 import { openai } from './openai';
-
-// Create a singleton instance for our app
-const yf = new (YahooFinance as any)();
 
 export interface StockData {
     symbol: string;
@@ -97,7 +94,7 @@ function format52WeekRange(low: number | undefined, high: number | undefined, sy
 export async function fetchDiscoveryStocks(): Promise<StockData[]> {
     try {
         // Use trending symbols to find interesting stocks
-        const trending = await yf.trendingSymbols('SE'); // Start with Swedish trending
+        const trending: any = await yf.trendingSymbols('SE'); // Start with Swedish trending
         const symbols = trending.quotes.map((q: any) => q.symbol);
 
         // Curated list of high-profile stocks to ensure the app feels "full"
@@ -156,7 +153,7 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
 
 export async function searchStocks(query: string) {
     try {
-        const results = await yf.search(query);
+        const results: any = await yf.search(query);
 
         // Score each result for relevance
         const scoredResults = results.quotes
