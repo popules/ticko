@@ -82,7 +82,8 @@ export function MorningReport() {
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-medium"
+                        className={`text-sm leading-relaxed whitespace-pre-wrap font-medium ${report.includes("Lägg till aktier") ? "text-white/40 italic py-4" : "text-white/80"
+                            }`}
                     >
                         {report}
                     </motion.div>
