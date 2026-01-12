@@ -1,5 +1,8 @@
-import yf from 'yahoo-finance2';
+import YahooFinance from 'yahoo-finance2';
 import { openai } from './openai';
+
+// Create a singleton instance for our app
+const yf = new YahooFinance();
 
 export interface StockData {
     symbol: string;
