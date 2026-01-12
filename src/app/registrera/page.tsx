@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Mail, Lock, User, TrendingUp, ArrowRight, Loader2 } from "lucide-react";
+import { Mail, Lock, User, ArrowRight, Loader2 } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { APP_CONFIG } from "@/config/app";
+import { TickoLogo } from "@/components/ui/TickoLogo";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -65,13 +66,10 @@ export default function RegisterPage() {
             <div className="w-full max-w-md">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <Link href="/" className="inline-flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                            <TrendingUp className="w-7 h-7 text-white" />
-                        </div>
-                        <span className="text-3xl font-bold text-white">{APP_CONFIG.name}</span>
+                    <Link href="/" className="inline-flex items-center justify-center">
+                        <TickoLogo />
                     </Link>
-                    <p className="text-white/50 mt-2">{APP_CONFIG.tagline}</p>
+                    <p className="text-white/50 mt-3">{APP_CONFIG.tagline}</p>
                 </div>
 
                 {/* Register card */}
