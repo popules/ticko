@@ -167,7 +167,7 @@ export default function RegisterPage() {
                                 className="mt-1 h-4 w-4 rounded border-white/20 bg-white/[0.06] text-emerald-500 focus:ring-emerald-500/30 focus:ring-offset-0"
                             />
                             <span className="text-sm text-white/60 leading-relaxed">
-                                Jag godkänner <Link href="/terms" className="text-emerald-400 hover:underline" target="_blank">användarvillkoren</Link> och <Link href="/privacy" className="text-emerald-400 hover:underline" target="_blank">integritetspolicyn</Link>, och förstår att Ticko inte tillhandahåller finansiell rådgivning.
+                                Jag godkänner <Link href="/villkor" className="text-emerald-400 hover:underline" target="_blank">användarvillkoren</Link> och <Link href="/integritet" className="text-emerald-400 hover:underline" target="_blank">integritetspolicyn</Link>, och förstår att Ticko inte tillhandahåller finansiell rådgivning.
                             </span>
                         </label>
 

@@ -23,7 +23,7 @@ export function HeroPreview() {
                         <div className="w-3 h-3 rounded-full bg-emerald-500/20 border border-emerald-500/50" />
                     </div>
                     <div className="ml-4 h-6 w-64 bg-white/5 rounded-md flex items-center px-3">
-                        <span className="text-[10px] text-white/20">ticka.se</span>
+                        <span className="text-[10px] text-white/20">ticko.se</span>
                     </div>
                 </div>
 
