@@ -1,83 +1,72 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { UI_STRINGS } from "@/config/app";
-import { Loader2, Info, Maximize2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Loader2, TrendingUp, TrendingDown, Activity, Zap, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 
-// Default stock symbols to analyze
-const TRACKED_SYMBOLS = [
-    { symbol: "TSLA", name: "Tesla" },
-    { symbol: "AAPL", name: "Apple" },
-    { symbol: "NVDA", name: "NVIDIA" },
-    { symbol: "VOLV-B.ST", name: "Volvo" },
-    { symbol: "SAAB-B.ST", name: "Saab" },
-    { symbol: "MSFT", name: "Microsoft" },
-    { symbol: "SPOT", name: "Spotify" },
-    { symbol: "AMZN", name: "Amazon" },
-    { symbol: "META", name: "Meta" },
-    { symbol: "HM-B.ST", name: "H&M" },
-    { symbol: "ERIC-B.ST", name: "Ericsson" },
-    { symbol: "GOOGL", name: "Alphabet" },
-];
+interface IndexData {
+    label: string;
+    value: string;
+    change: number;
+    rawPrice: number;
+}
 
-interface SentimentData {
+interface StockMovement {
     symbol: string;
+    displaySymbol: string;
     name: string;
-    sentiment: number;
-    upside: number;
-    summary?: string;
-    confidence?: string;
+    price: number;
+    changePercent: number;
+    currency: string;
+}
+
+interface TradedStock extends StockMovement {
+    volume: number;
+    volumeFormatted: string;
 }
 
 export default function MarketPage() {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(true);
-    const [selectedBubble, setSelectedBubble] = useState<SentimentData | null>(null);
-    const [sentimentData, setSentimentData] = useState<SentimentData[]>([]);
 
-    useEffect(() => {
-        const fetchSentiment = async () => {
-            setIsLoading(true);
+    // Fetch indices
+    const { data: indicesData, isLoading: indicesLoading } = useQuery({
+        queryKey: ["marketIndices"],
+        queryFn: async () => {
+            const res = await fetch("/api/market/indices");
+            const data = await res.json();
+            return data.indices || [];
+        },
+        refetchInterval: 60000,
+    });
 
-            // Fetch sentiment for all symbols in parallel
-            const results = await Promise.all(
-                TRACKED_SYMBOLS.map(async ({ symbol, name }) => {
-                    try {
-                        const res = await fetch(`/api/sentiment/${symbol}`);
-                        const data = await res.json();
-                        return {
-                            symbol: symbol.replace(".ST", ""),
-                            name,
-                            sentiment: data.sentiment || 50,
-                            upside: data.upside || 0,
-                            summary: data.summary,
-                            confidence: data.confidence,
-                        };
-                    } catch {
-                        return { symbol: symbol.replace(".ST", ""), name, sentiment: 50, upside: 0 };
-                    }
-                })
-            );
+    // Fetch gainers/losers
+    const { data: moversData, isLoading: moversLoading } = useQuery({
+        queryKey: ["marketMovers"],
+        queryFn: async () => {
+            const res = await fetch("/api/market/gainers-losers");
+            const data = await res.json();
+            return { gainers: data.gainers || [], losers: data.losers || [] };
+        },
+        refetchInterval: 60000,
+    });
 
-            setSentimentData(results);
-            setIsLoading(false);
-        };
+    // Fetch most traded
+    const { data: tradedData, isLoading: tradedLoading } = useQuery({
+        queryKey: ["mostTraded"],
+        queryFn: async () => {
+            const res = await fetch("/api/market/most-traded");
+            const data = await res.json();
+            return data.mostTraded || [];
+        },
+        refetchInterval: 60000,
+    });
 
-        fetchSentiment();
-    }, []);
-
-    const getSentimentColor = (score: number) => {
-        if (score >= 70) return "from-emerald-400 to-emerald-600 shadow-emerald-500/40";
-        if (score >= 50) return "from-emerald-300/60 to-emerald-500/40 shadow-emerald-400/20";
-        if (score >= 40) return "from-white/20 to-white/10 shadow-white/5";
-        if (score >= 20) return "from-rose-400/60 to-rose-600/40 shadow-rose-500/20";
-        return "from-rose-500 to-rose-700 shadow-rose-600/40";
-    };
+    const isLoading = indicesLoading || moversLoading || tradedLoading;
 
     return (
         <div className="flex min-h-screen">
@@ -91,131 +80,191 @@ export default function MarketPage() {
                             {UI_STRINGS.markets}
                         </h1>
                         <p className="text-xs font-bold text-white/30 tracking-widest uppercase mt-1">
-                            Ticko Sentiment Heatmap • Live
+                            Live Marknadsdata • Realtid
                         </p>
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/10">
                             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                            <span className="text-[10px] font-bold text-white/60 uppercase">Live Index</span>
+                            <span className="text-[10px] font-bold text-white/60 uppercase">Live</span>
                         </div>
-                        <button className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/10 text-white/40 hover:text-white transition-all">
-                            <Maximize2 className="w-4 h-4" />
-                        </button>
                     </div>
                 </header>
 
-                <div className="flex-1 relative overflow-hidden p-8">
+                <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide">
                     {isLoading ? (
-                        <div className="h-full flex flex-col items-center justify-center gap-4">
+                        <div className="h-96 flex flex-col items-center justify-center gap-4">
                             <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
                             <p className="text-white/40 font-bold uppercase tracking-widest text-[10px]">
-                                Beräknar marknadssentiment...
+                                Hämtar marknadsdata...
                             </p>
                         </div>
                     ) : (
-                        <div className="relative w-full h-full">
-                            {/* Heatmap Legend */}
-                            <div className="absolute bottom-4 left-4 z-10 p-4 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 flex items-center gap-6">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-rose-500" />
-                                    <span className="text-[10px] font-bold text-white/40 uppercase">Rädsla</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-white/20" />
-                                    <span className="text-[10px] font-bold text-white/40 uppercase">Neutral</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                                    <span className="text-[10px] font-bold text-white/40 uppercase">Girighet</span>
-                                </div>
-                            </div>
-
-                            {/* Bubble Grid (Responsive CSS Grid variant of Heatmap) */}
-                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 h-fit max-h-full overflow-y-auto pr-4 scrollbar-hide">
-                                {sentimentData.map((stock: SentimentData) => (
-                                    <motion.button
-                                        key={stock.symbol}
-                                        whileHover={{ scale: 1.03, y: -4 }}
-                                        whileTap={{ scale: 0.97 }}
-                                        onClick={() => router.push(`/aktie/${stock.symbol}`)}
-                                        className={`group relative aspect-[4/3] rounded-3xl p-5 bg-gradient-to-br border border-white/10 text-left flex flex-col justify-between transition-all duration-300 shadow-xl hover:shadow-2xl ${getSentimentColor(stock.sentiment)}`}
-                                    >
-                                        <div className="flex justify-between items-start w-full">
-                                            <div className="flex flex-col gap-1">
-                                                <span className="text-xl font-black text-white tracking-tight">
-                                                    {stock.name}
-                                                </span>
-                                                <span className="text-[11px] font-semibold text-white/50 tracking-wide">
-                                                    ${stock.symbol}
-                                                </span>
+                        <>
+                            {/* === INDEX HERO SECTION === */}
+                            <section>
+                                <h2 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                    <Activity className="w-4 h-4" /> Index
+                                </h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    {(indicesData || []).map((index: IndexData) => (
+                                        <motion.div
+                                            key={index.label}
+                                            whileHover={{ scale: 1.02, y: -4 }}
+                                            className="relative overflow-hidden rounded-3xl p-6 bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 hover:border-white/20 transition-all"
+                                        >
+                                            <div className="flex justify-between items-start">
+                                                <div>
+                                                    <p className="text-sm font-semibold text-white/50">{index.label}</p>
+                                                    <p className="text-3xl font-black text-white mt-1 tabular-nums">{index.value}</p>
+                                                </div>
+                                                <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-bold ${index.change >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
+                                                    {index.change >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
+                                                    {index.change >= 0 ? '+' : ''}{index.change.toFixed(2)}%
+                                                </div>
                                             </div>
-                                            <div
-                                                className="p-1.5 rounded-xl bg-white/20 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setSelectedBubble(stock);
-                                                }}
+                                            {/* Decorative gradient */}
+                                            <div className={`absolute -bottom-8 -right-8 w-32 h-32 rounded-full blur-3xl opacity-20 ${index.change >= 0 ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            {/* === GAINERS & LOSERS SECTION === */}
+                            <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                {/* Gainers */}
+                                <div className="rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden">
+                                    <div className="px-6 py-4 border-b border-white/10 flex items-center gap-3 bg-emerald-500/5">
+                                        <TrendingUp className="w-5 h-5 text-emerald-400" />
+                                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Dagens Vinnare</h3>
+                                    </div>
+                                    <div className="divide-y divide-white/5">
+                                        {(moversData?.gainers || []).map((stock: StockMovement, i: number) => (
+                                            <motion.button
+                                                key={stock.symbol}
+                                                whileHover={{ backgroundColor: 'rgba(255,255,255,0.04)' }}
+                                                onClick={() => router.push(`/aktie/${stock.symbol}`)}
+                                                className="w-full px-6 py-4 flex items-center justify-between transition-all text-left"
                                             >
-                                                <Info className="w-4 h-4 text-white" />
+                                                <div className="flex items-center gap-4">
+                                                    <span className="w-8 h-8 rounded-xl bg-emerald-500/20 flex items-center justify-center text-xs font-black text-emerald-400">
+                                                        {i + 1}
+                                                    </span>
+                                                    <div>
+                                                        <p className="font-bold text-white">${stock.displaySymbol}</p>
+                                                        <p className="text-xs text-white/40 truncate max-w-[150px]">{stock.name}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="font-bold text-white tabular-nums">{stock.price.toFixed(2)}</p>
+                                                    <p className="text-sm font-bold text-emerald-400 tabular-nums">+{stock.changePercent.toFixed(2)}%</p>
+                                                </div>
+                                            </motion.button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Losers */}
+                                <div className="rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden">
+                                    <div className="px-6 py-4 border-b border-white/10 flex items-center gap-3 bg-rose-500/5">
+                                        <TrendingDown className="w-5 h-5 text-rose-400" />
+                                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Dagens Förlorare</h3>
+                                    </div>
+                                    <div className="divide-y divide-white/5">
+                                        {(moversData?.losers || []).map((stock: StockMovement, i: number) => (
+                                            <motion.button
+                                                key={stock.symbol}
+                                                whileHover={{ backgroundColor: 'rgba(255,255,255,0.04)' }}
+                                                onClick={() => router.push(`/aktie/${stock.symbol}`)}
+                                                className="w-full px-6 py-4 flex items-center justify-between transition-all text-left"
+                                            >
+                                                <div className="flex items-center gap-4">
+                                                    <span className="w-8 h-8 rounded-xl bg-rose-500/20 flex items-center justify-center text-xs font-black text-rose-400">
+                                                        {i + 1}
+                                                    </span>
+                                                    <div>
+                                                        <p className="font-bold text-white">${stock.displaySymbol}</p>
+                                                        <p className="text-xs text-white/40 truncate max-w-[150px]">{stock.name}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="font-bold text-white tabular-nums">{stock.price.toFixed(2)}</p>
+                                                    <p className="text-sm font-bold text-rose-400 tabular-nums">{stock.changePercent.toFixed(2)}%</p>
+                                                </div>
+                                            </motion.button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* === MOST TRADED SECTION === */}
+                            <section>
+                                <h2 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                    <Zap className="w-4 h-4" /> Mest Handlade
+                                </h2>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    {(tradedData || []).map((stock: TradedStock) => (
+                                        <motion.button
+                                            key={stock.symbol}
+                                            whileHover={{ scale: 1.03, y: -4 }}
+                                            whileTap={{ scale: 0.97 }}
+                                            onClick={() => router.push(`/aktie/${stock.symbol}`)}
+                                            className="relative rounded-2xl p-5 bg-white/[0.04] border border-white/10 hover:border-white/20 text-left transition-all overflow-hidden group"
+                                        >
+                                            <div className="flex justify-between items-start mb-3">
+                                                <p className="text-lg font-black text-white">${stock.displaySymbol}</p>
+                                                <span className={`text-xs font-bold px-2 py-1 rounded-lg ${stock.changePercent >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
+                                                    {stock.changePercent >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
+                                                </span>
                                             </div>
-                                        </div>
+                                            <p className="text-xs text-white/40 truncate mb-3">{stock.name}</p>
+                                            <div className="flex justify-between items-end">
+                                                <div>
+                                                    <p className="text-[10px] text-white/30 uppercase tracking-widest">Volym</p>
+                                                    <p className="text-sm font-bold text-white/70">{stock.volumeFormatted}</p>
+                                                </div>
+                                                <p className="text-xl font-black text-white tabular-nums">{stock.price.toFixed(2)}</p>
+                                            </div>
+                                            {/* Hover effect */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                                        </motion.button>
+                                    ))}
+                                </div>
+                            </section>
 
-                                        <div className="mt-auto">
-                                            <p className="text-sm font-bold text-white/80 leading-snug">
-                                                Ticko ser {stock.upside >= 0 ? "+" : ""}{stock.upside}% {stock.upside >= 0 ? "uppsida" : "nedsida"}
-                                            </p>
-                                        </div>
+                            {/* === SENTIMENT RADAR (COMPACT) === */}
+                            <section className="border border-white/10 rounded-3xl p-6 bg-white/[0.02]">
+                                <h2 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-1 flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                                    Ticko Sentiment Radar
+                                </h2>
+                                <p className="text-xs text-white/30 mb-6">AI-driven analys av marknadssentiment baserat på nyheter och sociala medier.</p>
 
-                                        {/* Subtle pattern overlay */}
-                                        <div className="absolute inset-0 opacity-5 pointer-events-none overflow-hidden rounded-3xl">
-                                            <div className="absolute top-0 right-0 w-24 h-24 border-4 border-white/50 rounded-full -mr-12 -mt-12" />
+                                <div className="flex items-center justify-center gap-8 py-8">
+                                    <div className="text-center">
+                                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center shadow-lg shadow-rose-500/30">
+                                            <span className="text-2xl font-black text-white">23%</span>
                                         </div>
-                                    </motion.button>
-                                ))}
-                            </div>
-                        </div>
+                                        <p className="text-xs font-bold text-white/40 uppercase tracking-widest mt-3">Rädsla</p>
+                                    </div>
+                                    <div className="h-16 w-px bg-white/10" />
+                                    <div className="text-center">
+                                        <div className="w-32 h-32 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-xl shadow-emerald-500/40 ring-4 ring-emerald-500/20">
+                                            <span className="text-4xl font-black text-white">67%</span>
+                                        </div>
+                                        <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest mt-3">Girighet</p>
+                                    </div>
+                                    <div className="h-16 w-px bg-white/10" />
+                                    <div className="text-center">
+                                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-white/20 to-white/10 flex items-center justify-center shadow-lg">
+                                            <span className="text-2xl font-black text-white/70">10%</span>
+                                        </div>
+                                        <p className="text-xs font-bold text-white/40 uppercase tracking-widest mt-3">Neutral</p>
+                                    </div>
+                                </div>
+                            </section>
+                        </>
                     )}
-
-                    {/* Quick Insight Popover */}
-                    <AnimatePresence>
-                        {selectedBubble && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 bg-[#0B0F17]/95 backdrop-blur-3xl p-8 rounded-[2.5rem] border border-white/20 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] z-50 text-center"
-                            >
-                                <button
-                                    onClick={() => setSelectedBubble(null)}
-                                    className="absolute top-6 right-6 text-white/30 hover:text-white transition-colors"
-                                >
-                                    Stäng
-                                </button>
-                                <div className={`w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br flex items-center justify-center mb-6 shadow-2xl ${getSentimentColor(selectedBubble.sentiment)}`}>
-                                    <span className="text-2xl font-black text-white">${selectedBubble.symbol}</span>
-                                </div>
-                                <h3 className="text-2xl font-black text-white mb-2">Ticko Analys</h3>
-                                <p className="text-white/60 text-sm leading-relaxed mb-8">
-                                    {selectedBubble.sentiment > 70
-                                        ? `Ticko ser starkt momentum och positiva signaler. Vår modell förutspår en fortsatt upptrend med ${Math.abs(selectedBubble.upside)}% uppsida.`
-                                        : selectedBubble.sentiment < 30
-                                            ? `Ticko varnar för svaga makrosignaler och hög kortsiktig risk. Vi ser en potentiell ${Math.abs(selectedBubble.upside)}% nedsida.`
-                                            : `Ticko ser blandade signaler. Marknaden avvaktar nästa rapport—vi estimerar ${selectedBubble.upside >= 0 ? "+" : ""}${selectedBubble.upside}% rörelse.`}
-                                </p>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/5">
-                                        <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">Påverkan</p>
-                                        <p className="text-lg font-black text-white">Hög</p>
-                                    </div>
-                                    <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/5">
-                                        <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">Volym</p>
-                                        <p className="text-lg font-black text-white">8.4M</p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
                 </div>
             </main>
 
