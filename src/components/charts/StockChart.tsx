@@ -102,8 +102,14 @@ export function StockChart({ symbol, theme = "dark", height = 400 }: StockChartP
 
         containerRef.current.appendChild(script);
 
+        containerRef.current.appendChild(script);
+
         return () => {
             if (containerRef.current) {
+                // Aggressively clean up script and content to prevent memory leaks
+                while (containerRef.current.firstChild) {
+                    containerRef.current.removeChild(containerRef.current.firstChild);
+                }
                 containerRef.current.innerHTML = "";
             }
         };

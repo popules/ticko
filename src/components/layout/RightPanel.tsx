@@ -27,6 +27,7 @@ export function RightPanel() {
         queryKey: ["watchlist"],
         queryFn: async () => {
             const res = await fetch("/api/watchlist");
+            if (!res.ok) return [];
             const data = await res.json();
             return data.stocks || [];
         },
