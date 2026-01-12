@@ -8,6 +8,7 @@ import { StockChart } from "@/components/charts/StockChart";
 import { NewsFeed } from "@/components/news/NewsFeed";
 import { PortfolioButton } from "@/components/portfolio/PortfolioButton";
 import { WatchButton } from "@/components/watchlist/WatchButton";
+import { PerformanceMetrics } from "@/components/stock/PerformanceMetrics";
 import { ArrowLeft, Star, Brain } from "lucide-react";
 import Link from "next/link";
 import { UI_STRINGS } from "@/config/app";
@@ -102,6 +103,11 @@ export default async function AktiePage({ params }: AktiePageProps) {
                         </div>
                     </div>
                 </header>
+
+                {/* Performance Metrics Row */}
+                <div className="px-6 pt-4 border-b border-white/5">
+                    <PerformanceMetrics symbol={upperTicker} />
+                </div>
 
                 {/* Stock overview */}
                 <div className="p-6 border-b border-white/10">

@@ -1,23 +1,12 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { fetchStockData } from '@/lib/stocks-api';
 
 export const dynamic = 'force-dynamic';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-async function getSupabase() {
-    const cookieStore = await cookies();
-    return createClient(supabaseUrl, supabaseAnonKey, {
-        global: { headers: { Cookie: cookieStore.toString() } },
-    });
-}
-
 export async function GET() {
     try {
-        const supabase = await getSupabase();
+        const supabase = await createSupabaseServerClient();
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {
@@ -31,10 +20,10 @@ export async function GET() {
 
         if (error) throw error;
 
-        const symbols = (watchlistData as any[]).map(item => item.ticker_symbol);
+        const symbols = (watchlistData || []).map((item: any) => item.ticker_symbol);
 
         const stocks = await Promise.all(
-            symbols.map(async symbol => {
+            symbols.map(async (symbol: string) => {
                 try {
                     return await fetchStockData(symbol);
                 } catch (e) {
@@ -46,7 +35,7 @@ export async function GET() {
 
         return NextResponse.json({
             stocks: stocks.filter(s => s !== null),
-            symbols: symbols // Return raw symbols for checking status reliably
+            symbols: symbols
         });
     } catch (error) {
         console.error('Watchlist GET failed:', error);
@@ -57,12 +46,15 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const { ticker } = await request.json();
-        const supabase = await getSupabase();
+        const supabase = await createSupabaseServerClient();
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {
+            console.error('Watchlist POST: No user found');
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
+
+        console.log(`Watchlist POST: User ${user.id} toggling ${ticker}`);
 
         const { data: existing } = await (supabase as any)
             .from('watchlists')
@@ -76,13 +68,21 @@ export async function POST(request: Request) {
                 .from('watchlists')
                 .delete()
                 .eq('id', existing.id);
-            if (deleteError) throw deleteError;
+            if (deleteError) {
+                console.error('Watchlist DELETE error:', deleteError);
+                throw deleteError;
+            }
+            console.log(`Watchlist: Removed ${ticker} for user ${user.id}`);
             return NextResponse.json({ status: 'removed' });
         } else {
             const { error: insertError } = await (supabase as any)
                 .from('watchlists')
                 .insert({ user_id: user.id, ticker_symbol: ticker });
-            if (insertError) throw insertError;
+            if (insertError) {
+                console.error('Watchlist INSERT error:', insertError);
+                throw insertError;
+            }
+            console.log(`Watchlist: Added ${ticker} for user ${user.id}`);
             return NextResponse.json({ status: 'added' });
         }
     } catch (error) {
