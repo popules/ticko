@@ -219,7 +219,7 @@ export function LandingPage() {
                     {/* Legal Disclaimer */}
                     <div className="mt-8 pt-6 border-t border-white/[0.03]">
                         <p className="text-[11px] text-white/20 leading-relaxed max-w-4xl">
-                            <strong className="text-white/30">Disclaimer:</strong> Innehållet på Ticko utgör inte finansiell rådgivning. Alla investeringsbeslut fattas av dig själv och på egen risk. Åsikter som delas av användare är deras egna och representerar inte Tickos ståndpunkt. Historisk avkastning är ingen garanti för framtida resultat.
+                            <strong className="text-white/30">Disclaimer:</strong> Innehållet på Ticko, inklusive data och analyser från Ticko AI, utgör inte finansiell rådgivning eller köprekommendationer. Allt investerande innebär risk och historisk avkastning är ingen garanti för framtida resultat. Marknadsdata kan vara fördröjd. Åsikter som delas av användare är deras egna och representerar inte Ticko.
                         </p>
                     </div>
 
