@@ -81,7 +81,7 @@ export default async function AktiePage({ params }: AktiePageProps) {
                                         }`}
                                 >
                                     {((stock.change ?? 0) >= 0) ? "+" : ""}
-                                    {((stock.changePercent ?? 0) * 100).toFixed(2)}%
+                                    {(stock.changePercent ?? 0).toFixed(2)}%
                                 </span>
                             </div>
                         </div>

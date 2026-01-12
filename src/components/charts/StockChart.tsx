@@ -54,10 +54,9 @@ function convertToTradingViewSymbol(yahooSymbol: string): string {
         return `EURONEXT:${base}`;
     }
 
-    // US stocks without suffix - default to NASDAQ (most common)
-    // TradingView will auto-resolve if it's NYSE
+    // US stocks without suffix - default to raw symbol (TradingView resolves it)
     if (!yahooSymbol.includes('.')) {
-        return `NASDAQ:${yahooSymbol}`;
+        return yahooSymbol;
     }
 
     // Fallback: just return as-is and let TradingView try to resolve
