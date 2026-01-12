@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Star } from "lucide-react";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 interface WatchButtonProps {
     symbol: string;
@@ -51,14 +52,20 @@ export function WatchButton({ symbol }: WatchButtonProps) {
 
             return { previousWatchlist };
         },
-        onError: (err, newTodo, context) => {
-            queryClient.setQueryData(["watchlist"], context?.previousWatchlist);
-            console.error("Watch toggle failed", err);
-        },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["watchlist"] });
         },
+        onError: (err, newTodo, context) => {
+            queryClient.setQueryData(["watchlist"], context?.previousWatchlist);
+            console.error("Watch toggle failed", err);
+            // Consider adding a toast here if we had access to toast context
+        }
     });
+
+    // Force verify status on mount
+    useEffect(() => {
+        queryClient.invalidateQueries({ queryKey: ["watchlist"] });
+    }, [symbol, queryClient]);
 
     return (
         <motion.button

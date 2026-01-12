@@ -82,6 +82,7 @@ export default async function AktiePage({ params }: AktiePageProps) {
                                 >
                                     {((stock.change ?? 0) >= 0) ? "+" : ""}
                                     {(stock.changePercent ?? 0).toFixed(2)}%
+                                    <span className="opacity-50 ml-1 font-normal">idag</span>
                                 </span>
                             </div>
                         </div>
