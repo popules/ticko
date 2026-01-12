@@ -13,6 +13,23 @@ import Link from "next/link";
 import { UI_STRINGS } from "@/config/app";
 import { fetchStockData } from "@/lib/stocks-api";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: AktiePageProps): Promise<Metadata> {
+    const { ticker } = await params;
+    const stock = await fetchStockData(ticker.toUpperCase());
+
+    if (!stock) return { title: "Aktie hittades inte - Ticko" };
+
+    return {
+        title: `${stock.name} ($${stock.symbol}) - Analys, sentiment och diskussion på Ticko`,
+        description: `Se senaste nytt, AI-analys och community-sentiment för ${stock.name}. Diskutera $${stock.symbol} med andra småsparare på Ticko.`,
+        openGraph: {
+            title: `${stock.name} ($${stock.symbol}) på Ticko`,
+            description: `Häng med i snacket kring ${stock.name}. AI-insikter och realtidsdata för svenska småsparare.`,
+        }
+    };
+}
 
 // Mock stock data removed - using centralized lib
 

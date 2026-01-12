@@ -14,6 +14,7 @@ export default function RegisterPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -33,6 +34,11 @@ export default function RegisterPage() {
 
         if (username.length < 3) {
             setError("Användarnamnet måste vara minst 3 tecken");
+            return;
+        }
+
+        if (!acceptedTerms) {
+            setError("Du måste godkänna användarvillkoren för att fortsätta");
             return;
         }
 
@@ -146,12 +152,24 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        {/* Error message */}
                         {error && (
                             <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 text-rose-400 text-sm">
                                 {error}
                             </div>
                         )}
+
+                        {/* Terms checkbox */}
+                        <label className="flex items-start gap-3 cursor-pointer mt-4">
+                            <input
+                                type="checkbox"
+                                checked={acceptedTerms}
+                                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                                className="mt-1 h-4 w-4 rounded border-white/20 bg-white/[0.06] text-emerald-500 focus:ring-emerald-500/30 focus:ring-offset-0"
+                            />
+                            <span className="text-sm text-white/60 leading-relaxed">
+                                Jag godkänner <Link href="/terms" className="text-emerald-400 hover:underline" target="_blank">användarvillkoren</Link> och <Link href="/privacy" className="text-emerald-400 hover:underline" target="_blank">integritetspolicyn</Link>, och förstår att Ticko inte tillhandahåller finansiell rådgivning.
+                            </span>
+                        </label>
 
                         {/* Submit button */}
                         <button

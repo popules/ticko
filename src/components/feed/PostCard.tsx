@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
 import { TrendingUp, TrendingDown, Share2 } from "lucide-react";
@@ -9,6 +10,8 @@ import { ReactionButtons } from "./ReactionButtons";
 import { ReactionBar } from "./ReactionBar";
 import { PollView } from "./PollView";
 import { CommentThread } from "./CommentThread";
+import { ReportModal } from "./ReportModal";
+import { Flag } from "lucide-react";
 import Link from "next/link";
 import type { Post } from "@/types/database";
 
@@ -25,6 +28,7 @@ interface PostCardProps {
 }
 
 export function PostCard({ post }: PostCardProps) {
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
     const profile = post.profiles;
     const sentiment = post.sentiment;
 
@@ -169,9 +173,18 @@ export function PostCard({ post }: PostCardProps) {
                             downCount={post.down_count || 0}
                             userReaction={post.user_reaction}
                         />
-                        <button className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors">
-                            <Share2 className="w-4 h-4" />
-                        </button>
+                        <div className="flex items-center gap-4">
+                            <button
+                                onClick={() => setIsReportModalOpen(true)}
+                                className="flex items-center gap-2 text-sm text-white/20 hover:text-rose-400 transition-colors"
+                                title="Anmäl inlägg"
+                            >
+                                <Flag className="w-4 h-4" />
+                            </button>
+                            <button className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors">
+                                <Share2 className="w-4 h-4" />
+                            </button>
+                        </div>
                     </div>
 
                     {/* Emoji Reactions */}
@@ -179,6 +192,13 @@ export function PostCard({ post }: PostCardProps) {
 
                     {/* Comment Thread */}
                     <CommentThread postId={post.id} commentCount={post.comment_count || 0} />
+
+                    {/* Report Modal */}
+                    <ReportModal
+                        isOpen={isReportModalOpen}
+                        onClose={() => setIsReportModalOpen(false)}
+                        postId={post.id}
+                    />
 
 
                 </div>

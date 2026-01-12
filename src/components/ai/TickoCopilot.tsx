@@ -196,8 +196,8 @@ export function TickoCopilot() {
                                     <Send className="w-4 h-4" />
                                 </button>
                             </form>
-                            <p className="text-[10px] text-center text-white/20 mt-2">
-                                Ticko AI kan göra misstag. Informationen utgör inte finansiell rådgivning.
+                            <p className="text-[10px] text-center text-white/30 mt-2 px-2 leading-tight">
+                                <strong>Viktigt:</strong> Ticko AI utgör inte finansiell rådgivning. Historisk avkastning är ingen garanti för framtida vinst. Gör alltid din egen analys.
                             </p>
                         </div>
                     </motion.div>

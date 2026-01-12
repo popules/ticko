@@ -178,6 +178,12 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
                     </span>
                 </div>
             </div>
+            {/* Legal Disclaimer */}
+            <div className="pt-4 border-t border-white/5">
+                <p className="text-[10px] text-white/30 text-center leading-relaxed">
+                    AI-analysen är baserad på historisk data och offentlig information. Den ska ses som ett komplement till din egen research och utgör inte en köp- eller säljrekommendation.
+                </p>
+            </div>
         </div>
     );
 }

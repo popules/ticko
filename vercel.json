@@ -1,0 +1,8 @@
+{
+    "crons": [
+        {
+            "path": "/api/cron/tickobot",
+            "schedule": "0 7,12,16 * * 1-5"
+        }
+    ]
+}
