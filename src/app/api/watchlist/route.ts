@@ -1,15 +1,27 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase/client';
+import { createClient } from '@supabase/supabase-js';
+import { cookies } from 'next/headers';
 import { fetchStockData } from '@/lib/stocks-api';
 
 export const dynamic = 'force-dynamic';
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+async function getSupabase() {
+    const cookieStore = await cookies();
+    return createClient(supabaseUrl, supabaseAnonKey, {
+        global: { headers: { Cookie: cookieStore.toString() } },
+    });
+}
+
 export async function GET() {
     try {
+        const supabase = await getSupabase();
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {
-            return NextResponse.json({ stocks: [] });
+            return NextResponse.json({ stocks: [], symbols: [] });
         }
 
         const { data: watchlistData, error } = await (supabase as any)
@@ -45,6 +57,7 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const { ticker } = await request.json();
+        const supabase = await getSupabase();
         const { data: { user } } = await supabase.auth.getUser();
 
         if (!user) {

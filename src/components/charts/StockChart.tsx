@@ -91,7 +91,7 @@ export function StockChart({ symbol, theme = "dark", height = 400 }: StockChartP
             backgroundColor: "rgba(2, 6, 23, 1)", // Match app background
             gridColor: "rgba(255, 255, 255, 0.03)", // Subtle grid
             hide_top_toolbar: true, // Cleaner look
-            hide_legend: true, // Cleaner look
+            hide_legend: false, // Show OHLC and % change
             hide_side_toolbar: true, // Cleaner look
             allow_symbol_change: false, // Lock to current symbol
             save_image: false,
