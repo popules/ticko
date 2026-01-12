@@ -96,60 +96,79 @@ function format52WeekRange(low: number | undefined, high: number | undefined, sy
 
 export async function fetchDiscoveryStocks(): Promise<StockData[]> {
     try {
-        // Use trending symbols to find interesting stocks
-        const trending: any = await yf.trendingSymbols('SE'); // Start with Swedish trending
-        const symbols = trending.quotes.map((q: any) => q.symbol);
-
-        // Curated list of high-profile stocks to ensure the app feels "full"
+        // Core curated list to ALWAYS be available
         const curated = [
             'VOLV-B.ST', 'AZN.ST', 'SEB-A.ST', 'ERIC-B.ST', 'HM-B.ST', 'ABB.ST', 'TELIA.ST', 'INVE-B.ST', 'SAND.ST', // SE
             'TSLA', 'NVDA', 'AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META', 'NFLX', 'AMD', 'PLTR', 'COST', 'V', 'UBER' // US
         ];
 
-        // Combine and limit
-        const allSymbols = Array.from(new Set([...symbols, ...curated]));
+        // 1. Try to fetch trending symbols from Yahoo
+        let symbols = [...curated];
+        try {
+            const trending: any = await yf.trendingSymbols('SE'); // Start with Swedish trending
+            if (trending?.quotes) {
+                symbols = [...new Set([...symbols, ...trending.quotes.map((q: any) => q.symbol)])];
+            }
+        } catch (e) {
+            console.warn("Yahoo trending fetch failed, using curated list.");
+        }
 
-        // Pick 12 random symbols from the pool to keep discovery fresh
-        const selectedSymbols = [...allSymbols]
+        // 2. Pick 10 random symbols to keep it snappy
+        const selectedSymbols = symbols
             .sort(() => 0.5 - Math.random())
-            .slice(0, 12);
+            .slice(0, 10);
 
+        // 3. Fetch basic stock data (Parallel)
         const stocks = await Promise.all(
-            selectedSymbols.map(symbol => fetchStockData(symbol as string))
+            selectedSymbols.map(symbol => fetchStockData(symbol))
         );
 
         const validStocks = stocks.filter((s): s is StockData => s !== null);
 
-        // Enhance with AI Discovery Hooks
-
+        // 4. Enhance with AI hooks (Optional - fail gracefully)
         const enhancedStocks = await Promise.all(validStocks.map(async (stock) => {
             try {
+                // Quick check to skip AI if key is missing
+                if (!process.env.OPENAI_API_KEY) throw new Error("No API key");
+
                 const completion = await openai.chat.completions.create({
                     model: "gpt-4o-mini",
                     messages: [{
                         role: "system",
-                        content: "Du är en trendspanare på börsen. Skriv EN kort, spännande mening (max 60 tecken) om varför denna aktie är intressant just nu. Svara på svenska."
+                        content: "Du är en trendspanare. En kort mening (max 6 ord) om aktien. Ingen finansiell rådgivning. Svara på svenska."
                     }, {
                         role: "user",
                         content: `Aktie: ${stock.name} (${stock.symbol}), Pris: ${stock.price} ${stock.currency}`
                     }],
-                    max_tokens: 50
+                    max_tokens: 30
                 });
                 return {
                     ...stock,
                     discoveryHook: completion.choices[0]?.message?.content?.replace(/"/g, '') || "Hög aktivitet i aktien just nu.",
-                    bullishPercent: Math.floor(Math.random() * (95 - 45 + 1) + 45), // Random sentiment between 45-95%
+                    bullishPercent: Math.floor(Math.random() * (95 - 45 + 1) + 45),
                     performanceCue: Math.random() > 0.5 ? "Hög träffsäkerhet i communityn" : "Trendar starkt",
                 };
             } catch (error) {
-                console.error("AI Hook failed for", stock.symbol, error);
-                return { ...stock, discoveryHook: "Hög aktivitet i aktien just nu." };
+                // Fallback hooks if AI fails
+                const fallbacks = [
+                    "Hög aktivitet i communityn",
+                    "Trendar starkt just nu",
+                    "Många sparare bevakar denna",
+                    "Volatila rörelser idag",
+                    "Intresseväckande nivåer"
+                ];
+                return {
+                    ...stock,
+                    discoveryHook: fallbacks[Math.floor(Math.random() * fallbacks.length)],
+                    bullishPercent: Math.floor(Math.random() * (95 - 45 + 1) + 45),
+                    performanceCue: "Populär i dag",
+                };
             }
         }));
 
         return enhancedStocks;
     } catch (error) {
-        console.error("Discovery failed:", error);
+        console.error("Discovery failed completely:", error);
         return [];
     }
 }
