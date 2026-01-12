@@ -1,101 +1,151 @@
-import { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { Shield, Database, Share2, Clock, UserCheck, Cookie } from "lucide-react";
 
-export const metadata: Metadata = {
-    title: "Integritetspolicy - Ticko",
-    description: "Läs om hur Ticko hanterar dina personuppgifter i enlighet med GDPR.",
-};
+export default function IntegritetPage() {
+    const sections = [
+        {
+            icon: Database,
+            title: "1. Insamling av data och rättslig grund",
+            content: "Vi behandlar dina personuppgifter för att fullgöra vårt avtal med dig eller baserat på vårt berättigade intresse att tillhandahålla en säker tjänst.",
+            subsections: [
+                { label: "Kontoinformation", text: "E-post och användarnamn (via Supabase)." },
+                { label: "Användarinnehåll", text: "Inlägg, kommentarer, bevakningslistor och portföljdata som du väljer att dela." },
+                { label: "Teknisk data", text: "IP-adress, webbläsartyp och enhetsinformation för säkerhetsanalys och spambekämpning." }
+            ]
+        },
+        {
+            icon: Shield,
+            title: "2. Användning av data",
+            content: "Din data används för att driva plattformen, möjliggöra social interaktion och tillhandahålla Ticko AI. Vi anonymiserar data i största möjliga mån.",
+            highlight: true,
+            footer: "Vid användning av Ticko AI skickas endast din specifika fråga till vår underleverantör; vi delar aldrig din personprofil eller e-post med AI-leverantörer."
+        },
+        {
+            icon: Share2,
+            title: "3. Delning med tredje part och internationell överföring",
+            content: "Vi använder underleverantörer för drift:",
+            list: [
+                "Supabase (Databas & Auth)",
+                "Vercel (Hosting)",
+                "OpenAI (AI-analys)"
+            ],
+            footer: "Vid överföring av data utanför EU/EES säkerställer vi skyddet genom lagstadgade standardavtalsklausuler."
+        },
+        {
+            icon: Clock,
+            title: "4. Lagring och radering",
+            content: "Vi lagrar dina uppgifter så länge ditt konto är aktivt. Om du väljer att radera ditt konto tas alla personkopplingar bort.",
+            footer: "Observera att publicerade inlägg kan kvarstå i anonymiserad form för att inte bryta konversationstrådar i communityt."
+        },
+        {
+            icon: UserCheck,
+            title: "5. Dina rättigheter",
+            content: "Du har rätt till registerutdrag, rättelse och radering (\"rätten att bli glömd\"). Du kan även invända mot viss behandling.",
+            contact: "privacy@ticko.se"
+        },
+        {
+            icon: Cookie,
+            title: "6. Cookies och spårning",
+            content: "Vi använder nödvändiga cookies för inloggning. Vi använder även analystjänster för att förstå hur plattformen används i syfte att förbättra användarupplevelsen. Du kan läsa mer om hur du hanterar cookies i din webbläsare."
+        }
+    ];
 
-export default function PrivacyPage() {
     return (
-        <div className="min-h-screen bg-[#020617]">
-            <div className="max-w-3xl mx-auto px-6 py-16">
+        <div className="min-h-screen bg-gradient-to-br from-[#0A0E14] via-[#0D1117] to-[#0A0E14]">
+            <div className="max-w-4xl mx-auto px-6 py-16">
                 {/* Header */}
-                <div className="mb-12">
-                    <Link
-                        href="/"
-                        className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-8"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        Tillbaka
-                    </Link>
-                    <div className="flex items-center gap-4 mb-4">
-                        <div className="p-3 bg-blue-500/10 rounded-2xl border border-blue-500/20">
-                            <ShieldCheck className="w-6 h-6 text-blue-400" />
-                        </div>
-                        <h1 className="text-3xl font-black text-white">Integritetspolicy</h1>
+                <div className="text-center mb-16">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-6">
+                        <Shield className="w-8 h-8 text-blue-400" />
                     </div>
+                    <h1 className="text-4xl font-bold text-white mb-4">Integritetspolicy för Ticko</h1>
                     <p className="text-white/40 text-sm">Senast uppdaterad: 12 januari 2026</p>
                 </div>
 
-                {/* Content */}
-                <div className="prose prose-invert prose-blue max-w-none space-y-8">
-                    <p className="text-white/70 text-lg leading-relaxed">
-                        Din integritet är viktig för oss. Här beskriver vi hur vi hanterar dina personuppgifter i enlighet med GDPR.
-                    </p>
+                {/* Sections */}
+                <div className="space-y-6">
+                    {sections.map((section, index) => (
+                        <div
+                            key={index}
+                            className={`bg-white/[0.02] border rounded-2xl p-6 transition-all hover:bg-white/[0.03] ${section.highlight
+                                    ? 'border-emerald-500/30 bg-emerald-500/[0.02]'
+                                    : 'border-white/10'
+                                }`}
+                        >
+                            <div className="flex items-start gap-4">
+                                <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${section.highlight
+                                        ? 'bg-emerald-500/10 border border-emerald-500/20'
+                                        : 'bg-white/5 border border-white/10'
+                                    }`}>
+                                    <section.icon className={`w-5 h-5 ${section.highlight ? 'text-emerald-400' : 'text-white/40'}`} />
+                                </div>
+                                <div className="flex-1">
+                                    <h2 className={`text-lg font-semibold mb-3 ${section.highlight ? 'text-emerald-400' : 'text-white'}`}>
+                                        {section.title}
+                                    </h2>
 
-                    <section className="bg-white/[0.02] border border-white/10 rounded-2xl p-6">
-                        <h2 className="text-xl font-bold text-white mb-4">1. Vilken data samlar vi in?</h2>
-                        <ul className="space-y-4 text-white/60">
-                            <li>
-                                <strong className="text-white">Kontoinformation:</strong> När du skapar ett konto sparar vi din e-postadress och ditt valda användarnamn via vår leverantör Supabase.
-                            </li>
-                            <li>
-                                <strong className="text-white">Användargenererat innehåll:</strong> Inlägg, kommentarer, bevakningslistor (watchlists) och portföljdata som du själv väljer att lägga till.
-                            </li>
-                            <li>
-                                <strong className="text-white">Teknisk data:</strong> IP-adress och enhetsinformation för att förhindra spam och förbättra säkerheten.
-                            </li>
-                        </ul>
-                    </section>
+                                    {section.content && (
+                                        <p className="text-white/60 leading-relaxed">{section.content}</p>
+                                    )}
 
-                    <section className="bg-white/[0.02] border border-white/10 rounded-2xl p-6">
-                        <h2 className="text-xl font-bold text-white mb-4">2. Hur används din data?</h2>
-                        <p className="text-white/60 leading-relaxed mb-4">Vi använder din data för att:</p>
-                        <ul className="list-disc list-inside text-white/60 space-y-2">
-                            <li>Tillhandahålla och personifiera tjänsten</li>
-                            <li>Möjliggöra sociala funktioner (t.ex. följa andra användare)</li>
-                            <li>Förbättra våra AI-modeller (vi skickar aldrig din personliga profilinformation till OpenAI, endast de finansiella frågor du ställer till Ticko AI)</li>
-                        </ul>
-                    </section>
+                                    {section.subsections && (
+                                        <div className="space-y-3 mt-3">
+                                            {section.subsections.map((sub, subIndex) => (
+                                                <div key={subIndex} className="pl-4 border-l-2 border-white/10">
+                                                    <span className="text-white/80 font-medium">{sub.label}:</span>{" "}
+                                                    <span className="text-white/60">{sub.text}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
 
-                    <section className="bg-white/[0.02] border border-white/10 rounded-2xl p-6">
-                        <h2 className="text-xl font-bold text-white mb-4">3. Tredjepartstjänster</h2>
-                        <p className="text-white/60 leading-relaxed mb-4">Vi använder följande underleverantörer för att driva Ticko:</p>
-                        <ul className="space-y-3 text-white/60">
-                            <li><strong className="text-white">Supabase:</strong> För autentisering och databas (lagring inom EU/EES eftersträvas).</li>
-                            <li><strong className="text-white">OpenAI:</strong> För bearbetning av AI-analyser.</li>
-                            <li><strong className="text-white">Vercel:</strong> För hosting av webbplatsen.</li>
-                        </ul>
-                    </section>
+                                    {section.list && (
+                                        <ul className="mt-3 space-y-2">
+                                            {section.list.map((item, listIndex) => (
+                                                <li key={listIndex} className="flex items-start gap-2 text-white/60">
+                                                    <span className="text-blue-400 mt-1">•</span>
+                                                    <span>{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
 
-                    <section className="bg-white/[0.02] border border-white/10 rounded-2xl p-6">
-                        <h2 className="text-xl font-bold text-white mb-4">4. Dina rättigheter</h2>
-                        <p className="text-white/60 leading-relaxed mb-4">Enligt GDPR har du rätt att:</p>
-                        <ul className="list-disc list-inside text-white/60 space-y-2">
-                            <li>Begära utdrag på vilken data vi har om dig</li>
-                            <li>Få din data rättad eller raderad ("rätten att bli glömd")</li>
-                            <li>Avsluta ditt konto när som helst</li>
-                        </ul>
-                        <p className="text-white/60 leading-relaxed mt-4">
-                            Kontakta oss på <a href="mailto:privacy@ticko.se" className="text-blue-400 hover:underline">privacy@ticko.se</a> för hjälp med detta.
-                        </p>
-                    </section>
+                                    {section.footer && (
+                                        <p className="mt-4 text-white/50 text-sm italic">{section.footer}</p>
+                                    )}
 
-                    <section className="bg-white/[0.02] border border-white/10 rounded-2xl p-6">
-                        <h2 className="text-xl font-bold text-white mb-4">5. Cookies</h2>
-                        <p className="text-white/60 leading-relaxed">
-                            Vi använder nödvändiga cookies för att hålla dig inloggad och för att skydda webbplatsen mot intrång.
-                        </p>
-                    </section>
+                                    {section.contact && (
+                                        <p className="mt-4 text-white/60">
+                                            Kontakta oss på{" "}
+                                            <a href={`mailto:${section.contact}`} className="text-blue-400 hover:text-blue-300 transition-colors">
+                                                {section.contact}
+                                            </a>{" "}
+                                            för att utöva dina rättigheter.
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
 
                 {/* Footer */}
-                <div className="mt-16 pt-8 border-t border-white/10 text-center">
-                    <p className="text-white/30 text-sm">
-                        Frågor? Kontakta oss på <a href="mailto:privacy@ticko.se" className="text-blue-400 hover:underline">privacy@ticko.se</a>
-                    </p>
+                <div className="mt-12 flex justify-center gap-6 text-sm">
+                    <Link
+                        href="/villkor"
+                        className="text-white/40 hover:text-white/60 transition-colors"
+                    >
+                        Användarvillkor
+                    </Link>
+                    <span className="text-white/20">|</span>
+                    <Link
+                        href="/"
+                        className="text-white/40 hover:text-white/60 transition-colors"
+                    >
+                        ← Tillbaka till Ticko
+                    </Link>
                 </div>
             </div>
         </div>
