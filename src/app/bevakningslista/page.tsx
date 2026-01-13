@@ -63,14 +63,8 @@ export default function BevakningslistaPage() {
                         <div className="text-center py-20 rounded-3xl bg-white/[0.02] border border-dashed border-white/10">
                             <Star className="w-12 h-12 text-white/20 mx-auto mb-4" />
                             <h2 className="text-xl font-bold text-white mb-2">Din bevakningslista är tom</h2>
-                            <p className="text-white/40 mb-6">Lägg till aktier för att hålla koll på dem här.</p>
-                            <Link
-                                href="/upptack"
-                                className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-all"
-                            >
-                                <Plus className="w-4 h-4" />
-                                Upptäck aktier
-                            </Link>
+                            <p className="text-white/40 mb-2">Gå till en aktiesida och tryck på ⭐ stjärnan</p>
+                            <p className="text-white/30 text-sm">eller använd knappen ovan för att hitta aktier.</p>
                         </div>
                     ) : (
                         <div className="space-y-3">
