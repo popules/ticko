@@ -22,33 +22,33 @@ export function PremiumGate({
     }
 
     return (
-        <div className="relative group">
-            {/* Blurred preview */}
-            <div className="opacity-30 blur-sm pointer-events-none select-none" aria-hidden="true">
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+            {/* Blurred preview - lighter blur to show more of the content */}
+            <div className="opacity-50 blur-[2px] pointer-events-none select-none p-5" aria-hidden="true">
                 {children}
             </div>
 
-            {/* Overlay CTA */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-[#020617]/80 to-[#020617]/95 rounded-2xl p-6 text-center">
-                <div className="w-14 h-14 bg-gradient-to-br from-violet-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-4 shadow-xl shadow-violet-500/20">
-                    <Lock className="w-7 h-7 text-white" />
+            {/* Overlay CTA - positioned at bottom with gradient fade */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-t from-[#020617] via-[#020617]/60 to-transparent p-6 text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-3 shadow-lg shadow-emerald-500/30">
+                    <Lock className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-emerald-400" />
+                <h3 className="text-base font-bold text-white mb-1 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                     {featureName}
                 </h3>
-                <p className="text-sm text-white/60 mb-5 max-w-xs">
+                <p className="text-xs text-white/50 mb-4 max-w-[250px]">
                     {description}
                 </p>
                 <Link
                     href="/registrera"
-                    className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-105"
+                    className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-105"
                 >
                     Skapa konto gratis
                 </Link>
                 <Link
                     href="/logga-in"
-                    className="mt-3 text-sm text-white/40 hover:text-white transition-colors"
+                    className="mt-2 text-xs text-white/30 hover:text-white/60 transition-colors"
                 >
                     Har redan konto? Logga in
                 </Link>

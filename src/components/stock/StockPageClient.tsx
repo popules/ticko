@@ -98,12 +98,19 @@ interface PerformanceMetricsSectionProps {
 }
 
 export function PerformanceMetricsSection({ symbol }: PerformanceMetricsSectionProps) {
+    const { user } = useAuth();
+
+    if (user) {
+        return <PerformanceMetrics symbol={symbol} />;
+    }
+
     return (
-        <PremiumGate
-            featureName="Historisk avkastning"
-            description="Se YTD, 1-års och 5-års avkastning. Gratis för registrerade användare."
+        <Link
+            href="/registrera"
+            className="flex items-center gap-2 text-sm text-white/40 hover:text-emerald-400 transition-colors group"
         >
-            <PerformanceMetrics symbol={symbol} />
-        </PremiumGate>
+            <span>Se YTD, 1-års och 5-års avkastning.</span>
+            <span className="text-emerald-400 font-medium group-hover:underline">Gratis för registrerade användare.</span>
+        </Link>
     );
 }
