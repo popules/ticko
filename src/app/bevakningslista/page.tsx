@@ -4,13 +4,15 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Star, X, TrendingUp, TrendingDown, Plus, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function BevakningslistaPage() {
     const queryClient = useQueryClient();
 
-    const { data: watchlistData, isLoading } = useQuery({
+    const { data: watchlistData, isLoading, refetch } = useQuery({
         queryKey: ["watchlist"],
         queryFn: async () => {
+            console.log('[Bevakningslista] Fetching watchlist...');
             const res = await fetch("/api/watchlist", { credentials: "include" });
             if (!res.ok) {
                 console.log('[Bevakningslista] API returned not ok:', res.status);
@@ -20,7 +22,21 @@ export default function BevakningslistaPage() {
             console.log('[Bevakningslista] Got watchlist data:', data);
             return data;
         },
+        staleTime: 0, // Always consider data stale
+        refetchOnMount: 'always', // Always refetch when component mounts
     });
+
+    // Force refetch on mount
+    useEffect(() => {
+        console.log('[Bevakningslista] Component mounted, refetching...');
+        refetch();
+    }, [refetch]);
+
+    // Debug log current state
+    useEffect(() => {
+        console.log('[Bevakningslista] Current watchlistData:', watchlistData);
+        console.log('[Bevakningslista] stocks array:', watchlistData?.stocks);
+    }, [watchlistData]);
 
     const toggleWatch = useMutation({
         mutationFn: async (symbol: string) => {
