@@ -7,9 +7,16 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
     try {
         const supabase = await createSupabaseServerClient();
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+        console.log('[Watchlist API GET] Auth check:', {
+            hasUser: !!user,
+            userId: user?.id?.slice(0, 8),
+            authError: authError?.message,
+        });
 
         if (!user) {
+            // Return empty array, not 401 - this is expected for logged out users
             return NextResponse.json({ stocks: [], symbols: [] });
         }
 
