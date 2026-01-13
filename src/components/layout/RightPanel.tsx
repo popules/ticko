@@ -26,7 +26,7 @@ export function RightPanel() {
     const { data: watchlistData, isLoading } = useQuery({
         queryKey: ["watchlist"],
         queryFn: async () => {
-            const res = await fetch("/api/watchlist");
+            const res = await fetch("/api/watchlist", { credentials: "include" });
             if (!res.ok) return [];
             const data = await res.json();
             return data.stocks || [];
@@ -40,6 +40,7 @@ export function RightPanel() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ticker: symbol }),
+                credentials: "include",
             });
             return res.json();
         },
@@ -93,9 +94,13 @@ export function RightPanel() {
                     <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider">
                         {UI_STRINGS.watchlist}
                     </h3>
-                    <button className="p-2 rounded-xl hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors">
+                    <Link
+                        href="/upptack"
+                        className="p-2 rounded-xl hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors"
+                        title="Upptäck aktier att bevaka"
+                    >
                         <Plus className="w-4 h-4" />
-                    </button>
+                    </Link>
                 </div>
 
                 <div className="space-y-2">
@@ -150,11 +155,14 @@ export function RightPanel() {
                     )}
                 </div>
 
-                {/* Quick action */}
-                <button className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/[0.04] hover:bg-white/[0.08] rounded-2xl text-sm text-white/60 hover:text-white transition-all border border-white/[0.08] hover:border-white/[0.12]">
+                {/* Quick action - links to full watchlist page */}
+                <Link
+                    href="/bevakningslista"
+                    className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/[0.04] hover:bg-white/[0.08] rounded-2xl text-sm text-white/60 hover:text-white transition-all border border-white/[0.08] hover:border-white/[0.12]"
+                >
                     <Eye className="w-4 h-4" />
                     {UI_STRINGS.viewFullWatchlist}
-                </button>
+                </Link>
             </div>
         </aside>
     );

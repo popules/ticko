@@ -84,12 +84,7 @@ export default async function AktiePage({ params }: AktiePageProps) {
                                     </span>
                                 </div>
                             </div>
-                            <StockPageActions
-                                symbol={upperTicker}
-                                name={stock.name}
-                                price={stock.price ?? 0}
-                                currencySymbol={stock.currencySymbol}
-                            />
+                            <StockPageActions symbol={upperTicker} />
                         </div>
                     </header>
 

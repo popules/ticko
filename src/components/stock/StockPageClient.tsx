@@ -4,20 +4,15 @@ import { useAuth } from "@/providers/AuthProvider";
 import { PremiumGate } from "@/components/ui/PremiumGate";
 import { AIValuationCard } from "@/components/analysis/AIValuationCard";
 import { PerformanceMetrics } from "@/components/stock/PerformanceMetrics";
-import { AlertButton } from "@/components/alerts/AlertButton";
 import { WatchButton } from "@/components/watchlist/WatchButton";
-import { PortfolioButton } from "@/components/portfolio/PortfolioButton";
 import { Brain, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 interface StockPageActionsProps {
     symbol: string;
-    name: string;
-    price: number;
-    currencySymbol: string;
 }
 
-export function StockPageActions({ symbol, name, price, currencySymbol }: StockPageActionsProps) {
+export function StockPageActions({ symbol }: StockPageActionsProps) {
     const { user } = useAuth();
 
     if (!user) {
@@ -31,22 +26,7 @@ export function StockPageActions({ symbol, name, price, currencySymbol }: StockP
         );
     }
 
-    return (
-        <div className="flex items-center gap-2">
-            <AlertButton
-                symbol={symbol}
-                currentPrice={price}
-                currencySymbol={currencySymbol}
-            />
-            <WatchButton symbol={symbol} />
-            <PortfolioButton
-                symbol={symbol}
-                name={name}
-                currentPrice={price}
-                currencySymbol={currencySymbol}
-            />
-        </div>
-    );
+    return <WatchButton symbol={symbol} />;
 }
 
 interface AIAnalysisSectionProps {

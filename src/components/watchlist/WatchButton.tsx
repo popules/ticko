@@ -16,7 +16,8 @@ export function WatchButton({ symbol }: WatchButtonProps) {
     const { data: watchlistData } = useQuery({
         queryKey: ["watchlist"],
         queryFn: async () => {
-            const res = await fetch("/api/watchlist");
+            const res = await fetch("/api/watchlist", { credentials: "include" });
+            if (!res.ok) return { symbols: [], stocks: [] };
             return res.json();
         }
     });
