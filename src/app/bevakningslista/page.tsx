@@ -12,8 +12,13 @@ export default function BevakningslistaPage() {
         queryKey: ["watchlist"],
         queryFn: async () => {
             const res = await fetch("/api/watchlist", { credentials: "include" });
-            if (!res.ok) return { stocks: [], symbols: [] };
-            return res.json();
+            if (!res.ok) {
+                console.log('[Bevakningslista] API returned not ok:', res.status);
+                return { stocks: [], symbols: [] };
+            }
+            const data = await res.json();
+            console.log('[Bevakningslista] Got watchlist data:', data);
+            return data;
         },
     });
 
