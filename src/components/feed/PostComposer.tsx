@@ -150,9 +150,51 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
 
     return (
         <form onSubmit={handleSubmit} className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-5 border border-white/10 shadow-lg relative group focus-within:bg-white/[0.06] transition-colors">
+            {/* Ticker badge */}
+            {tickerFilter && (
+                <div className="mb-3 flex items-center gap-2">
+                    <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-500/20">
+                        ${tickerFilter}
+                    </span>
+                </div>
+            )}
 
+            {/* Text input area */}
+            <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder={tickerFilter ? `Vad tänker du om $${tickerFilter}?` : "Vad händer på marknaden?"}
+                className="w-full bg-transparent border-none outline-none resize-none text-white placeholder:text-white/40 min-h-[80px] text-sm leading-relaxed focus:ring-0"
+                disabled={isSubmitting}
+                rows={3}
+            />
 
+            {/* GIF Preview */}
+            {gifUrl && (
+                <div className="relative mt-3 rounded-xl overflow-hidden border border-white/10 w-fit">
+                    <img src={gifUrl} alt="Selected GIF" className="max-h-48 rounded-xl" />
+                    <button
+                        type="button"
+                        onClick={() => setGifUrl(null)}
+                        className="absolute top-2 right-2 p-1.5 bg-black/60 rounded-full text-white/80 hover:text-white transition-colors"
+                    >
+                        <X className="w-4 h-4" />
+                    </button>
+                </div>
+            )}
 
+            {/* Giphy Picker */}
+            {showGiphyPicker && (
+                <div className="mt-3">
+                    <GiphyPicker
+                        onSelect={(url) => {
+                            setGifUrl(url);
+                            setShowGiphyPicker(false);
+                        }}
+                        onClose={() => setShowGiphyPicker(false)}
+                    />
+                </div>
+            )}
 
             {/* Error message */}
             {error && (
