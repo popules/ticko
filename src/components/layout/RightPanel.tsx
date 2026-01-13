@@ -31,10 +31,12 @@ export function RightPanel() {
             const data = await res.json();
             return data.stocks || [];
         },
-        refetchInterval: 60000, // Still refresh every minute
-        staleTime: 0, // Consider stale immediately
-        refetchOnMount: 'always', // Refresh when navigating back
-        placeholderData: (previousData) => previousData, // Keep previous data visible during refetch
+        refetchInterval: 60000, // Refresh every minute
+        staleTime: 30000, // Keep data fresh for 30 seconds
+        gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
+        refetchOnMount: true, // Refresh when component mounts but don't block
+        refetchOnWindowFocus: false, // Don't refetch on window focus
+        placeholderData: (previousData) => previousData, // Keep previous data during refetch
     });
 
     const toggleWatch = useMutation({

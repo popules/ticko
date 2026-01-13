@@ -136,18 +136,6 @@ export default function ProfilePage() {
                                             <span className="text-xs text-white/50">Ryktespoäng</span>
                                             <span className="text-sm font-bold text-emerald-400">{profile?.reputation_score || 0}</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
-                                            <span className="text-xs text-white/50">Rank</span>
-                                            {(() => {
-                                                const { getUserRank } = require("@/lib/ranks");
-                                                const rank = getUserRank(profile?.reputation_score || 0);
-                                                return (
-                                                    <span className={`text-sm font-bold ${rank.color}`}>
-                                                        {rank.emoji} {rank.name}
-                                                    </span>
-                                                );
-                                            })()}
-                                        </div>
                                     </div>
                                 </div>
 

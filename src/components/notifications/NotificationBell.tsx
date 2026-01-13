@@ -74,6 +74,7 @@ export function NotificationBell() {
         switch (type) {
             case "like": return <Heart className="w-4 h-4 text-rose-400 fill-rose-400" />;
             case "comment": return <MessageCircle className="w-4 h-4 text-blue-400" />;
+            case "mention": return <span className="text-sm">@</span>;
             case "follow": return <UserPlus className="w-4 h-4 text-emerald-400" />;
             default: return <Bell className="w-4 h-4 text-white/40" />;
         }
@@ -84,6 +85,7 @@ export function NotificationBell() {
         switch (n.type) {
             case "like": return <span><b>{actor}</b> gillade ditt inlägg</span>;
             case "comment": return <span><b>{actor}</b> kommenterade ditt inlägg</span>;
+            case "mention": return <span><b>{actor}</b> nämnde dig i en kommentar</span>;
             case "follow": return <span><b>{actor}</b> började följa dig</span>;
             default: return <span>Ny händelse från <b>{actor}</b></span>;
         }

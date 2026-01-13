@@ -105,18 +105,13 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                             )}
 
                             {isOwnProfile && (
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={() => setIsEditModalOpen(true)}
-                                        className="flex items-center gap-2 px-6 py-2.5 bg-white text-black rounded-xl font-bold text-sm hover:bg-white/90 transition-all shadow-xl shadow-white/5"
-                                    >
-                                        <Pencil className="w-4 h-4" />
-                                        Redigera Profil
-                                    </button>
-                                    <button className="px-4 py-2.5 bg-white/[0.06] hover:bg-white/10 text-white rounded-xl border border-white/10 transition-all">
-                                        <Share2 className="w-4 h-4" />
-                                    </button>
-                                </div>
+                                <button
+                                    onClick={() => setIsEditModalOpen(true)}
+                                    className="flex items-center gap-2 px-6 py-2.5 bg-white text-black rounded-xl font-bold text-sm hover:bg-white/90 transition-all shadow-xl shadow-white/5"
+                                >
+                                    <Pencil className="w-4 h-4" />
+                                    Redigera Profil
+                                </button>
                             )}
                         </div>
 

@@ -7,10 +7,11 @@ import { supabase } from "@/lib/supabase/client";
 
 interface CommentFormProps {
     postId: string;
+    postOwnerId?: string; // ID of the user who owns the post
     onCommentAdded?: () => void;
 }
 
-export function CommentForm({ postId, onCommentAdded }: CommentFormProps) {
+export function CommentForm({ postId, postOwnerId, onCommentAdded }: CommentFormProps) {
     const { user } = useAuth();
     const [content, setContent] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,6 +31,42 @@ export function CommentForm({ postId, onCommentAdded }: CommentFormProps) {
                 });
 
             if (error) throw error;
+
+            // Create notification for post owner (if not commenting on own post)
+            if (postOwnerId && postOwnerId !== user.id) {
+                await (supabase as any)
+                    .from("notifications")
+                    .insert({
+                        user_id: postOwnerId,
+                        actor_id: user.id,
+                        type: "comment",
+                        post_id: postId
+                    });
+            }
+
+            // Check for @mentions in the comment
+            const mentions = content.match(/@(\w+)/g);
+            if (mentions) {
+                for (const mention of mentions) {
+                    const username = mention.slice(1); // Remove @
+                    const { data: mentionedUser } = await (supabase as any)
+                        .from("profiles")
+                        .select("id")
+                        .eq("username", username)
+                        .single();
+
+                    if (mentionedUser && mentionedUser.id !== user.id) {
+                        await (supabase as any)
+                            .from("notifications")
+                            .insert({
+                                user_id: mentionedUser.id,
+                                actor_id: user.id,
+                                type: "mention",
+                                post_id: postId
+                            });
+                    }
+                }
+            }
 
             setContent("");
             onCommentAdded?.();
@@ -51,7 +88,7 @@ export function CommentForm({ postId, onCommentAdded }: CommentFormProps) {
                 <input
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    placeholder="Svara på inlägget..."
+                    placeholder="Svara på inlägget... (@användarnamn för att nämna)"
                     className="w-full bg-transparent border-none outline-none text-white placeholder:text-white/40 h-10 focus:ring-0"
                     disabled={isSubmitting}
                 />
