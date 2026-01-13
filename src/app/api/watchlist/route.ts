@@ -64,6 +64,30 @@ export async function POST(request: Request) {
 
         console.log(`Watchlist POST: User ${user.id} toggling ${ticker}`);
 
+        // IMPORTANT: Ensure profile exists before watchlist operations
+        // The watchlists table has a foreign key to profiles, so we need to create 
+        // the profile first if it doesn't exist
+        const { data: existingProfile } = await (supabase as any)
+            .from('profiles')
+            .select('id')
+            .eq('id', user.id)
+            .maybeSingle();
+
+        if (!existingProfile) {
+            console.log(`[Watchlist API] Creating missing profile for user ${user.id}`);
+            const { error: profileError } = await (supabase as any)
+                .from('profiles')
+                .insert({
+                    id: user.id,
+                    username: user.email?.split('@')[0] || `user_${user.id.slice(0, 8)}`,
+                    display_name: user.user_metadata?.username || user.email?.split('@')[0] || 'Användare',
+                });
+            if (profileError) {
+                console.error('[Watchlist API] Failed to create profile:', profileError);
+                // Continue anyway - might be a race condition where profile was just created
+            }
+        }
+
         const { data: existing } = await (supabase as any)
             .from('watchlists')
             .select('id')
