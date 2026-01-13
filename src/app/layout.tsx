@@ -8,7 +8,6 @@ import { MobileNav } from "@/components/layout/MobileNav";
 import { SearchProvider } from "@/providers/SearchProvider";
 import { WelcomeToast } from "@/components/onboarding/WelcomeToast";
 import { CookieConsent } from "@/components/ui/CookieConsent";
-import { PostHogProvider } from "@/providers/PostHogProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,18 +27,16 @@ export default function RootLayout({
   return (
     <html lang="sv" className="dark">
       <body className={`${inter.variable} font-sans antialiased`}>
-        <PostHogProvider>
-          <QueryProvider>
-            <AuthProvider>
-              <SearchProvider>
-                {children}
-                <MobileNav />
-                <WelcomeToast />
-                <CookieConsent />
-              </SearchProvider>
-            </AuthProvider>
-          </QueryProvider>
-        </PostHogProvider>
+        <QueryProvider>
+          <AuthProvider>
+            <SearchProvider>
+              {children}
+              <MobileNav />
+              <WelcomeToast />
+              <CookieConsent />
+            </SearchProvider>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

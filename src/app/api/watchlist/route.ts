@@ -47,10 +47,18 @@ export async function POST(request: Request) {
     try {
         const { ticker } = await request.json();
         const supabase = await createSupabaseServerClient();
-        const { data: { user } } = await supabase.auth.getUser();
+
+        // Debug: Log what we're getting from auth
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+        console.log('[Watchlist API] Auth check:', {
+            hasUser: !!user,
+            userId: user?.id?.slice(0, 8),
+            authError: authError?.message,
+        });
 
         if (!user) {
-            console.error('Watchlist POST: No user found');
+            console.error('[Watchlist API] No user found - auth failed');
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
