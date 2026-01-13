@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { User, Shield, TrendingUp, Calendar, MapPin, Pencil, Share2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { Shield, TrendingUp, Calendar, MapPin, Pencil, Share2 } from "lucide-react";
 import { BadgeRack } from "./BadgeRack";
 import { EditProfileModal } from "./EditProfileModal";
+import { getUserRank } from "@/lib/ranks";
 
 interface ProfileHeaderProps {
     profile: {
@@ -78,7 +78,7 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                         <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
                             <div>
                                 <h1 className="text-2xl md:text-3xl font-black text-white tracking-tighter mb-1">
-                                    @{currentProfile.username}
+                                    {currentProfile.username}
                                 </h1>
                                 <div className="flex items-center gap-4 text-white/50 text-sm font-medium">
                                     <span className="flex items-center gap-1.5">
@@ -137,11 +137,18 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                                 <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Följer</p>
                             </div>
                             <div>
-                                <div className="flex items-center gap-2">
-                                    <p className="text-xl font-black text-emerald-400">{currentProfile.accuracy || 85}%</p>
-                                    <TrendingUp className="w-4 h-4 text-emerald-400" />
-                                </div>
-                                <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Pricksäkerhet</p>
+                                {(() => {
+                                    const rank = getUserRank((currentProfile as any).reputation_score || 0);
+                                    return (
+                                        <>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-lg">{rank.emoji}</span>
+                                                <p className={`text-xl font-black ${rank.color}`}>{rank.name}</p>
+                                            </div>
+                                            <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Rank (Lvl {rank.level})</p>
+                                        </>
+                                    );
+                                })()}
                             </div>
                         </div>
                     </div>

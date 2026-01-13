@@ -121,7 +121,7 @@ export default function ProfilePage() {
 
                             {/* Sidebar Column */}
                             <div className="space-y-8">
-                                {/* Insights Card - Keep semi-mocked for now as stats aren't in DB */}
+                                {/* Insights Card */}
                                 <div className="p-6 rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.08] to-transparent">
                                     <div className="flex items-center gap-2 mb-6">
                                         <TrendingUp className="w-5 h-5 text-blue-400" />
@@ -129,16 +129,24 @@ export default function ProfilePage() {
                                     </div>
                                     <div className="space-y-4">
                                         <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
-                                            <span className="text-xs text-white/50">Vinstmål nådda</span>
-                                            <span className="text-sm font-bold text-emerald-400">{profile?.reputation_score || 0}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
-                                            <span className="text-xs text-white/50">Givna tips</span>
+                                            <span className="text-xs text-white/50">Inlägg</span>
                                             <span className="text-sm font-bold text-white">{posts.length}</span>
                                         </div>
                                         <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
+                                            <span className="text-xs text-white/50">Ryktespoäng</span>
+                                            <span className="text-sm font-bold text-emerald-400">{profile?.reputation_score || 0}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
                                             <span className="text-xs text-white/50">Rank</span>
-                                            <span className="text-sm font-bold text-blue-400">Analytiker</span>
+                                            {(() => {
+                                                const { getUserRank } = require("@/lib/ranks");
+                                                const rank = getUserRank(profile?.reputation_score || 0);
+                                                return (
+                                                    <span className={`text-sm font-bold ${rank.color}`}>
+                                                        {rank.emoji} {rank.name}
+                                                    </span>
+                                                );
+                                            })()}
                                         </div>
                                     </div>
                                 </div>
