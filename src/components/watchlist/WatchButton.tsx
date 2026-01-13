@@ -26,12 +26,22 @@ export function WatchButton({ symbol }: WatchButtonProps) {
 
     const toggleWatch = useMutation({
         mutationFn: async () => {
+            console.log(`[WatchButton] Toggling watch for: ${symbol}`);
             const res = await fetch("/api/watchlist", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ticker: symbol }),
+                credentials: "include", // Ensure cookies are sent
             });
-            return res.json();
+
+            const data = await res.json();
+            console.log(`[WatchButton] Response status: ${res.status}`, data);
+
+            if (!res.ok) {
+                throw new Error(data.error || `Request failed with status ${res.status}`);
+            }
+
+            return data;
         },
         onMutate: async () => {
             await queryClient.cancelQueries({ queryKey: ["watchlist"] });
