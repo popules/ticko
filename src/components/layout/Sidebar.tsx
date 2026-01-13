@@ -44,7 +44,7 @@ import { useSearch } from "@/providers/SearchProvider";
 
 export function Sidebar() {
     const { open } = useSearch();
-    const { signOut } = useAuth();
+    const { user, signOut } = useAuth();
     const pathname = usePathname();
 
     // Fetch live trending snippets
@@ -122,13 +122,23 @@ export function Sidebar() {
                     <Settings className="w-4 h-4" />
                     <span className="text-[13px] font-medium">{UI_STRINGS.settings}</span>
                 </Link>
-                <button
-                    onClick={() => signOut()}
-                    className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/40 hover:text-rose-400 hover:bg-rose-400/10 transition-all group"
-                >
-                    <LogOut className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-                    <span className="text-[13px] font-medium">Logga ut</span>
-                </button>
+                {user ? (
+                    <button
+                        onClick={() => signOut()}
+                        className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/40 hover:text-rose-400 hover:bg-rose-400/10 transition-all group"
+                    >
+                        <LogOut className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                        <span className="text-[13px] font-medium">Logga ut</span>
+                    </button>
+                ) : (
+                    <Link
+                        href="/logga-in"
+                        className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-emerald-400 hover:bg-emerald-400/10 transition-all group"
+                    >
+                        <LogOut className="w-4 h-4 rotate-180 group-hover:-rotate-[168deg] transition-transform" />
+                        <span className="text-[13px] font-medium">Logga in</span>
+                    </Link>
+                )}
             </div>
         </aside>
     );

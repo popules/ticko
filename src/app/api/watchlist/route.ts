@@ -80,11 +80,11 @@ export async function POST(request: Request) {
                 .insert({
                     id: user.id,
                     username: user.email?.split('@')[0] || `user_${user.id.slice(0, 8)}`,
-                    display_name: user.user_metadata?.username || user.email?.split('@')[0] || 'Användare',
                 });
             if (profileError) {
                 console.error('[Watchlist API] Failed to create profile:', profileError);
-                // Continue anyway - might be a race condition where profile was just created
+                // Don't continue if profile creation failed - the FK will still fail
+                return NextResponse.json({ error: 'Failed to create profile' }, { status: 500 });
             }
         }
 
