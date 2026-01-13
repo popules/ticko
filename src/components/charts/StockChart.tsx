@@ -100,17 +100,16 @@ export function StockChart({ symbol, theme = "dark", height = 400 }: StockChartP
             support_host: "https://www.tradingview.com",
         });
 
-        containerRef.current.appendChild(script);
-
-        containerRef.current.appendChild(script);
+        const currentContainer = containerRef.current;
+        currentContainer.appendChild(script);
 
         return () => {
-            if (containerRef.current) {
+            if (currentContainer) {
                 // Aggressively clean up script and content to prevent memory leaks
-                while (containerRef.current.firstChild) {
-                    containerRef.current.removeChild(containerRef.current.firstChild);
+                while (currentContainer.firstChild) {
+                    currentContainer.removeChild(currentContainer.firstChild);
                 }
-                containerRef.current.innerHTML = "";
+                currentContainer.innerHTML = "";
             }
         };
     }, [tradingViewSymbol, theme]);

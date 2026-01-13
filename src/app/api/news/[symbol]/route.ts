@@ -28,15 +28,28 @@ export async function GET(
         const data = await response.json();
 
         if (data.feed && data.feed.length > 0) {
-            const news = data.feed.slice(0, 5).map((item: NewsItem) => ({
-                title: item.title,
-                url: item.url,
-                source: item.source,
-                summary: item.summary?.slice(0, 200) + "...",
-                publishedAt: item.time_published,
-                image: item.banner_image,
-                sentiment: item.overall_sentiment_label,
-            }));
+            const news = data.feed.slice(0, 5).map((item: NewsItem) => {
+                // Convert Alpha Vantage date format (YYYYMMDDTHHMMSS) to ISO format
+                let publishedAt = new Date().toISOString();
+                if (item.time_published && item.time_published.length >= 8) {
+                    const y = item.time_published.slice(0, 4);
+                    const m = item.time_published.slice(4, 6);
+                    const d = item.time_published.slice(6, 8);
+                    const h = item.time_published.slice(9, 11) || "00";
+                    const min = item.time_published.slice(11, 13) || "00";
+                    publishedAt = `${y}-${m}-${d}T${h}:${min}:00Z`;
+                }
+
+                return {
+                    title: item.title,
+                    url: item.url,
+                    source: item.source,
+                    summary: item.summary?.slice(0, 200) + "...",
+                    publishedAt,
+                    image: item.banner_image,
+                    sentiment: item.overall_sentiment_label,
+                };
+            });
 
             return NextResponse.json({ news });
         }

@@ -15,28 +15,13 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
             posthog.init(apiKey, {
                 api_host: apiHost,
                 person_profiles: 'identified_only',
-                capture_pageview: false, // We'll handle this manually if needed
-                loaded: (posthog) => {
-                    // PostHog is ready
-                    setIsInitialized(true)
-                }
+                capture_pageview: false
             })
-        } else if (!apiKey) {
-            // No API key, just render children without PostHog
-            setIsInitialized(true)
-        } else {
-            // Already loaded
-            setIsInitialized(true)
         }
     }, [])
 
-    // If PostHog is not configured, just render children without the provider
+    // If PostHog is configuration is missing, just render children
     if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-        return <>{children}</>
-    }
-
-    // Wait for initialization to avoid passing uninitialized client
-    if (!isInitialized) {
         return <>{children}</>
     }
 

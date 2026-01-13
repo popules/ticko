@@ -91,20 +91,26 @@ export function NewsFeed({ symbol }: NewsFeedProps) {
                                 <span className="text-white/30">{item.source}</span>
                                 <span className="text-white/20">•</span>
                                 <span className="text-white/30">
-                                    {formatDistanceToNow(new Date(item.publishedAt), {
-                                        addSuffix: true,
-                                        locale: sv,
-                                    })}
+                                    {(() => {
+                                        try {
+                                            return formatDistanceToNow(new Date(item.publishedAt), {
+                                                addSuffix: true,
+                                                locale: sv,
+                                            });
+                                        } catch (e) {
+                                            return "Nyligen";
+                                        }
+                                    })()}
                                 </span>
                                 {item.sentiment && (
                                     <>
                                         <span className="text-white/20">•</span>
                                         <span
                                             className={`flex items-center gap-1 ${item.sentiment === "Bullish"
-                                                    ? "text-emerald-400"
-                                                    : item.sentiment === "Bearish"
-                                                        ? "text-rose-400"
-                                                        : "text-white/40"
+                                                ? "text-emerald-400"
+                                                : item.sentiment === "Bearish"
+                                                    ? "text-rose-400"
+                                                    : "text-white/40"
                                                 }`}
                                         >
                                             {item.sentiment === "Bullish" && <TrendingUp className="w-3 h-3" />}

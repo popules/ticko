@@ -11,7 +11,7 @@ export function PerformanceMetrics({ symbol }: PerformanceMetricsProps) {
     const { data, isLoading, error } = useQuery({
         queryKey: ["performance", symbol],
         queryFn: async () => {
-            const res = await fetch(`/api/stock/performance?symbol=${symbol}`);
+            const res = await fetch(`/api/stock/performance?symbol=${encodeURIComponent(symbol)}`);
             if (!res.ok) throw new Error("Failed to fetch");
             return res.json();
         },
@@ -46,8 +46,8 @@ export function PerformanceMetrics({ symbol }: PerformanceMetricsProps) {
                     <div
                         key={label}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold tabular-nums ${isPositive
-                                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                                : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                            : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
                             }`}
                     >
                         {isPositive ? (
