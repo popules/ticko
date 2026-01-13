@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Camera, Loader2, MapPin } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
-import { supabase } from "@/lib/supabase/client";
 
 interface EditProfileModalProps {
     isOpen: boolean;
@@ -33,27 +32,33 @@ export function EditProfileModal({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!user || !supabase) return;
+        if (!user) return;
 
         setIsSubmitting(true);
         setError(null);
 
         try {
-            const { error: updateError } = await supabase
-                .from("profiles")
-                .update({
+            const res = await fetch('/api/profile', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({
                     username: username.trim(),
                     bio: bio.trim(),
                     location: location.trim(),
-                } as never)
-                .eq("id", user.id);
+                }),
+            });
 
-            if (updateError) throw updateError;
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || 'Failed to update profile');
+            }
 
             onUpdate({ username, bio, location });
             onClose();
-        } catch (err) {
-            setError("Kunde inte uppdatera profilen. Försök igen.");
+        } catch (err: any) {
+            setError(err.message || "Kunde inte uppdatera profilen. Försök igen.");
             console.error("Profile update error:", err);
         } finally {
             setIsSubmitting(false);

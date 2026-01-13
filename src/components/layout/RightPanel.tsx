@@ -34,6 +34,7 @@ export function RightPanel() {
         refetchInterval: 60000, // Still refresh every minute
         staleTime: 0, // Consider stale immediately
         refetchOnMount: 'always', // Refresh when navigating back
+        placeholderData: (previousData) => previousData, // Keep previous data visible during refetch
     });
 
     const toggleWatch = useMutation({
