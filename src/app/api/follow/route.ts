@@ -1,15 +1,10 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
-    const cookieStore = await cookies();
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-        global: { headers: { Cookie: cookieStore.toString() } },
-    });
+    const supabase = await createSupabaseServerClient();
 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
@@ -68,10 +63,7 @@ export async function GET(request: Request) {
     const userId = searchParams.get("userId");
     const targetUserId = searchParams.get("targetUserId");
 
-    const cookieStore = await cookies();
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-        global: { headers: { Cookie: cookieStore.toString() } },
-    });
+    const supabase = await createSupabaseServerClient();
 
     if (!targetUserId) {
         return NextResponse.json({ error: "targetUserId is required" }, { status: 400 });

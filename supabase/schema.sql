@@ -16,6 +16,9 @@ CREATE TYPE sentiment_type AS ENUM ('bull', 'bear');
 CREATE TABLE profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   username TEXT UNIQUE NOT NULL,
+  display_name TEXT,
+  bio TEXT,
+  location TEXT,
   avatar_url TEXT,
   reputation_score INTEGER DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW(),

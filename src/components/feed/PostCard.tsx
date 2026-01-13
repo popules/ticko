@@ -37,9 +37,11 @@ export function PostCard({ post }: PostCardProps) {
             <div className="flex gap-4">
                 {/* Avatar */}
                 <div className="flex-shrink-0">
-                    <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-semibold shadow-lg shadow-emerald-500/20">
-                        {profile?.username?.charAt(0).toUpperCase() || "?"}
-                    </div>
+                    <Link href={`/profil/${post.user_id}`}>
+                        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-semibold shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform cursor-pointer">
+                            {profile?.username?.charAt(0).toUpperCase() || "?"}
+                        </div>
+                    </Link>
                 </div>
 
                 {/* Content */}
