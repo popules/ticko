@@ -19,7 +19,9 @@ export function WatchButton({ symbol }: WatchButtonProps) {
             const res = await fetch("/api/watchlist", { credentials: "include" });
             if (!res.ok) return { symbols: [], stocks: [] };
             return res.json();
-        }
+        },
+        staleTime: 0,
+        refetchOnMount: 'always'
     });
 
     const isWatched = watchlistData?.symbols?.includes(symbol) ||

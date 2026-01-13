@@ -31,7 +31,9 @@ export function RightPanel() {
             const data = await res.json();
             return data.stocks || [];
         },
-        refetchInterval: 30000, // Refresh every 30 seconds
+        refetchInterval: 60000, // Still refresh every minute
+        staleTime: 0, // Consider stale immediately
+        refetchOnMount: 'always', // Refresh when navigating back
     });
 
     const toggleWatch = useMutation({
