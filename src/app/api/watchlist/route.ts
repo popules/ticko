@@ -25,6 +25,12 @@ export async function GET() {
             .select('ticker_symbol')
             .eq('user_id', user.id);
 
+        console.log('[Watchlist API GET] DB query result:', {
+            count: watchlistData?.length || 0,
+            symbols: watchlistData?.map((i: any) => i.ticker_symbol),
+            error: error?.message,
+        });
+
         if (error) throw error;
 
         const symbols = (watchlistData || []).map((item: any) => item.ticker_symbol);
@@ -39,6 +45,11 @@ export async function GET() {
                 }
             })
         );
+
+        console.log('[Watchlist API GET] Final response:', {
+            symbolCount: symbols.length,
+            stockCount: stocks.filter(s => s !== null).length,
+        });
 
         return NextResponse.json({
             stocks: stocks.filter(s => s !== null),
