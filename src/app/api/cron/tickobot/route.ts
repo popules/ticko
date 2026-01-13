@@ -5,10 +5,17 @@ import YahooFinance from "yahoo-finance2";
 
 const TICKOBOT_USER_ID = process.env.TICKOBOT_USER_ID || "tickobot-system-user";
 
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE || process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Create admin client lazily to avoid build-time errors
+function getSupabaseAdmin() {
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || "";
+    if (!serviceRoleKey) {
+        throw new Error("SUPABASE_SERVICE_ROLE_KEY not configured");
+    }
+    return createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        serviceRoleKey
+    );
+}
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const yf = new YahooFinance();
@@ -78,7 +85,7 @@ export async function POST(request: Request) {
     try {
         const content = await generateMarketPost();
         const mover = await getMarketMover();
-
+        const supabaseAdmin = getSupabaseAdmin();
         const { error } = await supabaseAdmin
             .from("posts")
             .insert({
