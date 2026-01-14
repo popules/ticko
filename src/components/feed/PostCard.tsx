@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
-import { TrendingUp, TrendingDown, Share2 } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { renderWithCashtags } from "@/lib/cashtag";
 import { UI_STRINGS } from "@/config/app";
 import { ReactionButtons } from "./ReactionButtons";
@@ -158,12 +158,15 @@ export function PostCard({ post }: PostCardProps) {
                         <PollView poll={post.polls[0]} />
                     )}
 
-                    {/* Ticker tag if present */}
+                    {/* Ticker tag if present - now clickable */}
                     {post.ticker_symbol && (
                         <div className="mt-3">
-                            <span className="text-xs bg-white/[0.06] text-white/60 px-3 py-1.5 rounded-full border border-white/[0.08]">
+                            <Link
+                                href={`/aktie/${post.ticker_symbol}`}
+                                className="inline-block text-xs bg-white/[0.06] text-emerald-400 px-3 py-1.5 rounded-full border border-white/[0.08] hover:bg-white/[0.1] hover:border-emerald-500/30 transition-all"
+                            >
                                 ${post.ticker_symbol}
-                            </span>
+                            </Link>
                         </div>
                     )}
 
@@ -183,9 +186,7 @@ export function PostCard({ post }: PostCardProps) {
                             >
                                 <Flag className="w-4 h-4" />
                             </button>
-                            <button className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors">
-                                <Share2 className="w-4 h-4" />
-                            </button>
+
                         </div>
                     </div>
 

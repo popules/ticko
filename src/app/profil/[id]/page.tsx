@@ -33,35 +33,40 @@ export default function PublicProfilePage() {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                // Fetch profile
-                const { data: profileData } = await (supabase as any)
+                // First try to fetch by UUID
+                let profileData = null;
+                const { data: byId } = await (supabase as any)
                     .from("profiles")
                     .select("*")
                     .eq("id", userId)
                     .single();
 
-                if (!profileData) {
-                    // Try by username if UUID match fails (fallback)
+                if (byId) {
+                    profileData = byId;
+                } else {
+                    // Try by username if UUID match fails
                     const { data: byUsername } = await (supabase as any)
                         .from("profiles")
                         .select("*")
                         .eq("username", userId)
                         .single();
-                    setProfile(byUsername);
-                } else {
-                    setProfile(profileData);
+                    profileData = byUsername;
                 }
 
-                // Fetch posts
-                const { data: postsData } = await (supabase as any)
-                    .from("posts")
-                    .select(`
-                        *,
-                        profiles (*)
-                    `)
-                    .eq("user_id", userId)
-                    .order("created_at", { ascending: false });
-                setPosts(postsData || []);
+                setProfile(profileData);
+
+                // Fetch posts using the actual profile ID
+                if (profileData?.id) {
+                    const { data: postsData } = await (supabase as any)
+                        .from("posts")
+                        .select(`
+                            *,
+                            profiles (*)
+                        `)
+                        .eq("user_id", profileData.id)
+                        .order("created_at", { ascending: false });
+                    setPosts(postsData || []);
+                }
 
             } catch (error) {
                 console.error("Profile fetch error:", error);

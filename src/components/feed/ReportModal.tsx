@@ -29,22 +29,27 @@ export function ReportModal({ isOpen, onClose, postId }: ReportModalProps) {
 
         setIsSubmitting(true);
         try {
-            if (!isSupabaseConfigured || !supabase) {
-                throw new Error("Supabase is not configured");
+            // Get current user ID if available
+            let reporterId: string | undefined;
+            if (isSupabaseConfigured && supabase) {
+                const { data: { user } } = await supabase.auth.getUser();
+                reporterId = user?.id;
             }
 
-            const { data: { user } } = await supabase.auth.getUser();
-
-            const { error } = await (supabase as any)
-                .from("reports")
-                .insert({
+            // Use API endpoint for reporting
+            const response = await fetch("/api/reports", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
                     post_id: postId,
-                    reporter_id: user?.id,
                     reason: selectedReason,
-                    status: "pending"
-                });
+                    reporter_id: reporterId
+                })
+            });
 
-            if (error) throw error;
+            if (!response.ok) {
+                throw new Error("Failed to submit report");
+            }
 
             setIsSuccess(true);
             setTimeout(() => {
@@ -54,8 +59,7 @@ export function ReportModal({ isOpen, onClose, postId }: ReportModalProps) {
             }, 2000);
         } catch (err) {
             console.error("Report failed:", err);
-            // Even if database fails (e.g. table not created yet), we show success to user
-            // to avoid UI frustration, while logging error for dev.
+            // Show success to user anyway to avoid frustration
             setIsSuccess(true);
             setTimeout(onClose, 2000);
         } finally {
@@ -107,8 +111,8 @@ export function ReportModal({ isOpen, onClose, postId }: ReportModalProps) {
                                                 key={reason.id}
                                                 onClick={() => setSelectedReason(reason.id)}
                                                 className={`w-full flex items-center gap-3 p-4 rounded-2xl border transition-all text-left ${selectedReason === reason.id
-                                                        ? "bg-white/10 border-white/20 text-white"
-                                                        : "bg-white/[0.02] border-white/5 text-white/60 hover:bg-white/[0.05]"
+                                                    ? "bg-white/10 border-white/20 text-white"
+                                                    : "bg-white/[0.02] border-white/5 text-white/60 hover:bg-white/[0.05]"
                                                     }`}
                                             >
                                                 <Icon className={`w-4 h-4 ${reason.color}`} />

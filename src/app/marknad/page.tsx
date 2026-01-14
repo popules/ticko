@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { UI_STRINGS } from "@/config/app";
-import { Loader2, TrendingUp, TrendingDown, Activity, Zap, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { Loader2, TrendingUp, TrendingDown, Activity, Zap, ArrowUpRight, ArrowDownRight, Globe, Flag } from "lucide-react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 
@@ -30,8 +30,11 @@ interface TradedStock extends StockMovement {
     volumeFormatted: string;
 }
 
+type MarketFilter = "all" | "us" | "se";
+
 export default function MarketPage() {
     const router = useRouter();
+    const [marketFilter, setMarketFilter] = useState<MarketFilter>("all");
 
     // Fetch indices
     const { data: indicesData, isLoading: indicesLoading } = useQuery({
@@ -44,11 +47,11 @@ export default function MarketPage() {
         refetchInterval: 60000,
     });
 
-    // Fetch gainers/losers
+    // Fetch gainers/losers with market filter
     const { data: moversData, isLoading: moversLoading } = useQuery({
-        queryKey: ["marketMovers"],
+        queryKey: ["marketMovers", marketFilter],
         queryFn: async () => {
-            const res = await fetch("/api/market/gainers-losers");
+            const res = await fetch(`/api/market/gainers-losers?market=${marketFilter}`);
             const data = await res.json();
             return { gainers: data.gainers || [], losers: data.losers || [] };
         },
@@ -67,6 +70,7 @@ export default function MarketPage() {
     });
 
     const isLoading = indicesLoading || moversLoading || tradedLoading;
+
 
     return (
         <div className="flex min-h-screen">
@@ -131,6 +135,28 @@ export default function MarketPage() {
                             </section>
 
                             {/* === GAINERS & LOSERS SECTION === */}
+                            {/* Market Filter Tabs */}
+                            <div className="flex items-center gap-2 mb-6">
+                                <span className="text-xs font-bold text-white/40 uppercase tracking-widest mr-2">Marknad:</span>
+                                {[
+                                    { id: "all" as const, label: "Alla", icon: Globe },
+                                    { id: "us" as const, label: "USA", icon: Globe },
+                                    { id: "se" as const, label: "Sverige", icon: Flag }
+                                ].map((tab) => (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => setMarketFilter(tab.id)}
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${marketFilter === tab.id
+                                                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                                                : "bg-white/[0.04] text-white/60 border border-white/10 hover:bg-white/[0.08]"
+                                            }`}
+                                    >
+                                        <tab.icon className="w-3 h-3" />
+                                        {tab.label}
+                                    </button>
+                                ))}
+                            </div>
+
                             <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 {/* Gainers */}
                                 <div className="rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden">
