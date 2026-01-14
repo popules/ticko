@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 
-// Initialize Supabase with service role for admin operations
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 // Where to send report notifications (your inbox)
 const ADMIN_EMAIL = "support@ticko.se";
@@ -45,15 +44,26 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // Create Supabase client - use service key if available, otherwise anon key with cookies
+        let supabase;
+        if (supabaseServiceKey) {
+            supabase = createClient(supabaseUrl, supabaseServiceKey);
+        } else {
+            const cookieStore = await cookies();
+            supabase = createClient(supabaseUrl, supabaseAnonKey, {
+                global: { headers: { Cookie: cookieStore.toString() } },
+            });
+        }
+
         // Get post details for the notification
-        const { data: post } = await supabaseAdmin
+        const { data: post } = await supabase
             .from("posts")
             .select("content, user_id, profiles(username)")
             .eq("id", post_id)
             .single();
 
         // Insert report into database
-        const { data: report, error: insertError } = await supabaseAdmin
+        const { data: report, error: insertError } = await supabase
             .from("reports")
             .insert({
                 post_id,
@@ -152,7 +162,13 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        const { data: reports, error } = await supabaseAdmin
+        // Create Supabase client
+        const cookieStore = await cookies();
+        const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+            global: { headers: { Cookie: cookieStore.toString() } },
+        });
+
+        const { data: reports, error } = await supabase
             .from("reports")
             .select("*")
             .eq("reporter_id", userId)
