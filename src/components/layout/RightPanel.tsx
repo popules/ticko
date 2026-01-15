@@ -22,20 +22,29 @@ export function RightPanel() {
         refetchInterval: 60000, // Refresh every minute
     });
 
-    // Fetch live watchlist
+    // Fetch live watchlist with robust settings to prevent data loss
     const { data: watchlistData, isLoading } = useQuery({
         queryKey: ["watchlist"],
         queryFn: async () => {
             const res = await fetch("/api/watchlist", { credentials: "include" });
-            if (!res.ok) return [];
+            if (!res.ok) {
+                // Throw to trigger retry instead of returning empty
+                throw new Error(`Watchlist fetch failed: ${res.status}`);
+            }
             const data = await res.json();
+            // Only return if we got valid data, otherwise throw to retry
+            if (!data.stocks) {
+                throw new Error("Invalid watchlist response");
+            }
             return data.stocks || [];
         },
         refetchInterval: 60000, // Refresh every minute
-        staleTime: 30000, // Keep data fresh for 30 seconds
-        gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
-        refetchOnMount: true, // Refresh when component mounts but don't block
+        staleTime: 5 * 60 * 1000, // Keep data fresh for 5 minutes
+        gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
+        refetchOnMount: false, // Don't refetch immediately on mount
         refetchOnWindowFocus: false, // Don't refetch on window focus
+        retry: 3, // Retry 3 times on failure
+        retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 5000), // Exponential backoff
         placeholderData: (previousData) => previousData, // Keep previous data during refetch
     });
 

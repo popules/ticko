@@ -35,24 +35,38 @@ export async function GET() {
 
         const symbols = (watchlistData || []).map((item: any) => item.ticker_symbol);
 
+        // Fetch stock data with timeout and better error handling
         const stocks = await Promise.all(
             symbols.map(async (symbol: string) => {
                 try {
-                    return await fetchStockData(symbol);
+                    const stockData = await Promise.race([
+                        fetchStockData(symbol),
+                        new Promise((_, reject) =>
+                            setTimeout(() => reject(new Error('Timeout')), 8000)
+                        )
+                    ]);
+                    return stockData;
                 } catch (e) {
                     console.error(`Failed to fetch data for ${symbol}`, e);
-                    return null;
+                    // Return minimal data so watchlist doesn't disappear
+                    return {
+                        symbol,
+                        name: symbol,
+                        price: null,
+                        changePercent: null,
+                        currencySymbol: '',
+                    };
                 }
             })
         );
 
         console.log('[Watchlist API GET] Final response:', {
             symbolCount: symbols.length,
-            stockCount: stocks.filter(s => s !== null).length,
+            stockCount: stocks.length,
         });
 
         return NextResponse.json({
-            stocks: stocks.filter(s => s !== null),
+            stocks: stocks,
             symbols: symbols
         });
     } catch (error) {

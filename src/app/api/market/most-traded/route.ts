@@ -1,22 +1,38 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import YahooFinance from 'yahoo-finance2';
 
 const yf = new YahooFinance();
 
-// Stocks to check for volume - focusing on most liquid markets
-const VOLUME_SYMBOLS = [
-    // US High Volume Stocks
+// Stocks by market
+const US_SYMBOLS = [
     'AAPL', 'TSLA', 'NVDA', 'AMD', 'AMZN', 'META', 'MSFT', 'GOOGL', 'NFLX', 'SPY',
-    'QQQ', 'PLTR', 'INTC', 'BAC', 'F', 'T', 'PFE', 'AAL', 'NIO', 'SOFI',
-    // Swedish High Volume
-    'VOLV-B.ST', 'ERIC-B.ST', 'HM-B.ST', 'SEB-A.ST', 'SWED-A.ST', 'EVO.ST',
-    'SAAB-B.ST', 'INVE-B.ST', 'AZN.ST', 'ABB.ST'
+    'QQQ', 'PLTR', 'INTC', 'BAC', 'F', 'T', 'PFE', 'AAL', 'NIO', 'SOFI'
 ];
 
-export async function GET() {
+const SE_SYMBOLS = [
+    'VOLV-B.ST', 'ERIC-B.ST', 'HM-B.ST', 'SEB-A.ST', 'SWED-A.ST', 'EVO.ST',
+    'SAAB-B.ST', 'INVE-B.ST', 'AZN.ST', 'ABB.ST', 'TELIA.ST', 'SHB-A.ST',
+    'NDA-SE.ST', 'ALFA.ST', 'SINCH.ST', 'SAND.ST', 'ASSA-B.ST', 'SKF-B.ST',
+    'ATCO-B.ST', 'BOL.ST'
+];
+
+export async function GET(request: NextRequest) {
     try {
+        const { searchParams } = new URL(request.url);
+        const market = searchParams.get("market") || "all";
+
+        // Select symbols based on market filter
+        let symbols: string[];
+        if (market === "se") {
+            symbols = SE_SYMBOLS;
+        } else if (market === "us") {
+            symbols = US_SYMBOLS;
+        } else {
+            symbols = [...US_SYMBOLS, ...SE_SYMBOLS];
+        }
+
         const quotes = await Promise.all(
-            VOLUME_SYMBOLS.map(async (symbol) => {
+            symbols.map(async (symbol) => {
                 try {
                     const quote: any = await yf.quote(symbol, {
                         fields: ['regularMarketPrice', 'regularMarketChangePercent', 'regularMarketVolume', 'shortName', 'longName', 'currency']

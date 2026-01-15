@@ -32,9 +32,28 @@ interface TradedStock extends StockMovement {
 
 type MarketFilter = "all" | "us" | "se";
 
+// Helper to check if markets are open
+function getMarketStatus() {
+    const now = new Date();
+    const stockholmTime = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Stockholm" }));
+    const hour = stockholmTime.getHours();
+    const minute = stockholmTime.getMinutes();
+    const day = stockholmTime.getDay(); // 0 = Sunday
+    const isWeekend = day === 0 || day === 6;
+
+    // OMX: 09:00-17:30 CET
+    const swedenOpen = !isWeekend && hour >= 9 && (hour < 17 || (hour === 17 && minute <= 30));
+
+    // NYSE/NASDAQ: 15:30-22:00 CET (09:30-16:00 EST)
+    const usOpen = !isWeekend && ((hour === 15 && minute >= 30) || (hour > 15 && hour < 22));
+
+    return { swedenOpen, usOpen, isWeekend };
+}
+
 export default function MarketPage() {
     const router = useRouter();
     const [marketFilter, setMarketFilter] = useState<MarketFilter>("all");
+    const marketStatus = getMarketStatus();
 
     // Fetch indices
     const { data: indicesData, isLoading: indicesLoading } = useQuery({
@@ -58,15 +77,26 @@ export default function MarketPage() {
         refetchInterval: 60000,
     });
 
-    // Fetch most traded
+    // Fetch most traded with market filter
     const { data: tradedData, isLoading: tradedLoading } = useQuery({
-        queryKey: ["mostTraded"],
+        queryKey: ["mostTraded", marketFilter],
         queryFn: async () => {
-            const res = await fetch("/api/market/most-traded");
+            const res = await fetch(`/api/market/most-traded?market=${marketFilter}`);
             const data = await res.json();
             return data.mostTraded || [];
         },
         refetchInterval: 60000,
+    });
+
+    // Fetch sentiment data
+    const { data: sentimentData } = useQuery({
+        queryKey: ["marketSentiment"],
+        queryFn: async () => {
+            const res = await fetch("/api/market/sentiment");
+            const data = await res.json();
+            return data;
+        },
+        refetchInterval: 5 * 60 * 1000, // Refresh every 5 minutes
     });
 
     const isLoading = indicesLoading || moversLoading || tradedLoading;
@@ -87,10 +117,28 @@ export default function MarketPage() {
                             Live Marknadsdata • Realtid
                         </p>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/10">
-                            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                            <span className="text-[10px] font-bold text-white/60 uppercase">Live</span>
+                    <div className="flex items-center gap-3">
+                        {/* Sweden market status */}
+                        <div className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${marketStatus.swedenOpen
+                            ? "bg-emerald-500/10 border-emerald-500/30"
+                            : "bg-white/[0.04] border-white/10"
+                            }`}>
+                            <span className="text-sm">🇸🇪</span>
+                            <div className={`w-2 h-2 rounded-full ${marketStatus.swedenOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
+                            <span className={`text-[10px] font-bold uppercase ${marketStatus.swedenOpen ? "text-emerald-400" : "text-white/40"}`}>
+                                {marketStatus.swedenOpen ? "Öppen" : "Stängd"}
+                            </span>
+                        </div>
+                        {/* US market status */}
+                        <div className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${marketStatus.usOpen
+                            ? "bg-emerald-500/10 border-emerald-500/30"
+                            : "bg-white/[0.04] border-white/10"
+                            }`}>
+                            <span className="text-sm">🇺🇸</span>
+                            <div className={`w-2 h-2 rounded-full ${marketStatus.usOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
+                            <span className={`text-[10px] font-bold uppercase ${marketStatus.usOpen ? "text-emerald-400" : "text-white/40"}`}>
+                                {marketStatus.usOpen ? "Öppen" : "Stängd"}
+                            </span>
                         </div>
                     </div>
                 </header>
@@ -139,19 +187,19 @@ export default function MarketPage() {
                             <div className="flex items-center gap-2 mb-6">
                                 <span className="text-xs font-bold text-white/40 uppercase tracking-widest mr-2">Marknad:</span>
                                 {[
-                                    { id: "all" as const, label: "Alla", icon: Globe },
-                                    { id: "us" as const, label: "USA", icon: Globe },
-                                    { id: "se" as const, label: "Sverige", icon: Flag }
+                                    { id: "all" as const, label: "Alla", flag: "🌍" },
+                                    { id: "us" as const, label: "USA", flag: "🇺🇸" },
+                                    { id: "se" as const, label: "Sverige", flag: "🇸🇪" }
                                 ].map((tab) => (
                                     <button
                                         key={tab.id}
                                         onClick={() => setMarketFilter(tab.id)}
                                         className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${marketFilter === tab.id
-                                                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                                                : "bg-white/[0.04] text-white/60 border border-white/10 hover:bg-white/[0.08]"
+                                            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                                            : "bg-white/[0.04] text-white/60 border border-white/10 hover:bg-white/[0.08]"
                                             }`}
                                     >
-                                        <tab.icon className="w-3 h-3" />
+                                        <span className="text-sm">{tab.flag}</span>
                                         {tab.label}
                                     </button>
                                 ))}
@@ -264,26 +312,33 @@ export default function MarketPage() {
                                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                                     Ticko Sentiment Radar
                                 </h2>
-                                <p className="text-xs text-white/30 mb-6">AI-driven analys av marknadssentiment baserat på nyheter och sociala medier.</p>
+                                <p className="text-xs text-white/30 mb-6">
+                                    Baserat på {sentimentData?.totalPosts || 0} inlägg senaste 24 timmarna.
+                                </p>
 
                                 <div className="flex items-center justify-center gap-8 py-8">
                                     <div className="text-center">
-                                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center shadow-lg shadow-rose-500/30">
-                                            <span className="text-2xl font-black text-white">23%</span>
+                                        <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center shadow-lg shadow-rose-500/30 ${sentimentData?.dominant === "fear" ? "ring-4 ring-rose-500/30" : ""
+                                            }`}>
+                                            <span className="text-2xl font-black text-white">{sentimentData?.fear || 30}%</span>
                                         </div>
-                                        <p className="text-xs font-bold text-white/40 uppercase tracking-widest mt-3">Rädsla</p>
+                                        <p className={`text-xs font-bold uppercase tracking-widest mt-3 ${sentimentData?.dominant === "fear" ? "text-rose-400" : "text-white/40"
+                                            }`}>Rädsla</p>
                                     </div>
                                     <div className="h-16 w-px bg-white/10" />
                                     <div className="text-center">
-                                        <div className="w-32 h-32 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-xl shadow-emerald-500/40 ring-4 ring-emerald-500/20">
-                                            <span className="text-4xl font-black text-white">67%</span>
+                                        <div className={`w-32 h-32 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-xl shadow-emerald-500/40 ${sentimentData?.dominant === "greed" ? "ring-4 ring-emerald-500/20" : ""
+                                            }`}>
+                                            <span className="text-4xl font-black text-white">{sentimentData?.greed || 50}%</span>
                                         </div>
-                                        <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest mt-3">Girighet</p>
+                                        <p className={`text-xs font-bold uppercase tracking-widest mt-3 ${sentimentData?.dominant === "greed" ? "text-emerald-400" : "text-white/40"
+                                            }`}>Girighet</p>
                                     </div>
                                     <div className="h-16 w-px bg-white/10" />
                                     <div className="text-center">
-                                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-white/20 to-white/10 flex items-center justify-center shadow-lg">
-                                            <span className="text-2xl font-black text-white/70">10%</span>
+                                        <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-white/20 to-white/10 flex items-center justify-center shadow-lg ${sentimentData?.dominant === "neutral" ? "ring-4 ring-white/20" : ""
+                                            }`}>
+                                            <span className="text-2xl font-black text-white/70">{sentimentData?.neutral || 20}%</span>
                                         </div>
                                         <p className="text-xs font-bold text-white/40 uppercase tracking-widest mt-3">Neutral</p>
                                     </div>
