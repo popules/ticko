@@ -7,9 +7,11 @@ import { TrendingTickers } from "@/components/discovery/TrendingTickers";
 import { UI_STRINGS } from "@/config/app";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
+import { useAuth } from "@/providers/AuthProvider";
 
 export function RightPanel() {
     const queryClient = useQueryClient();
+    const { user } = useAuth();
 
     // Fetch live market indices
     const { data: marketData } = useQuery({
@@ -22,30 +24,33 @@ export function RightPanel() {
         refetchInterval: 60000, // Refresh every minute
     });
 
-    // Fetch live watchlist with robust settings to prevent data loss
+    // Fetch live watchlist - ONLY when user is logged in
+    // This prevents empty responses from auth glitches replacing cached data
     const { data: watchlistData, isLoading } = useQuery({
-        queryKey: ["watchlist"],
+        queryKey: ["watchlist", user?.id],  // Cache per user
         queryFn: async () => {
+            if (!user) {
+                // Don't fetch if no user - this should never happen due to enabled check
+                throw new Error("No user");
+            }
             const res = await fetch("/api/watchlist", { credentials: "include" });
             if (!res.ok) {
-                // Throw to trigger retry instead of returning empty
                 throw new Error(`Watchlist fetch failed: ${res.status}`);
             }
             const data = await res.json();
-            // Only return if we got valid data, otherwise throw to retry
             if (!data.stocks) {
                 throw new Error("Invalid watchlist response");
             }
             return data.stocks || [];
         },
-        refetchInterval: 60000, // Refresh every minute
-        staleTime: 5 * 60 * 1000, // Keep data fresh for 5 minutes
-        gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
-        refetchOnMount: false, // Don't refetch immediately on mount
-        refetchOnWindowFocus: false, // Don't refetch on window focus
-        retry: 3, // Retry 3 times on failure
-        retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 5000), // Exponential backoff
-        placeholderData: (previousData) => previousData, // Keep previous data during refetch
+        enabled: !!user, // Only fetch when user is logged in!
+        refetchInterval: user ? 60000 : false, // Only refetch if logged in
+        staleTime: 5 * 60 * 1000,
+        gcTime: 10 * 60 * 1000,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        retry: 3,
+        retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 5000),
     });
 
     const toggleWatch = useMutation({

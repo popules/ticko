@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { useAuth } from "@/providers/AuthProvider";
@@ -22,10 +23,18 @@ interface PortfolioItem {
 
 export default function PortfolioPage() {
     const { user, isLoading: authLoading } = useAuth();
+    const router = useRouter();
     const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [totalValue, setTotalValue] = useState(0);
     const [totalPL, setTotalPL] = useState(0);
+
+    // Redirect to login if not authenticated
+    useEffect(() => {
+        if (!authLoading && !user) {
+            router.replace("/logga-in");
+        }
+    }, [user, authLoading, router]);
 
     useEffect(() => {
         if (!user || !isSupabaseConfigured || !supabase) return;
