@@ -51,6 +51,13 @@ export default function RegisterPage() {
             setError(error.message || "Något gick fel vid registreringen");
             setIsLoading(false);
         } else {
+            // Send welcome email (fire and forget - don't block on failure)
+            fetch("/api/email/welcome", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, username })
+            }).catch(console.error);
+
             router.push("/");
         }
     };
