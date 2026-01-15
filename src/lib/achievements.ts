@@ -101,7 +101,7 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     FIRST_PREDICTION: {
         key: "first_prediction",
         name: "Siare",
-        description: "Gjorde din första prediktion",
+        description: "Gjorde din första förutsägelse",
         emoji: "🔮",
         category: "prediction",
         rarity: "common",
@@ -110,7 +110,7 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     ORACLE: {
         key: "oracle",
         name: "Orakel",
-        description: "5 korrekta prediktioner i rad",
+        description: "5 korrekta förutsägelser i rad",
         emoji: "🎯",
         category: "prediction",
         rarity: "epic",
@@ -119,7 +119,7 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     CRYSTAL_BALL: {
         key: "crystal_ball",
         name: "Kristallkula",
-        description: "10 korrekta prediktioner totalt",
+        description: "10 korrekta förutsägelser totalt",
         emoji: "🪄",
         category: "prediction",
         rarity: "rare",
@@ -128,7 +128,7 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     PROPHET: {
         key: "prophet",
         name: "Profet",
-        description: "25 korrekta prediktioner totalt",
+        description: "25 korrekta förutsägelser totalt",
         emoji: "🏆",
         category: "prediction",
         rarity: "legendary",

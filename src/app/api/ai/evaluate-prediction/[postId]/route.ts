@@ -29,7 +29,7 @@ export async function POST(
 
         if (fetchError || !post) throw new Error("Inlägg hittades inte");
         if (!post.is_prediction || post.prediction_status !== "pending") {
-            return NextResponse.json({ message: "Ingen väntande prediktion att evaluera" });
+            return NextResponse.json({ message: "Ingen väntande förutsägelse att utvärdera" });
         }
 
         // 2. Fetch current price

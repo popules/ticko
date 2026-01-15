@@ -143,8 +143,8 @@ export async function GET(request: Request) {
                 await supabaseAdmin.from("notifications").insert({
                     user_id: prediction.user_id,
                     type: isCorrect ? "prediction_correct" : "prediction_incorrect",
-                    title: isCorrect ? "🎯 Din prediktion stämde!" : "📉 Din prediktion stämde inte",
-                    content: `Din ${prediction.sentiment === "bull" ? "bullish" : "bearish"} prediktion på $${prediction.ticker_symbol} var ${isCorrect ? "korrekt" : "felaktig"}. ${isCorrect ? "+10" : "-5"} poäng.`,
+                    title: isCorrect ? "🎯 Din förutsägelse stämde!" : "📉 Din förutsägelse stämde inte",
+                    content: `Din ${prediction.sentiment === "bull" ? "positiva" : "negativa"} förutsägelse på $${prediction.ticker_symbol} var ${isCorrect ? "korrekt" : "felaktig"}. ${isCorrect ? "+10" : "-5"} poäng.`,
                     read: false
                 });
 

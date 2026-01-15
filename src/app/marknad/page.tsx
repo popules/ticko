@@ -123,7 +123,7 @@ export default function MarketPage() {
                             ? "bg-emerald-500/10 border-emerald-500/30"
                             : "bg-white/[0.04] border-white/10"
                             }`}>
-                            <span className="text-sm">🇸🇪</span>
+                            <span className="text-[10px] font-black text-blue-400 bg-blue-500/20 px-1.5 py-0.5 rounded">SE</span>
                             <div className={`w-2 h-2 rounded-full ${marketStatus.swedenOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
                             <span className={`text-[10px] font-bold uppercase ${marketStatus.swedenOpen ? "text-emerald-400" : "text-white/40"}`}>
                                 {marketStatus.swedenOpen ? "Öppen" : "Stängd"}
@@ -134,7 +134,7 @@ export default function MarketPage() {
                             ? "bg-emerald-500/10 border-emerald-500/30"
                             : "bg-white/[0.04] border-white/10"
                             }`}>
-                            <span className="text-sm">🇺🇸</span>
+                            <span className="text-[10px] font-black text-red-400 bg-red-500/20 px-1.5 py-0.5 rounded">US</span>
                             <div className={`w-2 h-2 rounded-full ${marketStatus.usOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
                             <span className={`text-[10px] font-bold uppercase ${marketStatus.usOpen ? "text-emerald-400" : "text-white/40"}`}>
                                 {marketStatus.usOpen ? "Öppen" : "Stängd"}
@@ -187,9 +187,9 @@ export default function MarketPage() {
                             <div className="flex items-center gap-2 mb-6">
                                 <span className="text-xs font-bold text-white/40 uppercase tracking-widest mr-2">Marknad:</span>
                                 {[
-                                    { id: "all" as const, label: "Alla", flag: "🌍" },
-                                    { id: "us" as const, label: "USA", flag: "🇺🇸" },
-                                    { id: "se" as const, label: "Sverige", flag: "🇸🇪" }
+                                    { id: "all" as const, label: "Alla", flag: "🌍", badge: null },
+                                    { id: "us" as const, label: "USA", flag: null, badge: "US" },
+                                    { id: "se" as const, label: "Sverige", flag: null, badge: "SE" }
                                 ].map((tab) => (
                                     <button
                                         key={tab.id}
@@ -199,7 +199,11 @@ export default function MarketPage() {
                                             : "bg-white/[0.04] text-white/60 border border-white/10 hover:bg-white/[0.08]"
                                             }`}
                                     >
-                                        <span className="text-sm">{tab.flag}</span>
+                                        {tab.flag ? (
+                                            <span className="text-sm">{tab.flag}</span>
+                                        ) : (
+                                            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded ${tab.badge === "US" ? "text-red-400 bg-red-500/20" : "text-blue-400 bg-blue-500/20"}`}>{tab.badge}</span>
+                                        )}
                                         {tab.label}
                                     </button>
                                 ))}
@@ -347,9 +351,9 @@ export default function MarketPage() {
                         </>
                     )}
                 </div>
-            </main>
+            </main >
 
             <RightPanel />
-        </div>
+        </div >
     );
 }

@@ -74,7 +74,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                     else if (predictionPeriod === "3m") now.setMonth(now.getMonth() + 3);
                     targetDate = now.toISOString();
                 } else {
-                    throw new Error("Kunde inte hämta aktuellt pris för prediktion");
+                    throw new Error("Kunde inte hämta aktuellt pris för förutsägelse");
                 }
             }
 

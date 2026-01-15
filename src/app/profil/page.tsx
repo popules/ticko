@@ -149,7 +149,7 @@ export default function ProfilePage() {
                                                     </span>
                                                 </div>
                                                 <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
-                                                    <span className="text-xs text-white/50">Prediktioner</span>
+                                                    <span className="text-xs text-white/50">Förutsägelser</span>
                                                     <span className="text-sm font-bold text-white">
                                                         {profile?.correct_predictions || 0}/{profile?.total_predictions || 0}
                                                     </span>
