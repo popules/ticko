@@ -7,7 +7,10 @@ export const APP_CONFIG = {
   name: APP_NAME,
   tagline: "Där investerare möts",
   description: "En modern social plattform för aktieinvesterare",
+  baseUrl: "https://www.ticko.se",
 } as const;
+
+export const BASE_URL = APP_CONFIG.baseUrl;
 
 // Theme colors
 export const THEME = {

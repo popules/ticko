@@ -149,9 +149,15 @@ export function WhatIsHappening() {
     const hasTrending = trendingData && trendingData.length > 0;
     const hasWatchlist = watchlistData && watchlistData.some(w => w.comment_count > 0);
 
-    // Don't show if nothing is happening
-    if (!isLoading && !hasTrending && !hasWatchlist) {
-        return null;
+    // Show component while loading or if there's ANY content to display
+    // Always show if loading trending data
+    const showTrending = isTrendingLoading || hasTrending;
+    const showWatchlist = user && hasWatchlist;
+
+    // Don't show if absolutely nothing to display and not loading
+    if (!isTrendingLoading && !hasTrending && !hasWatchlist) {
+        // Show a placeholder message instead of returning null
+        // This prevents the flash-then-disappear behavior
     }
 
     return (
@@ -160,86 +166,90 @@ export function WhatIsHappening() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-6 space-y-4"
         >
-            {/* Trending Stocks Section */}
-            {(hasTrending || isTrendingLoading) && (
-                <div className="relative p-5 rounded-[2rem] border border-white/10 bg-gradient-to-br from-orange-500/5 via-transparent to-rose-500/5 backdrop-blur-xl overflow-hidden group">
-                    {/* Background glow */}
-                    <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 blur-[80px] rounded-full -mr-20 -mt-20" />
+            {/* Trending Stocks Section - Always show */}
+            <div className="relative p-5 rounded-[2rem] border border-white/10 bg-gradient-to-br from-orange-500/5 via-transparent to-rose-500/5 backdrop-blur-xl overflow-hidden group">
+                {/* Background glow */}
+                <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 blur-[80px] rounded-full -mr-20 -mt-20" />
 
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2 rounded-xl bg-orange-500/20 border border-orange-500/20">
-                                <Flame className="w-4 h-4 text-orange-400" />
-                            </div>
-                            <div>
-                                <h3 className="text-sm font-bold text-white uppercase tracking-wide">🔥 Hett just nu</h3>
-                                <p className="text-[10px] text-white/40">Aktier som diskuteras mest</p>
-                            </div>
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-xl bg-orange-500/20 border border-orange-500/20">
+                            <Flame className="w-4 h-4 text-orange-400" />
                         </div>
-                        <Link
-                            href="/upptack"
-                            className="flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors"
-                        >
-                            Visa alla <ArrowRight className="w-3 h-3" />
-                        </Link>
+                        <div>
+                            <h3 className="text-sm font-bold text-white uppercase tracking-wide">🔥 Hett just nu</h3>
+                            <p className="text-[10px] text-white/40">Aktier som diskuteras mest</p>
+                        </div>
                     </div>
-
-                    {/* Trending Grid */}
-                    {isTrendingLoading ? (
-                        <div className="grid grid-cols-2 gap-3">
-                            {[1, 2, 3, 4].map(i => (
-                                <div key={i} className="h-20 bg-white/[0.03] animate-pulse rounded-xl" />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-2 gap-3">
-                            {trendingData?.map((stock, index) => (
-                                <Link
-                                    key={stock.ticker_symbol}
-                                    href={`/aktie/${stock.ticker_symbol}`}
-                                    className="p-3 bg-white/[0.04] rounded-xl border border-white/[0.08] hover:bg-white/[0.08] hover:border-white/[0.15] transition-all group/card"
-                                >
-                                    <div className="flex items-start justify-between mb-2">
-                                        <div className="flex items-center gap-2">
-                                            <span className={`text-xs font-bold ${index === 0 ? "text-orange-400" : "text-white/40"
-                                                }`}>
-                                                #{index + 1}
-                                            </span>
-                                            <span className="font-bold text-white group-hover/card:text-emerald-400 transition-colors">
-                                                ${stock.ticker_symbol}
-                                            </span>
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            {stock.sentiment_score !== 0 && (
-                                                <TrendingUp className={`w-3 h-3 ${stock.sentiment_score > 0
-                                                        ? "text-emerald-400"
-                                                        : "text-rose-400 rotate-180"
-                                                    }`} />
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Latest activity preview */}
-                                    {stock.latest_comment && (
-                                        <p className="text-[11px] text-white/40 leading-snug truncate">
-                                            {stock.latest_user && (
-                                                <span className="text-white/60">@{stock.latest_user}: </span>
-                                            )}
-                                            {stock.latest_comment}
-                                        </p>
-                                    )}
-
-                                    <div className="flex items-center gap-1 mt-2 text-[10px] text-white/30">
-                                        <MessageCircle className="w-3 h-3" />
-                                        {stock.post_count} inlägg
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-                    )}
+                    <Link
+                        href="/upptack"
+                        className="flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors"
+                    >
+                        Visa alla <ArrowRight className="w-3 h-3" />
+                    </Link>
                 </div>
-            )}
+
+                {/* Trending Grid */}
+                {isTrendingLoading ? (
+                    <div className="grid grid-cols-2 gap-3">
+                        {[1, 2, 3, 4].map(i => (
+                            <div key={i} className="h-20 bg-white/[0.03] animate-pulse rounded-xl" />
+                        ))}
+                    </div>
+                ) : hasTrending ? (
+                    <div className="grid grid-cols-2 gap-3">
+                        {trendingData?.map((stock, index) => (
+                            <Link
+                                key={stock.ticker_symbol}
+                                href={`/aktie/${stock.ticker_symbol}`}
+                                className="p-3 bg-white/[0.04] rounded-xl border border-white/[0.08] hover:bg-white/[0.08] hover:border-white/[0.15] transition-all group/card"
+                            >
+                                <div className="flex items-start justify-between mb-2">
+                                    <div className="flex items-center gap-2">
+                                        <span className={`text-xs font-bold ${index === 0 ? "text-orange-400" : "text-white/40"
+                                            }`}>
+                                            #{index + 1}
+                                        </span>
+                                        <span className="font-bold text-white group-hover/card:text-emerald-400 transition-colors">
+                                            ${stock.ticker_symbol}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        {stock.sentiment_score !== 0 && (
+                                            <TrendingUp className={`w-3 h-3 ${stock.sentiment_score > 0
+                                                ? "text-emerald-400"
+                                                : "text-rose-400 rotate-180"
+                                                }`} />
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Latest activity preview */}
+                                {stock.latest_comment && (
+                                    <p className="text-[11px] text-white/40 leading-snug truncate">
+                                        {stock.latest_user && (
+                                            <span className="text-white/60">@{stock.latest_user}: </span>
+                                        )}
+                                        {stock.latest_comment}
+                                    </p>
+                                )}
+
+                                <div className="flex items-center gap-1 mt-2 text-[10px] text-white/30">
+                                    <MessageCircle className="w-3 h-3" />
+                                    {stock.post_count} inlägg
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                ) : (
+                    /* Empty state when no trending stocks */
+                    <div className="py-6 text-center">
+                        <p className="text-white/40 text-sm">Inga trendande aktier just nu</p>
+                        <p className="text-white/20 text-xs mt-1">Börja diskutera för att dyka upp här!</p>
+                    </div>
+                )}
+            </div>
 
             {/* Watchlist Activity Section */}
             {user && hasWatchlist && (

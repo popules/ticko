@@ -1,8 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useId } from "react";
 
 export function TickoLogo({ className = "", showText = true }: { className?: string, showText?: boolean }) {
+    const uniqueId = useId();
+    const gradientId = `ticko-gradient-${uniqueId}`;
+    const filterId = `ticko-blur-${uniqueId}`;
+
     return (
         <div className={`flex items-center gap-3 ${className}`}>
             <div className="relative w-10 h-10 flex items-center justify-center">
@@ -15,11 +20,11 @@ export function TickoLogo({ className = "", showText = true }: { className?: str
                     className="w-full h-full"
                 >
                     <defs>
-                        <linearGradient id="mint-frost" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stopColor="#2DD4BF" />
-                            <stop offset="100%" stopColor="#0D9488" />
+                        <linearGradient id={gradientId} x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stopColor="#2DD4BF" stopOpacity="0.6" />
+                            <stop offset="100%" stopColor="#0D9488" stopOpacity="0.4" />
                         </linearGradient>
-                        <filter id="glass-blur" x="-20%" y="-20%" width="140%" height="140%">
+                        <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%">
                             <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
                         </filter>
                     </defs>
@@ -31,7 +36,7 @@ export function TickoLogo({ className = "", showText = true }: { className?: str
                         width="12"
                         height="24"
                         rx="4"
-                        fill="url(#mint-frost)"
+                        fill={`url(#${gradientId})`}
                         stroke="white"
                         strokeOpacity="0.3"
                         strokeWidth="0.5"
@@ -44,7 +49,7 @@ export function TickoLogo({ className = "", showText = true }: { className?: str
                         width="24"
                         height="10"
                         rx="4"
-                        fill="url(#mint-frost)"
+                        fill={`url(#${gradientId})`}
                         stroke="white"
                         strokeOpacity="0.3"
                         strokeWidth="0.5"
