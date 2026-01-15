@@ -205,12 +205,16 @@ export function LandingPage() {
                                 <TickoLogo />
                             </div>
                             <p className="text-white/40 text-sm max-w-sm">
-                                Ett community för svenska investerare.
+                                Sveriges modernaste community för investerare.
                             </p>
+                            <a href="mailto:hello@ticko.se" className="text-emerald-400/80 hover:text-emerald-400 text-xs font-medium mt-2 block transition-colors">
+                                hello@ticko.se
+                            </a>
                         </div>
 
-                        <div className="flex gap-8 text-sm font-medium text-white/40">
+                        <div className="flex flex-wrap gap-x-8 gap-y-4 text-sm font-medium text-white/40">
                             <Link href="/om-oss" className="hover:text-white transition-colors">Om oss</Link>
+                            <Link href="/kontakt" className="hover:text-white transition-colors">Kontakt</Link>
                             <Link href="/villkor" className="hover:text-white transition-colors">Villkor</Link>
                             <Link href="/integritet" className="hover:text-white transition-colors">Integritet</Link>
                         </div>

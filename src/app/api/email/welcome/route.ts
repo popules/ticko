@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                from: "Ticko <hej@ticko.se>",
+                from: "Ticko <hello@ticko.se>",
                 to: email,
                 subject: `Välkommen till Ticko, ${username}! 🎉`,
                 html: emailHtml
