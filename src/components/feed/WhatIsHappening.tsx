@@ -31,8 +31,8 @@ export function WhatIsHappening() {
         queryFn: async () => {
             if (!supabase) return [];
 
-            const twentyFourHoursAgo = new Date();
-            twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+            const hotTimeWindow = new Date();
+            hotTimeWindow.setHours(hotTimeWindow.getHours() - 4); // Last 4 hours for "Hot right now"
 
             // Get posts with comments from last 24h
             const { data, error } = await (supabase as any)
@@ -44,7 +44,7 @@ export function WhatIsHappening() {
                     profiles (username)
                 `)
                 .not("ticker_symbol", "is", null)
-                .gte("created_at", twentyFourHoursAgo.toISOString())
+                .gte("created_at", hotTimeWindow.toISOString())
                 .order("created_at", { ascending: false })
                 .limit(100);
 
