@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        from: "Ticko Anmälningar <noreply@tintel.se>",
+                        from: "Ticko Anmälningar <noreply@ticko.se>",
                         to: ADMIN_EMAIL,
                         subject: `⚠️ Ny anmälan: ${REASON_LABELS[reason] || reason}`,
                         html: `

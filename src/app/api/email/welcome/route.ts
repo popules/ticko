@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: true, message: "Email skipped - no API key" });
         }
 
+        // Ticko brand colors: Teal #2DD4BF, Dark #0B0F17
         const emailHtml = `
 <!DOCTYPE html>
 <html>
@@ -31,10 +32,17 @@ export async function POST(request: NextRequest) {
                     <!-- Logo -->
                     <tr>
                         <td align="center" style="padding-bottom: 32px;">
-                            <div style="display: inline-flex; align-items: center; gap: 8px;">
-                                <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #10B981, #059669); border-radius: 10px;"></div>
-                                <span style="font-size: 28px; font-weight: 800; color: white; letter-spacing: -0.5px;">ticko</span>
-                            </div>
+                            <table cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="vertical-align: middle;">
+                                        <!-- Ticko T Icon -->
+                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%); border-radius: 10px; display: inline-block;"></div>
+                                    </td>
+                                    <td style="vertical-align: middle; padding-left: 12px;">
+                                        <span style="font-size: 28px; font-weight: 700; color: white; letter-spacing: -0.5px;">ticko</span>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
@@ -43,15 +51,15 @@ export async function POST(request: NextRequest) {
                         <td style="background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 48px;">
                             
                             <!-- Welcome Header -->
-                            <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 800; color: white; text-align: center;">
-                                Välkommen, ${username}! 🚀
+                            <h1 style="margin: 0 0 8px 0; font-size: 28px; font-weight: 800; color: white; text-align: center;">
+                                Välkommen till Ticko! 🎉
                             </h1>
-                            <p style="margin: 0 0 32px 0; font-size: 16px; color: rgba(255,255,255,0.6); text-align: center;">
-                                Du är nu en del av Sveriges smartaste börssnackare.
+                            <p style="margin: 0 0 32px 0; font-size: 16px; color: rgba(255,255,255,0.6); text-align: center; line-height: 1.5;">
+                                Hej <strong style="color: #2DD4BF;">${username}</strong>! Du är nu en del av Sveriges smartaste börssnackare.
                             </p>
                             
                             <!-- Divider -->
-                            <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(16,185,129,0.3), transparent); margin: 32px 0;"></div>
+                            <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(45,212,191,0.4), transparent); margin: 32px 0;"></div>
                             
                             <!-- Features -->
                             <table width="100%" cellpadding="0" cellspacing="0">
@@ -60,11 +68,11 @@ export async function POST(request: NextRequest) {
                                         <table width="100%" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td width="48" style="vertical-align: top;">
-                                                    <div style="width: 40px; height: 40px; background: rgba(16,185,129,0.15); border-radius: 12px; text-align: center; line-height: 40px; font-size: 20px;">📊</div>
+                                                    <div style="width: 44px; height: 44px; background: rgba(45,212,191,0.15); border-radius: 12px; text-align: center; line-height: 44px; font-size: 22px;">📊</div>
                                                 </td>
                                                 <td style="padding-left: 16px;">
                                                     <h3 style="margin: 0 0 4px 0; font-size: 15px; font-weight: 600; color: white;">Följ aktier i realtid</h3>
-                                                    <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.5);">Skapa din bevakningslista och få prisuppdateringar live.</p>
+                                                    <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.4;">Skapa din bevakningslista och få prisuppdateringar live.</p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -75,11 +83,11 @@ export async function POST(request: NextRequest) {
                                         <table width="100%" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td width="48" style="vertical-align: top;">
-                                                    <div style="width: 40px; height: 40px; background: rgba(16,185,129,0.15); border-radius: 12px; text-align: center; line-height: 40px; font-size: 20px;">💬</div>
+                                                    <div style="width: 44px; height: 44px; background: rgba(45,212,191,0.15); border-radius: 12px; text-align: center; line-height: 44px; font-size: 22px;">💬</div>
                                                 </td>
                                                 <td style="padding-left: 16px;">
                                                     <h3 style="margin: 0 0 4px 0; font-size: 15px; font-weight: 600; color: white;">Diskutera med andra</h3>
-                                                    <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.5);">Dela dina tankar och läs vad andra tycker om aktier.</p>
+                                                    <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.4;">Använd $TICKER för att tagga aktier och läs vad andra tycker.</p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -90,11 +98,11 @@ export async function POST(request: NextRequest) {
                                         <table width="100%" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td width="48" style="vertical-align: top;">
-                                                    <div style="width: 40px; height: 40px; background: rgba(16,185,129,0.15); border-radius: 12px; text-align: center; line-height: 40px; font-size: 20px;">🤖</div>
+                                                    <div style="width: 44px; height: 44px; background: rgba(45,212,191,0.15); border-radius: 12px; text-align: center; line-height: 44px; font-size: 22px;">🤖</div>
                                                 </td>
                                                 <td style="padding-left: 16px;">
                                                     <h3 style="margin: 0 0 4px 0; font-size: 15px; font-weight: 600; color: white;">AI-driven analys</h3>
-                                                    <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.5);">Få smarta insikter om aktier med vår AI-assistent.</p>
+                                                    <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.4;">Få smarta insikter om aktier med vår AI-assistent.</p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -106,7 +114,7 @@ export async function POST(request: NextRequest) {
                             <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 32px;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://ticko.se" style="display: inline-block; padding: 16px 48px; background: linear-gradient(135deg, #10B981, #059669); color: white; font-weight: 600; font-size: 15px; text-decoration: none; border-radius: 16px; box-shadow: 0 8px 24px rgba(16,185,129,0.3);">
+                                        <a href="https://ticko.se" style="display: inline-block; padding: 16px 48px; background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%); color: #0B0F17; font-weight: 700; font-size: 15px; text-decoration: none; border-radius: 14px; box-shadow: 0 8px 24px rgba(45,212,191,0.3);">
                                             Börja utforska →
                                         </a>
                                     </td>
@@ -123,7 +131,7 @@ export async function POST(request: NextRequest) {
                                 Du får detta mail för att du registrerade dig på Ticko.
                             </p>
                             <p style="margin: 0; font-size: 12px; color: rgba(255,255,255,0.3);">
-                                © 2026 Ticko. Alla rättigheter förbehållna.
+                                © 2026 Ticko · <a href="https://ticko.se/integritet" style="color: rgba(255,255,255,0.4); text-decoration: none;">Integritetspolicy</a>
                             </p>
                         </td>
                     </tr>
@@ -143,9 +151,9 @@ export async function POST(request: NextRequest) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                from: "Ticko <noreply@tintel.se>",
+                from: "Ticko <hej@ticko.se>",
                 to: email,
-                subject: `Välkommen till Ticko, ${username}! 🚀`,
+                subject: `Välkommen till Ticko, ${username}! 🎉`,
                 html: emailHtml
             })
         });
