@@ -3,6 +3,10 @@
         {
             "path": "/api/cron/tickobot",
             "schedule": "0 7,12,16 * * 1-5"
+        },
+        {
+            "path": "/api/cron/predictions",
+            "schedule": "0 6 * * *"
         }
     ]
 }

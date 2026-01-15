@@ -1,10 +1,13 @@
 -- ============================================
--- ACHIEVEMENTS SYSTEM MIGRATION
+-- ACHIEVEMENTS SYSTEM MIGRATION (v2)
 -- Run this in your Supabase SQL Editor
 -- ============================================
 
--- User achievements table
-CREATE TABLE IF NOT EXISTS user_achievements (
+-- First, drop the old table if it exists with old schema
+DROP TABLE IF EXISTS user_achievements CASCADE;
+
+-- Create user achievements table with correct schema
+CREATE TABLE user_achievements (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
     achievement_key TEXT NOT NULL,
@@ -22,7 +25,7 @@ DO $$ BEGIN
 EXCEPTION WHEN duplicate_object THEN null; END $$;
 
 DO $$ BEGIN
-    CREATE POLICY "Users can view own achievements" ON user_achievements 
+    CREATE POLICY "Users can insert own achievements" ON user_achievements 
     FOR INSERT WITH CHECK (auth.uid() = user_id);
 EXCEPTION WHEN duplicate_object THEN null; END $$;
 
