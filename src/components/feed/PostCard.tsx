@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, Flag, Trash2, Loader2 } from "lucide-react";
 import { renderWithCashtags } from "@/lib/cashtag";
 import { UI_STRINGS } from "@/config/app";
 import { ReactionButtons } from "./ReactionButtons";
@@ -11,7 +11,8 @@ import { ReactionBar } from "./ReactionBar";
 import { PollView } from "./PollView";
 import { CommentThread } from "./CommentThread";
 import { ReportModal } from "./ReportModal";
-import { Flag } from "lucide-react";
+import { useAuth } from "@/providers/AuthProvider";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import type { Post } from "@/types/database";
 
@@ -28,9 +29,30 @@ interface PostCardProps {
 }
 
 export function PostCard({ post }: PostCardProps) {
+    const { user } = useAuth();
+    const queryClient = useQueryClient();
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const profile = post.profiles;
     const sentiment = post.sentiment;
+    const isOwnPost = user?.id === post.user_id;
+
+    const handleDelete = async () => {
+        if (!confirm("Är du säker på att du vill ta bort detta inlägg?")) return;
+
+        setIsDeleting(true);
+        try {
+            const res = await fetch(`/api/posts/${post.id}`, { method: 'DELETE' });
+            if (res.ok) {
+                // Remove post from cache
+                queryClient.invalidateQueries({ queryKey: ['posts'] });
+            }
+        } catch (error) {
+            console.error('Failed to delete post:', error);
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     return (
         <article className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-5 border border-white/10 hover:bg-white/[0.06] transition-all">
@@ -178,7 +200,23 @@ export function PostCard({ post }: PostCardProps) {
                             downCount={post.down_count || 0}
                             userReaction={post.user_reaction}
                         />
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-3">
+                            {/* Delete button - only for own posts */}
+                            {isOwnPost && (
+                                <button
+                                    onClick={handleDelete}
+                                    disabled={isDeleting}
+                                    className="flex items-center gap-2 text-sm text-white/20 hover:text-rose-400 transition-colors disabled:opacity-50"
+                                    title="Ta bort inlägg"
+                                >
+                                    {isDeleting ? (
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                    ) : (
+                                        <Trash2 className="w-4 h-4" />
+                                    )}
+                                </button>
+                            )}
+                            {/* Report button */}
                             <button
                                 onClick={() => setIsReportModalOpen(true)}
                                 className="flex items-center gap-2 text-sm text-white/20 hover:text-rose-400 transition-colors"
@@ -186,7 +224,6 @@ export function PostCard({ post }: PostCardProps) {
                             >
                                 <Flag className="w-4 h-4" />
                             </button>
-
                         </div>
                     </div>
 

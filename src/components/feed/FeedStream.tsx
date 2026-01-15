@@ -61,8 +61,12 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
                 );
 
             // Filter by ticker if provided
+            // Include posts that have this ticker as primary OR mention it in content (cross-posting)
             if (tickerFilter) {
-                query = query.eq("ticker_symbol", tickerFilter);
+                // Use Supabase OR filter to include both:
+                // 1. Posts where ticker_symbol matches
+                // 2. Posts where content contains $TICKER cashtag
+                query = query.or(`ticker_symbol.eq.${tickerFilter},content.ilike.%$${tickerFilter}%`);
             }
 
             // Filter by following if requested
@@ -131,9 +135,13 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
                         .single();
 
                     if (newPost) {
-                        // Check if ticker filter matches
+                        // Check if ticker filter matches - include primary ticker OR content mention
                         const postData = newPost as PostWithProfile;
-                        if (tickerFilter && postData.ticker_symbol !== tickerFilter) return;
+                        if (tickerFilter) {
+                            const matchesPrimary = postData.ticker_symbol === tickerFilter;
+                            const matchesContent = postData.content?.toLowerCase().includes(`$${tickerFilter.toLowerCase()}`);
+                            if (!matchesPrimary && !matchesContent) return;
+                        }
 
                         // Add to the beginning of the posts array
                         queryClient.setQueryData<PostWithProfile[]>(
