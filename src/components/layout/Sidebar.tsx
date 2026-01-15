@@ -2,30 +2,29 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { SearchDialog } from "./SearchDialog";
 import {
     Home,
     TrendingUp,
     Star,
-    Bell,
     User,
     Settings,
     Search,
-    Flame,
     Trophy,
     Sparkles,
     Wallet,
-    Loader2,
     LogOut,
+    Menu,
+    X,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { APP_CONFIG, UI_STRINGS } from "@/config/app";
-import { SentimentGauge } from "@/components/analysis/SentimentGauge";
-import { getTrendingStocks } from "@/lib/stocks";
 import { TickoLogo } from "@/components/ui/TickoLogo";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { useAuth } from "@/providers/AuthProvider";
+import { useSearch } from "@/providers/SearchProvider";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Navigation Items
 const navItems = [
@@ -38,14 +37,28 @@ const navItems = [
     { icon: User, label: UI_STRINGS.profile, href: "/profil" },
 ];
 
-import { useSearch } from "@/providers/SearchProvider";
-
-// ...
-
 export function Sidebar() {
     const { open } = useSearch();
     const { user, signOut } = useAuth();
     const pathname = usePathname();
+    const [mobileOpen, setMobileOpen] = useState(false);
+
+    // Close mobile menu on route change
+    useEffect(() => {
+        setMobileOpen(false);
+    }, [pathname]);
+
+    // Prevent body scroll when mobile menu is open
+    useEffect(() => {
+        if (mobileOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [mobileOpen]);
 
     // Fetch live trending snippets
     const { data: trendingData, isLoading: isTrendingLoading } = useQuery({
@@ -58,32 +71,42 @@ export function Sidebar() {
         refetchInterval: 60000,
     });
 
-
-
-    return (
-        <aside className="w-64 h-screen sticky top-0 flex flex-col border-r border-white/10 bg-white/[0.02] backdrop-blur-xl z-50">
+    const SidebarContent = () => (
+        <>
             {/* Logo & Notifications */}
             <div className="p-5 border-b border-white/10 flex items-center justify-between">
-                <Link href="/" className="flex items-center">
+                <Link href="/" className="flex items-center" onClick={() => setMobileOpen(false)}>
                     <TickoLogo />
                 </Link>
-                <NotificationBell />
+                <div className="flex items-center gap-2">
+                    <NotificationBell />
+                    {/* Mobile close button */}
+                    <button
+                        onClick={() => setMobileOpen(false)}
+                        className="md:hidden p-2 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
             </div>
 
             {/* Search Trigger */}
             <div className="p-4">
                 <button
-                    onClick={() => open()}
+                    onClick={() => {
+                        open();
+                        setMobileOpen(false);
+                    }}
                     className="w-full flex items-center gap-3 px-4 py-3 bg-white/[0.06] rounded-2xl text-white/40 border border-white/10 hover:border-emerald-500/50 hover:text-white transition-all text-sm group"
                 >
                     <Search className="w-4 h-4 group-hover:text-emerald-400 transition-colors" />
                     <span>{UI_STRINGS.search}</span>
-                    <span className="ml-auto text-xs bg-white/10 px-1.5 py-0.5 rounded text-white/30 font-medium">⌘K</span>
+                    <span className="ml-auto text-xs bg-white/10 px-1.5 py-0.5 rounded text-white/30 font-medium hidden sm:inline">⌘K</span>
                 </button>
             </div>
 
             {/* Navigation */}
-            <nav className="p-3">
+            <nav className="p-3 flex-1">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href ||
                         (item.href !== "/" && pathname.startsWith(item.href));
@@ -91,6 +114,7 @@ export function Sidebar() {
                         <Link
                             key={item.href}
                             href={item.href}
+                            onClick={() => setMobileOpen(false)}
                             className={`flex items-center justify-between px-4 py-2.5 rounded-2xl transition-all group ${isActive
                                 ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                                 : "text-white/70 hover:text-white hover:bg-white/[0.06] border border-transparent"
@@ -111,12 +135,13 @@ export function Sidebar() {
             </nav>
 
             {/* Spacer */}
-            <div className="flex-1" />
+            <div className="flex-1 md:block hidden" />
 
             {/* Footer */}
             <div className="p-3 border-t border-white/10 space-y-1">
                 <Link
                     href="/settings"
+                    onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-white hover:bg-white/[0.06] transition-all"
                 >
                     <Settings className="w-4 h-4" />
@@ -124,7 +149,10 @@ export function Sidebar() {
                 </Link>
                 {user ? (
                     <button
-                        onClick={() => signOut()}
+                        onClick={() => {
+                            signOut();
+                            setMobileOpen(false);
+                        }}
                         className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/40 hover:text-rose-400 hover:bg-rose-400/10 transition-all group"
                     >
                         <LogOut className="w-4 h-4 group-hover:rotate-12 transition-transform" />
@@ -133,6 +161,7 @@ export function Sidebar() {
                 ) : (
                     <Link
                         href="/logga-in"
+                        onClick={() => setMobileOpen(false)}
                         className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-emerald-400 hover:bg-emerald-400/10 transition-all group"
                     >
                         <LogOut className="w-4 h-4 rotate-180 group-hover:-rotate-[168deg] transition-transform" />
@@ -140,6 +169,59 @@ export function Sidebar() {
                     </Link>
                 )}
             </div>
-        </aside>
+        </>
+    );
+
+    return (
+        <>
+            {/* Mobile Header Bar */}
+            <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#020617]/95 backdrop-blur-xl border-b border-white/10 z-50 flex items-center justify-between px-4">
+                <button
+                    onClick={() => setMobileOpen(true)}
+                    className="p-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                >
+                    <Menu className="w-6 h-6" />
+                </button>
+                <Link href="/">
+                    <TickoLogo />
+                </Link>
+                <NotificationBell />
+            </div>
+
+            {/* Mobile Spacer */}
+            <div className="md:hidden h-16" />
+
+            {/* Desktop Sidebar */}
+            <aside className="hidden md:flex w-64 h-screen sticky top-0 flex-col border-r border-white/10 bg-white/[0.02] backdrop-blur-xl z-50">
+                <SidebarContent />
+            </aside>
+
+            {/* Mobile Sidebar Overlay */}
+            <AnimatePresence>
+                {mobileOpen && (
+                    <>
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setMobileOpen(false)}
+                            className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
+                        />
+
+                        {/* Sidebar */}
+                        <motion.aside
+                            initial={{ x: "-100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                            className="md:hidden fixed inset-y-0 left-0 w-72 flex flex-col bg-[#020617] border-r border-white/10 z-[70] overflow-y-auto"
+                        >
+                            <SidebarContent />
+                        </motion.aside>
+                    </>
+                )}
+            </AnimatePresence>
+        </>
     );
 }

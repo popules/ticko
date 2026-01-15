@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
+import { AchievementsDisplay } from "@/components/profile/AchievementsDisplay";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/lib/supabase/client";
-import { Loader2, TrendingUp, MessageSquare, Star } from "lucide-react";
+import { Loader2, TrendingUp, MessageSquare, Star, Trophy, Target } from "lucide-react";
 import { motion } from "framer-motion";
 import { PostCard } from "@/components/feed/PostCard";
 import Link from "next/link";
@@ -136,7 +137,31 @@ export default function ProfilePage() {
                                             <span className="text-xs text-white/50">Ryktespoäng</span>
                                             <span className="text-sm font-bold text-emerald-400">{profile?.reputation_score || 0}</span>
                                         </div>
+                                        {/* Prediction stats */}
+                                        {(profile?.total_predictions || 0) > 0 && (
+                                            <>
+                                                <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
+                                                    <span className="text-xs text-white/50 flex items-center gap-1">
+                                                        <Target className="w-3 h-3" /> Träffsäkerhet
+                                                    </span>
+                                                    <span className="text-sm font-bold text-purple-400">
+                                                        {Math.round(((profile?.correct_predictions || 0) / (profile?.total_predictions || 1)) * 100)}%
+                                                    </span>
+                                                </div>
+                                                <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
+                                                    <span className="text-xs text-white/50">Prediktioner</span>
+                                                    <span className="text-sm font-bold text-white">
+                                                        {profile?.correct_predictions || 0}/{profile?.total_predictions || 0}
+                                                    </span>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
+                                </div>
+
+                                {/* Achievements Card */}
+                                <div className="p-6 rounded-[2rem] border border-white/10 bg-white/[0.02]">
+                                    {user && <AchievementsDisplay userId={user.id} />}
                                 </div>
 
                                 {/* Watchlist Card */}
