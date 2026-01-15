@@ -16,8 +16,8 @@ export function TickoLogo({ className = "", showText = true }: { className?: str
                 >
                     <defs>
                         <linearGradient id="mint-frost" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stopColor="#2DD4BF" stopOpacity="0.6" />
-                            <stop offset="100%" stopColor="#0D9488" stopOpacity="0.4" />
+                            <stop offset="0%" stopColor="#2DD4BF" />
+                            <stop offset="100%" stopColor="#0D9488" />
                         </linearGradient>
                         <filter id="glass-blur" x="-20%" y="-20%" width="140%" height="140%">
                             <feGaussianBlur in="SourceGraphic" stdDeviation="1" />

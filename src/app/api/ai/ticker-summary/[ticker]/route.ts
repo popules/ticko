@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { openai } from "@/lib/openai";
+import { TICKER_SUMMARY_SYSTEM_PROMPT } from "@/config/ai-prompts";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -37,26 +38,23 @@ export async function GET(
         const postsContent = posts.map(p => p.content).join("\n---\n");
 
         const prompt = `
-        Analysera följande inlägg från Ticko-communityt gällande aktien $${ticker}:
-        
-        INLÄGG:
-        ${postsContent}
+Analysera följande ${posts.length} inlägg från Ticko-communityt gällande $${ticker}:
 
-        UPPGIFT:
-        Sammanfatta community-snacket på Svenska. 
-        - Vad är det generella sentimentet (Bullish/Bearish/Neutralt)?
-        - Vilka är de vanligaste argumenten eller observationerna?
-        - Håll det kort och insiktsfullt (max 100 ord).
-        - Fokusera på "snacket", inte din egen analys av aktien.
+INLÄGG:
+${postsContent}
+
+UPPGIFT:
+Sammanfatta community-snacket enligt instruktionerna i din systemprompt.
         `;
 
         const response = await openai.chat.completions.create({
             model: "gpt-4o",
             messages: [
-                { role: "system", content: "Du är en expert på att analysera socialt sentiment på finansmarknaden." },
+                { role: "system", content: TICKER_SUMMARY_SYSTEM_PROMPT },
                 { role: "user", content: prompt }
             ],
             temperature: 0.5,
+            max_tokens: 200,
         });
 
         const summary = response.choices[0].message.content;

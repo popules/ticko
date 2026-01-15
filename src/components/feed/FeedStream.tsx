@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import { PostCard } from "./PostCard";
 import { PostComposer } from "./PostComposer";
-import { MorningReport } from "./MorningReport";
+import { WhatIsHappening } from "./WhatIsHappening";
 import { Loader2, Radio } from "lucide-react";
 import { UI_STRINGS } from "@/config/app";
 import type { Post } from "@/types/database";
@@ -180,8 +180,8 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
 
     return (
         <div className="space-y-4">
-            {/* Morning Report */}
-            {user && !tickerFilter && <MorningReport />}
+            {/* Trending & Activity Hub */}
+            {user && !tickerFilter && <WhatIsHappening />}
 
             {/* Post composer */}
             <PostComposer onNewPost={handleNewPost} tickerFilter={tickerFilter} />

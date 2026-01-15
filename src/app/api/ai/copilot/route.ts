@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { openai } from "@/lib/openai";
 import { fetchStockData } from "@/lib/stocks-api";
+import { COPILOT_SYSTEM_PROMPT } from "@/config/ai-prompts";
 
 export async function POST(request: Request) {
     try {
@@ -13,30 +14,18 @@ export async function POST(request: Request) {
             const stock = await fetchStockData(contextTicker);
             if (stock) {
                 contextData = `
-                ANVÄNDAREN TITTAR PÅ: ${stock.name} (${stock.symbol})
-                Pris: ${stock.price} ${stock.currency}
-                Ändring: ${stock.changePercent.toFixed(2)}%
-                P/E: ${stock.pe}
-                Börsvärde: ${stock.marketCap}
-                52v H/L: ${stock.week52Range}
+AKTIEDATA:
+• Namn: ${stock.name} (${stock.symbol})
+• Pris: ${stock.price} ${stock.currency}
+• Daglig förändring: ${stock.changePercent >= 0 ? '+' : ''}${stock.changePercent.toFixed(2)}%
+• P/E-tal: ${stock.pe || 'N/A'}
+• Börsvärde: ${stock.marketCap || 'N/A'}
+• 52-veckors H/L: ${stock.week52Range || 'N/A'}
                 `;
             }
         }
 
-        const systemPrompt = `
-        Du är Ticko Copilot, en smart och hjälpsam trading-assistent.
-        Du hjälper användare på plattformen Ticko att förstå aktiemarknaden.
-
-        CONTEXT:
-        ${contextData ? contextData : "Användaren är på startsidan/feed."}
-
-        INSTRUKTIONER:
-        - Svara på Svenska.
-        - Var kortfattad (chat-format).
-        - Om du får aktiedata ovan, använd den för att svara på frågor om värdering, trend, etc.
-        - Om användaren frågar om "sentiment", gissa baserat på kursrörelsen om data finns (t.ex. "Med +5% idag är sentimentet troligen positivt"), men var tydlig med att du inte läst alla inlägg än.
-        - Du kan INTE ge finansiell rådgivning. Säg "Detta är information, inte råd." om det behövs.
-        `;
+        const systemPrompt = COPILOT_SYSTEM_PROMPT(contextData);
 
         const messages = [
             { role: "system", content: systemPrompt },

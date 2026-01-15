@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { openai } from "@/lib/openai";
 import { fetchStockData } from "@/lib/stocks-api";
+import { REPORT_SYSTEM_PROMPT, getTimeGreeting } from "@/config/ai-prompts";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -27,7 +28,7 @@ export async function GET(request: Request) {
 
         if (!watchlist || watchlist.length === 0) {
             return NextResponse.json({
-                message: "Lägg till aktier i din watchlist för att få en personlig morgonrapport!"
+                message: "Lägg till aktier i din watchlist för att få en personlig marknadsrapport!"
             });
         }
 
@@ -47,32 +48,36 @@ export async function GET(request: Request) {
         // 3. Prepare AI prompt or Fallback
         const apiKey = process.env.OPENAI_API_KEY;
         let report = "";
+        const timeInfo = getTimeGreeting();
 
         if (apiKey) {
             try {
                 const stockContext = stocks.map(s => (
-                    `- ${s!.symbol}: ${s!.price} ${s!.currency} (${s!.changePercent.toFixed(2)}%). ${s!.name}`
+                    `• ${s!.symbol}: ${s!.price} ${s!.currency} (${s!.changePercent >= 0 ? '+' : ''}${s!.changePercent.toFixed(2)}%) - ${s!.name}`
                 )).join("\n");
 
                 const prompt = `
-                Du är Tickos AI-analytiker. Skapa en kortfatta men proffsig och peppig "Morgonrapport" med fokus på användarens aktier:
-                
-                ${stockContext}
+Skapa en ${timeInfo.period}srapport för användarens watchlist.
 
-                INSTRUKTIONER:
-                - Skriv på Svenska.
-                - Max 3 korta stycken. 
-                - Nämn dagens vinnare.
-                - Ton: Exklusiv, insiktsfull.
+AKTIER ATT ANALYSERA:
+${stockContext}
+
+INSTRUKTIONER:
+- Börja med "${timeInfo.greeting}!" 
+- Nämn dagens vinnare och förlorare kort
+- Ge en observation eller insikt
+- Max 3 korta stycken totalt
+- Ton: Professionell men varm
                 `;
 
                 const response = await openai.chat.completions.create({
                     model: "gpt-4o",
                     messages: [
-                        { role: "system", content: "Du är en expert på aktiemarknaden." },
+                        { role: "system", content: REPORT_SYSTEM_PROMPT },
                         { role: "user", content: prompt }
                     ],
                     temperature: 0.7,
+                    max_tokens: 400,
                 });
                 report = response.choices[0].message.content || "";
             } catch (aiError) {

@@ -1,13 +1,46 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Sparkles, Loader2, RefreshCw, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Get time-appropriate report config
+function getReportConfig() {
+    const hour = new Date().getHours();
+
+    if (hour >= 5 && hour < 12) {
+        return {
+            title: "Morgonrapport",
+            subtitle: "Starta dagen med marknadsinsikter",
+            emoji: "🌅"
+        };
+    } else if (hour >= 12 && hour < 17) {
+        return {
+            title: "Eftermiddagsrapport",
+            subtitle: "Mitt på dagen-uppdatering",
+            emoji: "☀️"
+        };
+    } else if (hour >= 17 && hour < 22) {
+        return {
+            title: "Kvällsrapport",
+            subtitle: "Sammanfattning av dagen",
+            emoji: "🌆"
+        };
+    } else {
+        return {
+            title: "Nattrapport",
+            subtitle: "Sena tankar om marknaden",
+            emoji: "🌙"
+        };
+    }
+}
 
 export function MorningReport() {
     const [report, setReport] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
+
+    const reportConfig = useMemo(() => getReportConfig(), []);
 
     const fetchReport = async () => {
         setIsLoading(true);
@@ -50,8 +83,11 @@ export function MorningReport() {
                         <Sparkles className="w-5 h-5 text-emerald-400" />
                     </div>
                     <div>
-                        <h3 className="text-sm font-bold text-white uppercase tracking-widest">Morgonrapport</h3>
-                        <p className="text-[10px] text-white/40 uppercase tracking-tighter">Personliga insikter från Ticko AI</p>
+                        <h3 className="text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                            <span>{reportConfig.emoji}</span>
+                            {reportConfig.title}
+                        </h3>
+                        <p className="text-[10px] text-white/40 tracking-tight">{reportConfig.subtitle}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
