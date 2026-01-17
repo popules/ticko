@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     }
 
     // Check if already following
-    const { data: existingFollow, error: fetchError } = await (supabase as any)
+    const { data: existingFollow } = await (supabase as any)
         .from("follows")
         .select("*")
         .eq("follower_id", user.id)

@@ -21,9 +21,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        // Early return for unconfigured Supabase - this happens during SSR/build
         if (!isSupabaseConfigured || !supabase) {
-            setIsLoading(false);
-            return;
+            // Use setTimeout to avoid sync setState in effect
+            const timer = setTimeout(() => setIsLoading(false), 0);
+            return () => clearTimeout(timer);
         }
 
         // Get initial session
@@ -72,8 +74,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // No need for client-side insert into "profiles" anymore
         // It's handled by the Database Trigger in migration_v3.sql for better reliability
-
-        return { error: null };
 
         return { error: null };
     };

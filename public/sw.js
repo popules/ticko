@@ -1,7 +1,7 @@
 // Ticko Push Notification Service Worker
 // This handles incoming push notifications when the app is in the background
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', () => {
     console.log('[SW] Service worker installed');
     self.skipWaiting();
 });

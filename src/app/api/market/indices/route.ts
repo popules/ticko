@@ -11,7 +11,7 @@ export async function GET() {
         const indexPromises = indexTickers.map(ticker => fetchStockData(ticker));
         const results = await Promise.all(indexPromises);
 
-        const indices = results.map((data, index) => {
+        const indices = results.map((data) => {
             if (!data) return null;
 
             // Clean up labels for display

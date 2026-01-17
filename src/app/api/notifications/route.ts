@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
     const cookieStore = await cookies();
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
         global: { headers: { Cookie: cookieStore.toString() } },
@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     return NextResponse.json(data);
 }
 
-export async function POST(request: Request) {
+export async function POST(_request: Request) {
     const cookieStore = await cookies();
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
         global: { headers: { Cookie: cookieStore.toString() } },
