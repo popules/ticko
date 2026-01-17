@@ -24,7 +24,21 @@ export async function generateMetadata({ params }: AktiePageProps): Promise<Meta
         openGraph: {
             title: `${stock.name} ($${stock.symbol}) på Ticko`,
             description: `Häng med i snacket kring ${stock.name}. AI-insikter och realtidsdata för svenska småsparare.`,
-        }
+            images: [
+                {
+                    url: `https://www.ticko.se/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`,
+                    width: 1200,
+                    height: 630,
+                    alt: `${stock.name} på Ticko`,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: `${stock.name} ($${stock.symbol}) på Ticko`,
+            description: `Diskutera $${stock.symbol} med Sveriges smartaste börssnackare.`,
+            images: [`https://www.ticko.se/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`],
+        },
     };
 }
 

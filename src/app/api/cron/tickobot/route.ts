@@ -17,7 +17,15 @@ function getSupabaseAdmin() {
     );
 }
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Create OpenAI client lazily to avoid build-time errors
+function getOpenAI() {
+    if (!process.env.OPENAI_API_KEY) {
+        console.log("OPENAI_API_KEY is missing. OpenAI features will fail at runtime.");
+        return null;
+    }
+    return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+}
+
 const yf = new YahooFinance();
 
 // Swedish tickers + US majors for dynamic posts
@@ -61,6 +69,10 @@ async function generateMarketPost(): Promise<string> {
         : `Skriv ett kort, engagerande inlägg (max 150 tecken) om börsen idag. Fråga vad folk håller koll på. Var social och nyfiken.`;
 
     try {
+        const openai = getOpenAI();
+        if (!openai) {
+            return "God morgon! Vad håller ni koll på idag? 🔍";
+        }
         const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
