@@ -1,17 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 import { Trophy, Medal, TrendingUp, Shield } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-
-// Initialize existing client just for this page's data fetching if needed, 
-// or use the hook/provider if preferred. Keeping it simple.
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 
 export default function LeaderboardPage() {
     const [users, setUsers] = useState<any[]>([]);
@@ -19,6 +12,11 @@ export default function LeaderboardPage() {
 
     useEffect(() => {
         const fetchLeaderboard = async () => {
+            if (!isSupabaseConfigured || !supabase) {
+                setIsLoading(false);
+                return;
+            }
+
             const { data, error } = await (supabase as any)
                 .from("profiles")
                 .select("*")
