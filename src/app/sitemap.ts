@@ -62,12 +62,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
     ];
 
-    // Dynamic stock pages - fetch popular tickers from posts
+    // Popular tickers baseline (always indexed)
+    const popularTickers = [
+        // Swedish / Nordic
+        'VOLV-B', 'ERIC-B', 'ASSA-B', 'SAND', 'ATCO-A', 'SEB-A', 'SWED-A', 'HM-B',
+        'AZN', 'INVE-B', 'ESSITY-B', 'TELIA', 'KINV-B', 'SCA-B', 'SKF-B', 'ABB',
+        'NDA-SE', 'HEXA-B', 'ELUX-B', 'BOL', 'SINCH', 'EVO', 'NIBE-B', 'ALFA',
+        // US Large Cap
+        'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA', 'BRK-B',
+        'UNH', 'JNJ', 'V', 'JPM', 'PG', 'MA', 'HD', 'CVX', 'MRK', 'ABBV',
+        'PEP', 'KO', 'COST', 'AVGO', 'TMO', 'MCD', 'WMT', 'CSCO', 'ACN',
+        'ADBE', 'CRM', 'AMD', 'NFLX', 'INTC', 'ORCL', 'NKE', 'DIS', 'PYPL',
+    ];
+
+    // Dynamic stock pages - fetch tickers from posts + popular baseline
     let stockPages: MetadataRoute.Sitemap = [];
 
     try {
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
         const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+        let dbTickers: string[] = [];
 
         if (supabaseUrl && supabaseKey) {
             const supabase = createClient(supabaseUrl, supabaseKey);
@@ -81,18 +96,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 .limit(500);
 
             if (posts) {
-                const uniqueTickers = [...new Set(posts.map(p => p.ticker_symbol).filter(Boolean))];
-
-                stockPages = uniqueTickers.map(ticker => ({
-                    url: `${BASE_URL}/aktie/${ticker}`,
-                    lastModified: new Date(),
-                    changeFrequency: 'hourly' as const,
-                    priority: 0.8,
-                }));
+                dbTickers = posts.map(p => p.ticker_symbol).filter(Boolean);
             }
         }
+
+        // Merge popular + DB tickers, dedupe
+        const allTickers = [...new Set([...popularTickers, ...dbTickers])];
+
+        stockPages = allTickers.map(ticker => ({
+            url: `${BASE_URL}/aktie/${ticker}`,
+            lastModified: new Date(),
+            changeFrequency: 'hourly' as const,
+            priority: 0.8,
+        }));
     } catch (error) {
         console.error('Sitemap: Failed to fetch stock pages:', error);
+
+        // Fallback to just popular tickers
+        stockPages = popularTickers.map(ticker => ({
+            url: `${BASE_URL}/aktie/${ticker}`,
+            lastModified: new Date(),
+            changeFrequency: 'hourly' as const,
+            priority: 0.8,
+        }));
     }
 
     return [...staticPages, ...stockPages];
