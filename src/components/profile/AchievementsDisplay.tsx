@@ -110,7 +110,7 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
             </div>
 
             {/* Achievements grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 gap-3">
                 <AnimatePresence mode="popLayout">
                     {displayAchievements.map((achievement, index) => {
                         const isUnlocked = unlockedKeys.has(achievement.key);
@@ -122,8 +122,8 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
                                 className={`relative p-4 rounded-2xl border transition-all ${isUnlocked
-                                        ? `${RARITY_COLORS[achievement.rarity]} hover:scale-105`
-                                        : "bg-white/[0.02] border-white/5 opacity-40"
+                                    ? `${RARITY_COLORS[achievement.rarity]} hover:scale-105`
+                                    : "bg-white/[0.02] border-white/5 opacity-40"
                                     }`}
                             >
                                 {/* Locked overlay */}

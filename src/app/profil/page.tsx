@@ -134,8 +134,8 @@ export default function ProfilePage() {
                                             <span className="text-sm font-bold text-white">{posts.length}</span>
                                         </div>
                                         <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
-                                            <span className="text-xs text-white/50">Ryktespoäng</span>
-                                            <span className="text-sm font-bold text-emerald-400">{profile?.reputation_score || 0}</span>
+                                            <span className="text-xs text-white/50">Rykte</span>
+                                            <span className="text-sm font-bold text-emerald-400">{posts.reduce((sum, post) => sum + (post.up_count || 0), 0)}</span>
                                         </div>
                                         {/* Prediction stats */}
                                         {(profile?.total_predictions || 0) > 0 && (

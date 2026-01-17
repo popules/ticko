@@ -76,12 +76,7 @@ export function PostCard({ post }: PostCardProps) {
                         >
                             {profile?.username || "Anonym"}
                         </Link>
-                        {profile?.reputation_score !== undefined && profile.reputation_score > 0 && (
-                            <span className="flex items-center gap-1 text-[10px] text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-full font-medium">
-                                <span className="text-[10px]">★</span>
-                                {profile.reputation_score}
-                            </span>
-                        )}
+
                         <span className="text-white/30">·</span>
                         <span className="text-white/50 text-[12px] font-medium">
                             {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: sv })}
