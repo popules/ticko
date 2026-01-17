@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Shield, TrendingUp, Calendar, MapPin, Pencil, Share2 } from "lucide-react";
+import { Shield, Calendar, MapPin, Pencil } from "lucide-react";
+import { ShareButton } from "@/components/ui/ShareButton";
 import { BadgeRack } from "./BadgeRack";
 import { EditProfileModal } from "./EditProfileModal";
 import { getUserRank } from "@/lib/ranks";
@@ -105,13 +106,20 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                             )}
 
                             {isOwnProfile && (
-                                <button
-                                    onClick={() => setIsEditModalOpen(true)}
-                                    className="flex items-center gap-2 px-6 py-2.5 bg-white text-black rounded-xl font-bold text-sm hover:bg-white/90 transition-all shadow-xl shadow-white/5"
-                                >
-                                    <Pencil className="w-4 h-4" />
-                                    Redigera Profil
-                                </button>
+                                <div className="flex items-center gap-3">
+                                    <ShareButton
+                                        url={`https://www.ticko.se/profil/${profile.id}`}
+                                        title={`${currentProfile.username} på Ticko`}
+                                        iconOnly={false}
+                                    />
+                                    <button
+                                        onClick={() => setIsEditModalOpen(true)}
+                                        className="flex items-center gap-2 px-6 py-2.5 bg-white text-black rounded-xl font-bold text-sm hover:bg-white/90 transition-all shadow-xl shadow-white/5"
+                                    >
+                                        <Pencil className="w-4 h-4" />
+                                        Redigera Profil
+                                    </button>
+                                </div>
                             )}
                         </div>
 

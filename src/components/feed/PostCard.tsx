@@ -4,6 +4,7 @@ import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
 import { TrendingUp, TrendingDown, Flag, Trash2, Loader2 } from "lucide-react";
+import { ShareButton } from "@/components/ui/ShareButton";
 import { renderWithCashtags } from "@/lib/cashtag";
 import { UI_STRINGS } from "@/config/app";
 import { ReactionButtons } from "./ReactionButtons";
@@ -212,6 +213,11 @@ export function PostCard({ post }: PostCardProps) {
                                     )}
                                 </button>
                             )}
+                            {/* Share button */}
+                            <ShareButton
+                                url={`https://www.ticko.se/post/${post.id}`}
+                                title={`Inlägg av ${profile?.username || 'Anonym'} på Ticko`}
+                            />
                             {/* Report button */}
                             <button
                                 onClick={() => setIsReportModalOpen(true)}

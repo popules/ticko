@@ -15,8 +15,37 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: APP_CONFIG.name,
+  title: {
+    default: APP_CONFIG.name,
+    template: `%s | ${APP_CONFIG.name}`,
+  },
   description: APP_CONFIG.description,
+  metadataBase: new URL(APP_CONFIG.baseUrl),
+  openGraph: {
+    title: `${APP_CONFIG.name} - ${APP_CONFIG.tagline}`,
+    description: APP_CONFIG.description,
+    url: APP_CONFIG.baseUrl,
+    siteName: APP_CONFIG.name,
+    locale: 'sv_SE',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${APP_CONFIG.name} - ${APP_CONFIG.tagline}`,
+    description: APP_CONFIG.description,
+  },
+  icons: {
+    icon: '/icons/icon-192.png',
+    apple: '/icons/apple-touch-icon.png',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: APP_CONFIG.name,
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
 };
 
 export default function RootLayout({
