@@ -79,7 +79,7 @@ export function LandingPage() {
             </nav>
 
             {/* Hero Section */}
-            <section ref={targetRef} className="relative pt-40 pb-10 px-6 flex flex-col items-center text-center z-10 min-h-screen">
+            <section ref={targetRef} className="relative pt-32 pb-20 px-6 flex flex-col items-center justify-center text-center z-10 min-h-[90vh]">
                 <motion.div style={{ opacity, scale }}>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -118,7 +118,7 @@ export function LandingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
-                        className="flex flex-col sm:flex-row items-center gap-4 mb-8"
+                        className="flex flex-col sm:flex-row items-center gap-4 mb-16"
                     >
                         <Link
                             href="/registrera"
