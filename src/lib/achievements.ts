@@ -181,6 +181,62 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
         rarity: "uncommon",
         points: 25,
     },
+
+    // Paper Trading achievements
+    FIRST_PAPER_TRADE: {
+        key: "first_paper_trade",
+        name: "Första Pappershandeln",
+        description: "Genomförde din första paper trade",
+        emoji: "🎮",
+        category: "engagement",
+        rarity: "common",
+        points: 10,
+    },
+    PAPER_10X: {
+        key: "paper_10x",
+        name: "Tiodubblingen",
+        description: "Nådde 1M kr i paper trading",
+        emoji: "🚀",
+        category: "milestone",
+        rarity: "epic",
+        points: 200,
+    },
+    PAPER_WINNER: {
+        key: "paper_winner",
+        name: "Säsongens Vinnare",
+        description: "Vann en veckas paper trading-topplista",
+        emoji: "🏆",
+        category: "milestone",
+        rarity: "legendary",
+        points: 500,
+    },
+    PAPER_COMEBACK: {
+        key: "paper_comeback",
+        name: "Comeback Kid",
+        description: "Gick från -50% till positiv avkastning",
+        emoji: "💪",
+        category: "milestone",
+        rarity: "rare",
+        points: 75,
+    },
+    PAPER_STREAK_3: {
+        key: "paper_streak_3",
+        name: "Tre i Rad",
+        description: "3 lönsamma trades i rad",
+        emoji: "🔥",
+        category: "engagement",
+        rarity: "uncommon",
+        points: 25,
+    },
+    PAPER_DIVERSIFIED: {
+        key: "paper_diversified",
+        name: "Diversifierad",
+        description: "Har 10+ olika aktier i paper portföljen",
+        emoji: "🌐",
+        category: "engagement",
+        rarity: "uncommon",
+        points: 20,
+    },
 };
 
 // Rarity colors for UI

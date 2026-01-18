@@ -2,22 +2,43 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
-import { Trophy, Medal, TrendingUp, User, Crown, Loader2 } from "lucide-react";
+import { Trophy, Medal, TrendingUp, TrendingDown, User, Crown, Loader2, Gamepad2, RotateCcw, Calendar, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
+import { useState } from "react";
 
 interface Leader {
     id: string;
     username: string;
     avatar_url: string | null;
     reputation_score: number;
+    paper_total_pnl?: number;
+    paper_season_pnl?: number;
+    paper_reset_count?: number;
+    paper_season_number?: number;
+    is_pro?: boolean;
 }
 
+interface Season {
+    season_number: number;
+    winner_username: string;
+    winner_pnl: number;
+    participants_count: number;
+    ended_at: string;
+}
+
+type LeaderboardTab = "reputation" | "paper";
+type PaperTimeframe = "season" | "alltime";
+
 export default function LeaderboardPage() {
-    const { data: leaders, isLoading } = useQuery<Leader[]>({
-        queryKey: ["leaderboard"],
+    const [activeTab, setActiveTab] = useState<LeaderboardTab>("reputation");
+    const [paperTimeframe, setPaperTimeframe] = useState<PaperTimeframe>("season");
+
+    // Reputation leaderboard
+    const { data: reputationLeaders, isLoading: isRepLoading } = useQuery<Leader[]>({
+        queryKey: ["leaderboard-reputation"],
         queryFn: async () => {
             const { data, error } = await (supabase as any)
                 .from("profiles")
@@ -29,6 +50,67 @@ export default function LeaderboardPage() {
             return data as Leader[];
         },
     });
+
+    // Paper trading leaderboard (all-time)
+    const { data: paperAllTimeLeaders, isLoading: isPaperAllTimeLoading } = useQuery<Leader[]>({
+        queryKey: ["leaderboard-paper-alltime"],
+        queryFn: async () => {
+            const { data, error } = await (supabase as any)
+                .from("profiles")
+                .select("id, username, avatar_url, paper_total_pnl, paper_reset_count, is_pro")
+                .not("paper_total_pnl", "is", null)
+                .order("paper_total_pnl", { ascending: false })
+                .limit(50);
+
+            if (error) throw error;
+            return data as Leader[];
+        },
+    });
+
+    // Paper trading leaderboard (current season)
+    const { data: paperSeasonLeaders, isLoading: isPaperSeasonLoading } = useQuery<Leader[]>({
+        queryKey: ["leaderboard-paper-season"],
+        queryFn: async () => {
+            const { data, error } = await (supabase as any)
+                .from("profiles")
+                .select("id, username, avatar_url, paper_season_pnl, paper_season_number, paper_reset_count, is_pro")
+                .order("paper_season_pnl", { ascending: false })
+                .limit(50);
+
+            if (error) throw error;
+            return data as Leader[];
+        },
+    });
+
+    // Last season winner
+    const { data: lastSeason } = useQuery<Season | null>({
+        queryKey: ["last-season"],
+        queryFn: async () => {
+            const { data, error } = await (supabase as any)
+                .from("paper_seasons")
+                .select("*")
+                .order("season_number", { ascending: false })
+                .limit(1)
+                .single();
+
+            if (error) return null;
+            return data as Season;
+        },
+    });
+
+    const isLoading = activeTab === "reputation"
+        ? isRepLoading
+        : (paperTimeframe === "season" ? isPaperSeasonLoading : isPaperAllTimeLoading);
+
+    const leaders = activeTab === "reputation"
+        ? reputationLeaders
+        : (paperTimeframe === "season" ? paperSeasonLeaders : paperAllTimeLeaders);
+
+    const currentSeasonNumber = paperSeasonLeaders?.[0]?.paper_season_number || 1;
+
+    // Calculate days until Sunday reset
+    const now = new Date();
+    const daysUntilSunday = (7 - now.getDay()) % 7 || 7;
 
     if (isLoading) {
         return (
@@ -45,21 +127,131 @@ export default function LeaderboardPage() {
     const showPodium = leaders && leaders.length >= 3;
     const listStartIndex = showPodium ? 3 : 0;
 
+    const getScoreDisplay = (user: Leader) => {
+        if (activeTab === "reputation") {
+            return `${user.reputation_score} p`;
+        }
+        const pnl = paperTimeframe === "season" ? (user.paper_season_pnl || 0) : (user.paper_total_pnl || 0);
+        const prefix = pnl >= 0 ? "+" : "";
+        return `${prefix}${pnl.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr`;
+    };
+
+    const getScoreColor = (user: Leader, position: number) => {
+        if (activeTab === "reputation") {
+            if (position === 0) return "text-yellow-400";
+            if (position === 1) return "text-slate-400";
+            if (position === 2) return "text-orange-400";
+            return "text-white";
+        }
+        const pnl = paperTimeframe === "season" ? (user.paper_season_pnl || 0) : (user.paper_total_pnl || 0);
+        return pnl >= 0 ? "text-emerald-400" : "text-rose-400";
+    };
+
     return (
         <div className="flex min-h-screen bg-[#020617]">
             <Sidebar />
             <main className="flex-1 border-x border-white/5 overflow-y-auto">
                 <div className="max-w-2xl mx-auto pt-8 pb-20 px-4">
                     {/* Header */}
-                    <div className="text-center mb-10">
+                    <div className="text-center mb-6">
                         <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 mb-4 shadow-[0_0_30px_-10px_rgba(234,179,8,0.3)]">
                             <Trophy className="w-8 h-8 text-yellow-400" />
                         </div>
                         <h1 className="text-2xl font-extrabold text-white mb-2 tracking-tight">Topplistan</h1>
-                        <p className="text-sm text-white/40">Sveriges vassaste aktieanalytiker just nu</p>
+                        <p className="text-sm text-white/40">Sveriges vassaste aktieanalytiker</p>
                     </div>
 
-                    {/* Top 3 Podium (Visual) */}
+                    {/* Tab Selector */}
+                    <div className="flex gap-2 mb-4 p-1 bg-white/[0.04] rounded-xl border border-white/10">
+                        <button
+                            onClick={() => setActiveTab("reputation")}
+                            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "reputation"
+                                    ? "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-400 border border-yellow-500/30"
+                                    : "text-white/40 hover:text-white/60"
+                                }`}
+                        >
+                            <Medal className="w-4 h-4" />
+                            Rykte
+                        </button>
+                        <button
+                            onClick={() => setActiveTab("paper")}
+                            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "paper"
+                                    ? "bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-400 border border-violet-500/30"
+                                    : "text-white/40 hover:text-white/60"
+                                }`}
+                        >
+                            <Gamepad2 className="w-4 h-4" />
+                            Paper Trading
+                        </button>
+                    </div>
+
+                    {/* Paper Trading Sub-tabs */}
+                    {activeTab === "paper" && (
+                        <div className="mb-6 space-y-4">
+                            {/* Season/All-time Toggle */}
+                            <div className="flex gap-2 p-1 bg-white/[0.02] rounded-lg border border-white/5">
+                                <button
+                                    onClick={() => setPaperTimeframe("season")}
+                                    className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-xs font-bold transition-all ${paperTimeframe === "season"
+                                            ? "bg-violet-500/20 text-violet-400 border border-violet-500/20"
+                                            : "text-white/40 hover:text-white/60"
+                                        }`}
+                                >
+                                    <Calendar className="w-3 h-3" />
+                                    Säsong {currentSeasonNumber}
+                                </button>
+                                <button
+                                    onClick={() => setPaperTimeframe("alltime")}
+                                    className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-xs font-bold transition-all ${paperTimeframe === "alltime"
+                                            ? "bg-violet-500/20 text-violet-400 border border-violet-500/20"
+                                            : "text-white/40 hover:text-white/60"
+                                        }`}
+                                >
+                                    <Trophy className="w-3 h-3" />
+                                    All-time
+                                </button>
+                            </div>
+
+                            {/* Season Info Banner */}
+                            {paperTimeframe === "season" && (
+                                <div className="p-4 rounded-xl bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-sm font-bold text-white">Säsong {currentSeasonNumber}</p>
+                                            <p className="text-xs text-white/40">Vem tar hem veckans krona?</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
+                                                <Clock className="w-3 h-3" />
+                                                {daysUntilSunday} dag{daysUntilSunday !== 1 ? "ar" : ""} kvar
+                                            </div>
+                                            <p className="text-[10px] text-white/30">Reset varje söndag</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Last Season Winner */}
+                            {lastSeason && paperTimeframe === "season" && (
+                                <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <Crown className="w-5 h-5 text-amber-400" />
+                                            <div>
+                                                <p className="text-xs text-amber-400/60 uppercase tracking-wider">Förra veckans vinnare</p>
+                                                <p className="text-sm font-bold text-white">@{lastSeason.winner_username}</p>
+                                            </div>
+                                        </div>
+                                        <span className="text-emerald-400 font-bold text-sm">
+                                            +{lastSeason.winner_pnl?.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Top 3 Podium */}
                     {showPodium && leaders && (
                         <div className="grid grid-cols-3 gap-4 items-end mb-12">
                             {/* 2nd Place */}
@@ -82,10 +274,13 @@ export default function LeaderboardPage() {
                                         </div>
                                     </div>
                                     <div className="text-center">
-                                        <p className="font-bold text-white text-sm truncate max-w-full">
-                                            @{leaders[1].username}
+                                        <div className="flex items-center justify-center gap-1">
+                                            <p className="font-bold text-white text-sm truncate max-w-full">@{leaders[1].username}</p>
+                                            {leaders[1].is_pro && <span className="text-amber-400 text-xs">👑</span>}
+                                        </div>
+                                        <p className={`text-xs font-medium ${getScoreColor(leaders[1], 1)}`}>
+                                            {getScoreDisplay(leaders[1])}
                                         </p>
-                                        <p className="text-xs text-slate-400 font-medium">{leaders[1].reputation_score} p</p>
                                     </div>
                                 </div>
                             </Link>
@@ -97,26 +292,34 @@ export default function LeaderboardPage() {
                                         <Crown className="w-8 h-8 fill-yellow-400/20" />
                                     </div>
                                     <div className="relative mb-3 transition-transform group-hover:-translate-y-2 duration-300">
-                                        <div className="w-24 h-24 rounded-full p-1 bg-gradient-to-b from-yellow-300 via-yellow-400 to-orange-500 shadow-[0_0_50px_-10px_rgba(234,179,8,0.4)]">
+                                        <div className={`w-24 h-24 rounded-full p-1 shadow-[0_0_50px_-10px_rgba(234,179,8,0.4)] ${activeTab === "paper"
+                                                ? "bg-gradient-to-b from-violet-300 via-violet-400 to-fuchsia-500"
+                                                : "bg-gradient-to-b from-yellow-300 via-yellow-400 to-orange-500"
+                                            }`}>
                                             <div className="w-full h-full rounded-full overflow-hidden bg-[#020617] relative">
                                                 {leaders[0].avatar_url ? (
                                                     <Image src={leaders[0].avatar_url} alt={leaders[0].username} fill className="object-cover" />
                                                 ) : (
-                                                    <div className="w-full h-full flex items-center justify-center bg-yellow-400/20">
-                                                        <User className="w-10 h-10 text-yellow-400" />
+                                                    <div className={`w-full h-full flex items-center justify-center ${activeTab === "paper" ? "bg-violet-400/20" : "bg-yellow-400/20"
+                                                        }`}>
+                                                        <User className={`w-10 h-10 ${activeTab === "paper" ? "text-violet-400" : "text-yellow-400"}`} />
                                                     </div>
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-yellow-500 border-2 border-[#020617] flex items-center justify-center text-sm font-bold text-[#020617] shadow-lg">
+                                        <div className={`absolute -bottom-3 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full border-2 border-[#020617] flex items-center justify-center text-sm font-bold shadow-lg ${activeTab === "paper" ? "bg-violet-500 text-white" : "bg-yellow-500 text-[#020617]"
+                                            }`}>
                                             1
                                         </div>
                                     </div>
                                     <div className="text-center">
-                                        <p className="font-bold text-white text-base truncate max-w-full">
-                                            @{leaders[0].username}
+                                        <div className="flex items-center justify-center gap-1">
+                                            <p className="font-bold text-white text-base truncate max-w-full">@{leaders[0].username}</p>
+                                            {leaders[0].is_pro && <span className="text-amber-400">👑</span>}
+                                        </div>
+                                        <p className={`text-sm font-bold ${getScoreColor(leaders[0], 0)}`}>
+                                            {getScoreDisplay(leaders[0])}
                                         </p>
-                                        <p className="text-sm text-yellow-400 font-bold">{leaders[0].reputation_score} p</p>
                                     </div>
                                 </div>
                             </Link>
@@ -141,20 +344,25 @@ export default function LeaderboardPage() {
                                         </div>
                                     </div>
                                     <div className="text-center">
-                                        <p className="font-bold text-white text-sm truncate max-w-full">
-                                            @{leaders[2].username}
+                                        <div className="flex items-center justify-center gap-1">
+                                            <p className="font-bold text-white text-sm truncate max-w-full">@{leaders[2].username}</p>
+                                            {leaders[2].is_pro && <span className="text-amber-400 text-xs">👑</span>}
+                                        </div>
+                                        <p className={`text-xs font-medium ${getScoreColor(leaders[2], 2)}`}>
+                                            {getScoreDisplay(leaders[2])}
                                         </p>
-                                        <p className="text-xs text-orange-400 font-medium">{leaders[2].reputation_score} p</p>
                                     </div>
                                 </div>
                             </Link>
                         </div>
                     )}
 
-                    {/* List View (Rest of the users) */}
+                    {/* List View */}
                     <div className="bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
                         {leaders?.slice(listStartIndex).map((user, index) => {
                             const rank = listStartIndex + index + 1;
+                            const pnl = paperTimeframe === "season" ? (user.paper_season_pnl || 0) : (user.paper_total_pnl || 0);
+
                             return (
                                 <Link
                                     href={`/profil/${user.username}`}
@@ -174,20 +382,39 @@ export default function LeaderboardPage() {
                                         )}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <h3 className="font-bold text-white text-sm truncate">@{user.username}</h3>
+                                        <div className="flex items-center gap-1">
+                                            <h3 className="font-bold text-white text-sm truncate">@{user.username}</h3>
+                                            {user.is_pro && <span className="text-amber-400 text-xs">👑</span>}
+                                        </div>
+                                        {activeTab === "paper" && user.paper_reset_count && user.paper_reset_count > 0 && (
+                                            <span className="text-[10px] text-amber-400/60 flex items-center gap-1">
+                                                <RotateCcw className="w-2.5 h-2.5" /> {user.paper_reset_count} resets
+                                            </span>
+                                        )}
                                     </div>
-                                    <div className="text-right">
-                                        <span className="font-bold text-white text-sm">{user.reputation_score}</span>
-                                        <span className="text-xs text-white/30 ml-1">p</span>
+                                    <div className="text-right flex items-center gap-1">
+                                        {activeTab === "paper" && (
+                                            pnl >= 0
+                                                ? <TrendingUp className="w-4 h-4 text-emerald-400" />
+                                                : <TrendingDown className="w-4 h-4 text-rose-400" />
+                                        )}
+                                        <span className={`font-bold text-sm ${activeTab === "reputation"
+                                                ? "text-white"
+                                                : pnl >= 0 ? "text-emerald-400" : "text-rose-400"
+                                            }`}>
+                                            {getScoreDisplay(user)}
+                                        </span>
                                     </div>
                                 </Link>
-                            )
+                            );
                         })}
                     </div>
 
                     {(!leaders || leaders.length === 0) && (
                         <div className="text-center py-12 text-white/40">
-                            Inga användare hittades.
+                            {activeTab === "paper"
+                                ? "Ingen har paper tradat ännu. Bli först!"
+                                : "Inga användare hittades."}
                         </div>
                     )}
                 </div>
