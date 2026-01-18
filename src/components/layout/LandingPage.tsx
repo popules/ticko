@@ -97,12 +97,11 @@ export function LandingPage() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.8 }}
-                        className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight mb-6 leading-[1.05] max-w-4xl"
+                        className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.1] max-w-3xl"
                     >
-                        <span className="block text-white">Sluta gissa.</span>
-                        <span className="block text-white">Se vad andra</span>
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400">
-                            faktiskt tror på.
+                        <span className="block text-white">Investera smartare.</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
+                            Tillsammans.
                         </span>
                     </motion.h1>
 
@@ -110,10 +109,9 @@ export function LandingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
-                        className="text-lg md:text-xl text-white/50 max-w-2xl font-medium leading-relaxed mb-10"
+                        className="text-base md:text-lg text-white/50 max-w-lg font-medium leading-relaxed mb-10"
                     >
-                        Ticko är där Sveriges smartaste småsparare diskuterar aktier, delar analyser och bygger sina track records.
-                        <span className="text-white font-semibold"> 100% gratis.</span>
+                        Diskutera aktier, följ investerare du litar på och se vad marknaden faktiskt tycker. <span className="text-white">Helt gratis.</span>
                     </motion.p>
 
                     <motion.div
@@ -145,25 +143,14 @@ export function LandingPage() {
                         transition={{ delay: 0.7 }}
                         className="flex flex-wrap items-center justify-center gap-6 text-sm text-white/40 mb-16"
                     >
-                        <div className="flex items-center gap-2">
-                            <div className="flex -space-x-2">
-                                {[1, 2, 3, 4, 5].map(i => (
-                                    <div key={i} className="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 border-2 border-[#020617] flex items-center justify-center text-[10px] font-bold text-white">
-                                        {String.fromCharCode(64 + i)}
-                                    </div>
-                                ))}
-                            </div>
-                            <span><span className="text-white font-semibold">1,200+</span> medlemmar</span>
-                        </div>
-                        <div className="hidden sm:block w-px h-4 bg-white/10" />
-                        <div className="flex items-center gap-1.5">
-                            {[1, 2, 3, 4, 5].map(i => (
-                                <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                            ))}
-                            <span className="ml-1"><span className="text-white font-semibold">4.9</span> av 5</span>
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                            <span className="text-emerald-400 font-semibold">Early Beta</span>
                         </div>
                         <div className="hidden sm:block w-px h-4 bg-white/10" />
                         <span>🇸🇪 Byggt i Stockholm</span>
+                        <div className="hidden sm:block w-px h-4 bg-white/10" />
+                        <span>🚀 Gratis för alltid</span>
                     </motion.div>
 
                     <HeroPreview />
@@ -495,15 +482,37 @@ export function LandingPage() {
                 </div>
             </section>
 
-            {/* Stats Section */}
+            {/* Why join now section - replaces fake stats */}
             <section className="px-6 py-24 border-t border-white/[0.05]">
-                <div className="max-w-5xl mx-auto">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div className="max-w-4xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-12"
+                    >
+                        <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-4">
+                            Varför gå med <span className="text-emerald-400">nu</span>?
+                        </h2>
+                    </motion.div>
+
+                    <div className="grid md:grid-cols-3 gap-6">
                         {[
-                            { value: 1247, suffix: "+", label: "Aktiva användare" },
-                            { value: 15000, suffix: "+", label: "Inlägg & analyser" },
-                            { value: 400, suffix: "+", label: "Aktier diskuteras" },
-                            { value: 98, suffix: "%", label: "Rekommenderar oss" }
+                            {
+                                emoji: "🌱",
+                                title: "Tidig åtkomst",
+                                desc: "Bli en av de första att forma hur plattformen utvecklas. Din feedback spelar roll."
+                            },
+                            {
+                                emoji: "🎁",
+                                title: "Gratis för alltid",
+                                desc: "Grundfunktionerna kommer alltid vara gratis. Premium kommer senare — men du är inte tvungen."
+                            },
+                            {
+                                emoji: "🏆",
+                                title: "Bygg ditt track record",
+                                desc: "Ju tidigare du börjar dela analyser, desto mer imponerande blir din historik."
+                            }
                         ].map((item, i) => (
                             <motion.div
                                 key={i}
@@ -511,11 +520,11 @@ export function LandingPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
+                                className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.05] text-center"
                             >
-                                <p className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
-                                    <AnimatedNumber value={item.value} suffix={item.suffix} />
-                                </p>
-                                <p className="text-white/40 text-sm mt-2">{item.label}</p>
+                                <span className="text-4xl mb-4 block">{item.emoji}</span>
+                                <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+                                <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -623,12 +632,10 @@ export function LandingPage() {
                         </div>
 
                         <div>
-                            <h4 className="font-bold text-sm mb-4 text-white/60 uppercase tracking-wider">Plattform</h4>
+                            <h4 className="font-bold text-sm mb-4 text-white/60 uppercase tracking-wider">Kom igång</h4>
                             <div className="flex flex-col gap-3 text-sm text-white/40">
                                 <Link href="/registrera" className="hover:text-white transition-colors">Skapa konto</Link>
                                 <Link href="/logga-in" className="hover:text-white transition-colors">Logga in</Link>
-                                <Link href="/upptack" className="hover:text-white transition-colors">Upptäck</Link>
-                                <Link href="/topplistan" className="hover:text-white transition-colors">Leaderboard</Link>
                             </div>
                         </div>
 
