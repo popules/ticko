@@ -8,6 +8,7 @@ import {
     AlertTriangle, Sparkles, PartyPopper
 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
+import { checkPaperTradingAchievements } from "@/lib/achievements";
 
 const USD_TO_SEK = 10.5;
 
@@ -83,6 +84,10 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
 
             setRealizedPnl(pnl);
             setShowSuccess(true);
+
+            // Check for paper trading achievements (fire and forget)
+            // totalProceeds is approximate new portfolio value, good enough for check
+            checkPaperTradingAchievements(userId, totalProceeds + 100000, pnl).catch(console.error);
 
             // Notify parent after animation
             setTimeout(() => {

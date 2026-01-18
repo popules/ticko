@@ -419,3 +419,65 @@ export async function getUserAchievements(userId: string): Promise<Achievement[]
 export async function checkAndAwardAchievement(userId: string, key: string) {
     return awardAchievement(userId, key);
 }
+
+/**
+ * Check paper trading specific achievements after a sell
+ * Called from PaperSellModal after successful sell
+ */
+export async function checkPaperTradingAchievements(
+    userId: string,
+    totalPortfolioValue: number,
+    realizedPnl: number
+): Promise<string[]> {
+    const awarded: string[] = [];
+    const STARTING_CAPITAL = 100000;
+
+    try {
+        // 1. Check PAPER_10X (reached 1M kr = 10x starting capital)
+        if (totalPortfolioValue >= 1000000) {
+            const wasAwarded = await awardAchievement(userId, "paper_10x");
+            if (wasAwarded) awarded.push("paper_10x");
+        }
+
+        // 2. Check PAPER_STREAK_3 (3 profitable sells in a row)
+        if (realizedPnl > 0) {
+            const { data: recentSells } = await (supabase as any)
+                .from("transactions")
+                .select("realized_pnl")
+                .eq("user_id", userId)
+                .eq("type", "sell")
+                .order("created_at", { ascending: false })
+                .limit(3);
+
+            if (recentSells && recentSells.length >= 3) {
+                const allProfitable = recentSells.every((s: any) => s.realized_pnl > 0);
+                if (allProfitable) {
+                    const wasAwarded = await awardAchievement(userId, "paper_streak_3");
+                    if (wasAwarded) awarded.push("paper_streak_3");
+                }
+            }
+        }
+
+        // 3. Check PAPER_DIVERSIFIED (10+ different stocks in portfolio)
+        const { data: portfolio } = await (supabase as any)
+            .from("portfolio")
+            .select("symbol")
+            .eq("user_id", userId);
+
+        if (portfolio) {
+            const uniqueSymbols = new Set(portfolio.map((p: any) => p.symbol));
+            if (uniqueSymbols.size >= 10) {
+                const wasAwarded = await awardAchievement(userId, "paper_diversified");
+                if (wasAwarded) awarded.push("paper_diversified");
+            }
+        }
+
+        // 4. Check PAPER_COMEBACK (went from -50% to positive)
+        // This requires tracking historical low, skip for now as it's complex
+
+    } catch (e) {
+        console.error("Paper trading achievement check error:", e);
+    }
+
+    return awarded;
+}

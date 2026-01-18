@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
-import { Trophy, Medal, TrendingUp, TrendingDown, User, Crown, Loader2, Gamepad2, RotateCcw, Calendar, Clock } from "lucide-react";
+import { Trophy, Medal, TrendingUp, TrendingDown, User, Crown, Loader2, Gamepad2, RotateCcw, Calendar, Clock, ChevronDown, History } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Sidebar } from "@/components/layout/Sidebar";
@@ -98,6 +98,23 @@ export default function LeaderboardPage() {
         },
     });
 
+    // All past seasons history
+    const { data: seasonHistory } = useQuery<Season[]>({
+        queryKey: ["season-history"],
+        queryFn: async () => {
+            const { data, error } = await (supabase as any)
+                .from("paper_seasons")
+                .select("*")
+                .order("season_number", { ascending: false })
+                .limit(20);
+
+            if (error) return [];
+            return data as Season[];
+        },
+    });
+
+    const [showSeasonHistory, setShowSeasonHistory] = useState(false);
+
     const isLoading = activeTab === "reputation"
         ? isRepLoading
         : (paperTimeframe === "season" ? isPaperSeasonLoading : isPaperAllTimeLoading);
@@ -166,8 +183,8 @@ export default function LeaderboardPage() {
                         <button
                             onClick={() => setActiveTab("reputation")}
                             className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "reputation"
-                                    ? "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-400 border border-yellow-500/30"
-                                    : "text-white/40 hover:text-white/60"
+                                ? "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-400 border border-yellow-500/30"
+                                : "text-white/40 hover:text-white/60"
                                 }`}
                         >
                             <Medal className="w-4 h-4" />
@@ -176,8 +193,8 @@ export default function LeaderboardPage() {
                         <button
                             onClick={() => setActiveTab("paper")}
                             className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "paper"
-                                    ? "bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-400 border border-violet-500/30"
-                                    : "text-white/40 hover:text-white/60"
+                                ? "bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-400 border border-violet-500/30"
+                                : "text-white/40 hover:text-white/60"
                                 }`}
                         >
                             <Gamepad2 className="w-4 h-4" />
@@ -193,8 +210,8 @@ export default function LeaderboardPage() {
                                 <button
                                     onClick={() => setPaperTimeframe("season")}
                                     className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-xs font-bold transition-all ${paperTimeframe === "season"
-                                            ? "bg-violet-500/20 text-violet-400 border border-violet-500/20"
-                                            : "text-white/40 hover:text-white/60"
+                                        ? "bg-violet-500/20 text-violet-400 border border-violet-500/20"
+                                        : "text-white/40 hover:text-white/60"
                                         }`}
                                 >
                                     <Calendar className="w-3 h-3" />
@@ -203,8 +220,8 @@ export default function LeaderboardPage() {
                                 <button
                                     onClick={() => setPaperTimeframe("alltime")}
                                     className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-xs font-bold transition-all ${paperTimeframe === "alltime"
-                                            ? "bg-violet-500/20 text-violet-400 border border-violet-500/20"
-                                            : "text-white/40 hover:text-white/60"
+                                        ? "bg-violet-500/20 text-violet-400 border border-violet-500/20"
+                                        : "text-white/40 hover:text-white/60"
                                         }`}
                                 >
                                     <Trophy className="w-3 h-3" />
@@ -246,6 +263,52 @@ export default function LeaderboardPage() {
                                             +{lastSeason.winner_pnl?.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
                                         </span>
                                     </div>
+                                </div>
+                            )}
+
+                            {/* Season History (Collapsible) */}
+                            {seasonHistory && seasonHistory.length > 0 && paperTimeframe === "season" && (
+                                <div className="rounded-xl border border-white/10 overflow-hidden">
+                                    <button
+                                        onClick={() => setShowSeasonHistory(!showSeasonHistory)}
+                                        className="w-full p-3 flex items-center justify-between bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
+                                    >
+                                        <div className="flex items-center gap-2 text-white/50">
+                                            <History className="w-4 h-4" />
+                                            <span className="text-xs font-bold">Säsongshistorik</span>
+                                            <span className="text-[10px] text-white/30">({seasonHistory.length} säsonger)</span>
+                                        </div>
+                                        <ChevronDown className={`w-4 h-4 text-white/30 transition-transform ${showSeasonHistory ? "rotate-180" : ""}`} />
+                                    </button>
+
+                                    {showSeasonHistory && (
+                                        <div className="border-t border-white/5">
+                                            {seasonHistory.map((season, idx) => (
+                                                <div
+                                                    key={season.season_number}
+                                                    className={`flex items-center justify-between p-3 ${idx !== seasonHistory.length - 1 ? "border-b border-white/5" : ""}`}
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-6 h-6 rounded-full bg-amber-500/10 flex items-center justify-center">
+                                                            <Crown className="w-3 h-3 text-amber-400" />
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-xs text-white/40">Säsong {season.season_number}</p>
+                                                            <p className="text-sm font-bold text-white">@{season.winner_username}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <p className="text-emerald-400 font-bold text-sm tabular-nums">
+                                                            +{season.winner_pnl?.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                        </p>
+                                                        <p className="text-[10px] text-white/30">
+                                                            {new Date(season.ended_at).toLocaleDateString("sv-SE")}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -293,8 +356,8 @@ export default function LeaderboardPage() {
                                     </div>
                                     <div className="relative mb-3 transition-transform group-hover:-translate-y-2 duration-300">
                                         <div className={`w-24 h-24 rounded-full p-1 shadow-[0_0_50px_-10px_rgba(234,179,8,0.4)] ${activeTab === "paper"
-                                                ? "bg-gradient-to-b from-violet-300 via-violet-400 to-fuchsia-500"
-                                                : "bg-gradient-to-b from-yellow-300 via-yellow-400 to-orange-500"
+                                            ? "bg-gradient-to-b from-violet-300 via-violet-400 to-fuchsia-500"
+                                            : "bg-gradient-to-b from-yellow-300 via-yellow-400 to-orange-500"
                                             }`}>
                                             <div className="w-full h-full rounded-full overflow-hidden bg-[#020617] relative">
                                                 {leaders[0].avatar_url ? (
@@ -399,8 +462,8 @@ export default function LeaderboardPage() {
                                                 : <TrendingDown className="w-4 h-4 text-rose-400" />
                                         )}
                                         <span className={`font-bold text-sm ${activeTab === "reputation"
-                                                ? "text-white"
-                                                : pnl >= 0 ? "text-emerald-400" : "text-rose-400"
+                                            ? "text-white"
+                                            : pnl >= 0 ? "text-emerald-400" : "text-rose-400"
                                             }`}>
                                             {getScoreDisplay(user)}
                                         </span>
