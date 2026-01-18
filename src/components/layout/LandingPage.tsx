@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import {
     TrendingUp, Users, MessageCircle, Bell, ArrowRight, Globe,
     Shield, Zap, BarChart3, Star, CheckCircle, Play, Sparkles,
-    Target, Award, LineChart, Brain, Clock, ChevronDown, Quote
+    Target, Award, LineChart, Brain, Clock, ChevronDown, Quote, Wallet, ChevronRight
 } from "lucide-react";
 import { APP_CONFIG } from "@/config/app";
 import { TickoLogo } from "@/components/ui/TickoLogo";
@@ -88,11 +88,11 @@ export function LandingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 to-yellow-500/10 border border-amber-500/20 mb-6 backdrop-blur-sm"
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 mb-6 backdrop-blur-sm"
                     >
-                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
-                            🎮 Paper Trading Utmaningen
+                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
+                            Paper Trading Utmaningen
                         </span>
                     </motion.div>
 
@@ -103,7 +103,7 @@ export function LandingPage() {
                         className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.1] max-w-4xl mx-auto"
                     >
                         <span className="block text-white">Här är 100 000 kr.</span>
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
                             Visa att du kan slå börsen.
                         </span>
                     </motion.h1>
@@ -114,7 +114,7 @@ export function LandingPage() {
                         transition={{ delay: 0.4 }}
                         className="text-base md:text-lg text-white/50 max-w-2xl font-medium leading-relaxed mb-12 mx-auto"
                     >
-                        Handla aktier i realtid med virtuella pengar. Klättra på leaderboarden, bygg din streak och använd vår <span className="text-violet-400">AI Copilot</span> för att hitta nästa vinnare. <span className="text-white">Helt gratis och utan risk.</span>
+                        Handla aktier i realtid med virtuella pengar. Klättra på leaderboarden, bygg din streak och använd <span className="text-emerald-400">Ticko AI</span> för att hitta nästa vinnare. <span className="text-white">Helt gratis och utan risk.</span>
                     </motion.p>
 
                     <motion.div
@@ -125,7 +125,7 @@ export function LandingPage() {
                     >
                         <Link
                             href="/registrera"
-                            className="group px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-[#020617] rounded-full font-bold text-base shadow-lg shadow-amber-500/25 transition-all flex items-center gap-2 hover:scale-105"
+                            className="group px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-bold text-base shadow-lg shadow-emerald-500/25 transition-all flex items-center gap-2 hover:scale-105"
                         >
                             Starta din utmaning nu
                             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -300,34 +300,35 @@ export function LandingPage() {
                         viewport={{ once: true }}
                         className="text-center mb-20"
                     >
-                        <span className="text-xs font-bold uppercase tracking-widest text-violet-400 mb-4 block">Hur det fungerar</span>
-                        <h2 className="text-3xl md:text-5xl font-black tracking-tight">
-                            Kom igång på <span className="text-violet-400">3 steg</span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">Så här funkar det</span>
+                        <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
+                            Så här startar du din <span className="text-emerald-400">trading-utmaning</span>
                         </h2>
+                        <p className="text-white/50 text-lg max-w-2xl mx-auto">Från nybörjare till verifierad investerare i tre enkla steg.</p>
                     </motion.div>
 
                     <div className="grid md:grid-cols-3 gap-8 relative">
                         {/* Connecting line */}
-                        <div className="hidden md:block absolute top-16 left-[16.66%] right-[16.66%] h-0.5 bg-gradient-to-r from-violet-500/20 via-violet-500/40 to-violet-500/20" />
+                        <div className="hidden md:block absolute top-16 left-[16.66%] right-[16.66%] h-0.5 bg-gradient-to-r from-emerald-500/20 via-emerald-500/40 to-emerald-500/20" />
 
                         {[
                             {
                                 step: "01",
-                                title: "Skapa konto",
-                                desc: "Tar 30 sekunder. Inga kreditkort, inga betalväggar.",
-                                icon: Zap
+                                title: "Få 100 000 kr direkt",
+                                desc: "Skapa ditt gratis konto och få en portfölj fylld med 100 000 kr i virtuella pengar. Redo att användas på marknaden direkt.",
+                                icon: Wallet
                             },
                             {
                                 step: "02",
-                                title: "Bygg din watchlist",
-                                desc: "Lägg till aktier du följer. Få sentiment och diskussioner direkt.",
-                                icon: LineChart
+                                title: "Handla smart och rättvist",
+                                desc: "Använd Ticko AI för research och lägg dina ordrar. Varje köp är låst i 30 minuter för att garantera en rättvis tävling utan arbitrage-fusk.",
+                                icon: TrendingUp
                             },
                             {
                                 step: "03",
-                                title: "Delta i diskussionen",
-                                desc: "Dela dina tankar, följ andra och bygg ditt track record.",
-                                icon: MessageCircle
+                                title: "Tjäna XP och nå legendärisk status",
+                                desc: "Gör lönsamma trades och bygg vinst-streaks för att tjäna XP. Ju högre level, desto mer respekt i communityt.",
+                                icon: Award
                             }
                         ].map((item, i) => (
                             <motion.div
@@ -338,16 +339,81 @@ export function LandingPage() {
                                 transition={{ delay: i * 0.15 }}
                                 className="text-center relative"
                             >
-                                <div className="w-12 h-12 mx-auto mb-6 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-400 font-black text-lg relative z-10">
+                                <div className="w-12 h-12 mx-auto mb-6 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-black text-lg relative z-10">
                                     {item.step}
                                 </div>
-                                <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-violet-500/10 flex items-center justify-center">
-                                    <item.icon className="w-7 h-7 text-violet-400" />
+                                <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
+                                    <item.icon className="w-7 h-7 text-emerald-400" />
                                 </div>
                                 <h3 className="text-xl font-bold mb-2">{item.title}</h3>
                                 <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
                             </motion.div>
                         ))}
+                    </div>
+
+                    {/* Bottom CTA */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mt-16"
+                    >
+                        <Link
+                            href="/registrera"
+                            className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-bold text-base shadow-lg shadow-emerald-500/25 transition-all hover:scale-105"
+                        >
+                            Starta min resa mot toppen — Gratis
+                            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* FAQ Section */}
+            <section className="px-6 py-24 border-t border-white/[0.05]">
+                <div className="max-w-3xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-12"
+                    >
+                        <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-4">
+                            Vanliga frågor om <span className="text-emerald-400">utmaningen</span>
+                        </h2>
+                    </motion.div>
+
+                    <div className="space-y-4">
+                        <motion.details
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
+                        >
+                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
+                                <span className="text-lg font-bold">Kan jag ta ut vinsten i riktiga pengar?</span>
+                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
+                            </summary>
+                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
+                                <strong className="text-white">Nej.</strong> De 100 000 kr du handlar med, och alla vinster du gör i utmaningen, är helt virtuella. Syftet är att bygga ett verifierat “track record” och tävla om äran och XP — utan ekonomisk risk.
+                            </div>
+                        </motion.details>
+
+                        <motion.details
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
+                        >
+                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
+                                <span className="text-lg font-bold">Kostar det något att vara med?</span>
+                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
+                            </summary>
+                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
+                                <strong className="text-white">Nej, det är 100% gratis</strong> att skapa konto, få startkapitalet och använda plattformen. Vi tror på att finansiell utbildning och community ska vara tillgängligt för alla.
+                            </div>
+                        </motion.details>
                     </div>
                 </div>
             </section>
@@ -361,9 +427,9 @@ export function LandingPage() {
                         viewport={{ once: true }}
                         className="text-center mb-20"
                     >
-                        <span className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-4 block">Funktioner</span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">Funktioner</span>
                         <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
-                            Allt du behöver. <span className="text-blue-400">Inget du inte gör.</span>
+                            Allt du behöver. <span className="text-emerald-400">Inget du inte gör.</span>
                         </h2>
                     </motion.div>
 
@@ -389,7 +455,7 @@ export function LandingPage() {
                             },
                             {
                                 icon: Brain,
-                                title: "AI Copilot",
+                                title: "Ticko AI",
                                 desc: "Ditt hemliga vapen i tävlingen. AI:n sammanfattar nyheter, analyserar sentiment och ger dig övertaget.",
                                 tag: "Pro-verktyg"
                             },
@@ -412,16 +478,16 @@ export function LandingPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.05 }}
-                                className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] hover:border-blue-500/20 transition-all group"
+                                className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] hover:border-emerald-500/20 transition-all group"
                             >
                                 <div className="flex items-start gap-4">
-                                    <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                                        <item.icon className="w-6 h-6 text-blue-400" />
+                                    <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                        <item.icon className="w-6 h-6 text-emerald-400" />
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2 mb-1">
                                             <h3 className="text-lg font-bold">{item.title}</h3>
-                                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                                                 {item.tag}
                                             </span>
                                         </div>
@@ -443,9 +509,9 @@ export function LandingPage() {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <span className="text-xs font-bold uppercase tracking-widest text-yellow-400 mb-4 block">Community</span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">Community</span>
                         <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
-                            Vad säger <span className="text-yellow-400">medlemmarna</span>?
+                            Vad säger <span className="text-emerald-400">medlemmarna</span>?
                         </h2>
                     </motion.div>
 
