@@ -15,6 +15,11 @@ interface PaperTradeButtonProps {
     symbol: string;
 }
 
+const Portal = ({ children }: { children: React.ReactNode }) => {
+    if (typeof window === "undefined") return null;
+    return createPortal(children, document.body);
+};
+
 export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
     const { user } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
@@ -158,10 +163,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
         }
     };
 
-    const Portal = ({ children }: { children: React.ReactNode }) => {
-        if (!mounted) return null;
-        return createPortal(children, document.body);
-    };
+
 
     return (
         <>
