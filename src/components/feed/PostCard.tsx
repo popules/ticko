@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
-import { TrendingUp, TrendingDown, Flag, Trash2, Loader2 } from "lucide-react";
+import { TrendingUp, TrendingDown, Flag, Trash2, Loader2, Gem } from "lucide-react";
 import { ShareButton } from "@/components/ui/ShareButton";
 import { renderWithCashtags } from "@/lib/cashtag";
 import { UI_STRINGS } from "@/config/app";
@@ -27,9 +27,10 @@ interface PostCardProps {
         polls?: any[];
         comment_count?: number;
     };
+    authorOwnsStock?: boolean;
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post, authorOwnsStock }: PostCardProps) {
     const { user } = useAuth();
     const queryClient = useQueryClient();
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -82,6 +83,14 @@ export function PostCard({ post }: PostCardProps) {
                         <span className="text-white/50 text-[12px] font-medium">
                             {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: sv })}
                         </span>
+
+                        {/* Skin in the Game Badge */}
+                        {authorOwnsStock && post.ticker_symbol && (
+                            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-cyan-500/10 text-cyan-400 border border-cyan-500/20" title={`Äger ${post.ticker_symbol}`}>
+                                <Gem className="w-3 h-3" />
+                                Ägare
+                            </span>
+                        )}
 
                         {/* Sentiment badge */}
                         {sentiment && (

@@ -21,6 +21,7 @@ type PostWithProfile = Post & {
     polls?: any[];
     comments?: { count: number }[];
     comment_count?: number;
+    authorOwnsStock?: boolean;
 };
 
 interface FeedStreamProps {
@@ -94,12 +95,41 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
             if (error) throw error;
 
             // Map comment count from nested structure
-            const posts = (data as any[])?.map(post => ({
+            const postsWithComments = (data as any[])?.map(post => ({
                 ...post,
                 comment_count: post.comments?.[0]?.count || 0
             })) || [];
 
-            return posts as PostWithProfile[];
+            // Check which post authors own the stocks they're mentioning ("Skin in the Game")
+            const postsWithTickers = postsWithComments.filter(p => p.ticker_symbol);
+            if (postsWithTickers.length > 0) {
+                const userTickerPairs = postsWithTickers.map(p => ({
+                    userId: p.user_id,
+                    ticker: p.ticker_symbol
+                }));
+
+                // Batch fetch portfolio holdings
+                const { data: portfolioData } = await (supabase as any)
+                    .from("portfolio")
+                    .select("user_id, symbol")
+                    .in("user_id", [...new Set(userTickerPairs.map(p => p.userId))])
+                    .in("symbol", [...new Set(userTickerPairs.map(p => p.ticker))]);
+
+                // Create lookup set
+                const ownershipSet = new Set(
+                    (portfolioData || []).map((p: any) => `${p.user_id}:${p.symbol}`)
+                );
+
+                // Mark posts with ownership
+                return postsWithComments.map(post => ({
+                    ...post,
+                    authorOwnsStock: post.ticker_symbol
+                        ? ownershipSet.has(`${post.user_id}:${post.ticker_symbol}`)
+                        : false
+                })) as PostWithProfile[];
+            }
+
+            return postsWithComments as PostWithProfile[];
         },
     });
 
@@ -238,7 +268,7 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
             {posts && posts.length > 0 && (
                 <div className="space-y-3">
                     {posts.map((post) => (
-                        <PostCard key={post.id} post={post} />
+                        <PostCard key={post.id} post={post} authorOwnsStock={post.authorOwnsStock} />
                     ))}
                 </div>
             )}
