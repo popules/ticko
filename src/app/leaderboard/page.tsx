@@ -125,9 +125,10 @@ export default function LeaderboardPage() {
 
     const currentSeasonNumber = paperSeasonLeaders?.[0]?.paper_season_number || 1;
 
-    // Calculate days until Sunday reset
+    // Calculate days until end of month reset
     const now = new Date();
-    const daysUntilSunday = (7 - now.getDay()) % 7 || 7;
+    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const daysUntilReset = lastDayOfMonth - now.getDate();
 
     if (isLoading) {
         return (
@@ -235,14 +236,14 @@ export default function LeaderboardPage() {
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-bold text-white">Säsong {currentSeasonNumber}</p>
-                                            <p className="text-xs text-white/40">Vem tar hem veckans krona?</p>
+                                            <p className="text-xs text-white/40">Vem tar hem månadens krona?</p>
                                         </div>
                                         <div className="text-right">
                                             <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
                                                 <Clock className="w-3 h-3" />
-                                                {daysUntilSunday} dag{daysUntilSunday !== 1 ? "ar" : ""} kvar
+                                                {daysUntilReset} dag{daysUntilReset !== 1 ? "ar" : ""} kvar
                                             </div>
-                                            <p className="text-[10px] text-white/30">Reset varje söndag</p>
+                                            <p className="text-[10px] text-white/30">Reset varje månad</p>
                                         </div>
                                     </div>
                                 </div>
@@ -255,7 +256,7 @@ export default function LeaderboardPage() {
                                         <div className="flex items-center gap-3">
                                             <Crown className="w-5 h-5 text-amber-400" />
                                             <div>
-                                                <p className="text-xs text-amber-400/60 uppercase tracking-wider">Förra veckans vinnare</p>
+                                                <p className="text-xs text-amber-400/60 uppercase tracking-wider">Förra månadens vinnare</p>
                                                 <p className="text-sm font-bold text-white">@{lastSeason.winner_username}</p>
                                             </div>
                                         </div>

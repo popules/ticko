@@ -56,8 +56,8 @@ export async function GET(request: Request) {
 
         // 3. Archive the season
         if (winner) {
-            const oneWeekAgo = new Date();
-            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
             await supabase.from("paper_seasons").insert({
                 season_number: currentSeasonNumber,
@@ -65,7 +65,7 @@ export async function GET(request: Request) {
                 winner_username: winner.username,
                 winner_pnl: winner.paper_season_pnl,
                 participants_count: participantCount,
-                started_at: oneWeekAgo.toISOString(),
+                started_at: oneMonthAgo.toISOString(),
                 ended_at: new Date().toISOString(),
             });
 
