@@ -140,6 +140,19 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
 
             if (dbError) throw dbError;
 
+            // Log transaction for history
+            await (supabase as any).from("transactions").insert({
+                user_id: user.id,
+                symbol: symbol,
+                name: stockName,
+                type: "buy",
+                shares: shares,
+                price: stockPrice,
+                currency: stockCurrency,
+                total_sek: totalCostSek,
+                realized_pnl: 0,
+            });
+
             setSuccess(true);
             setTimeout(() => {
                 setIsOpen(false);
