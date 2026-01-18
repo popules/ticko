@@ -62,6 +62,33 @@ export async function fetchStockData(ticker: string): Promise<StockData | null> 
     }
 }
 
+export async function fetchBatchStockData(tickers: string[]): Promise<Record<string, number>> {
+    const prices: Record<string, number> = {};
+    if (tickers.length === 0) return prices;
+
+    // chunk requests to avoid URL length issues or timeouts
+    const CHUNK_SIZE = 50;
+    for (let i = 0; i < tickers.length; i += CHUNK_SIZE) {
+        const chunk = tickers.slice(i, i + CHUNK_SIZE);
+        try {
+            const results = await yf.quote(chunk, { fields: ['regularMarketPrice', 'currency'] });
+
+            // Handle single result vs array
+            const quotes = Array.isArray(results) ? results : [results];
+
+            quotes.forEach((q: any) => {
+                if (q && q.symbol && q.regularMarketPrice) {
+                    prices[q.symbol] = q.regularMarketPrice;
+                }
+            });
+        } catch (error) {
+            console.error(`Error fetching batch data for chunk ${i}:`, error);
+        }
+    }
+
+    return prices;
+}
+
 function formatCurrencyValue(num: number | undefined, symbol: string): string {
     if (num === undefined) return 'N/A';
 
