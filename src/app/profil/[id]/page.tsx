@@ -6,10 +6,11 @@ import { RightPanel } from "@/components/layout/RightPanel";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/lib/supabase/client";
-import { Loader2, MessageSquare, TrendingUp } from "lucide-react";
+import { Loader2, MessageSquare, TrendingUp, Gamepad2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { PostCard } from "@/components/feed/PostCard";
 import { useParams, useRouter } from "next/navigation";
+import { PaperTradingStats } from "@/components/portfolio/PaperTradingStats";
 
 export default function PublicProfilePage() {
     const { user } = useAuth();
@@ -125,7 +126,7 @@ export default function PublicProfilePage() {
                             </div>
 
                             {/* Stats Card */}
-                            <div className="space-y-8">
+                            <div className="space-y-6">
                                 <div className="p-6 rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.08] to-transparent">
                                     <div className="flex items-center gap-2 mb-6">
                                         <TrendingUp className="w-5 h-5 text-blue-400" />
@@ -142,6 +143,9 @@ export default function PublicProfilePage() {
                                         </div>
                                     </div>
                                 </div>
+
+                                {/* Paper Trading Stats - only shows if user has paper trades */}
+                                {profile?.id && <PaperTradingStats userId={profile.id} />}
                             </div>
                         </div>
                     </motion.div>
