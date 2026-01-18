@@ -80,7 +80,10 @@ export function LandingPage() {
 
             {/* Hero Section */}
             <section ref={targetRef} className="relative pt-32 pb-20 px-6 flex flex-col items-center justify-center text-center z-10 min-h-[90vh]">
-                <motion.div style={{ opacity, scale }}>
+                <motion.div
+                    style={{ opacity, scale }}
+                    className="flex flex-col items-center w-full"
+                >
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -97,7 +100,7 @@ export function LandingPage() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.8 }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.1] max-w-3xl"
+                        className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.1] max-w-3xl mx-auto"
                     >
                         <span className="block text-white">Investera smartare.</span>
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
@@ -109,7 +112,7 @@ export function LandingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
-                        className="text-base md:text-lg text-white/50 max-w-lg font-medium leading-relaxed mb-10"
+                        className="text-base md:text-lg text-white/50 max-w-lg font-medium leading-relaxed mb-12 mx-auto"
                     >
                         Diskutera aktier, följ investerare du litar på och se vad marknaden faktiskt tycker. <span className="text-white">Helt gratis.</span>
                     </motion.p>
@@ -118,7 +121,7 @@ export function LandingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
-                        className="flex flex-col sm:flex-row items-center gap-4 mb-16"
+                        className="flex flex-col sm:flex-row items-center gap-4 mb-24"
                     >
                         <Link
                             href="/registrera"
