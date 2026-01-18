@@ -173,6 +173,35 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
     }
 }
 
+
+function getMarketLabel(exchange: string, symbol: string): string {
+    // Check suffixes first for Nordic markets
+    if (symbol.endsWith('.ST')) return '🇸🇪 OMX Sthlm';
+    if (symbol.endsWith('.OL')) return '🇳🇴 Oslo Börs';
+    if (symbol.endsWith('.CO')) return '🇩🇰 Köpenhamn';
+    if (symbol.endsWith('.HE')) return '🇫🇮 Helsingfors';
+
+    // Check exchange codes
+    switch (exchange) {
+        case 'STO': return '🇸🇪 OMX Sthlm';
+        case 'NMS': return '🇺🇸 NASDAQ';
+        case 'NGM': return '🇺🇸 NASDAQ';
+        case 'NYQ': return '🇺🇸 NYSE';
+        case 'ASE': return '🇺🇸 AMEX';
+        case 'PNK': return '🇺🇸 OTC';
+        case 'OTC': return '🇺🇸 OTC';
+        case 'VAN': return '🇨🇦 TSX Venture';
+        case 'TOR': return '🇨🇦 TSX';
+        case 'LSE': return '🇬🇧 London';
+        case 'GER': return '🇩🇪 XETRA';
+        case 'PAR': return '🇫🇷 Paris';
+        case 'AMS': return '🇳🇱 Amsterdam';
+        case 'BRU': return '🇧🇪 Bryssel';
+        case 'CCC': return 'Crypto';
+        default: return exchange || 'Globally';
+    }
+}
+
 export async function searchStocks(query: string) {
     try {
         const results: any = await yf.search(query);
@@ -227,6 +256,7 @@ export async function searchStocks(query: string) {
                     name: q.longname || q.shortname || q.symbol,
                     type: q.quoteType,
                     exchange: q.exchange,
+                    market: getMarketLabel(q.exchange, q.symbol),
                     _score: score
                 };
             })

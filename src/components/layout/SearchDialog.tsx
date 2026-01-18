@@ -95,7 +95,7 @@ export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                                                 <div className="text-xs text-white/40">{stock.name}</div>
                                             </div>
                                         </div>
-                                        <span className="text-xs text-white/20 uppercase">{stock.type}</span>
+                                        <span className="text-[10px] font-medium px-2 py-1 rounded bg-white/5 text-white/50 border border-white/5 whitespace-nowrap">{stock.market}</span>
                                     </Link>
                                 ))}
                             </div>
