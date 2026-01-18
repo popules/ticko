@@ -31,7 +31,7 @@ const navItems = [
     { icon: Home, label: UI_STRINGS.home, href: "/" },
     { icon: Sparkles, label: UI_STRINGS.discovery, href: "/upptack", isNew: true },
     { icon: TrendingUp, label: UI_STRINGS.markets, href: "/marknad" },
-    { icon: Gamepad2, label: "Paper Trading", href: "/portfolio", badge: "🎮" },
+    { icon: Gamepad2, label: "Paper Trading", href: "/paper-trading", badge: "🎮" },
     { icon: Star, label: UI_STRINGS.watchlist, href: "/watchlist" },
     { icon: Trophy, label: "Topplistan", href: "/leaderboard" },
     { icon: User, label: UI_STRINGS.profile, href: "/profil" },

@@ -187,9 +187,9 @@ export default function MarketPage() {
                             <div className="flex items-center gap-2 mb-6">
                                 <span className="text-xs font-bold text-white/40 uppercase tracking-widest mr-2">Marknad:</span>
                                 {[
-                                    { id: "all" as const, label: "Alla", flag: "🌍", badge: null },
-                                    { id: "us" as const, label: "USA", flag: null, badge: "US" },
-                                    { id: "se" as const, label: "Sverige", flag: null, badge: "SE" }
+                                    { id: "all" as const, label: "Alla", flag: "🌐" },
+                                    { id: "us" as const, label: "USA", flag: "🇺🇸" },
+                                    { id: "se" as const, label: "Sverige", flag: "🇸🇪" }
                                 ].map((tab) => (
                                     <button
                                         key={tab.id}
@@ -199,11 +199,7 @@ export default function MarketPage() {
                                             : "bg-white/[0.04] text-white/60 border border-white/10 hover:bg-white/[0.08]"
                                             }`}
                                     >
-                                        {tab.flag ? (
-                                            <span className="text-sm">{tab.flag}</span>
-                                        ) : (
-                                            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded ${tab.badge === "US" ? "text-red-400 bg-red-500/20" : "text-blue-400 bg-blue-500/20"}`}>{tab.badge}</span>
-                                        )}
+                                        <span className="text-base">{tab.flag}</span>
                                         {tab.label}
                                     </button>
                                 ))}

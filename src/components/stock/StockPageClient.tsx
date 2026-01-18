@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import { PremiumGate } from "@/components/ui/PremiumGate";
 import { AIValuationCard } from "@/components/analysis/AIValuationCard";
 import { PerformanceMetrics } from "@/components/stock/PerformanceMetrics";
 import { WatchButton } from "@/components/watchlist/WatchButton";
+import { PaperTradeButton } from "@/components/portfolio/PaperTradeButton";
 import { Brain, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -26,7 +28,12 @@ export function StockPageActions({ symbol }: StockPageActionsProps) {
         );
     }
 
-    return <WatchButton symbol={symbol} />;
+    return (
+        <div className="flex items-center gap-2">
+            <PaperTradeButton symbol={symbol} />
+            <WatchButton symbol={symbol} />
+        </div>
+    );
 }
 
 interface AIAnalysisSectionProps {
