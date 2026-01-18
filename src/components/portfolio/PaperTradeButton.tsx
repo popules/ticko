@@ -127,6 +127,9 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
         setError("");
 
         try {
+            // Fair Play: Lock position for 30 minutes
+            const lockedUntil = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+
             const { error: dbError } = await (supabase as any)
                 .from("portfolio")
                 .insert({
@@ -136,6 +139,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                     shares: shares,
                     buy_price: stockPrice,
                     currency: stockCurrency,
+                    locked_until: lockedUntil,
                 });
 
             if (dbError) throw dbError;
@@ -244,9 +248,10 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                 {/* Warning */}
                                 <div className="mx-4 sm:mx-6 mt-3 p-2 sm:p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-2">
                                     <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                                    <p className="text-[10px] sm:text-xs text-amber-400/80">
-                                        Simulering med virtuella pengar. Inga riktiga transaktioner.
-                                    </p>
+                                    <div className="text-[10px] sm:text-xs text-amber-400/80">
+                                        <p>Simulering med virtuella pengar. Inga riktiga transaktioner.</p>
+                                        <p className="mt-1 text-white/40">⏱️ <strong>Fair Play:</strong> Priser är ~15 min fördröjda. Minsta innehavstid 30 min.</p>
+                                    </div>
                                 </div>
 
                                 {/* Content */}

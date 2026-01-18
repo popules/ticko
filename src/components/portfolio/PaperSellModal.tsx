@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     DollarSign, X, Loader2, TrendingUp, TrendingDown,
-    AlertTriangle, Sparkles, PartyPopper
+    AlertTriangle, Sparkles, PartyPopper, Lock, Share2
 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { checkPaperTradingAchievements } from "@/lib/achievements";
+import { calculateTradeXP } from "@/lib/level-system";
 
 const USD_TO_SEK = 10.5;
 
@@ -20,6 +21,7 @@ interface PortfolioItem {
     buy_price: number;
     currency: string;
     current_price?: number;
+    locked_until?: string;
 }
 
 interface PaperSellModalProps {
@@ -39,6 +41,27 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
     const [isLoading, setIsLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [realizedPnl, setRealizedPnl] = useState(0);
+    const [timeRemaining, setTimeRemaining] = useState<number>(0);
+
+    // Fair Play: Check lock status
+    useEffect(() => {
+        if (!item.locked_until) return;
+
+        const checkLock = () => {
+            const lockTime = new Date(item.locked_until!).getTime();
+            const now = Date.now();
+            const remaining = Math.max(0, lockTime - now);
+            setTimeRemaining(remaining);
+        };
+
+        checkLock();
+        const interval = setInterval(checkLock, 1000);
+        return () => clearInterval(interval);
+    }, [item.locked_until]);
+
+    const isLocked = timeRemaining > 0;
+    const lockMinutes = Math.floor(timeRemaining / 60000);
+    const lockSeconds = Math.floor((timeRemaining % 60000) / 1000);
 
     const isSek = item.currency === "SEK";
     const rate = isSek ? 1 : USD_TO_SEK;
@@ -85,8 +108,41 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
             setRealizedPnl(pnl);
             setShowSuccess(true);
 
+            // Update streak and award XP (fire and forget)
+            (async () => {
+                try {
+                    // Fetch current streak
+                    const { data: profile } = await (supabase as any)
+                        .from("profiles")
+                        .select("paper_win_streak, paper_best_streak, reputation_score")
+                        .eq("id", userId)
+                        .single();
+
+                    const currentStreak = profile?.paper_win_streak || 0;
+                    const currentRep = profile?.reputation_score || 0;
+
+                    if (pnl > 0) {
+                        // Win: increment streak, award XP
+                        const newStreak = currentStreak + 1;
+                        const xpEarned = calculateTradeXP(pnl, newStreak);
+
+                        await (supabase as any).from("profiles").update({
+                            paper_win_streak: newStreak,
+                            paper_best_streak: Math.max(newStreak, profile?.paper_best_streak || 0),
+                            reputation_score: currentRep + xpEarned,
+                        }).eq("id", userId);
+                    } else {
+                        // Loss: reset streak
+                        await (supabase as any).from("profiles").update({
+                            paper_win_streak: 0,
+                        }).eq("id", userId);
+                    }
+                } catch (e) {
+                    console.error("Streak/XP update failed:", e);
+                }
+            })();
+
             // Check for paper trading achievements (fire and forget)
-            // totalProceeds is approximate new portfolio value, good enough for check
             checkPaperTradingAchievements(userId, totalProceeds + 100000, pnl).catch(console.error);
 
             // Notify parent after animation
@@ -165,6 +221,22 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                 >
                                     Realiserad {realizedPnl >= 0 ? "vinst" : "förlust"}
                                 </motion.p>
+
+                                {/* Share Button (only for wins) */}
+                                {realizedPnl > 0 && (
+                                    <motion.a
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.5 }}
+                                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🎮 Paper Trading vinst på Ticko!\n\n$${item.symbol}: +${pnlPercent.toFixed(1)}% \n\nJoin: ticko.se`)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold hover:scale-105 transition-transform"
+                                    >
+                                        <Share2 className="w-4 h-4" />
+                                        Dela vinst
+                                    </motion.a>
+                                )}
                             </div>
                         ) : (
                             // Sell Form
@@ -190,6 +262,19 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                         <X className="w-5 h-5" />
                                     </button>
                                 </div>
+
+                                {/* Fair Play Lock Warning */}
+                                {isLocked && (
+                                    <div className="mx-4 sm:mx-6 mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
+                                            <Lock className="w-5 h-5 text-amber-400" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-bold text-amber-400">Position låst</p>
+                                            <p className="text-xs text-white/50">Kan säljas om <span className="font-mono text-amber-400">{lockMinutes}:{lockSeconds.toString().padStart(2, '0')}</span></p>
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Content */}
                                 <div className="p-4 sm:p-6 space-y-4">
@@ -284,8 +369,8 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                     </button>
                                     <button
                                         onClick={handleSell}
-                                        disabled={isLoading || sharesToSell < 1}
-                                        className={`flex-1 px-4 py-3 rounded-xl font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2 ${isProfit
+                                        disabled={isLoading || sharesToSell < 1 || isLocked}
+                                        className={`flex-1 px-4 py-3 rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${isProfit
                                             ? "bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:opacity-90"
                                             : "bg-rose-500/20 text-rose-400 border border-rose-500/30 hover:bg-rose-500/30"
                                             }`}

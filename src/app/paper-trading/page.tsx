@@ -13,7 +13,7 @@ import { PaperSellModal } from "@/components/portfolio/PaperSellModal";
 import {
     Gamepad2, TrendingUp, TrendingDown, Loader2, Plus, DollarSign,
     Sparkles, AlertTriangle, Coins, RotateCcw, Trophy, Clock,
-    History, BarChart3, Wallet, ArrowUpRight, ArrowDownRight
+    History, BarChart3, Wallet, ArrowUpRight, ArrowDownRight, Lock
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
@@ -29,6 +29,7 @@ interface PortfolioItem {
     currency: string;
     current_price?: number;
     change_percent?: number;
+    locked_until?: string;
 }
 
 interface Transaction {
@@ -565,6 +566,11 @@ export default function PaperTradingPage() {
                                                             <span className="px-1.5 py-0.5 rounded bg-violet-500/20 text-[8px] font-bold text-violet-400 uppercase shrink-0">
                                                                 Paper
                                                             </span>
+                                                            {item.locked_until && new Date(item.locked_until) > new Date() && (
+                                                                <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-[8px] font-bold text-amber-400 flex items-center gap-0.5 shrink-0" title="Fair Play: Position låst">
+                                                                    <Lock className="w-2.5 h-2.5" />
+                                                                </span>
+                                                            )}
                                                         </div>
                                                         <p className="text-[10px] sm:text-[11px] font-medium text-white/40 truncate">{item.name || item.symbol}</p>
                                                     </div>
