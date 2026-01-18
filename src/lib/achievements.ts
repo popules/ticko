@@ -247,6 +247,37 @@ export const RARITY_COLORS: Record<Achievement["rarity"], string> = {
     epic: "text-purple-400 bg-purple-500/10 border-purple-500/20",
     legendary: "text-amber-400 bg-amber-500/10 border-amber-500/20",
 };
+/**
+ * Award XP (Reputation) to a user for an action
+ */
+export async function awardXp(userId: string, amount: number): Promise<boolean> {
+    try {
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("reputation_score")
+            .eq("id", userId)
+            .single();
+
+        if (profile) {
+            const { error } = await (supabase as any)
+                .from("profiles")
+                .update({
+                    reputation_score: ((profile as any).reputation_score || 0) + amount,
+                })
+                .eq("id", userId);
+
+            if (error) {
+                console.error("Failed to award XP:", error);
+                return false;
+            }
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error("Error awarding XP:", error);
+        return false;
+    }
+}
 
 export const RARITY_NAMES: Record<Achievement["rarity"], string> = {
     common: "Vanlig",

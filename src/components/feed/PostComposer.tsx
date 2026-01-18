@@ -1,7 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { checkAndAwardAchievement } from "@/lib/achievements";
+import { checkAndAwardAchievement, awardXp } from "@/lib/achievements";
+import { XP_PER_POST } from "@/lib/level-system";
 import { getCompanyLogo } from "@/lib/stocks";
 
 import { useState } from "react";
@@ -108,6 +109,9 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
 
             // Trigger Achievement Check
             await checkAndAwardAchievement(user.id, "first_post");
+
+            // Award XP for posting
+            await awardXp(user.id, XP_PER_POST);
 
             setContent("");
             setSentiment(null);

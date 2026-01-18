@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Send, Loader2 } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/lib/supabase/client";
+import { awardXp } from "@/lib/achievements";
+import { XP_PER_COMMENT } from "@/lib/level-system";
 
 interface CommentFormProps {
     postId: string;
@@ -67,6 +69,9 @@ export function CommentForm({ postId, postOwnerId, onCommentAdded }: CommentForm
                     }
                 }
             }
+
+            // Award XP for commenting
+            await awardXp(user.id, XP_PER_COMMENT);
 
             setContent("");
             onCommentAdded?.();

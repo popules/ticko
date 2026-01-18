@@ -7,6 +7,7 @@ import { TrendingUp, TrendingDown, Flag, Trash2, Loader2, Gem } from "lucide-rea
 import { ShareButton } from "@/components/ui/ShareButton";
 import { renderWithCashtags } from "@/lib/cashtag";
 import { UI_STRINGS } from "@/config/app";
+import { getLevel, getLevelColor } from "@/lib/level-system";
 import { ReactionButtons } from "./ReactionButtons";
 import { ReactionBar } from "./ReactionBar";
 import { PollView } from "./PollView";
@@ -78,6 +79,13 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                         >
                             {profile?.username || "Anonym"}
                         </Link>
+
+                        {/* Level Badge */}
+                        {profile?.reputation_score !== undefined && (
+                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold border ${getLevelColor(getLevel(profile.reputation_score))}`}>
+                                Lvl {getLevel(profile.reputation_score)}
+                            </span>
+                        )}
 
                         <span className="text-white/30">·</span>
                         <span className="text-white/50 text-[12px] font-medium">
