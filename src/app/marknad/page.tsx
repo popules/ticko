@@ -123,7 +123,7 @@ export default function MarketPage() {
                             ? "bg-emerald-500/10 border-emerald-500/30"
                             : "bg-white/[0.04] border-white/10"
                             }`}>
-                            <span className="text-[10px] font-black text-blue-400 bg-blue-500/20 px-1.5 py-0.5 rounded">SE</span>
+                            <span className="text-sm">🇸🇪</span>
                             <div className={`w-2 h-2 rounded-full ${marketStatus.swedenOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
                             <span className={`text-[10px] font-bold uppercase ${marketStatus.swedenOpen ? "text-emerald-400" : "text-white/40"}`}>
                                 {marketStatus.swedenOpen ? "Öppen" : "Stängd"}
@@ -134,7 +134,7 @@ export default function MarketPage() {
                             ? "bg-emerald-500/10 border-emerald-500/30"
                             : "bg-white/[0.04] border-white/10"
                             }`}>
-                            <span className="text-[10px] font-black text-red-400 bg-red-500/20 px-1.5 py-0.5 rounded">US</span>
+                            <span className="text-sm">🇺🇸</span>
                             <div className={`w-2 h-2 rounded-full ${marketStatus.usOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
                             <span className={`text-[10px] font-bold uppercase ${marketStatus.usOpen ? "text-emerald-400" : "text-white/40"}`}>
                                 {marketStatus.usOpen ? "Öppen" : "Stängd"}
@@ -165,13 +165,13 @@ export default function MarketPage() {
                                             whileHover={{ scale: 1.02, y: -4 }}
                                             className="relative overflow-hidden rounded-3xl p-6 bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 hover:border-white/20 transition-all"
                                         >
-                                            <div className="flex justify-between items-start">
-                                                <div>
-                                                    <p className="text-sm font-semibold text-white/50">{index.label}</p>
-                                                    <p className="text-3xl font-black text-white mt-1 tabular-nums">{index.value}</p>
+                                            <div className="flex justify-between items-start gap-3">
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-semibold text-white/50 truncate">{index.label}</p>
+                                                    <p className="text-2xl md:text-3xl font-black text-white mt-1 tabular-nums">{index.value}</p>
                                                 </div>
-                                                <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-bold ${index.change >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
-                                                    {index.change >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
+                                                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold whitespace-nowrap shrink-0 ${index.change >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
+                                                    {index.change >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                                                     {index.change >= 0 ? '+' : ''}{index.change.toFixed(2)}%
                                                 </div>
                                             </div>
