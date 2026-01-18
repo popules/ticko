@@ -171,7 +171,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-start sm:items-center justify-center p-4 overflow-y-auto"
+                        className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-md flex items-center justify-center p-4"
                         onClick={() => setIsOpen(false)}
                     >
                         <motion.div
@@ -179,7 +179,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: 20 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="w-full max-w-md bg-[#0B0F17] border border-white/10 rounded-3xl overflow-hidden shadow-2xl my-8 sm:my-0"
+                            className="w-full max-w-md bg-[#0B0F17] border border-white/10 rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto"
                         >
                             {/* Header */}
                             <div className="p-4 sm:p-6 border-b border-white/10 flex items-center justify-between bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10">
@@ -286,8 +286,8 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
 
                                 {/* Total */}
                                 <div className={`flex items-center justify-between p-3 sm:p-4 rounded-xl border ${canAfford
-                                        ? "bg-violet-500/10 border-violet-500/20"
-                                        : "bg-rose-500/10 border-rose-500/20"
+                                    ? "bg-violet-500/10 border-violet-500/20"
+                                    : "bg-rose-500/10 border-rose-500/20"
                                     }`}>
                                     <div>
                                         <span className="text-xs sm:text-sm text-white/60">Total kostnad</span>
