@@ -183,73 +183,120 @@ function getMarketLabel(exchange: string, symbol: string): string {
 
     // Check exchange codes
     switch (exchange) {
+        // Swedish
         case 'STO': return '🇸🇪 OMX Sthlm';
+        // US
         case 'NMS': return '🇺🇸 NASDAQ';
         case 'NGM': return '🇺🇸 NASDAQ';
+        case 'NCM': return '🇺🇸 NASDAQ CM';
         case 'NYQ': return '🇺🇸 NYSE';
         case 'ASE': return '🇺🇸 AMEX';
-        case 'PNK': return '🇺🇸 OTC';
+        case 'PCX': return '🇺🇸 NYSE Arca';
+        case 'BTS': return '🇺🇸 BATS';
+        case 'PNK': return '🇺🇸 OTC Pink';
         case 'OTC': return '🇺🇸 OTC';
+        case 'OQB': return '🇺🇸 OTC QB';
+        case 'OPR': return '🇺🇸 Options';
+        // Canada
         case 'VAN': return '🇨🇦 TSX Venture';
         case 'TOR': return '🇨🇦 TSX';
+        case 'NEO': return '🇨🇦 NEO';
+        case 'CNQ': return '🇨🇦 CSE';
+        // Europe
         case 'LSE': return '🇬🇧 London';
         case 'GER': return '🇩🇪 XETRA';
+        case 'FRA': return '🇩🇪 Frankfurt';
+        case 'MUN': return '🇩🇪 München';
+        case 'STU': return '🇩🇪 Stuttgart';
         case 'PAR': return '🇫🇷 Paris';
         case 'AMS': return '🇳🇱 Amsterdam';
         case 'BRU': return '🇧🇪 Bryssel';
-        case 'CCC': return 'Crypto';
-        default: return exchange || 'Globally';
+        case 'MIL': return '🇮🇹 Milano';
+        case 'MAD': return '🇪🇸 Madrid';
+        // Crypto
+        case 'CCC': return '🪙 Crypto';
+        default: return exchange || '';
     }
 }
 
 export async function searchStocks(query: string) {
     try {
         const results: any = await yf.search(query);
+        const queryUpper = query.toUpperCase();
+        const queryLower = query.toLowerCase();
 
         // Score each result for relevance
         const scoredResults = results.quotes
             .filter((q: any) => q.isYahooFinance === true || q.quoteType === 'EQUITY' || q.quoteType === 'INDEX' || q.quoteType === 'ETF')
             .map((q: any) => {
                 const symbol = q.symbol || '';
+                const symbolUpper = symbol.toUpperCase();
+                const symbolBase = symbolUpper.split('.')[0].split('-')[0]; // SAAB-B.ST -> SAAB
                 const type = q.quoteType || '';
                 const name = q.longname || q.shortname || '';
+                const nameLower = name.toLowerCase();
                 const exchange = q.exchange || '';
-                const queryUpper = query.toUpperCase();
 
                 let score = 0;
 
-                // Exact symbol match (highest priority)
-                if (symbol.toUpperCase() === queryUpper) score += 1000;
-                if (symbol.toUpperCase().startsWith(queryUpper + '.')) score += 500; // e.g. SAAB-B.ST matches SAAB
-                if (symbol.toUpperCase().split('.')[0].split('-')[0] === queryUpper) score += 800; // SAAB-B.ST == SAAB
+                // === CRITICAL: Symbol must relate to query ===
+                const symbolContainsQuery = symbolUpper.includes(queryUpper);
+                const queryContainsSymbolBase = queryUpper.includes(symbolBase) || symbolBase.includes(queryUpper);
+                const nameContainsQuery = nameLower.includes(queryLower);
 
-                // EQUITY over ETF (much higher priority)
-                if (type === 'EQUITY') score += 200;
+                // If NEITHER symbol NOR name contains the query, heavily penalize
+                if (!symbolContainsQuery && !queryContainsSymbolBase && !nameContainsQuery) {
+                    score -= 500; // This result is probably irrelevant
+                }
+
+                // === Symbol matching (highest priority) ===
+                if (symbolUpper === queryUpper) score += 1000; // Exact match
+                if (symbolBase === queryUpper) score += 900; // Base symbol match (SAAB-B.ST == SAAB)
+                if (symbolUpper.startsWith(queryUpper)) score += 600; // Starts with query
+                if (symbolContainsQuery) score += 300; // Contains query
+
+                // === Type priority: EQUITY > INDEX > ETF ===
+                if (type === 'EQUITY') score += 300;
                 if (type === 'INDEX') score += 150;
-                if (type === 'ETF') score += 10; // ETFs get low score
+                if (type === 'ETF') score -= 100; // ETFs are penalized by default
 
-                // Main exchange priority
-                // Swedish stocks on Stockholm (.ST)
-                if (symbol.endsWith('.ST')) score += 100;
-                // US stocks on NASDAQ/NYSE (no suffix usually)
-                if (!symbol.includes('.') && (exchange === 'NMS' || exchange === 'NYQ' || exchange === 'NGM')) score += 100;
+                // === Exchange priority ===
+                // Swedish stocks
+                if (symbol.endsWith('.ST')) score += 150;
+                // US main exchanges (no suffix)
+                if (!symbol.includes('.') && ['NMS', 'NYQ', 'NGM', 'NCM', 'ASE'].includes(exchange)) score += 100;
+                // Canadian main
+                if (exchange === 'TOR') score += 50;
 
-                // Penalize OTC/pink sheets and foreign listings
-                if (symbol.endsWith('.F')) score -= 50; // Frankfurt
-                if (symbol.endsWith('.SW')) score -= 30; // Swiss
-                if (exchange === 'PNK') score -= 100; // Pink sheets
-                if (exchange === 'OTC') score -= 100; // OTC
+                // === Penalize problematic exchanges ===
+                if (exchange === 'PNK') score -= 80; // Pink sheets
+                if (exchange === 'OTC') score -= 80;
+                if (exchange === 'OQB') score -= 50; // OTC QB is slightly better
+                if (exchange === 'VAN') score -= 30; // TSX Venture is speculative
+                // Foreign listings of same stock
+                if (symbol.endsWith('.F')) score -= 100; // Frankfurt ADR
+                if (symbol.endsWith('.MU')) score -= 100; // Munich
+                if (symbol.endsWith('.SG')) score -= 100; // Stuttgart
+                if (symbol.endsWith('.SW')) score -= 50; // Swiss
 
-                // Penalize derivatives and complex instruments
-                if (name.toLowerCase().includes('etf')) score -= 50;
-                if (name.toLowerCase().includes('bull 2x')) score -= 100;
-                if (name.toLowerCase().includes('bear 2x')) score -= 100;
-                if (name.toLowerCase().includes('leveraged')) score -= 100;
-                if (name.toLowerCase().includes('yield')) score -= 50;
-                if (name.toLowerCase().includes('option')) score -= 100;
+                // === HEAVILY penalize derivatives and leveraged products ===
+                if (nameLower.includes('leverage')) score -= 300;
+                if (nameLower.includes('2x long')) score -= 300;
+                if (nameLower.includes('2x short')) score -= 300;
+                if (nameLower.includes('3x long')) score -= 300;
+                if (nameLower.includes('3x short')) score -= 300;
+                if (nameLower.includes('bull ')) score -= 200;
+                if (nameLower.includes('bear ')) score -= 200;
+                if (nameLower.includes(' etf')) score -= 150;
+                if (nameLower.includes('daily')) score -= 100; // Daily ETFs
+                if (nameLower.includes('ultra')) score -= 200;
+                if (nameLower.includes('proshares')) score -= 150;
+                if (nameLower.includes('direxion')) score -= 150;
+                if (nameLower.includes('yield')) score -= 50;
+                if (type === 'OPTION') score -= 500;
 
-                // Boost if company name contains query
-                if (name.toLowerCase().includes(query.toLowerCase())) score += 50;
+                // === Boost if company name contains query ===
+                if (nameContainsQuery) score += 100;
 
                 return {
                     symbol: q.symbol,
@@ -260,6 +307,7 @@ export async function searchStocks(query: string) {
                     _score: score
                 };
             })
+            .filter((r: any) => r._score > -200) // Filter out clearly irrelevant results
             .sort((a: any, b: any) => b._score - a._score) // Sort by score descending
             .slice(0, 5) // Limit to top 5
             .map(({ _score, ...rest }: any) => rest); // Remove internal score
