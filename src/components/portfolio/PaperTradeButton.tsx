@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Gamepad2, X, Loader2, TrendingUp, AlertTriangle, Wallet, ArrowLeftRight } from "lucide-react";
+import { Gamepad2, X, Loader2, TrendingUp, AlertTriangle, Wallet, ArrowLeftRight, PartyPopper, Lock } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/lib/supabase/client";
 
@@ -158,11 +158,12 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
             });
 
             setSuccess(true);
+            // Keep modal open for 2.5 seconds to show success state
             setTimeout(() => {
                 setIsOpen(false);
                 setSuccess(false);
                 setInputValue(inputMode === "shares" ? "1" : "1000");
-            }, 1500);
+            }, 2500);
         } catch (err) {
             setError("Kunde inte genomföra köpet");
         } finally {
@@ -337,10 +338,31 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                     )}
 
                                     {success && (
-                                        <div className="flex items-center justify-center gap-2 text-emerald-400">
-                                            <TrendingUp className="w-5 h-5" />
-                                            <span className="font-bold">Köp genomfört!</span>
-                                        </div>
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="flex flex-col items-center text-center py-4"
+                                        >
+                                            <motion.div
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                transition={{ type: "spring", damping: 10 }}
+                                                className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-400 to-fuchsia-600 flex items-center justify-center mb-4"
+                                            >
+                                                <PartyPopper className="w-8 h-8 text-white" />
+                                            </motion.div>
+                                            <h3 className="text-xl font-black text-white mb-2">Köp genomfört! 🎉</h3>
+                                            <p className="text-white/60 text-sm mb-3">
+                                                Du har köpt <span className="font-bold text-white">{shares} st</span> av <span className="font-bold text-violet-400">${symbol}</span>
+                                            </p>
+                                            <p className="text-2xl font-black text-violet-400 tabular-nums">
+                                                {totalCostSek.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                            </p>
+                                            <div className="mt-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs text-amber-400">
+                                                <Lock className="w-3 h-3" />
+                                                <span>Låst i 30 min (Fair Play)</span>
+                                            </div>
+                                        </motion.div>
                                     )}
                                 </div>
 
