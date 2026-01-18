@@ -13,7 +13,7 @@ import {
     Search,
     Trophy,
     Sparkles,
-    Wallet,
+    Gamepad2,
     LogOut,
     Menu,
     X,
@@ -31,7 +31,7 @@ const navItems = [
     { icon: Home, label: UI_STRINGS.home, href: "/" },
     { icon: Sparkles, label: UI_STRINGS.discovery, href: "/upptack", isNew: true },
     { icon: TrendingUp, label: UI_STRINGS.markets, href: "/marknad" },
-    { icon: Wallet, label: "Portfölj", href: "/portfolio" },
+    { icon: Gamepad2, label: "Paper Trading", href: "/portfolio", badge: "🎮" },
     { icon: Star, label: UI_STRINGS.watchlist, href: "/watchlist" },
     { icon: Trophy, label: "Topplistan", href: "/leaderboard" },
     { icon: User, label: UI_STRINGS.profile, href: "/profil" },
@@ -121,13 +121,16 @@ export function Sidebar() {
                                 }`}
                         >
                             <div className="flex items-center gap-3">
-                                <item.icon className={`w-4 h-4 ${isActive ? "text-emerald-400" : item.isNew ? "text-emerald-400" : ""}`} />
+                                <item.icon className={`w-4 h-4 ${isActive ? "text-emerald-400" : item.isNew ? "text-emerald-400" : (item as any).badge ? "text-violet-400" : ""}`} />
                                 <span className="text-[13px] font-medium">{item.label}</span>
                             </div>
                             {item.isNew && (
                                 <span className="text-[9px] font-bold bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-md border border-emerald-500/20 group-hover:bg-emerald-500/30 transition-colors">
                                     NY
                                 </span>
+                            )}
+                            {(item as any).badge && (
+                                <span className="text-sm">{(item as any).badge}</span>
                             )}
                         </Link>
                     );
