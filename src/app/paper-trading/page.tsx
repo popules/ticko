@@ -10,6 +10,7 @@ import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import { getPaperTradingSettings } from "@/config/subscription";
 import { awardAchievement } from "@/lib/achievements";
 import { PaperSellModal } from "@/components/portfolio/PaperSellModal";
+import { PaidResetModal } from "@/components/portfolio/PaidResetModal";
 import {
     Gamepad2, TrendingUp, TrendingDown, Loader2, Plus, DollarSign,
     Sparkles, AlertTriangle, Coins, RotateCcw, Trophy, Clock,
@@ -89,6 +90,7 @@ export default function PaperTradingPage() {
     const [lastResetDate, setLastResetDate] = useState<Date | null>(null);
     const [isResetting, setIsResetting] = useState(false);
     const [showResetModal, setShowResetModal] = useState(false);
+    const [showPaidResetModal, setShowPaidResetModal] = useState(false);
 
     // Redirect to login if not authenticated
     useEffect(() => {
@@ -386,10 +388,18 @@ export default function PaperTradingPage() {
                 <div className="p-4 sm:p-6 border-b border-white/10">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                         {/* Virtual Cash */}
-                        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20">
+                        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 relative group">
                             <div className="flex items-center gap-2 mb-2">
                                 <Coins className="w-4 h-4 text-violet-400" />
                                 <p className="text-[10px] text-violet-400/80 uppercase tracking-widest font-bold">Kassa</p>
+                                {/* Paid Reset Icon */}
+                                <button
+                                    onClick={() => setShowPaidResetModal(true)}
+                                    className="ml-auto p-1.5 rounded-lg bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 text-amber-400 hover:from-amber-500/30 hover:to-orange-500/30 transition-all opacity-0 group-hover:opacity-100"
+                                    title="Premium Reset (49 kr)"
+                                >
+                                    <RotateCcw className="w-3 h-3" />
+                                </button>
                             </div>
                             <p className="text-lg sm:text-2xl font-black text-white tabular-nums">
                                 {cashBalance.toLocaleString("sv-SE", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} kr
@@ -854,6 +864,11 @@ export default function PaperTradingPage() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Paid Reset Modal */}
+            {showPaidResetModal && (
+                <PaidResetModal onClose={() => setShowPaidResetModal(false)} />
+            )}
         </div>
     );
 }
