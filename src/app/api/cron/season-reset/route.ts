@@ -3,13 +3,15 @@ import { createClient } from "@supabase/supabase-js";
 import { awardAchievement } from "@/lib/achievements";
 
 /**
- * Weekly Season Reset Cron Job
- * Runs every Sunday at 00:00 UTC
+ * Season Reset Cron Job
+ * Runs when a season ends (manually triggered or via vercel cron)
  * 
- * 1. Archives current season to paper_seasons table
- * 2. Awards "Säsongens Vinnare" achievement to #1
- * 3. Resets all users' paper_season_pnl to 0
- * 4. Increments paper_season_number
+ * 1. Gets current active season
+ * 2. Snapshots all portfolios to historical_portfolios with rankings
+ * 3. Awards badges to top performers
+ * 4. Marks current season as inactive
+ * 5. Creates new season
+ * 6. Resets users' portfolios
  */
 export async function GET(request: Request) {
     // Verify cron secret
@@ -29,88 +31,146 @@ export async function GET(request: Request) {
     );
 
     try {
-        // 1. Get current season number from any user (they should all be the same)
-        const { data: seasonInfo } = await supabase
-            .from("profiles")
-            .select("paper_season_number")
-            .limit(1)
+        // 1. Get current active season
+        const { data: currentSeason, error: seasonError } = await supabase
+            .from("seasons")
+            .select("*")
+            .eq("is_active", true)
             .single();
 
-        const currentSeasonNumber = seasonInfo?.paper_season_number || 1;
-
-        // 2. Get the leaderboard for this season
-        const { data: leaderboard, error: leaderboardError } = await supabase
-            .from("profiles")
-            .select("id, username, paper_season_pnl")
-            .not("paper_season_pnl", "is", null)
-            .gt("paper_season_pnl", 0)
-            .order("paper_season_pnl", { ascending: false })
-            .limit(10);
-
-        if (leaderboardError) {
-            throw new Error(`Failed to fetch leaderboard: ${leaderboardError.message}`);
+        if (seasonError || !currentSeason) {
+            return NextResponse.json({ error: "No active season found" }, { status: 404 });
         }
 
-        const winner = leaderboard?.[0];
-        const participantCount = leaderboard?.length || 0;
+        // 2. Get leaderboard (all users with portfolios)
+        // Calculate total value: cash + stock holdings
+        const { data: allProfiles } = await supabase
+            .from("profiles")
+            .select("id, username, paper_cash_balance, paper_total_pnl")
+            .not("paper_cash_balance", "is", null);
 
-        // 3. Archive the season
-        if (winner) {
-            const oneMonthAgo = new Date();
-            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+        // Get portfolio values for each user
+        const portfolioValues: { userId: string; totalValue: number; username: string }[] = [];
 
-            await supabase.from("paper_seasons").insert({
-                season_number: currentSeasonNumber,
-                winner_id: winner.id,
-                winner_username: winner.username,
-                winner_pnl: winner.paper_season_pnl,
-                participants_count: participantCount,
-                started_at: oneMonthAgo.toISOString(),
-                ended_at: new Date().toISOString(),
+        for (const profile of allProfiles || []) {
+            // Get portfolio holdings value
+            const { data: holdings } = await supabase
+                .from("portfolio")
+                .select("shares, buy_price, currency")
+                .eq("user_id", profile.id);
+
+            let holdingsValue = 0;
+            for (const holding of holdings || []) {
+                // Simplified: use buy_price as current value estimation
+                // In production, you'd fetch real-time prices
+                const value = holding.shares * holding.buy_price * (holding.currency === "SEK" ? 1 : 10.5);
+                holdingsValue += value;
+            }
+
+            const totalValue = (profile.paper_cash_balance || 0) + holdingsValue;
+            portfolioValues.push({
+                userId: profile.id,
+                totalValue,
+                username: profile.username,
             });
+        }
 
-            // 4. Award achievement to winner
-            await awardAchievement(winner.id, "paper_winner");
+        // Sort by total value descending
+        portfolioValues.sort((a, b) => b.totalValue - a.totalValue);
 
-            // 5. Create notification for winner
+        // 3. Create historical snapshots with rankings
+        const badgeAssignments: { userId: string; badges: string[] }[] = [];
+
+        for (let i = 0; i < portfolioValues.length; i++) {
+            const { userId, totalValue } = portfolioValues[i];
+            const rank = i + 1;
+            const badges: string[] = [];
+
+            // Assign badges based on rank
+            if (rank === 1) badges.push("season_winner", "top_10");
+            else if (rank <= 3) badges.push("top_3", "top_10");
+            else if (rank <= 10) badges.push("top_10");
+            else if (rank <= 100) badges.push("top_100");
+
+            // Survivor badge for anyone who participated
+            badges.push("survivor");
+
+            badgeAssignments.push({ userId, badges });
+
+            // Insert into historical_portfolios
+            await supabase.from("historical_portfolios").insert({
+                user_id: userId,
+                season_id: currentSeason.id,
+                final_value: totalValue,
+                final_rank: rank,
+                badges_earned: badges,
+            });
+        }
+
+        const winner = portfolioValues[0];
+
+        // 4. Award achievement and notify winner
+        if (winner) {
+            await awardAchievement(winner.userId, "paper_winner");
+
             await supabase.from("notifications").insert({
-                user_id: winner.id,
+                user_id: winner.userId,
                 type: "season_winner",
-                title: `🏆 Grattis! Du vann Säsong ${currentSeasonNumber}!`,
-                content: `Du slutade på första plats med +${winner.paper_season_pnl?.toLocaleString("sv-SE")} kr i profit!`,
+                title: `🏆 Grattis! Du vann ${currentSeason.name}!`,
+                content: `Du slutade på första plats med ${winner.totalValue.toLocaleString("sv-SE")} kr!`,
                 read: false,
             });
         }
 
-        // 6. Update all users' best season if applicable and reset
-        const { data: allUsers } = await supabase
+        // 5. Mark current season as inactive and set end date
+        await supabase
+            .from("seasons")
+            .update({ is_active: false, end_date: new Date().toISOString() })
+            .eq("id", currentSeason.id);
+
+        // 6. Create new season
+        const newSeasonNumber = parseInt(currentSeason.name.match(/\d+/)?.[0] || "1") + 1;
+        const { data: newSeason } = await supabase
+            .from("seasons")
+            .insert({
+                name: `Säsong ${newSeasonNumber}`,
+                start_date: new Date().toISOString(),
+                is_active: true,
+            })
+            .select()
+            .single();
+
+        // 7. Reset all users' portfolios and cash
+        // Delete portfolio holdings
+        await supabase.from("portfolio").delete().neq("id", "00000000-0000-0000-0000-000000000000"); // Delete all
+
+        // Archive transactions
+        await supabase
+            .from("transactions")
+            .update({ archived: true })
+            .eq("archived", false);
+
+        // Reset cash balance
+        await supabase
             .from("profiles")
-            .select("id, paper_season_pnl, paper_all_time_best_season");
-
-        for (const user of allUsers || []) {
-            const currentPnl = user.paper_season_pnl || 0;
-            const bestEver = user.paper_all_time_best_season || 0;
-
-            await supabase
-                .from("profiles")
-                .update({
-                    paper_season_pnl: 0,
-                    paper_season_start: new Date().toISOString(),
-                    paper_season_number: currentSeasonNumber + 1,
-                    paper_all_time_best_season: currentPnl > bestEver ? currentPnl : bestEver,
-                })
-                .eq("id", user.id);
-        }
+            .update({
+                paper_cash_balance: 100000,
+                paper_total_pnl: 0,
+                paper_season_pnl: 0,
+                paper_win_streak: 0,
+                active_season_id: newSeason?.id,
+            })
+            .not("paper_cash_balance", "is", null);
 
         return NextResponse.json({
             success: true,
-            season: currentSeasonNumber,
-            nextSeason: currentSeasonNumber + 1,
+            endedSeason: currentSeason.name,
+            newSeason: newSeason?.name,
+            participants: portfolioValues.length,
             winner: winner ? {
                 username: winner.username,
-                pnl: winner.paper_season_pnl,
+                totalValue: winner.totalValue,
             } : null,
-            participants: participantCount,
         });
 
     } catch (error) {

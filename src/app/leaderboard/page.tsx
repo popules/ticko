@@ -22,10 +22,20 @@ interface Leader {
 }
 
 interface Season {
-    season_number: number;
+    id: string;
+    name: string;
+    start_date: string;
+    end_date: string | null;
+    is_active: boolean;
+}
+
+interface SeasonWinner {
+    season_id: string;
+    season_name: string;
     winner_username: string;
-    winner_pnl: number;
-    participants_count: number;
+    winner_avatar_url: string | null;
+    final_value: number;
+    final_rank: number;
     ended_at: string;
 }
 
@@ -82,15 +92,14 @@ export default function LeaderboardPage() {
         },
     });
 
-    // Last season winner
-    const { data: lastSeason } = useQuery<Season | null>({
-        queryKey: ["last-season"],
+    // Current active season
+    const { data: currentSeason } = useQuery<Season | null>({
+        queryKey: ["current-season"],
         queryFn: async () => {
             const { data, error } = await (supabase as any)
-                .from("paper_seasons")
+                .from("seasons")
                 .select("*")
-                .order("season_number", { ascending: false })
-                .limit(1)
+                .eq("is_active", true)
                 .single();
 
             if (error) return null;
@@ -98,20 +107,54 @@ export default function LeaderboardPage() {
         },
     });
 
-    // All past seasons history
-    const { data: seasonHistory } = useQuery<Season[]>({
-        queryKey: ["season-history"],
+    // Hall of Fame: Past season winners from historical_portfolios
+    const { data: seasonWinners } = useQuery<SeasonWinner[]>({
+        queryKey: ["season-winners"],
         queryFn: async () => {
-            const { data, error } = await (supabase as any)
-                .from("paper_seasons")
-                .select("*")
-                .order("season_number", { ascending: false })
-                .limit(20);
+            // Get past (non-active) seasons
+            const { data: pastSeasons, error: seasonError } = await (supabase as any)
+                .from("seasons")
+                .select("id, name, end_date")
+                .eq("is_active", false)
+                .order("end_date", { ascending: false })
+                .limit(10);
 
-            if (error) return [];
-            return data as Season[];
+            if (seasonError || !pastSeasons || pastSeasons.length === 0) return [];
+
+            // Get winners for each past season
+            const winners: SeasonWinner[] = [];
+            for (const season of pastSeasons) {
+                const { data: winner } = await (supabase as any)
+                    .from("historical_portfolios")
+                    .select("final_value, final_rank, user_id")
+                    .eq("season_id", season.id)
+                    .eq("final_rank", 1)
+                    .single();
+
+                if (winner) {
+                    // Get username
+                    const { data: profile } = await (supabase as any)
+                        .from("profiles")
+                        .select("username, avatar_url")
+                        .eq("id", winner.user_id)
+                        .single();
+
+                    winners.push({
+                        season_id: season.id,
+                        season_name: season.name,
+                        winner_username: profile?.username || "Okänd",
+                        winner_avatar_url: profile?.avatar_url || null,
+                        final_value: winner.final_value,
+                        final_rank: 1,
+                        ended_at: season.end_date,
+                    });
+                }
+            }
+            return winners;
         },
     });
+
+
 
     const [showSeasonHistory, setShowSeasonHistory] = useState(false);
 
@@ -123,7 +166,7 @@ export default function LeaderboardPage() {
         ? reputationLeaders
         : (paperTimeframe === "season" ? paperSeasonLeaders : paperAllTimeLeaders);
 
-    const currentSeasonNumber = paperSeasonLeaders?.[0]?.paper_season_number || 1;
+    const currentSeasonName = currentSeason?.name || "Säsong 1: Genesis";
 
     // Calculate days until end of month reset
     const now = new Date();
@@ -216,7 +259,7 @@ export default function LeaderboardPage() {
                                         }`}
                                 >
                                     <Calendar className="w-3 h-3" />
-                                    Säsong {currentSeasonNumber}
+                                    {currentSeasonName}
                                 </button>
                                 <button
                                     onClick={() => setPaperTimeframe("alltime")}
@@ -235,8 +278,8 @@ export default function LeaderboardPage() {
                                 <div className="p-4 rounded-xl bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-sm font-bold text-white">Säsong {currentSeasonNumber}</p>
-                                            <p className="text-xs text-white/40">Vem tar hem månadens krona?</p>
+                                            <p className="text-sm font-bold text-white">{currentSeasonName}</p>
+                                            <p className="text-xs text-white/40">Vem tar hem kronan?</p>
                                         </div>
                                         <div className="text-right">
                                             <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
@@ -250,25 +293,25 @@ export default function LeaderboardPage() {
                             )}
 
                             {/* Last Season Winner */}
-                            {lastSeason && paperTimeframe === "season" && (
+                            {seasonWinners && seasonWinners.length > 0 && paperTimeframe === "season" && (
                                 <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
                                             <Crown className="w-5 h-5 text-amber-400" />
                                             <div>
-                                                <p className="text-xs text-amber-400/60 uppercase tracking-wider">Förra månadens vinnare</p>
-                                                <p className="text-sm font-bold text-white">@{lastSeason.winner_username}</p>
+                                                <p className="text-xs text-amber-400/60 uppercase tracking-wider">Förra säsongen</p>
+                                                <p className="text-sm font-bold text-white">@{seasonWinners[0].winner_username}</p>
                                             </div>
                                         </div>
                                         <span className="text-emerald-400 font-bold text-sm">
-                                            +{lastSeason.winner_pnl?.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                            {seasonWinners[0].final_value?.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
                                         </span>
                                     </div>
                                 </div>
                             )}
 
                             {/* Season History (Collapsible) */}
-                            {seasonHistory && seasonHistory.length > 0 && paperTimeframe === "season" && (
+                            {seasonWinners && seasonWinners.length > 1 && paperTimeframe === "season" && (
                                 <div className="rounded-xl border border-white/10 overflow-hidden">
                                     <button
                                         onClick={() => setShowSeasonHistory(!showSeasonHistory)}
@@ -276,34 +319,34 @@ export default function LeaderboardPage() {
                                     >
                                         <div className="flex items-center gap-2 text-white/50">
                                             <History className="w-4 h-4" />
-                                            <span className="text-xs font-bold">Säsongshistorik</span>
-                                            <span className="text-[10px] text-white/30">({seasonHistory.length} säsonger)</span>
+                                            <span className="text-xs font-bold">Hall of Fame</span>
+                                            <span className="text-[10px] text-white/30">({seasonWinners.length} säsonger)</span>
                                         </div>
                                         <ChevronDown className={`w-4 h-4 text-white/30 transition-transform ${showSeasonHistory ? "rotate-180" : ""}`} />
                                     </button>
 
                                     {showSeasonHistory && (
                                         <div className="border-t border-white/5">
-                                            {seasonHistory.map((season, idx) => (
+                                            {seasonWinners.map((winner, idx) => (
                                                 <div
-                                                    key={season.season_number}
-                                                    className={`flex items-center justify-between p-3 ${idx !== seasonHistory.length - 1 ? "border-b border-white/5" : ""}`}
+                                                    key={winner.season_id}
+                                                    className={`flex items-center justify-between p-3 ${idx !== seasonWinners.length - 1 ? "border-b border-white/5" : ""}`}
                                                 >
                                                     <div className="flex items-center gap-3">
                                                         <div className="w-6 h-6 rounded-full bg-amber-500/10 flex items-center justify-center">
                                                             <Crown className="w-3 h-3 text-amber-400" />
                                                         </div>
                                                         <div>
-                                                            <p className="text-xs text-white/40">Säsong {season.season_number}</p>
-                                                            <p className="text-sm font-bold text-white">@{season.winner_username}</p>
+                                                            <p className="text-xs text-white/40">{winner.season_name}</p>
+                                                            <p className="text-sm font-bold text-white">@{winner.winner_username}</p>
                                                         </div>
                                                     </div>
                                                     <div className="text-right">
                                                         <p className="text-emerald-400 font-bold text-sm tabular-nums">
-                                                            +{season.winner_pnl?.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                            {winner.final_value?.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
                                                         </p>
                                                         <p className="text-[10px] text-white/30">
-                                                            {new Date(season.ended_at).toLocaleDateString("sv-SE")}
+                                                            {winner.ended_at ? new Date(winner.ended_at).toLocaleDateString("sv-SE") : ""}
                                                         </p>
                                                     </div>
                                                 </div>
