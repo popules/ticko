@@ -70,7 +70,7 @@ export function LandingPage() {
                         </Link>
                         <Link
                             href="/registrera"
-                            className="px-6 py-3 bg-white text-black rounded-full font-bold text-sm hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.4)] transition-all transform hover:-translate-y-0.5"
+                            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] rounded-full font-bold text-sm hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-0.5"
                         >
                             Bli Medlem — Gratis
                         </Link>
@@ -183,114 +183,6 @@ export function LandingPage() {
                 </motion.div>
             </section>
 
-            {/* Problem Section */}
-            <section id="problem" className="px-6 py-32 border-t border-white/[0.05]">
-                <div className="max-w-4xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-16"
-                    >
-                        <span className="text-xs font-bold uppercase tracking-widest text-rose-400 mb-4 block">Problemet</span>
-                        <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
-                            Att investera ensam är <span className="text-rose-400">svårt</span>.
-                        </h2>
-                    </motion.div>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {[
-                            {
-                                emoji: "🤔",
-                                title: "Ingen att fråga",
-                                desc: "Du hittar en aktie som ser intressant ut. Men vem ska du diskutera med? Reddit är kaos och Twitter är mest hype."
-                            },
-                            {
-                                emoji: "📊",
-                                title: "Information överallt",
-                                desc: "Nyheter, rapporter, analyser... Det finns för mycket att hålla koll på. Du missar viktiga signaler."
-                            },
-                            {
-                                emoji: "🎭",
-                                title: "Anonyma \"experter\"",
-                                desc: "Alla påstår sig vara proffs online. Men ingen har track record. Vem kan du faktiskt lita på?"
-                            }
-                        ].map((item, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                className="p-6 rounded-2xl bg-rose-500/5 border border-rose-500/10"
-                            >
-                                <span className="text-4xl mb-4 block">{item.emoji}</span>
-                                <h3 className="text-lg font-bold mb-2 text-rose-100">{item.title}</h3>
-                                <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Solution Section */}
-            <section className="px-6 py-32 bg-gradient-to-b from-[#020617] via-emerald-950/10 to-[#020617]">
-                <div className="max-w-4xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-16"
-                    >
-                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">Lösningen</span>
-                        <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
-                            Ticko: Din <span className="text-emerald-400">edge</span> på marknaden.
-                        </h2>
-                        <p className="text-lg text-white/50 max-w-2xl mx-auto">
-                            En plats där du ser vad tusentals andra investerare faktiskt tror — i realtid. Inget mer gissande.
-                        </p>
-                    </motion.div>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {[
-                            {
-                                icon: Users,
-                                title: "Real community",
-                                desc: "Diskutera med riktiga investerare. Ställ frågor, få svar, lär dig.",
-                                color: "emerald"
-                            },
-                            {
-                                icon: Target,
-                                title: "Track records",
-                                desc: "Se vem som faktiskt har rätt. Varje prediktion sparas och utvärderas.",
-                                color: "teal"
-                            },
-                            {
-                                icon: Brain,
-                                title: "AI-assistans",
-                                desc: "Vår AI sammanfattar sentiment, nyheter och hjälper dig förstå snabbare.",
-                                color: "cyan"
-                            }
-                        ].map((item, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-emerald-500/30 transition-all group"
-                            >
-                                <div className={`w-12 h-12 rounded-xl bg-${item.color}-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                                    <item.icon className={`w-6 h-6 text-${item.color}-400`} />
-                                </div>
-                                <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                                <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* How it works */}
             <section id="how-it-works" className="px-6 py-32 border-t border-white/[0.05]">
                 <div className="max-w-5xl mx-auto">
@@ -369,87 +261,6 @@ export function LandingPage() {
                 </div>
             </section>
 
-            {/* FAQ Section */}
-            <section className="px-6 py-24 border-t border-white/[0.05]">
-                <div className="max-w-3xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-12"
-                    >
-                        <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-4">
-                            Vanliga <span className="text-emerald-400">frågor</span>
-                        </h2>
-                    </motion.div>
-
-                    <div className="space-y-4">
-                        <motion.details
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
-                        >
-                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
-                                <span className="text-lg font-bold">Kan jag ta ut vinsten i riktiga pengar?</span>
-                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
-                            </summary>
-                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
-                                <strong className="text-white">Nej.</strong> De 100 000 kr du handlar med, och alla vinster du gör i utmaningen, är helt virtuella. Syftet är att bygga ett verifierat “track record” och tävla om äran och XP — utan ekonomisk risk.
-                            </div>
-                        </motion.details>
-
-                        <motion.details
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.1 }}
-                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
-                        >
-                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
-                                <span className="text-lg font-bold">Kostar det något att vara med?</span>
-                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
-                            </summary>
-                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
-                                <strong className="text-white">Nej, det är 100% gratis</strong> att skapa konto, få startkapitalet och använda plattformen. Vi tror på att finansiell utbildning och community ska vara tillgängligt för alla.
-                            </div>
-                        </motion.details>
-
-                        <motion.details
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.2 }}
-                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
-                        >
-                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
-                                <span className="text-lg font-bold">Är detta investeringsrådgivning?</span>
-                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
-                            </summary>
-                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
-                                <strong className="text-white">Nej!</strong> Ticko är en utbildnings- och diskussionsplattform. Ingen av informationen här utgör finansiell rådgivning. Gör alltid din egen research.
-                            </div>
-                        </motion.details>
-
-                        <motion.details
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.3 }}
-                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
-                        >
-                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
-                                <span className="text-lg font-bold">Hur fungerar Ticko AI?</span>
-                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
-                            </summary>
-                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
-                                Ticko AI sammanfattar nyheter, analyserar sentiment och svarar på frågor om aktier. Den är ett <strong className="text-emerald-400">hjälpverktyg</strong>, inte en rådgivare.
-                            </div>
-                        </motion.details>
-                    </div>
-                </div>
-            </section>
-
             {/* Features Deep Dive */}
             <section id="features" className="px-6 py-32 bg-white/[0.01] border-y border-white/[0.05]">
                 <div className="max-w-6xl mx-auto">
@@ -459,9 +270,9 @@ export function LandingPage() {
                         viewport={{ once: true }}
                         className="text-center mb-20"
                     >
-                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">Funktioner</span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">Verktygslådan</span>
                         <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
-                            Allt du behöver. <span className="text-emerald-400">Inget du inte gör.</span>
+                            Verktygen som <span className="text-emerald-400">sätter dig i täten</span>
                         </h2>
                     </motion.div>
 
@@ -530,10 +341,10 @@ export function LandingPage() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Testimonials */}
-            <section id="community" className="px-6 py-32">
+            < section id="community" className="px-6 py-32" >
                 <div className="max-w-5xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -591,10 +402,10 @@ export function LandingPage() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Why join now section - replaces fake stats */}
-            <section className="px-6 py-24 border-t border-white/[0.05]">
+            < section className="px-6 py-24 border-t border-white/[0.05]" >
                 <div className="max-w-4xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -680,6 +491,138 @@ export function LandingPage() {
                 </motion.div>
             </section>
 
+            {/* FAQ Section */}
+            <section className="px-6 py-24 border-t border-white/[0.05]">
+                <div className="max-w-3xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-12"
+                    >
+                        <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-4">
+                            Vanliga <span className="text-emerald-400">frågor</span>
+                        </h2>
+                    </motion.div>
+
+                    <div className="space-y-4">
+                        <motion.details
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
+                        >
+                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
+                                <span className="text-lg font-bold">Kan jag ta ut vinsten i riktiga pengar?</span>
+                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
+                            </summary>
+                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
+                                <strong className="text-white">Nej.</strong> De 100 000 kr du handlar med, och alla vinster du gör i utmaningen, är helt virtuella. Syftet är att bygga ett verifierat "track record" och tävla om äran och XP — utan ekonomisk risk.
+                            </div>
+                        </motion.details>
+
+                        <motion.details
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
+                        >
+                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
+                                <span className="text-lg font-bold">Kostar det något att vara med?</span>
+                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
+                            </summary>
+                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
+                                <strong className="text-white">Nej, det är 100% gratis</strong> att skapa konto, få startkapitalet och använda plattformen. Vi tror på att finansiell utbildning och community ska vara tillgängligt för alla.
+                            </div>
+                        </motion.details>
+
+                        <motion.details
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
+                        >
+                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
+                                <span className="text-lg font-bold">Är detta investeringsrådgivning?</span>
+                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
+                            </summary>
+                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
+                                <strong className="text-white">Nej!</strong> Ticko är en utbildnings- och diskussionsplattform. Ingen av informationen här utgör finansiell rådgivning. Gör alltid din egen research.
+                            </div>
+                        </motion.details>
+
+                        <motion.details
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3 }}
+                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
+                        >
+                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
+                                <span className="text-lg font-bold">Hur fungerar Ticko AI?</span>
+                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
+                            </summary>
+                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
+                                Ticko AI sammanfattar nyheter, analyserar sentiment och svarar på frågor om aktier. Den är ett <strong className="text-emerald-400">hjälpverktyg</strong>, inte en rådgivare.
+                            </div>
+                        </motion.details>
+                    </div>
+                </div>
+            </section>
+
+            {/* Ge dig själv ett försprång Section */}
+            <section id="edge" className="px-6 py-32 border-t border-white/[0.05]">
+                <div className="max-w-4xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
+                        <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
+                            Ge dig själv ett <span className="text-emerald-400">försprång</span>
+                        </h2>
+                    </motion.div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {[
+                            {
+                                icon: Users,
+                                title: "Sluta gissa",
+                                desc: "Följ diskussioner som faktiskt betyder något. På Ticko ser du direkt vilka teser som håller och vilka som bara är snack."
+                            },
+                            {
+                                icon: Sparkles,
+                                title: "Fokusera på rätt data",
+                                desc: "Istället för att drunkna i nyheter använder du Ticko AI för att filtrera fram de viktigaste signalerna för din nästa trade."
+                            },
+                            {
+                                icon: Shield,
+                                title: "Verifierad kunskap",
+                                desc: "Här räknas resultat, inte följare. Vår leaderboard visar svart på vitt vem som faktiskt slår börsen – ett track record du kan lita på."
+                            }
+                        ].map((item, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.1 }}
+                                className="p-6 rounded-2xl bg-emerald-500/5 border border-emerald-500/10"
+                            >
+                                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-4">
+                                    <item.icon className="w-6 h-6 text-emerald-400" />
+                                </div>
+                                <h3 className="text-lg font-bold mb-2 text-emerald-100">{item.title}</h3>
+                                <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* Footer */}
             <footer className="border-t border-white/[0.05] bg-[#01040f]">
                 <div className="max-w-7xl mx-auto px-6 py-16">
@@ -728,7 +671,7 @@ export function LandingPage() {
                         </div>
                     </div>
                 </div>
-            </footer>
+            </footer >
         </div >
     );
 }
