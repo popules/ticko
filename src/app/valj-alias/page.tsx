@@ -90,6 +90,15 @@ export default function ChooseAliasPage() {
                 data: { username: username.toLowerCase() }
             });
 
+            // Send welcome email (fire and forget)
+            if (user.email) {
+                fetch("/api/email/welcome", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: user.email, username })
+                }).catch(console.error);
+            }
+
             router.push("/");
         }
     };
