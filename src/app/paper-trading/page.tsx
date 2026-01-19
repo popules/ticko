@@ -393,7 +393,7 @@ export default function PaperTradingPage() {
                                 <Coins className="w-4 h-4 text-violet-400" />
                                 <p className="text-[10px] text-violet-400/80 uppercase tracking-widest font-bold">Kassa</p>
                             </div>
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-4">
                                 <p className="text-lg sm:text-2xl font-black text-white tabular-nums flex-1">
                                     {cashBalance.toLocaleString("sv-SE", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} kr
                                 </p>
@@ -401,25 +401,23 @@ export default function PaperTradingPage() {
                                 <button
                                     onClick={() => setShowPaidResetModal(true)}
                                     className={`
-                                        px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl 
-                                        bg-gradient-to-r from-emerald-500/20 to-teal-500/20 
-                                        border border-emerald-500/40 
-                                        text-emerald-400 font-bold text-xs sm:text-sm
-                                        hover:from-emerald-500/30 hover:to-teal-500/30 
-                                        hover:border-emerald-400/60
+                                        px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg 
+                                        bg-emerald-500/10
+                                        border border-emerald-500/30 
+                                        text-emerald-400/90 font-medium text-[11px] sm:text-xs
+                                        hover:bg-emerald-500/15 hover:border-emerald-400/50
                                         transition-all duration-300
-                                        flex items-center gap-1.5
-                                        min-h-[44px] min-w-[44px]
-                                        shadow-lg shadow-emerald-500/10
+                                        flex items-center gap-1
+                                        whitespace-nowrap
                                         ${(cashBalance + totalValue) < 50000
-                                            ? 'animate-pulse ring-2 ring-emerald-400/50 ring-offset-2 ring-offset-[#0B0F17]'
-                                            : 'hover:shadow-emerald-500/20'
+                                            ? 'shadow-[0_0_12px_rgba(16,185,129,0.15)]'
+                                            : ''
                                         }
                                     `}
                                     title="Premium Reset (49 kr)"
                                 >
                                     <span className="hidden sm:inline">Nystart?</span>
-                                    <RotateCcw className="w-4 h-4" />
+                                    <RotateCcw className="w-3.5 h-3.5" />
                                 </button>
                             </div>
                         </div>
