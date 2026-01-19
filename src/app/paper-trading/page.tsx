@@ -14,7 +14,7 @@ import { PaidResetModal } from "@/components/portfolio/PaidResetModal";
 import {
     Gamepad2, TrendingUp, TrendingDown, Loader2, Plus, DollarSign,
     Sparkles, AlertTriangle, Coins, RotateCcw, Trophy, Clock,
-    History, BarChart3, Wallet, ArrowUpRight, ArrowDownRight, Lock
+    History, BarChart3, Wallet, ArrowUpRight, ArrowDownRight, Lock, Share2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
@@ -598,9 +598,40 @@ export default function PaperTradingPage() {
                                                                 </span>
                                                             )}
                                                         </div>
-                                                        <p className="text-[10px] sm:text-[11px] font-medium text-white/40 truncate">{item.name || item.symbol}</p>
+                                                        <div className="flex flex-wrap items-center gap-1 mt-0.5 text-[10px] text-white/50">
+                                                            <span>{item.shares} st</span>
+                                                            <span>•</span>
+                                                            <span>GAV: {item.buy_price.toLocaleString("sv-SE", { maximumFractionDigits: 2 })}</span>
+                                                        </div>
                                                     </div>
                                                 </Link>
+
+                                                {/* Share Button (if profitable) */}
+                                                {pl > 0 && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            const shareUrl = `${window.location.origin}/api/og/trade-card?ticker=${item.symbol}&return=${plPercent.toFixed(1)}`;
+                                                            const text = `Jag ligger +${plPercent.toFixed(1)}% på $${item.symbol}!`;
+
+                                                            if (navigator.share) {
+                                                                navigator.share({
+                                                                    title: 'Min Ticko Vinst',
+                                                                    text: text,
+                                                                    url: "https://ticko.se"
+                                                                }).catch(console.error);
+                                                            } else {
+                                                                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text + " 🚀\n\nKan du slå mig? 👇\nhttps://ticko.se")}&url=${encodeURIComponent("https://ticko.se")}`, '_blank');
+                                                            }
+                                                        }}
+                                                        className="mr-3 p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors opacity-0 group-hover:opacity-100"
+                                                        title="Dela vinst"
+                                                    >
+                                                        <Share2 className="w-4 h-4" />
+                                                    </button>
+                                                )}
+
+
 
                                                 <div className="text-right mx-2 sm:mx-4 shrink-0">
                                                     <p className="text-xs sm:text-sm font-bold text-white tabular-nums">{item.shares} st</p>
@@ -629,183 +660,190 @@ export default function PaperTradingPage() {
                                 </div>
                             )}
                         </div>
-                    )}
+                    )
+                    }
 
-                    {activeTab === "history" && (
-                        <div>
-                            {isLoadingHistory ? (
-                                <div className="flex justify-center py-12">
-                                    <Loader2 className="w-8 h-8 animate-spin text-white/40" />
-                                </div>
-                            ) : transactions.length === 0 ? (
-                                <div className="text-center py-12">
-                                    <History className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                                    <h3 className="text-lg font-bold text-white mb-2">Ingen historik ännu</h3>
-                                    <p className="text-white/40 text-sm">Dina köp och sälj kommer visas här.</p>
-                                </div>
-                            ) : (
-                                <div className="space-y-4">
-                                    {/* Realized P&L Summary */}
-                                    <div className={`p-4 rounded-2xl border flex items-center justify-between ${totalRealizedPnl >= 0
-                                        ? "bg-emerald-500/10 border-emerald-500/20"
-                                        : "bg-rose-500/10 border-rose-500/20"
-                                        }`}>
-                                        <span className="text-white/60 text-sm">Realiserad vinst/förlust</span>
-                                        <span className={`text-xl font-black tabular-nums ${totalRealizedPnl >= 0 ? "text-emerald-400" : "text-rose-400"
+                    {
+                        activeTab === "history" && (
+                            <div>
+                                {isLoadingHistory ? (
+                                    <div className="flex justify-center py-12">
+                                        <Loader2 className="w-8 h-8 animate-spin text-white/40" />
+                                    </div>
+                                ) : transactions.length === 0 ? (
+                                    <div className="text-center py-12">
+                                        <History className="w-12 h-12 text-white/20 mx-auto mb-4" />
+                                        <h3 className="text-lg font-bold text-white mb-2">Ingen historik ännu</h3>
+                                        <p className="text-white/40 text-sm">Dina köp och sälj kommer visas här.</p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-4">
+                                        {/* Realized P&L Summary */}
+                                        <div className={`p-4 rounded-2xl border flex items-center justify-between ${totalRealizedPnl >= 0
+                                            ? "bg-emerald-500/10 border-emerald-500/20"
+                                            : "bg-rose-500/10 border-rose-500/20"
                                             }`}>
-                                            {totalRealizedPnl >= 0 ? "+" : ""}{totalRealizedPnl.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
-                                        </span>
-                                    </div>
+                                            <span className="text-white/60 text-sm">Realiserad vinst/förlust</span>
+                                            <span className={`text-xl font-black tabular-nums ${totalRealizedPnl >= 0 ? "text-emerald-400" : "text-rose-400"
+                                                }`}>
+                                                {totalRealizedPnl >= 0 ? "+" : ""}{totalRealizedPnl.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                            </span>
+                                        </div>
 
-                                    {/* Transactions List */}
-                                    <div className="space-y-2">
-                                        {transactions.map((tx) => {
-                                            const isBuy = tx.type === "buy";
-                                            const date = new Date(tx.created_at);
+                                        {/* Transactions List */}
+                                        <div className="space-y-2">
+                                            {transactions.map((tx) => {
+                                                const isBuy = tx.type === "buy";
+                                                const date = new Date(tx.created_at);
 
-                                            return (
-                                                <div key={tx.id} className="flex items-center justify-between p-4 rounded-xl bg-white/[0.04] border border-white/10">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isBuy
-                                                            ? "bg-emerald-500/20"
-                                                            : "bg-rose-500/20"
-                                                            }`}>
-                                                            {isBuy ? (
-                                                                <ArrowUpRight className="w-5 h-5 text-emerald-400" />
-                                                            ) : (
-                                                                <ArrowDownRight className="w-5 h-5 text-rose-400" />
-                                                            )}
-                                                        </div>
-                                                        <div>
-                                                            <p className="font-bold text-white">{isBuy ? "Köpte" : "Sålde"} ${tx.symbol}</p>
-                                                            <p className="text-xs text-white/40">
-                                                                {tx.shares} st @ {tx.price.toFixed(2)} {tx.currency === "SEK" ? "kr" : "$"}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="text-right">
-                                                        <p className="font-bold text-white tabular-nums">
-                                                            {isBuy ? "-" : "+"}{tx.total_sek.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
-                                                        </p>
-                                                        {!isBuy && tx.realized_pnl !== 0 && (
-                                                            <p className={`text-xs font-bold tabular-nums ${tx.realized_pnl >= 0 ? "text-emerald-400" : "text-rose-400"
+                                                return (
+                                                    <div key={tx.id} className="flex items-center justify-between p-4 rounded-xl bg-white/[0.04] border border-white/10">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isBuy
+                                                                ? "bg-emerald-500/20"
+                                                                : "bg-rose-500/20"
                                                                 }`}>
-                                                                {tx.realized_pnl >= 0 ? "+" : ""}{tx.realized_pnl.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                                {isBuy ? (
+                                                                    <ArrowUpRight className="w-5 h-5 text-emerald-400" />
+                                                                ) : (
+                                                                    <ArrowDownRight className="w-5 h-5 text-rose-400" />
+                                                                )}
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-bold text-white">{isBuy ? "Köpte" : "Sålde"} ${tx.symbol}</p>
+                                                                <p className="text-xs text-white/40">
+                                                                    {tx.shares} st @ {tx.price.toFixed(2)} {tx.currency === "SEK" ? "kr" : "$"}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="text-right">
+                                                            <p className="font-bold text-white tabular-nums">
+                                                                {isBuy ? "-" : "+"}{tx.total_sek.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
                                                             </p>
-                                                        )}
-                                                        <p className="text-[10px] text-white/30 mt-1">
-                                                            {date.toLocaleDateString("sv-SE")}
-                                                        </p>
+                                                            {!isBuy && tx.realized_pnl !== 0 && (
+                                                                <p className={`text-xs font-bold tabular-nums ${tx.realized_pnl >= 0 ? "text-emerald-400" : "text-rose-400"
+                                                                    }`}>
+                                                                    {tx.realized_pnl >= 0 ? "+" : ""}{tx.realized_pnl.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                                </p>
+                                                            )}
+                                                            <p className="text-[10px] text-white/30 mt-1">
+                                                                {date.toLocaleDateString("sv-SE")}
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            );
-                                        })}
+                                                );
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                                )}
+                            </div>
+                        )
+                    }
 
-                    {activeTab === "graph" && (
-                        <div>
-                            {isLoadingGraph ? (
-                                <div className="flex justify-center py-12">
-                                    <Loader2 className="w-8 h-8 animate-spin text-white/40" />
-                                </div>
-                            ) : snapshots.length < 2 ? (
-                                <div className="text-center py-12">
-                                    <BarChart3 className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                                    <h3 className="text-lg font-bold text-white mb-2">Inte tillräckligt med data</h3>
-                                    <p className="text-white/40 text-sm max-w-md mx-auto">
-                                        Grafen visas när vi har minst 2 dagars data.
-                                        Ditt portföljvärde sparas automatiskt varje natt.
-                                    </p>
-                                    <div className="mt-6 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20 max-w-sm mx-auto">
-                                        <p className="text-violet-400 text-sm">
-                                            📊 Nuvarande värde: <span className="font-bold">{(totalValue + cashBalance).toLocaleString("sv-SE")} kr</span>
+                    {
+                        activeTab === "graph" && (
+                            <div>
+                                {isLoadingGraph ? (
+                                    <div className="flex justify-center py-12">
+                                        <Loader2 className="w-8 h-8 animate-spin text-white/40" />
+                                    </div>
+                                ) : snapshots.length < 2 ? (
+                                    <div className="text-center py-12">
+                                        <BarChart3 className="w-12 h-12 text-white/20 mx-auto mb-4" />
+                                        <h3 className="text-lg font-bold text-white mb-2">Inte tillräckligt med data</h3>
+                                        <p className="text-white/40 text-sm max-w-md mx-auto">
+                                            Grafen visas när vi har minst 2 dagars data.
+                                            Ditt portföljvärde sparas automatiskt varje natt.
                                         </p>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="space-y-6">
-                                    <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
-                                        <h3 className="text-sm font-bold text-white/60 mb-4">Portföljutveckling</h3>
-                                        <div className="h-64 sm:h-80">
-                                            <ResponsiveContainer width="100%" height="100%">
-                                                <AreaChart data={snapshots}>
-                                                    <defs>
-                                                        <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                                                            <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
-                                                            <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
-                                                        </linearGradient>
-                                                    </defs>
-                                                    <XAxis
-                                                        dataKey="snapshot_date"
-                                                        tickFormatter={(date) => new Date(date).toLocaleDateString("sv-SE", { day: "numeric", month: "short" })}
-                                                        stroke="#ffffff20"
-                                                        tick={{ fill: "#ffffff40", fontSize: 11 }}
-                                                    />
-                                                    <YAxis
-                                                        tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
-                                                        stroke="#ffffff20"
-                                                        tick={{ fill: "#ffffff40", fontSize: 11 }}
-                                                        domain={['dataMin - 5000', 'dataMax + 5000']}
-                                                    />
-                                                    <Tooltip
-                                                        contentStyle={{
-                                                            backgroundColor: "#0B0F17",
-                                                            border: "1px solid rgba(255,255,255,0.1)",
-                                                            borderRadius: "12px",
-                                                            color: "white"
-                                                        }}
-                                                        labelFormatter={(date) => new Date(date).toLocaleDateString("sv-SE", { dateStyle: "long" })}
-                                                        formatter={(value) => [`${(value as number || 0).toLocaleString("sv-SE")} kr`, "Värde"]}
-                                                    />
-                                                    <Area
-                                                        type="monotone"
-                                                        dataKey="total_value"
-                                                        stroke="#8b5cf6"
-                                                        strokeWidth={2}
-                                                        fill="url(#colorValue)"
-                                                    />
-                                                </AreaChart>
-                                            </ResponsiveContainer>
+                                        <div className="mt-6 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20 max-w-sm mx-auto">
+                                            <p className="text-violet-400 text-sm">
+                                                📊 Nuvarande värde: <span className="font-bold">{(totalValue + cashBalance).toLocaleString("sv-SE")} kr</span>
+                                            </p>
                                         </div>
                                     </div>
+                                ) : (
+                                    <div className="space-y-6">
+                                        <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
+                                            <h3 className="text-sm font-bold text-white/60 mb-4">Portföljutveckling</h3>
+                                            <div className="h-64 sm:h-80">
+                                                <ResponsiveContainer width="100%" height="100%">
+                                                    <AreaChart data={snapshots}>
+                                                        <defs>
+                                                            <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                                                                <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                                                                <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                                                            </linearGradient>
+                                                        </defs>
+                                                        <XAxis
+                                                            dataKey="snapshot_date"
+                                                            tickFormatter={(date) => new Date(date).toLocaleDateString("sv-SE", { day: "numeric", month: "short" })}
+                                                            stroke="#ffffff20"
+                                                            tick={{ fill: "#ffffff40", fontSize: 11 }}
+                                                        />
+                                                        <YAxis
+                                                            tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
+                                                            stroke="#ffffff20"
+                                                            tick={{ fill: "#ffffff40", fontSize: 11 }}
+                                                            domain={['dataMin - 5000', 'dataMax + 5000']}
+                                                        />
+                                                        <Tooltip
+                                                            contentStyle={{
+                                                                backgroundColor: "#0B0F17",
+                                                                border: "1px solid rgba(255,255,255,0.1)",
+                                                                borderRadius: "12px",
+                                                                color: "white"
+                                                            }}
+                                                            labelFormatter={(date) => new Date(date).toLocaleDateString("sv-SE", { dateStyle: "long" })}
+                                                            formatter={(value) => [`${(value as number || 0).toLocaleString("sv-SE")} kr`, "Värde"]}
+                                                        />
+                                                        <Area
+                                                            type="monotone"
+                                                            dataKey="total_value"
+                                                            stroke="#8b5cf6"
+                                                            strokeWidth={2}
+                                                            fill="url(#colorValue)"
+                                                        />
+                                                    </AreaChart>
+                                                </ResponsiveContainer>
+                                            </div>
+                                        </div>
 
-                                    {/* Stats */}
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
-                                            <p className="text-xs text-white/40 mb-1">Startpunkt</p>
-                                            <p className="text-lg font-bold text-white tabular-nums">
-                                                {snapshots[0]?.total_value.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
-                                            </p>
-                                        </div>
-                                        <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
-                                            <p className="text-xs text-white/40 mb-1">Nuvarande</p>
-                                            <p className="text-lg font-bold text-white tabular-nums">
-                                                {(totalValue + cashBalance).toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
-                                            </p>
+                                        {/* Stats */}
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
+                                                <p className="text-xs text-white/40 mb-1">Startpunkt</p>
+                                                <p className="text-lg font-bold text-white tabular-nums">
+                                                    {snapshots[0]?.total_value.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                </p>
+                                            </div>
+                                            <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
+                                                <p className="text-xs text-white/40 mb-1">Nuvarande</p>
+                                                <p className="text-lg font-bold text-white tabular-nums">
+                                                    {(totalValue + cashBalance).toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div>
-            </main>
+                                )}
+                            </div>
+                        )
+                    }
+                </div >
+            </main >
 
             <RightPanel />
 
             {/* Sell Modal */}
-            {sellItem && (
-                <PaperSellModal
-                    item={sellItem}
-                    userId={user.id}
-                    onClose={() => setSellItem(null)}
-                    onSold={handleSold}
-                />
-            )}
+            {
+                sellItem && (
+                    <PaperSellModal
+                        item={sellItem}
+                        userId={user.id}
+                        onClose={() => setSellItem(null)}
+                        onSold={handleSold}
+                    />
+                )
+            }
 
             {/* Reset Confirmation Modal */}
             <AnimatePresence>
@@ -882,9 +920,11 @@ export default function PaperTradingPage() {
             </AnimatePresence>
 
             {/* Paid Reset Modal */}
-            {showPaidResetModal && (
-                <PaidResetModal onClose={() => setShowPaidResetModal(false)} />
-            )}
-        </div>
+            {
+                showPaidResetModal && (
+                    <PaidResetModal onClose={() => setShowPaidResetModal(false)} />
+                )
+            }
+        </div >
     );
 }

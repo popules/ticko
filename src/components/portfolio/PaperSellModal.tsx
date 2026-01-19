@@ -12,6 +12,7 @@ import { checkPaperTradingAchievements } from "@/lib/achievements";
 import { calculateTradeXP } from "@/lib/level-system";
 
 const USD_TO_SEK = 10.5;
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://ticko.se";
 
 interface PortfolioItem {
     id: string;
@@ -255,6 +256,59 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                             <p className="text-xs text-white/40">{item.name}</p>
                                         </div>
                                     </div>
+
+                                    {/* Share Win Section */}
+                                    {isProfit && (
+                                        <div className="mt-6 p-4 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
+                                            <div className="flex items-center gap-3 mb-3">
+                                                <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                                    <Sparkles className="w-5 h-5 text-emerald-400" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-white font-bold text-sm">Snyggt jobbat!</p>
+                                                    <p className="text-white/50 text-xs">Visa upp din vinst för världen</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <a
+                                                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Jag ligger ${pnlPercent.toFixed(1)}% plus på $${item.symbol} i Ticko-utmaningen! 🚀\n\nKan du slå mig? 👇\nhttps://ticko.se`)}&url=${encodeURIComponent("https://ticko.se")}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-black/40 hover:bg-black/60 border border-white/10 text-white/80 transition-colors text-xs font-medium"
+                                                >
+                                                    <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+                                                    Dela på X
+                                                </a>
+                                                <button
+                                                    onClick={async () => {
+                                                        const shareUrl = `${APP_URL}/api/og/trade-card?ticker=${item.symbol}&return=${pnlPercent.toFixed(1)}`;
+                                                        try {
+                                                            // Try native share first
+                                                            if (navigator.share) {
+                                                                await navigator.share({
+                                                                    title: 'Min Ticko Vinst',
+                                                                    text: `Jag ligger +${pnlPercent.toFixed(1)}% på $${item.symbol}!`,
+                                                                    url: "https://ticko.se" // TODO: Should preferably share the Image? Native share mostly shares URL.
+                                                                });
+                                                            } else {
+                                                                // Fallback to clipboard
+                                                                await navigator.clipboard.writeText(shareUrl);
+                                                                alert("Länk till bild kopierad!");
+                                                            }
+                                                        } catch (err) {
+                                                            console.error("Share failed", err);
+                                                        }
+                                                    }}
+                                                    className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-400 transition-colors text-xs font-medium"
+                                                >
+                                                    <Share2 className="w-3 h-3" />
+                                                    Dela bild
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+
                                     <button
                                         onClick={onClose}
                                         className="p-2 rounded-xl hover:bg-white/10 text-white/40 hover:text-white transition-colors"

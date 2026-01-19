@@ -9,12 +9,17 @@ export async function GET(request: NextRequest) {
     // Get query params
     const ticker = searchParams.get('ticker') || 'AAPL';
     const returnPct = parseFloat(searchParams.get('return') || '0');
-    const username = searchParams.get('username') || 'Anonym';
-    const level = parseInt(searchParams.get('level') || '1');
 
+    // User requested "Jag ligger +15% i Ticko-utmaningen"
     const isPositive = returnPct >= 0;
-    const returnColor = isPositive ? '#34D399' : '#F87171';
     const returnSign = isPositive ? '+' : '';
+    const formattedReturn = `${returnSign}${returnPct.toFixed(1)}%`;
+
+    // Theme colors: Ticko Green
+    const primaryColor = '#10B981'; // Emerald 500
+    const secondaryColor = '#059669'; // Emerald 600
+    const bgColor = '#0f172a'; // Slate 900
+    const textColor = '#ffffff';
 
     return new ImageResponse(
         (
@@ -26,7 +31,8 @@ export async function GET(request: NextRequest) {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
+                    backgroundColor: bgColor,
+                    background: `radial-gradient(circle at 50% 100%, #10b98122 0%, #0f172a 50%)`,
                     fontFamily: 'system-ui, sans-serif',
                 }}
             >
@@ -36,77 +42,120 @@ export async function GET(request: NextRequest) {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        padding: '60px 80px',
+                        justifyContent: 'space-between',
+                        padding: '60px',
+                        width: '90%',
+                        height: '80%',
                         borderRadius: '32px',
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(16, 185, 129, 0.2)', // Green subtle border
+                        boxShadow: '0 20px 80px -20px rgba(16, 185, 129, 0.3)', // Green glow
                     }}
                 >
-                    {/* Ticker */}
+                    {/* Header: Logo & Ticker */}
                     <div
                         style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '16px',
-                            marginBottom: '24px',
+                            justifyContent: 'space-between',
+                            width: '100%',
                         }}
                     >
+                        {/* Fake Logo (since we can't load external images easily in edge without fetch) */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <div
+                                style={{
+                                    width: '48px',
+                                    height: '48px',
+                                    borderRadius: '12px',
+                                    background: `linear-gradient(135deg, ${primaryColor}, ${secondaryColor})`,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: 'white',
+                                    fontSize: '28px',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                T
+                            </div>
+                            <span style={{ fontSize: '32px', fontWeight: 'bold', color: 'white' }}>Ticko</span>
+                        </div>
+
+                        {/* Ticker Badge */}
                         <div
                             style={{
-                                padding: '16px 24px',
-                                borderRadius: '16px',
-                                background: 'linear-gradient(135deg, #8B5CF6 0%, #D946EF 100%)',
-                                color: 'white',
-                                fontSize: '32px',
+                                padding: '12px 24px',
+                                borderRadius: '100px',
+                                background: 'rgba(255, 255, 255, 0.1)',
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                fontSize: '24px',
                                 fontWeight: 'bold',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
                             }}
                         >
                             ${ticker}
                         </div>
                     </div>
 
-                    {/* Return Percentage */}
-                    <div
-                        style={{
-                            fontSize: '96px',
-                            fontWeight: 'bold',
-                            color: returnColor,
-                            lineHeight: 1,
-                            marginBottom: '16px',
-                        }}
-                    >
-                        {returnSign}{returnPct.toFixed(1)}%
-                    </div>
-
-                    {/* User Info */}
+                    {/* Main Content */}
                     <div
                         style={{
                             display: 'flex',
+                            flexDirection: 'column',
                             alignItems: 'center',
-                            gap: '12px',
-                            color: 'rgba(255, 255, 255, 0.6)',
-                            fontSize: '24px',
+                            gap: '20px',
+                            textAlign: 'center',
                         }}
                     >
-                        <span>@{username}</span>
-                        <span style={{ color: '#8B5CF6' }}>•</span>
-                        <span style={{ color: '#8B5CF6' }}>Level {level}</span>
+                        <div style={{ fontSize: '32px', color: 'rgba(255,255,255,0.7)' }}>
+                            Jag ligger
+                        </div>
+                        <div
+                            style={{
+                                fontSize: '110px',
+                                fontWeight: 900,
+                                color: primaryColor,
+                                lineHeight: '1',
+                                textShadow: '0 0 40px rgba(16, 185, 129, 0.5)',
+                            }}
+                        >
+                            {formattedReturn}
+                        </div>
+                        <div style={{ fontSize: '32px', color: 'rgba(255,255,255,0.7)' }}>
+                            i Ticko-utmaningen
+                        </div>
                     </div>
-                </div>
 
-                {/* Branding */}
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        marginTop: '40px',
-                        color: 'rgba(255, 255, 255, 0.4)',
-                        fontSize: '24px',
-                    }}
-                >
-                    <span>🎮</span>
-                    <span>Ticko Paper Trading</span>
+                    {/* Footer: User CTA */}
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '12px',
+                        }}
+                    >
+                        <div
+                            style={{
+                                padding: '16px 40px',
+                                borderRadius: '100px',
+                                background: `linear-gradient(90deg, ${primaryColor}, ${secondaryColor})`,
+                                color: 'white',
+                                fontSize: '28px',
+                                fontWeight: 'bold',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                            }}
+                        >
+                            <span>Kan du slå mig?</span>
+                            <span>👉</span>
+                        </div>
+                        <div style={{ fontSize: '20px', color: 'rgba(255,255,255,0.5)', marginTop: '8px' }}>
+                            ticko.se
+                        </div>
+                    </div>
                 </div>
             </div>
         ),
