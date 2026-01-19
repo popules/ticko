@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { PostCard } from "@/components/feed/PostCard";
 import { useParams, useRouter } from "next/navigation";
 import { PaperTradingStats } from "@/components/portfolio/PaperTradingStats";
+import { SeasonHistory } from "@/components/portfolio/SeasonHistory";
 
 export default function PublicProfilePage() {
     const { user } = useAuth();
@@ -146,6 +147,9 @@ export default function PublicProfilePage() {
 
                                 {/* Paper Trading Stats - only shows if user has paper trades */}
                                 {profile?.id && <PaperTradingStats userId={profile.id} />}
+
+                                {/* Season History with Badges */}
+                                {profile?.id && <SeasonHistory userId={profile.id} />}
                             </div>
                         </div>
                     </motion.div>
