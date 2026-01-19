@@ -16,7 +16,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "userId required" }, { status: 400 });
         }
 
-        const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+        const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE || "";
         if (!serviceRoleKey || !process.env.NEXT_PUBLIC_SUPABASE_URL) {
             return NextResponse.json({ error: "Supabase not configured" }, { status: 500 });
         }

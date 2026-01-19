@@ -58,7 +58,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                         <Brain className="w-4 h-4 text-white" />
                     </div>
                     <div>
-                        <h3 className="text-sm font-bold text-white">AI Trading Coach</h3>
+                        <h3 className="text-sm font-bold text-white">Ticko AI</h3>
                         <p className="text-[10px] text-white/40">Personliga insikter</p>
                     </div>
                 </div>
