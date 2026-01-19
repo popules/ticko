@@ -11,10 +11,11 @@ import { getPaperTradingSettings } from "@/config/subscription";
 import { awardAchievement } from "@/lib/achievements";
 import { PaperSellModal } from "@/components/portfolio/PaperSellModal";
 import { PaidResetModal } from "@/components/portfolio/PaidResetModal";
+import { TradingInsights } from "@/components/portfolio/TradingInsights";
 import {
     Gamepad2, TrendingUp, TrendingDown, Loader2, Plus, DollarSign,
     Sparkles, AlertTriangle, Coins, RotateCcw, Trophy, Clock,
-    History, BarChart3, Wallet, ArrowUpRight, ArrowDownRight, Lock, Share2
+    History, BarChart3, Wallet, ArrowUpRight, ArrowDownRight, Lock, Share2, Brain
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
@@ -51,7 +52,7 @@ interface Snapshot {
     total_value: number;
 }
 
-type TabType = "portfolio" | "history" | "graph";
+type TabType = "portfolio" | "history" | "graph" | "insights";
 
 export default function PaperTradingPage() {
     const { user, isLoading: authLoading } = useAuth();
@@ -535,6 +536,16 @@ export default function PaperTradingPage() {
                         <BarChart3 className="w-4 h-4" />
                         Graf
                     </button>
+                    <button
+                        onClick={() => setActiveTab("insights")}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === "insights"
+                            ? "bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-400 border border-violet-500/30"
+                            : "bg-white/[0.04] text-white/60 border border-white/10 hover:text-white"
+                            }`}
+                    >
+                        <Brain className="w-4 h-4" />
+                        AI Coach
+                    </button>
                 </div>
 
                 {/* Tab Content */}
@@ -828,6 +839,10 @@ export default function PaperTradingPage() {
                             </div>
                         )
                     }
+
+                    {activeTab === "insights" && user && (
+                        <TradingInsights userId={user.id} />
+                    )}
                 </div >
             </main >
 
