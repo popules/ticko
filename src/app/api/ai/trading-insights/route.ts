@@ -31,7 +31,6 @@ export async function POST(request: Request) {
             .from("transactions")
             .select("*")
             .eq("user_id", userId)
-            .eq("archived", false)
             .order("created_at", { ascending: true });
 
         if (txError) {
@@ -39,16 +38,20 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Failed to fetch transactions" }, { status: 500 });
         }
 
-        if (!transactions || transactions.length < 3) {
+        // Calculate trading statistics
+        const buys = (transactions || []).filter((t) => t.type === "buy");
+        const sells = (transactions || []).filter((t) => t.type === "sell");
+
+        // Need at least 1 completed sell to analyze
+        if (sells.length === 0) {
+            const holdingsCount = buys.length;
             return NextResponse.json({
                 insight: null,
-                message: "Du behöver minst 3 trades för att få insikter. Fortsätt handla!",
+                message: holdingsCount > 0
+                    ? `Du har ${holdingsCount} öppen${holdingsCount === 1 ? "" : "a"} position${holdingsCount === 1 ? "" : "er"}. Sälj någon aktie först så kan jag analysera din trading-stil! 📊`
+                    : "Du har inga trades ännu. Börja köpa aktier så kan jag analysera din trading-stil! 🚀",
             });
         }
-
-        // Calculate trading statistics
-        const buys = transactions.filter((t) => t.type === "buy");
-        const sells = transactions.filter((t) => t.type === "sell");
 
         const wins = sells.filter((t) => (t.realized_pnl || 0) > 0);
         const losses = sells.filter((t) => (t.realized_pnl || 0) < 0);
