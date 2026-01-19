@@ -388,22 +388,40 @@ export default function PaperTradingPage() {
                 <div className="p-4 sm:p-6 border-b border-white/10">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                         {/* Virtual Cash */}
-                        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 relative group">
+                        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 relative">
                             <div className="flex items-center gap-2 mb-2">
                                 <Coins className="w-4 h-4 text-violet-400" />
                                 <p className="text-[10px] text-violet-400/80 uppercase tracking-widest font-bold">Kassa</p>
-                                {/* Paid Reset Icon */}
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <p className="text-lg sm:text-2xl font-black text-white tabular-nums flex-1">
+                                    {cashBalance.toLocaleString("sv-SE", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} kr
+                                </p>
+                                {/* Premium Reset Button - Always Visible */}
                                 <button
                                     onClick={() => setShowPaidResetModal(true)}
-                                    className="ml-auto p-1.5 rounded-lg bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 text-amber-400 hover:from-amber-500/30 hover:to-orange-500/30 transition-all opacity-0 group-hover:opacity-100"
+                                    className={`
+                                        px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl 
+                                        bg-gradient-to-r from-emerald-500/20 to-teal-500/20 
+                                        border border-emerald-500/40 
+                                        text-emerald-400 font-bold text-xs sm:text-sm
+                                        hover:from-emerald-500/30 hover:to-teal-500/30 
+                                        hover:border-emerald-400/60
+                                        transition-all duration-300
+                                        flex items-center gap-1.5
+                                        min-h-[44px] min-w-[44px]
+                                        shadow-lg shadow-emerald-500/10
+                                        ${(cashBalance + totalValue) < 50000
+                                            ? 'animate-pulse ring-2 ring-emerald-400/50 ring-offset-2 ring-offset-[#0B0F17]'
+                                            : 'hover:shadow-emerald-500/20'
+                                        }
+                                    `}
                                     title="Premium Reset (49 kr)"
                                 >
-                                    <RotateCcw className="w-3 h-3" />
+                                    <span className="hidden sm:inline">Nystart?</span>
+                                    <RotateCcw className="w-4 h-4" />
                                 </button>
                             </div>
-                            <p className="text-lg sm:text-2xl font-black text-white tabular-nums">
-                                {cashBalance.toLocaleString("sv-SE", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} kr
-                            </p>
                         </div>
 
                         {/* Portfolio Value */}

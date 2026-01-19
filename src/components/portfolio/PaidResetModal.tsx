@@ -64,7 +64,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                         {/* Header */}
                         <div className="p-6 border-b border-white/10 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
                                     <Zap className="w-6 h-6 text-white" />
                                 </div>
                                 <div>
@@ -84,7 +84,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                         <div className="p-6 space-y-6">
                             {/* Hero Section */}
                             <div className="text-center">
-                                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-500/30">
+                                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/40">
                                     <RotateCcw className="w-10 h-10 text-white" />
                                 </div>
                                 <h3 className="text-lg font-bold text-white mb-2">
@@ -105,21 +105,21 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                                     <span className="text-sm text-white/80">100 000 kr virtuellt startkapital</span>
                                 </div>
                                 <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/10">
-                                    <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
-                                        <RotateCcw className="w-4 h-4 text-violet-400" />
+                                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                                        <RotateCcw className="w-4 h-4 text-emerald-400" />
                                     </div>
                                     <span className="text-sm text-white/80">Ren slate på leaderboarden</span>
                                 </div>
                                 <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/10">
-                                    <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                                        <Zap className="w-4 h-4 text-amber-400" />
+                                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                                        <Zap className="w-4 h-4 text-emerald-400" />
                                     </div>
                                     <span className="text-sm text-white/80">Ingen cooldown – omedelbar reset</span>
                                 </div>
                             </div>
 
                             {/* Price */}
-                            <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-rose-500/10 border border-amber-500/20 text-center">
+                            <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-emerald-500/10 to-teal-500/10 border border-emerald-500/20 text-center">
                                 <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Engångsbetalning</p>
                                 <p className="text-3xl font-black text-white">
                                     49 <span className="text-lg text-white/60">kr</span>
@@ -135,14 +135,14 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                         <div className="p-6 pt-0 flex gap-3">
                             <button
                                 onClick={onClose}
-                                className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] text-white/60 font-bold hover:bg-white/10 transition-colors"
+                                className="flex-1 px-4 py-3.5 rounded-xl bg-white/[0.06] text-white/60 font-bold hover:bg-white/10 transition-colors"
                             >
                                 Avbryt
                             </button>
                             <button
                                 onClick={handlePayAndReset}
                                 disabled={isLoading}
-                                className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20"
+                                className="flex-1 px-4 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/30"
                             >
                                 {isLoading ? (
                                     <Loader2 className="w-5 h-5 animate-spin" />
