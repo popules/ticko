@@ -54,7 +54,9 @@ export function LandingPage() {
             <nav className="fixed top-0 w-full z-50 border-b border-white/[0.05] bg-[#020617]/70 backdrop-blur-xl transition-all">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <TickoLogo />
+                        <Link href="/">
+                            <TickoLogo />
+                        </Link>
                     </div>
 
                     <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
@@ -626,8 +628,8 @@ export function LandingPage() {
                             <p className="text-white/40 text-sm max-w-sm mt-4 leading-relaxed">
                                 Sveriges modernaste community för investerare. Diskutera aktier, följ sentiment och bygg ditt track record.
                             </p>
-                            <a href="mailto:hello@ticko.se" className="text-emerald-400/80 hover:text-emerald-400 text-sm font-medium mt-4 block transition-colors">
-                                hello@ticko.se
+                            <a href="mailto:hej@ticko.se" className="text-emerald-400/80 hover:text-emerald-400 text-sm font-medium mt-4 block transition-colors">
+                                hej@ticko.se
                             </a>
                         </div>
 
@@ -659,10 +661,6 @@ export function LandingPage() {
 
                     <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/20 font-medium">
                         <span>&copy; 2026 {APP_CONFIG.name}. Alla rättigheter förbehållna.</span>
-                        <div className="flex items-center gap-2">
-                            <Globe className="w-3.5 h-3.5" />
-                            <span>Stockholm, Sverige 🇸🇪</span>
-                        </div>
                     </div>
                 </div>
             </footer >
