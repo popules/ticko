@@ -171,7 +171,17 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                         exit={{ opacity: 0 }}
                         className="text-center py-6"
                     >
-                        <p className="text-white/50 text-sm">{data?.message}</p>
+                        <p className="text-white/50 text-sm mb-4">
+                            {data?.message || (data as any)?.error || "Något gick fel vid analysen. Försök igen."}
+                        </p>
+
+                        {/* Retry button inside the empty state */}
+                        <button
+                            onClick={fetchInsights}
+                            className="text-xs text-white/30 underline hover:text-white/50"
+                        >
+                            Försök igen
+                        </button>
                     </motion.div>
                 )}
             </AnimatePresence>
