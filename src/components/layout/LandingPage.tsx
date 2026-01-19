@@ -218,8 +218,8 @@ export function LandingPage() {
                             },
                             {
                                 step: "03",
-                                title: "Tjäna XP och nå legendär status",
-                                desc: "Gör lönsamma trades och bygg vinst-streaks för att tjäna XP. Ju högre level, desto mer respekt i communityt.",
+                                title: "Bevisa din skicklighet",
+                                desc: "Varje trade du gör bygger ditt track record. Visa communityt att du har vad som krävs.",
                                 icon: Award
                             }
                         ].map((item, i) => (
@@ -421,14 +421,14 @@ export function LandingPage() {
                     <div className="grid md:grid-cols-3 gap-6">
                         {[
                             {
-                                emoji: "🌱",
-                                title: "Tidig åtkomst",
-                                desc: "Bli en av de första att forma hur plattformen utvecklas. Din feedback spelar roll."
+                                emoji: "💬",
+                                title: "Väx med communityt",
+                                desc: "Diskutera strategier, dela analyser och lär dig av andra. Tillsammans blir vi bättre."
                             },
                             {
-                                emoji: "🎁",
-                                title: "Gratis för alltid",
-                                desc: "Grundfunktionerna kommer alltid vara gratis. Premium kommer senare — men du är inte tvungen."
+                                emoji: "🎯",
+                                title: "100% riskfritt",
+                                desc: "Handla med virtuella pengar och bygg ditt track record — utan att riskera en enda krona."
                             },
                             {
                                 emoji: "🏆",
@@ -451,44 +451,6 @@ export function LandingPage() {
                         ))}
                     </div>
                 </div>
-            </section>
-
-
-            {/* Final CTA */}
-            <section className="relative px-6 py-40 flex flex-col items-center text-center overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-emerald-950/20 to-[#020617] pointer-events-none" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-900/10 via-transparent to-transparent pointer-events-none" />
-
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="relative z-10 max-w-2xl"
-                >
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-8">
-                        <Clock className="w-4 h-4 text-emerald-400" />
-                        <span className="text-sm font-medium text-emerald-400">Tidig åtkomst — begränsat antal platser</span>
-                    </div>
-
-                    <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
-                        Sluta vara <span className="text-white/40">ensam</span> med dina investeringar.
-                    </h2>
-                    <p className="text-lg text-white/50 mb-10 leading-relaxed">
-                        Gå med tusentals svenska investerare som redan diskuterar, delar och lär av varandra på Ticko. Det tar 30 sekunder.
-                    </p>
-
-                    <Link
-                        href="/registrera"
-                        className="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-black text-lg transition-all hover:scale-105 shadow-2xl shadow-emerald-500/20"
-                    >
-                        Skapa mitt gratis konto
-                        <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
-                    </Link>
-
-                    <p className="text-white/30 text-sm mt-6">
-                        Inga kreditkort. Inga bindningstider. 100% gratis.
-                    </p>
-                </motion.div>
             </section>
 
             {/* FAQ Section */}
@@ -621,6 +583,38 @@ export function LandingPage() {
                         ))}
                     </div>
                 </div>
+            </section>
+
+            {/* Final CTA */}
+            <section className="relative px-6 py-40 flex flex-col items-center text-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-emerald-950/20 to-[#020617] pointer-events-none" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-900/10 via-transparent to-transparent pointer-events-none" />
+
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="relative z-10 max-w-2xl"
+                >
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
+                        Sluta vara <span className="text-white/40">ensam</span> med dina investeringar.
+                    </h2>
+                    <p className="text-lg text-white/50 mb-10 leading-relaxed">
+                        Börja bygga ditt track record idag – helt gratis, helt utan risk. Det tar 30 sekunder.
+                    </p>
+
+                    <Link
+                        href="/registrera"
+                        className="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-black text-lg transition-all hover:scale-105 shadow-2xl shadow-emerald-500/20"
+                    >
+                        Skapa mitt gratis konto
+                        <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
+                    </Link>
+
+                    <p className="text-white/30 text-sm mt-6">
+                        Inga kreditkort. Inga bindningstider. 100% gratis.
+                    </p>
+                </motion.div>
             </section>
 
             {/* Footer */}
