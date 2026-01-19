@@ -326,7 +326,7 @@ export function LandingPage() {
                             },
                             {
                                 step: "03",
-                                title: "Tjäna XP och nå legendärisk status",
+                                title: "Tjäna XP och nå legendär status",
                                 desc: "Gör lönsamma trades och bygg vinst-streaks för att tjäna XP. Ju högre level, desto mer respekt i communityt.",
                                 icon: Award
                             }
@@ -379,7 +379,7 @@ export function LandingPage() {
                         className="text-center mb-12"
                     >
                         <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-4">
-                            Vanliga frågor om <span className="text-emerald-400">utmaningen</span>
+                            Vanliga <span className="text-emerald-400">frågor</span>
                         </h2>
                     </motion.div>
 
@@ -412,6 +412,38 @@ export function LandingPage() {
                             </summary>
                             <div className="px-6 pb-6 text-white/60 leading-relaxed">
                                 <strong className="text-white">Nej, det är 100% gratis</strong> att skapa konto, få startkapitalet och använda plattformen. Vi tror på att finansiell utbildning och community ska vara tillgängligt för alla.
+                            </div>
+                        </motion.details>
+
+                        <motion.details
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
+                        >
+                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
+                                <span className="text-lg font-bold">Är detta investeringsrådgivning?</span>
+                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
+                            </summary>
+                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
+                                <strong className="text-white">Nej!</strong> Ticko är en utbildnings- och diskussionsplattform. Ingen av informationen här utgör finansiell rådgivning. Gör alltid din egen research.
+                            </div>
+                        </motion.details>
+
+                        <motion.details
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3 }}
+                            className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
+                        >
+                            <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
+                                <span className="text-lg font-bold">Hur fungerar Ticko AI?</span>
+                                <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
+                            </summary>
+                            <div className="px-6 pb-6 text-white/60 leading-relaxed">
+                                Ticko AI sammanfattar nyheter, analyserar sentiment och svarar på frågor om aktier. Den är ett <strong className="text-emerald-400">hjälpverktyg</strong>, inte en rådgivare.
                             </div>
                         </motion.details>
                     </div>
@@ -530,7 +562,7 @@ export function LandingPage() {
                                 avatar: "S"
                             },
                             {
-                                quote: "AI-copiloten är sjukt bra. Sparar mig timmar varje vecka på research. Plus att communityt alltid har insikter jag missar.",
+                                quote: "Ticko AI är sjukt bra. Sparar mig timmar varje vecka på research. Plus att communityt alltid har insikter jag missar.",
                                 name: "Marcus A.",
                                 title: "Tech-investerare",
                                 avatar: "M"
@@ -610,54 +642,6 @@ export function LandingPage() {
                 </div>
             </section>
 
-            {/* FAQ Preview */}
-            <section className="px-6 py-32 bg-white/[0.01] border-t border-white/[0.05]">
-                <div className="max-w-3xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-16"
-                    >
-                        <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-4">
-                            Vanliga frågor
-                        </h2>
-                    </motion.div>
-
-                    <div className="space-y-4">
-                        {[
-                            {
-                                q: "Kostar det något?",
-                                a: "Nej, Ticko är helt gratis att använda. Vi planerar premium-funktioner i framtiden, men grundplattformen kommer alltid vara gratis."
-                            },
-                            {
-                                q: "Vem kan se mina inlägg?",
-                                a: "Alla medlemmar kan se dina publika inlägg och ditt track record. Du bygger transparens och trovärdighet."
-                            },
-                            {
-                                q: "Är detta investeringsrådgivning?",
-                                a: "Nej! Ticko är en diskussionsplattform. Ingen av informationen här utgör finansiell rådgivning. Gör alltid din egen research."
-                            },
-                            {
-                                q: "Hur fungerar AI-copiloten?",
-                                a: "Vår AI sammanfattar nyheter, analyserar sentiment och svarar på frågor om aktier. Den är ett hjälpverktyg, inte en rådgivare."
-                            }
-                        ].map((item, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 10 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.05 }}
-                                className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.05]"
-                            >
-                                <h3 className="font-bold mb-2">{item.q}</h3>
-                                <p className="text-white/50 text-sm leading-relaxed">{item.a}</p>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
             {/* Final CTA */}
             <section className="relative px-6 py-40 flex flex-col items-center text-center overflow-hidden">
