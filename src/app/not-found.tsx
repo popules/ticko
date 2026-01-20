@@ -15,16 +15,16 @@ export default function NotFound() {
 
                 <h1 className="text-4xl font-black text-white tracking-tighter mb-4">404</h1>
                 <p className="text-xl text-white/60 font-medium mb-8 leading-relaxed">
-                    Vi hittade inte sidan du letade efter. <br />
-                    <span className="text-emerald-400 italic">Men vi kan hjälpa dig hitta vinnare på marknaden.</span>
+                    We couldn't find the page you were looking for. <br />
+                    <span className="text-emerald-400 italic">But we can help you find winners in the market.</span>
                 </p>
 
                 <div className="flex flex-col gap-3">
                     <Link
-                        href="/marknad"
+                        href="/market"
                         className="w-full px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-[#020617] rounded-xl font-bold text-lg transition-all"
                     >
-                        Gå till Marknaden
+                        Go to Markets
                     </Link>
                     <Link
                         href="/"

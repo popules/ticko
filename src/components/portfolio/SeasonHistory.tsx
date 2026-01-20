@@ -15,11 +15,11 @@ interface SeasonResult {
 }
 
 const BADGE_CONFIG: Record<string, { icon: typeof Crown; label: string; color: string }> = {
-    season_winner: { icon: Crown, label: "Säsongsvinnare", color: "text-amber-400" },
-    top_3: { icon: Trophy, label: "Topp 3", color: "text-amber-300" },
-    top_10: { icon: Medal, label: "Topp 10", color: "text-violet-400" },
-    top_100: { icon: Award, label: "Topp 100", color: "text-blue-400" },
-    survivor: { icon: Star, label: "Deltagare", color: "text-white/50" },
+    season_winner: { icon: Crown, label: "Season Winner", color: "text-amber-400" },
+    top_3: { icon: Trophy, label: "Top 3", color: "text-amber-300" },
+    top_10: { icon: Medal, label: "Top 10", color: "text-violet-400" },
+    top_100: { icon: Award, label: "Top 100", color: "text-blue-400" },
+    survivor: { icon: Star, label: "Participant", color: "text-white/50" },
 };
 
 interface SeasonHistoryProps {
@@ -60,7 +60,7 @@ export function SeasonHistory({ userId }: SeasonHistoryProps) {
                     final_value: h.final_value,
                     final_rank: h.final_rank,
                     badges_earned: h.badges_earned || [],
-                    season_name: h.seasons?.name || "Okänd säsong",
+                    season_name: h.seasons?.name || "Unknown Season",
                     season_end_date: h.seasons?.end_date || "",
                 }));
 
@@ -106,22 +106,22 @@ export function SeasonHistory({ userId }: SeasonHistoryProps) {
         <div className="p-6 rounded-2xl border border-white/10 bg-gradient-to-br from-amber-500/5 to-transparent">
             <div className="flex items-center gap-2 mb-4">
                 <Trophy className="w-5 h-5 text-amber-400" />
-                <h3 className="text-sm font-bold text-white uppercase tracking-widest">Säsongshistorik</h3>
+                <h3 className="text-sm font-bold text-white uppercase tracking-widest">Season History</h3>
             </div>
 
             {/* Stats Summary */}
             <div className="grid grid-cols-3 gap-2 mb-4">
                 <div className="p-3 rounded-xl bg-white/[0.04] text-center">
                     <p className="text-lg font-black text-white">{results.length}</p>
-                    <p className="text-[10px] text-white/40 uppercase">Säsonger</p>
+                    <p className="text-[10px] text-white/40 uppercase">Seasons</p>
                 </div>
                 <div className="p-3 rounded-xl bg-white/[0.04] text-center">
                     <p className="text-lg font-black text-amber-400">{wins}</p>
-                    <p className="text-[10px] text-white/40 uppercase">Vinster</p>
+                    <p className="text-[10px] text-white/40 uppercase">Wins</p>
                 </div>
                 <div className="p-3 rounded-xl bg-white/[0.04] text-center">
                     <p className="text-lg font-black text-emerald-400">#{bestRank}</p>
-                    <p className="text-[10px] text-white/40 uppercase">Bästa</p>
+                    <p className="text-[10px] text-white/40 uppercase">Best</p>
                 </div>
             </div>
 
@@ -163,8 +163,8 @@ export function SeasonHistory({ userId }: SeasonHistoryProps) {
                     >
                         <div className="flex items-center gap-3">
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${result.final_rank === 1 ? "bg-amber-500/20" :
-                                    result.final_rank <= 3 ? "bg-violet-500/20" :
-                                        "bg-white/5"
+                                result.final_rank <= 3 ? "bg-violet-500/20" :
+                                    "bg-white/5"
                                 }`}>
                                 {result.final_rank === 1 ? (
                                     <Crown className="w-4 h-4 text-amber-400" />

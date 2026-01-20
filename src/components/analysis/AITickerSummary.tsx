@@ -38,8 +38,8 @@ export function AITickerSummary({ ticker }: AITickerSummaryProps) {
                         <MessageSquare className="w-4 h-4 text-blue-400" />
                     </div>
                     <div>
-                        <h3 className="text-sm font-bold text-white uppercase tracking-widest">Community-snack</h3>
-                        <p className="text-[10px] text-white/40 uppercase tracking-tighter">AI-sammanfattning av flödet</p>
+                        <h3 className="text-sm font-bold text-white uppercase tracking-widest">Community Talk</h3>
+                        <p className="text-[10px] text-white/40 uppercase tracking-tighter">AI summary of the feed</p>
                     </div>
                 </div>
                 <button
@@ -56,7 +56,7 @@ export function AITickerSummary({ ticker }: AITickerSummaryProps) {
                 {isLoading ? (
                     <div className="flex items-center gap-3 py-4">
                         <Loader2 className="w-4 h-4 animate-spin text-blue-400" />
-                        <p className="text-xs text-white/30 italic">Läser inlägg...</p>
+                        <p className="text-xs text-white/30 italic">Reading posts...</p>
                     </div>
                 ) : summary ? (
                     <motion.p
@@ -67,7 +67,7 @@ export function AITickerSummary({ ticker }: AITickerSummaryProps) {
                         "{summary}"
                     </motion.p>
                 ) : (
-                    <p className="text-sm text-white/30 italic">Ingen sammanfattning tillgänglig.</p>
+                    <p className="text-sm text-white/30 italic">No summary available.</p>
                 )}
             </div>
 

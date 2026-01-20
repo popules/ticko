@@ -52,7 +52,7 @@ export default function DiscoveryPage() {
 
         if (direction === "right" && currentStock) {
             // Optimistic UI update
-            setToast({ message: `Bevakar ${currentStock.symbol}`, type: "success" });
+            setToast({ message: `Watching ${currentStock.symbol}`, type: "success" });
             setTimeout(() => setToast(null), 2000);
 
             try {
@@ -113,11 +113,11 @@ export default function DiscoveryPage() {
                 {/* Header Info - Now in normal flow */}
                 <div className="text-center space-y-2 mb-12 shrink-0">
                     <h1 className="text-2xl font-black text-white tracking-widest uppercase">
-                        Trendradarn
+                        Trend Radar
                     </h1>
                     <div className="flex items-center gap-2 justify-center text-white/40 text-xs font-medium uppercase tracking-widest">
                         <Info className="w-3.5 h-3.5" />
-                        Svep höger för att bevaka • Svep vänster för nästa
+                        Swipe right to watch • Swipe left for next
                     </div>
                 </div>
 
@@ -126,7 +126,7 @@ export default function DiscoveryPage() {
                         <div className="flex flex-col items-center gap-4">
                             <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
                             <p className="text-white/40 font-bold uppercase tracking-widest text-xs">
-                                Kurerar trender...
+                                Curating trends...
                             </p>
                         </div>
                     ) : (
@@ -150,15 +150,15 @@ export default function DiscoveryPage() {
                                         <div className="w-20 h-20 rounded-3xl bg-emerald-500/10 flex items-center justify-center mb-6">
                                             <RefreshCw className="w-10 h-10 text-emerald-400" />
                                         </div>
-                                        <h2 className="text-2xl font-black text-white mb-2">Du är uppdaterad!</h2>
+                                        <h2 className="text-2xl font-black text-white mb-2">You're all caught up!</h2>
                                         <p className="text-white/50 text-sm mb-8 leading-relaxed">
-                                            Du har sett alla dagens hetaste trender. Kom tillbaka senare för nya AI-insikter.
+                                            You've seen all the hottest trends for today. Check back later for new AI insights.
                                         </p>
                                         <button
                                             onClick={loadDiscovery}
                                             className="px-8 py-4 btn-gradient text-white rounded-2xl font-bold text-sm"
                                         >
-                                            Uppdatera flöde
+                                            Refresh feed
                                         </button>
                                     </motion.div>
                                 )}

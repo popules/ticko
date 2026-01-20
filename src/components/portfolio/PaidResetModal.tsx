@@ -122,7 +122,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                             <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-emerald-500/10 to-teal-500/10 border border-emerald-500/20 text-center">
                                 <p className="text-xs text-white/40 uppercase tracking-widest mb-1">One-time payment</p>
                                 <p className="text-3xl font-black text-white">
-                                    49 <span className="text-lg text-white/60">SEK</span>
+                                    $5 <span className="text-lg text-white/60">USD</span>
                                 </p>
                             </div>
 

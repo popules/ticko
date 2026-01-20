@@ -73,17 +73,17 @@ export default function BevakningslistaPage() {
                 <div className="max-w-4xl mx-auto">
                     <div className="flex items-center justify-between mb-8">
                         <div>
-                            <h1 className="text-3xl font-black text-white mb-2">Bevakningslista</h1>
+                            <h1 className="text-3xl font-black text-white mb-2">Watchlist</h1>
                             <p className="text-white/50">
-                                {stocks.length} {stocks.length === 1 ? "stock" : "stockr"} in your list
+                                {stocks.length} {stocks.length === 1 ? "stock" : "stocks"} in your list
                             </p>
                         </div>
                         <Link
-                            href="/upptack"
+                            href="/discover"
                             className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all"
                         >
                             <Plus className="w-4 h-4" />
-                            Lägg till stockr
+                            Add stocks
                         </Link>
                     </div>
 
@@ -94,9 +94,9 @@ export default function BevakningslistaPage() {
                     ) : stocks.length === 0 ? (
                         <div className="text-center py-20 rounded-3xl bg-white/[0.02] border border-dashed border-white/10">
                             <Star className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                            <h2 className="text-xl font-bold text-white mb-2">Din bevakningslista är tom</h2>
+                            <h2 className="text-xl font-bold text-white mb-2">Your watchlist is empty</h2>
                             <p className="text-white/40 mb-2">Go to a stock page and click the ⭐ star</p>
-                            <p className="text-white/30 text-sm">eller använd knappen ovan för att hitta stockr.</p>
+                            <p className="text-white/30 text-sm">or use the button above to find stocks.</p>
                         </div>
                     ) : (
                         <div className="space-y-3">
@@ -141,7 +141,7 @@ export default function BevakningslistaPage() {
                                             onClick={() => toggleWatch.mutate(stock.symbol)}
                                             disabled={toggleWatch.isPending}
                                             className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-rose-500/20 text-white/40 hover:text-rose-400 transition-all border border-white/10"
-                                            title="Ta bort från bevakningslista"
+                                            title="Remove from watchlist"
                                         >
                                             <X className="w-4 h-4" />
                                         </button>

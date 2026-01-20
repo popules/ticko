@@ -494,7 +494,7 @@ export default function PaperTradingPage() {
                                 </button>
                             </div>
                         </motion.div>
-                    )}\n
+                    )}
                     {/* Starting Capital Info */}
                     <div className="mt-4 text-center">
                         <p className="text-[10px] text-white/30">
@@ -543,7 +543,7 @@ export default function PaperTradingPage() {
                             }`}
                     >
                         <Brain className="w-4 h-4" />
-                        AI Coach
+                        Ticko AI
                     </button>
                 </div>
 
@@ -558,7 +558,7 @@ export default function PaperTradingPage() {
                                     </div>
                                     <h3 className="text-lg sm:text-xl font-bold text-white mb-2">No virtual holdings</h3>
                                     <p className="text-white/40 mb-6 max-w-md mx-auto text-sm">
-                                        Du har {cashBalance.toLocaleString("en-US")} kr virtual dollars to invest.
+                                        You have ${cashBalance.toLocaleString("en-US")} virtual dollars to invest.
                                         Go to a stock page and click &quot;Paper Trade&quot;!
                                     </p>
                                     <Link
@@ -566,7 +566,7 @@ export default function PaperTradingPage() {
                                         className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-xl font-bold transition-transform hover:scale-105"
                                     >
                                         <Plus className="w-4 h-4" />
-                                        Upptäck aktier
+                                        Discover stocks
                                     </Link>
                                 </div>
                             ) : (
@@ -603,7 +603,7 @@ export default function PaperTradingPage() {
                                                                 Paper
                                                             </span>
                                                             {item.locked_until && new Date(item.locked_until) > new Date() && (
-                                                                <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-[8px] font-bold text-amber-400 flex items-center gap-0.5 shrink-0" title="Fair Play: Position låst">
+                                                                <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-[8px] font-bold text-amber-400 flex items-center gap-0.5 shrink-0" title="Fair Play: Position locked">
                                                                     <Lock className="w-2.5 h-2.5" />
                                                                 </span>
                                                             )}
@@ -622,20 +622,20 @@ export default function PaperTradingPage() {
                                                         onClick={(e) => {
                                                             e.stopPropagation();
                                                             const shareUrl = `${window.location.origin}/api/og/trade-card?ticker=${item.symbol}&return=${plPercent.toFixed(1)}`;
-                                                            const text = `Jag ligger +${plPercent.toFixed(1)}% på $${item.symbol}!`;
+                                                            const text = `I'm up +${plPercent.toFixed(1)}% on $${item.symbol}!`;
 
                                                             if (navigator.share) {
                                                                 navigator.share({
-                                                                    title: 'Min Ticko Vinst',
+                                                                    title: 'My Ticko Win',
                                                                     text: text,
                                                                     url: "https://ticko.se"
                                                                 }).catch(console.error);
                                                             } else {
-                                                                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text + " 🚀\n\nKan du slå mig? 👇\nhttps://ticko.se")}&url=${encodeURIComponent("https://ticko.se")}`, '_blank');
+                                                                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text + " 🚀\n\nCan you beat me? 👇\nhttps://ticko.se")}&url=${encodeURIComponent("https://ticko.se")}`, '_blank');
                                                             }
                                                         }}
                                                         className="mr-3 p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors opacity-0 group-hover:opacity-100"
-                                                        title="Dela vinst"
+                                                        title="Share win"
                                                     >
                                                         <Share2 className="w-4 h-4" />
                                                     </button>
@@ -649,7 +649,7 @@ export default function PaperTradingPage() {
 
                                                 <div className="text-right mr-2 sm:mr-6 shrink-0">
                                                     <p className="font-bold text-white tabular-nums text-sm sm:text-base">
-                                                        {currentValueSek.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
+                                                        ${currentValueSek.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                                     </p>
                                                     <div className={`flex items-center justify-end gap-1 text-xs font-bold tabular-nums ${pl >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
                                                         {pl >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
@@ -662,7 +662,7 @@ export default function PaperTradingPage() {
                                                     className="px-3 sm:px-4 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-bold opacity-0 group-hover:opacity-100 transition-all border border-emerald-500/20 flex items-center gap-1.5 shrink-0"
                                                 >
                                                     <DollarSign className="w-3.5 h-3.5" />
-                                                    <span className="hidden sm:inline">Sälj</span>
+                                                    <span className="hidden sm:inline">Sell</span>
                                                 </button>
                                             </motion.div>
                                         );
@@ -683,7 +683,7 @@ export default function PaperTradingPage() {
                                 ) : transactions.length === 0 ? (
                                     <div className="text-center py-12">
                                         <History className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                                        <h3 className="text-lg font-bold text-white mb-2">Ingen historik ännu</h3>
+                                        <h3 className="text-lg font-bold text-white mb-2">No history yet</h3>
                                         <p className="text-white/40 text-sm">Your buys and sells will appear here.</p>
                                     </div>
                                 ) : (
@@ -693,10 +693,10 @@ export default function PaperTradingPage() {
                                             ? "bg-emerald-500/10 border-emerald-500/20"
                                             : "bg-rose-500/10 border-rose-500/20"
                                             }`}>
-                                            <span className="text-white/60 text-sm">Realiserad vinst/förlupcs</span>
+                                            <span className="text-white/60 text-sm">Realized P&L</span>
                                             <span className={`text-xl font-black tabular-nums ${totalRealizedPnl >= 0 ? "text-emerald-400" : "text-rose-400"
                                                 }`}>
-                                                {totalRealizedPnl >= 0 ? "+" : ""}{totalRealizedPnl.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
+                                                {totalRealizedPnl >= 0 ? "+" : ""}${totalRealizedPnl.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                             </span>
                                         </div>
 
@@ -720,20 +720,20 @@ export default function PaperTradingPage() {
                                                                 )}
                                                             </div>
                                                             <div>
-                                                                <p className="font-bold text-white">{isBuy ? "Köpte" : "Sålde"} ${tx.symbol}</p>
+                                                                <p className="font-bold text-white">{isBuy ? "Bought" : "Sold"} ${tx.symbol}</p>
                                                                 <p className="text-xs text-white/40">
-                                                                    {tx.shares} st @ {tx.price.toFixed(2)} {tx.currency === "SEK" ? "kr" : "$"}
+                                                                    {tx.shares} pcs @ {tx.price.toFixed(2)} {tx.currency === "SEK" ? "kr" : "$"}
                                                                 </p>
                                                             </div>
                                                         </div>
                                                         <div className="text-right">
                                                             <p className="font-bold text-white tabular-nums">
-                                                                {isBuy ? "-" : "+"}{tx.total_sek.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
+                                                                {isBuy ? "-" : "+"}${tx.total_sek.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                                             </p>
                                                             {!isBuy && tx.realized_pnl !== 0 && (
                                                                 <p className={`text-xs font-bold tabular-nums ${tx.realized_pnl >= 0 ? "text-emerald-400" : "text-rose-400"
                                                                     }`}>
-                                                                    {tx.realized_pnl >= 0 ? "+" : ""}{tx.realized_pnl.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
+                                                                    {tx.realized_pnl >= 0 ? "+" : ""}${tx.realized_pnl.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                                                 </p>
                                                             )}
                                                             <p className="text-[10px] text-white/30 mt-1">
@@ -760,21 +760,21 @@ export default function PaperTradingPage() {
                                 ) : snapshots.length < 2 ? (
                                     <div className="text-center py-12">
                                         <BarChart3 className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                                        <h3 className="text-lg font-bold text-white mb-2">Inte tillräckligt med data</h3>
+                                        <h3 className="text-lg font-bold text-white mb-2">Not enough data</h3>
                                         <p className="text-white/40 text-sm max-w-md mx-auto">
-                                            Graph shows när vi har minst 2 days of data.
-                                            Ditt portföljvärde sparas automatiskt varje natt.
+                                            The graph shows when we have at least 2 days of data.
+                                            Your portfolio value is saved automatically every night.
                                         </p>
                                         <div className="mt-6 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20 max-w-sm mx-auto">
                                             <p className="text-violet-400 text-sm">
-                                                📊 Nuvarande värde: <span className="font-bold">{(totalValue + cashBalance).toLocaleString("en-US")} kr</span>
+                                                📊 Current Value: <span className="font-bold">${(totalValue + cashBalance).toLocaleString("en-US")}</span>
                                             </p>
                                         </div>
                                     </div>
                                 ) : (
                                     <div className="space-y-6">
                                         <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
-                                            <h3 className="text-sm font-bold text-white/60 mb-4">Portföljutveckling</h3>
+                                            <h3 className="text-sm font-bold text-white/60 mb-4">Portfolio Performance</h3>
                                             <div className="h-64 sm:h-80">
                                                 <ResponsiveContainer width="100%" height="100%">
                                                     <AreaChart data={snapshots}>

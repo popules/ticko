@@ -162,7 +162,7 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
                     model: "gpt-4o-mini",
                     messages: [{
                         role: "system",
-                        content: "Du är en trendspanare. En kort mening (max 6 ord) om aktien. Ingen finansiell rådgivning. Svara på svenska."
+                        content: "You are a trend scout. A short sentence (max 6 words) about the stock. No financial advice."
                     }, {
                         role: "user",
                         content: `Aktie: ${stock.name} (${stock.symbol}), Pris: ${stock.price} ${stock.currency}`
@@ -171,24 +171,24 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
                 });
                 return {
                     ...stock,
-                    discoveryHook: completion.choices[0]?.message?.content?.replace(/"/g, '') || "Hög aktivitet i aktien just nu.",
+                    discoveryHook: completion.choices[0]?.message?.content?.replace(/"/g, '') || "High activity right now.",
                     bullishPercent: Math.floor(Math.random() * (95 - 45 + 1) + 45),
-                    performanceCue: Math.random() > 0.5 ? "Hög träffsäkerhet i communityn" : "Trendar starkt",
+                    performanceCue: Math.random() > 0.5 ? "High Accuracy" : "Strong Trend",
                 };
             } catch (error) {
                 // Fallback hooks if AI fails
                 const fallbacks = [
-                    "Hög aktivitet i communityn",
-                    "Trendar starkt just nu",
-                    "Många sparare bevakar denna",
-                    "Volatila rörelser idag",
-                    "Intresseväckande nivåer"
+                    "High activity in community",
+                    "Strong trend right now",
+                    "Many watchers",
+                    "Volatile movement today",
+                    "Interesting levels"
                 ];
                 return {
                     ...stock,
                     discoveryHook: fallbacks[Math.floor(Math.random() * fallbacks.length)],
                     bullishPercent: Math.floor(Math.random() * (95 - 45 + 1) + 45),
-                    performanceCue: "Populär i dag",
+                    performanceCue: "Popular Today",
                 };
             }
         }));
@@ -204,9 +204,9 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
 function getMarketLabel(exchange: string, symbol: string): string {
     // Check suffixes first for Nordic markets
     if (symbol.endsWith('.ST')) return '🇸🇪 OMX Sthlm';
-    if (symbol.endsWith('.OL')) return '🇳🇴 Oslo Börs';
-    if (symbol.endsWith('.CO')) return '🇩🇰 Köpenhamn';
-    if (symbol.endsWith('.HE')) return '🇫🇮 Helsingfors';
+    if (symbol.endsWith('.OL')) return '🇳🇴 Oslo SE';
+    if (symbol.endsWith('.CO')) return '🇩🇰 Copenhagen';
+    if (symbol.endsWith('.HE')) return '🇫🇮 Helsinki';
 
     // Check exchange codes
     switch (exchange) {
@@ -237,8 +237,8 @@ function getMarketLabel(exchange: string, symbol: string): string {
         case 'STU': return '🇩🇪 Stuttgart';
         case 'PAR': return '🇫🇷 Paris';
         case 'AMS': return '🇳🇱 Amsterdam';
-        case 'BRU': return '🇧🇪 Bryssel';
-        case 'MIL': return '🇮🇹 Milano';
+        case 'BRU': return '🇧🇪 Brussels';
+        case 'MIL': return '🇮🇹 Milan';
         case 'MAD': return '🇪🇸 Madrid';
         // Crypto
         case 'CCC': return '🪙 Crypto';
