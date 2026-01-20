@@ -46,7 +46,7 @@ type LeaderboardTab = "reputation" | "paper";
 type PaperTimeframe = "season" | "alltime";
 
 export default function LeaderboardPage() {
-    const [activeTab, setActiveTab] = useState<LeaderboardTab>("reputation");
+    const [activeTab, setActiveTab] = useState<LeaderboardTab>("paper");
     const [paperTimeframe, setPaperTimeframe] = useState<PaperTimeframe>("season");
 
     // Reputation leaderboard
@@ -145,7 +145,7 @@ export default function LeaderboardPage() {
                     winners.push({
                         season_id: season.id,
                         season_name: season.name,
-                        winner_username: profile?.username || "Okänd",
+                        winner_username: profile?.username || "Unknown",
                         winner_avatar_url: profile?.avatar_url || null,
                         final_value: winner.final_value,
                         final_rank: 1,
@@ -169,7 +169,7 @@ export default function LeaderboardPage() {
         ? reputationLeaders
         : (paperTimeframe === "season" ? paperSeasonLeaders : paperAllTimeLeaders);
 
-    const currentSeasonName = currentSeason?.name || "Säsong 1: Genesis";
+    const currentSeasonName = currentSeason?.name || "Season 1: Genesis";
 
     // Calculate days until end of month reset
     const now = new Date();
@@ -196,8 +196,8 @@ export default function LeaderboardPage() {
             return `${user.reputation_score} p`;
         }
         const pnl = paperTimeframe === "season" ? (user.paper_season_pnl || 0) : (user.paper_total_pnl || 0);
-        const prefix = pnl >= 0 ? "+" : "";
-        return `${prefix}${pnl.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr`;
+        const prefix = pnl >= 0 ? "+" : "-";
+        return `${prefix}$${Math.abs(pnl).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
     };
 
     const getScoreColor = (user: Leader, position: number) => {
@@ -228,16 +228,6 @@ export default function LeaderboardPage() {
                     {/* Tab Selector */}
                     <div className="flex gap-2 mb-4 p-1 bg-white/[0.04] rounded-xl border border-white/10">
                         <button
-                            onClick={() => setActiveTab("reputation")}
-                            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "reputation"
-                                ? "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-400 border border-yellow-500/30"
-                                : "text-white/40 hover:text-white/60"
-                                }`}
-                        >
-                            <Medal className="w-4 h-4" />
-                            Rykte
-                        </button>
-                        <button
                             onClick={() => setActiveTab("paper")}
                             className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "paper"
                                 ? "bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-400 border border-violet-500/30"
@@ -246,6 +236,16 @@ export default function LeaderboardPage() {
                         >
                             <Gamepad2 className="w-4 h-4" />
                             Paper Trading
+                        </button>
+                        <button
+                            onClick={() => setActiveTab("reputation")}
+                            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "reputation"
+                                ? "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-400 border border-yellow-500/30"
+                                : "text-white/40 hover:text-white/60"
+                                }`}
+                        >
+                            <Medal className="w-4 h-4" />
+                            Reputation
                         </button>
                     </div>
 
@@ -287,9 +287,9 @@ export default function LeaderboardPage() {
                                         <div className="text-right">
                                             <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
                                                 <Clock className="w-3 h-3" />
-                                                {daysUntilReset} dag{daysUntilReset !== 1 ? "ar" : ""} kvar
+                                                {daysUntilReset} day{daysUntilReset !== 1 ? "s" : ""} left
                                             </div>
-                                            <p className="text-[10px] text-white/30">Reset varje månad</p>
+                                            <p className="text-[10px] text-white/30">Monthly reset</p>
                                         </div>
                                     </div>
                                 </div>
@@ -302,12 +302,12 @@ export default function LeaderboardPage() {
                                         <div className="flex items-center gap-3">
                                             <Crown className="w-5 h-5 text-amber-400" />
                                             <div>
-                                                <p className="text-xs text-amber-400/60 uppercase tracking-wider">Förra säsongen</p>
+                                                <p className="text-xs text-amber-400/60 uppercase tracking-wider">Last Season</p>
                                                 <p className="text-sm font-bold text-white">@{seasonWinners[0].winner_username}</p>
                                             </div>
                                         </div>
                                         <span className="text-emerald-400 font-bold text-sm">
-                                            {seasonWinners[0].final_value?.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
+                                            ${seasonWinners[0].final_value?.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                         </span>
                                     </div>
                                 </div>
@@ -323,7 +323,7 @@ export default function LeaderboardPage() {
                                         <div className="flex items-center gap-2 text-white/50">
                                             <History className="w-4 h-4" />
                                             <span className="text-xs font-bold">Hall of Fame</span>
-                                            <span className="text-[10px] text-white/30">({seasonWinners.length} säsonger)</span>
+                                            <span className="text-[10px] text-white/30">({seasonWinners.length} seasons)</span>
                                         </div>
                                         <ChevronDown className={`w-4 h-4 text-white/30 transition-transform ${showSeasonHistory ? "rotate-180" : ""}`} />
                                     </button>
@@ -346,7 +346,7 @@ export default function LeaderboardPage() {
                                                     </div>
                                                     <div className="text-right">
                                                         <p className="text-emerald-400 font-bold text-sm tabular-nums">
-                                                            {winner.final_value?.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
+                                                            ${winner.final_value?.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                                         </p>
                                                         <p className="text-[10px] text-white/30">
                                                             {winner.ended_at ? new Date(winner.ended_at).toLocaleDateString("en-US") : ""}
@@ -523,8 +523,8 @@ export default function LeaderboardPage() {
                     {(!leaders || leaders.length === 0) && (
                         <div className="text-center py-12 text-white/40">
                             {activeTab === "paper"
-                                ? "Ingen har paper tradat ännu. Bli först!"
-                                : "Inga användare hittades."}
+                                ? "No one has paper traded yet. Be the first!"
+                                : "No users found."}
                         </div>
                     )}
                 </div>
