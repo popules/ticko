@@ -76,7 +76,7 @@ export function renderWithCashtags(text: string): ReactNode[] {
             return (
                 <Link
                     key={`cashtag-${part.ticker}-${index}`}
-                    href={`/aktie/${part.ticker}`}
+                    href={`/stock/${part.ticker}`}
                     className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors"
                 >
                     {part.value}
@@ -88,7 +88,7 @@ export function renderWithCashtags(text: string): ReactNode[] {
             return (
                 <Link
                     key={`mention-${part.username}-${index}`}
-                    href={`/profil/${part.username}`}
+                    href={`/profile/${part.username}`}
                     className="text-blue-400 hover:text-blue-300 font-semibold transition-colors"
                 >
                     {part.value}

@@ -11,19 +11,19 @@ const slides = [
     {
         icon: TrendingUp,
         color: "from-emerald-400 to-emerald-600",
-        title: "Välkommen till Ticko! 🚀",
-        description: "Din nya plattform för smart aktieanalys. Kombinera kraftfull data med sociala diskussioner i realtid.",
+        title: "Welcome to Ticko! 🚀",
+        description: "Your new platform for smart stock analysis. Combine powerful data with real-time social discussions.",
     },
     {
         icon: TrendingUp,
         color: "from-emerald-400 to-emerald-600",
-        title: "Upptäck marknaden",
-        description: "Navigera enkelt genom intressanta aktier med vårt innovativa gränssnitt. Få unika Ticko-insikter för varje bolag.",
+        title: "Discover the market",
+        description: "Easily navigate through interesting stocks with our innovative interface. Get unique Ticko insights for every company.",
     },
     {
         icon: TrendingUp,
         color: "from-emerald-400 to-emerald-600",
-        title: "Följ sentimentet",
+        title: "Follow sentiment",
         description: "Keep track of market sentiment. See trends and discussions to make better decisions.",
     },
 ];
@@ -126,7 +126,7 @@ export function OnboardingModal() {
                                 onClick={handleClose}
                                 className="flex-1 py-3 px-4 rounded-xl bg-white/[0.04] hover:bg-white/10 text-white/60 font-semibold transition-all"
                             >
-                                Hoppa över
+                                Skip
                             </button>
                             <button
                                 onClick={handleNext}
@@ -134,11 +134,11 @@ export function OnboardingModal() {
                             >
                                 {currentSlide < slides.length - 1 ? (
                                     <>
-                                        Nästa
+                                        Next
                                         <ChevronRight className="w-4 h-4" />
                                     </>
                                 ) : (
-                                    "Kom igång!"
+                                    "Get started!"
                                 )}
                             </button>
                         </div>

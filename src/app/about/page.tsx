@@ -136,7 +136,7 @@ export default function OmOssPage() {
                     <div className="text-center py-12 border-t border-white/10">
                         <h2 className="text-2xl md:text-3xl font-black mb-8">Ready to try the $10k Challenge?</h2>
                         <Link
-                            href="/registrera"
+                            href="/register"
                             className="group px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-[#020617] rounded-full font-bold text-lg shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2 mx-auto w-fit hover:scale-105"
                         >
                             Start your challenge

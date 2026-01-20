@@ -12,9 +12,9 @@ export function MobileNav() {
     const navItems = [
         { icon: Home, label: "Home", href: "/" },
         { icon: Search, label: "Search", action: open },
-        { icon: TrendingUp, label: "Market", href: "/marknad" },
-        { icon: Wallet, label: "Portfolio", href: "/portfolio" },
-        { icon: User, label: "Profile", href: "/profil" },
+        { icon: TrendingUp, label: "Market", href: "/market" },
+        { icon: Wallet, label: "Paper Trading", href: "/paper-trading" },
+        { icon: User, label: "Profile", href: "/profile" },
     ];
 
     return (

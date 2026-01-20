@@ -10,26 +10,26 @@ function getReportConfig() {
 
     if (hour >= 5 && hour < 12) {
         return {
-            title: "Morgonrapport",
-            subtitle: "Starta dagen med marknadsinsikter",
+            title: "Morning Report",
+            subtitle: "Start the day with market insights",
             emoji: "🌅"
         };
     } else if (hour >= 12 && hour < 17) {
         return {
-            title: "Eftermiddagsrapport",
-            subtitle: "Mitt på dagen-uppdatering",
+            title: "Afternoon Report",
+            subtitle: "Mid-day update",
             emoji: "☀️"
         };
     } else if (hour >= 17 && hour < 22) {
         return {
-            title: "Kvällsrapport",
-            subtitle: "Sammanfattning av dagen",
+            title: "Evening Report",
+            subtitle: "Daily summary",
             emoji: "🌆"
         };
     } else {
         return {
-            title: "Nattrapport",
-            subtitle: "Sena tankar om marknaden",
+            title: "Night Report",
+            subtitle: "Late market thoughts",
             emoji: "🌙"
         };
     }
@@ -112,13 +112,13 @@ export function MorningReport() {
                 {isLoading ? (
                     <div className="py-8 flex flex-col items-center justify-center gap-3">
                         <Loader2 className="w-5 h-5 animate-spin text-emerald-400" />
-                        <p className="text-xs text-white/30 font-medium italic">Analyserar marknaden åt dig...</p>
+                        <p className="text-xs text-white/30 font-medium italic">Analyzing the market for you...</p>
                     </div>
                 ) : report ? (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className={`text-sm leading-relaxed whitespace-pre-wrap font-medium ${report.includes("Lägg till aktier") ? "text-white/40 italic py-4" : "text-white/80"
+                        className={`text-sm leading-relaxed whitespace-pre-wrap font-medium ${report.includes("Add stocks") ? "text-white/40 italic py-4" : "text-white/80"
                             }`}
                     >
                         {report}
@@ -132,7 +132,7 @@ export function MorningReport() {
             <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
                 <div className="flex flex-col gap-1">
                     <span className="text-[9px] text-white/20 font-bold uppercase tracking-widest">Powered by Ticko AI</span>
-                    <span className="text-[8px] text-white/10 uppercase tracking-widest">Ej finansiell rådgivning</span>
+                    <span className="text-[8px] text-white/10 uppercase tracking-widest">Not financial advice</span>
                 </div>
                 <div className="flex gap-1">
                     {[1, 2, 3].map(i => (

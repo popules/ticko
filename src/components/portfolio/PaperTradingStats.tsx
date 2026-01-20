@@ -108,14 +108,14 @@ export function PaperTradingStats({ userId, compact = false }: PaperTradingStats
                     <h4 className="text-xs font-bold text-violet-400 uppercase tracking-widest">Paper Trading</h4>
                 </div>
                 <span className="text-[8px] px-1.5 py-0.5 rounded bg-violet-500/20 text-violet-400 font-bold uppercase">
-                    Simulering
+                    Simulation
                 </span>
             </div>
 
             <div className="space-y-3">
                 {/* P&L */}
                 <div className="flex items-center justify-between">
-                    <span className="text-xs text-white/50">Avkastning</span>
+                    <span className="text-xs text-white/50">Return</span>
                     <div className="flex items-center gap-1.5">
                         {stats.totalPL >= 0 ? (
                             <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
@@ -130,7 +130,7 @@ export function PaperTradingStats({ userId, compact = false }: PaperTradingStats
 
                 {/* Portfolio Value */}
                 <div className="flex items-center justify-between">
-                    <span className="text-xs text-white/50">Portföljvärde</span>
+                    <span className="text-xs text-white/50">Portfolio Value</span>
                     <span className="text-sm font-bold text-white tabular-nums">
                         ${stats.totalValue.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                     </span>
@@ -138,8 +138,8 @@ export function PaperTradingStats({ userId, compact = false }: PaperTradingStats
 
                 {/* Holdings Count */}
                 <div className="flex items-center justify-between">
-                    <span className="text-xs text-white/50">Innehav</span>
-                    <span className="text-sm font-bold text-white">{stats.holdingsCount} st</span>
+                    <span className="text-xs text-white/50">Holdings</span>
+                    <span className="text-sm font-bold text-white">{stats.holdingsCount} pos</span>
                 </div>
             </div>
 
@@ -147,7 +147,7 @@ export function PaperTradingStats({ userId, compact = false }: PaperTradingStats
                 href="/paper-trading"
                 className="mt-4 block text-center text-xs text-violet-400/70 hover:text-violet-400 transition-colors"
             >
-                Se topplistan →
+                See leaderboard →
             </Link>
         </div>
     );

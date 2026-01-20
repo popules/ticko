@@ -178,7 +178,7 @@ export default function IntegritetPage() {
                 {/* Footer */}
                 <div className="mt-12 flex justify-center gap-6 text-sm">
                     <Link
-                        href="/villkor"
+                        href="/terms"
                         className="text-white/40 hover:text-white/60 transition-colors"
                     >
                         Terms of Service

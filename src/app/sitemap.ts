@@ -13,49 +13,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 1,
         },
         {
-            url: `${BASE_URL}/upptack`,
+            url: `${BASE_URL}/discover`,
             lastModified: new Date(),
             changeFrequency: 'hourly',
             priority: 0.9,
         },
         {
-            url: `${BASE_URL}/marknad`,
+            url: `${BASE_URL}/market`,
             lastModified: new Date(),
             changeFrequency: 'hourly',
             priority: 0.9,
-        },
-        {
-            url: `${BASE_URL}/topplistan`,
-            lastModified: new Date(),
-            changeFrequency: 'daily',
-            priority: 0.8,
         },
         {
             url: `${BASE_URL}/leaderboard`,
             lastModified: new Date(),
             changeFrequency: 'daily',
-            priority: 0.7,
+            priority: 0.8,
         },
         {
-            url: `${BASE_URL}/om-oss`,
+            url: `${BASE_URL}/about`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.5,
         },
         {
-            url: `${BASE_URL}/kontakt`,
+            url: `${BASE_URL}/contact`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.5,
         },
         {
-            url: `${BASE_URL}/integritet`,
+            url: `${BASE_URL}/privacy`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.3,
         },
         {
-            url: `${BASE_URL}/villkor`,
+            url: `${BASE_URL}/terms`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.3,
@@ -104,7 +98,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const allTickers = [...new Set([...popularTickers, ...dbTickers])];
 
         stockPages = allTickers.map(ticker => ({
-            url: `${BASE_URL}/aktie/${ticker}`,
+            url: `${BASE_URL}/stock/${ticker}`,
             lastModified: new Date(),
             changeFrequency: 'hourly' as const,
             priority: 0.8,
@@ -114,7 +108,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
         // Fallback to just popular tickers
         stockPages = popularTickers.map(ticker => ({
-            url: `${BASE_URL}/aktie/${ticker}`,
+            url: `${BASE_URL}/stock/${ticker}`,
             lastModified: new Date(),
             changeFrequency: 'hourly' as const,
             priority: 0.8,

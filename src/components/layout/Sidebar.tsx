@@ -29,12 +29,12 @@ import { motion, AnimatePresence } from "framer-motion";
 // Navigation Items
 const navItems = [
     { icon: Home, label: UI_STRINGS.home, href: "/" },
-    { icon: Sparkles, label: UI_STRINGS.discovery, href: "/upptack", isNew: true },
-    { icon: TrendingUp, label: UI_STRINGS.markets, href: "/marknad" },
+    { icon: Sparkles, label: UI_STRINGS.discovery, href: "/discover", isNew: true },
+    { icon: TrendingUp, label: UI_STRINGS.markets, href: "/market" },
     { icon: Gamepad2, label: "Paper Trading", href: "/paper-trading", badge: "🎮" },
     { icon: Star, label: UI_STRINGS.watchlist, href: "/watchlist" },
     { icon: Trophy, label: "Leaderboard", href: "/leaderboard" },
-    { icon: User, label: UI_STRINGS.profile, href: "/profil" },
+    { icon: User, label: UI_STRINGS.profile, href: "/profile" },
 ];
 
 export function Sidebar() {
@@ -163,7 +163,7 @@ export function Sidebar() {
                     </button>
                 ) : (
                     <Link
-                        href="/logga-in"
+                        href="/login"
                         onClick={() => setMobileOpen(false)}
                         className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-emerald-400 hover:bg-emerald-400/10 transition-all group"
                     >

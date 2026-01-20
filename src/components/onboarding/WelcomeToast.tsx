@@ -53,17 +53,17 @@ export function WelcomeToast() {
                             {/* Content */}
                             <div className="flex-1 min-w-0">
                                 <h3 className="text-sm font-bold text-white mb-0.5">
-                                    Välkommen till Ticko! 🚀
+                                    Welcome to Ticko! 🚀
                                 </h3>
                                 <p className="text-xs text-white/50 leading-relaxed mb-3">
                                     Explore the market and join our growing investment community.
                                 </p>
                                 <Link
-                                    href="/upptack"
+                                    href="/discover"
                                     onClick={handleDismiss}
                                     className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors group"
                                 >
-                                    Kom igång
+                                    Get started
                                     <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                                 </Link>
                             </div>

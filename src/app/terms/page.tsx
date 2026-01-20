@@ -91,7 +91,7 @@ export default function VillkorPage() {
             icon: Lock,
             title: "9. Privacy and Data Protection (GDPR)",
             content: "By using the Service, you agree that we process your personal data in accordance with our Privacy Policy.",
-            link: { href: "/integritet", text: "Read our Privacy Policy" }
+            link: { href: "/privacy", text: "Read our Privacy Policy" }
         },
         {
             icon: Gavel,

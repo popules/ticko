@@ -52,7 +52,7 @@ export default function ContactPage() {
                     <Link href="/" className="flex items-center gap-3">
                         <TickoLogo />
                     </Link>
-                    <Link href="/logga-in" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
+                    <Link href="/login" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
                         Log in
                     </Link>
                 </div>
@@ -64,7 +64,7 @@ export default function ContactPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-16"
                 >
-                    <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">Kontakta oss</h1>
+                    <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">Contact Us</h1>
                     <p className="text-white/50 text-lg max-w-xl mx-auto">
                         Do you have questions, suggestions, or just want to say hi? We usually answer within 24 hours.
                     </p>
@@ -82,7 +82,7 @@ export default function ContactPage() {
                             <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
                                 <Mail className="w-6 h-6 text-emerald-400" />
                             </div>
-                            <h3 className="text-lg font-bold mb-1">E-post</h3>
+                            <h3 className="text-lg font-bold mb-1">Email</h3>
                             <p className="text-emerald-400 font-medium">hello@ticko.se</p>
                         </div>
 
@@ -109,61 +109,61 @@ export default function ContactPage() {
                                 <div className="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mb-6">
                                     <CheckCircle2 className="w-10 h-10 text-emerald-400" />
                                 </div>
-                                <h2 className="text-2xl font-bold mb-2">Tack för ditt meddelande!</h2>
+                                <h2 className="text-2xl font-bold mb-2">Thanks for your message!</h2>
                                 <p className="text-white/50 mb-8 lowercase text-sm">We have received your message and will get back to you shortly.</p>
                                 <button
                                     onClick={() => setIsSuccess(false)}
                                     className="px-8 py-3 bg-white text-black rounded-full font-bold text-sm transform transition-all active:scale-95"
                                 >
-                                    Skicka ett till
+                                    Send another one
                                 </button>
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Namn</label>
+                                        <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Name</label>
                                         <input
                                             type="text"
                                             required
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                             className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                                            placeholder="Ditt namn"
+                                            placeholder="Your name"
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">E-post</label>
+                                        <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Email</label>
                                         <input
                                             type="email"
                                             required
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                                            placeholder="din@email.se"
+                                            placeholder="your@email.com"
                                         />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Ämne</label>
+                                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Subject</label>
                                     <input
                                         type="text"
                                         required
                                         value={subject}
                                         onChange={(e) => setSubject(e.target.value)}
                                         className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                                        placeholder="Vad gäller ditt ärende?"
+                                        placeholder="What can we help you with?"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Meddelande</label>
+                                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Message</label>
                                     <textarea
                                         required
                                         rows={6}
                                         value={message}
                                         onChange={(e) => setMessage(e.target.value)}
                                         className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all resize-none"
-                                        placeholder="Berätta mer..."
+                                        placeholder="Tell us more..."
                                     />
                                 </div>
 
@@ -182,7 +182,7 @@ export default function ContactPage() {
                                         <Loader2 className="w-5 h-5 animate-spin" />
                                     ) : (
                                         <>
-                                            Skicka meddelande
+                                            Send message
                                             <Send className="w-4 h-4" />
                                         </>
                                     )}
@@ -198,9 +198,9 @@ export default function ContactPage() {
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                     <TickoLogo />
                     <div className="flex gap-8 text-sm font-medium text-white/40">
-                        <Link href="/" className="hover:text-white transition-colors">Hem</Link>
-                        <Link href="/villkor" className="hover:text-white transition-colors">Villkor</Link>
-                        <Link href="/integritet" className="hover:text-white transition-colors">Integritet</Link>
+                        <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                        <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+                        <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
                     </div>
                 </div>
             </footer>

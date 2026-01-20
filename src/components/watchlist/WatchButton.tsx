@@ -89,7 +89,7 @@ export function WatchButton({ symbol }: WatchButtonProps) {
                 ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30 shadow-lg shadow-emerald-500/10"
                 : "bg-white/[0.06] hover:bg-white/[0.1] text-white/60 hover:text-white border-white/10"
                 }`}
-            title={isWatched ? "Ta bort från bevakningslista" : "Lägg till i bevakningslista"}
+            title={isWatched ? "Remove from watchlist" : "Add to watchlist"}
         >
             <Star className={`w-5 h-5 ${isWatched ? "fill-emerald-400" : ""}`} />
         </motion.button>

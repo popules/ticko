@@ -63,15 +63,15 @@ export function LandingPage() {
                         <Link href="#features" className="hover:text-white transition-colors">Features</Link>
                         <Link href="#how-it-works" className="hover:text-white transition-colors">How it works</Link>
                         <Link href="#community" className="hover:text-white transition-colors">Community</Link>
-                        <Link href="/om-oss" className="hover:text-white transition-colors">About</Link>
+                        <Link href="/about" className="hover:text-white transition-colors">About</Link>
                     </div>
 
                     <div className="flex items-center gap-6">
-                        <Link href="/logga-in" className="text-sm font-medium text-white/60 hover:text-white transition-colors hidden sm:block">
+                        <Link href="/login" className="text-sm font-medium text-white/60 hover:text-white transition-colors hidden sm:block">
                             Log in
                         </Link>
                         <Link
-                            href="/registrera"
+                            href="/register"
                             className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] rounded-full font-bold text-sm hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-0.5"
                         >
                             Join Free
@@ -126,7 +126,7 @@ export function LandingPage() {
                         className="flex flex-col sm:flex-row items-center gap-4 mb-24"
                     >
                         <Link
-                            href="/registrera"
+                            href="/register"
                             className="group px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-bold text-base shadow-lg shadow-emerald-500/25 transition-all flex items-center gap-2 hover:scale-105"
                         >
                             Start your challenge now
@@ -253,7 +253,7 @@ export function LandingPage() {
                         className="text-center mt-16"
                     >
                         <Link
-                            href="/registrera"
+                            href="/register"
                             className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-bold text-base shadow-lg shadow-emerald-500/25 transition-all hover:scale-105"
                         >
                             Start my journey to the top — Free
@@ -606,7 +606,7 @@ export function LandingPage() {
                     </p>
 
                     <Link
-                        href="/registrera"
+                        href="/register"
                         className="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-black text-lg transition-all hover:scale-105 shadow-2xl shadow-emerald-500/20"
                     >
                         Create free account
@@ -636,18 +636,18 @@ export function LandingPage() {
                         <div>
                             <h4 className="font-bold text-sm mb-4 text-white/60 uppercase tracking-wider">Get Started</h4>
                             <div className="flex flex-col gap-3 text-sm text-white/40">
-                                <Link href="/registrera" className="hover:text-white transition-colors">Create account</Link>
-                                <Link href="/logga-in" className="hover:text-white transition-colors">Log in</Link>
+                                <Link href="/register" className="hover:text-white transition-colors">Create account</Link>
+                                <Link href="/login" className="hover:text-white transition-colors">Log in</Link>
                             </div>
                         </div>
 
                         <div>
                             <h4 className="font-bold text-sm mb-4 text-white/60 uppercase tracking-wider">Company</h4>
                             <div className="flex flex-col gap-3 text-sm text-white/40">
-                                <Link href="/om-oss" className="hover:text-white transition-colors">About</Link>
-                                <Link href="/kontakt" className="hover:text-white transition-colors">Contact</Link>
-                                <Link href="/villkor" className="hover:text-white transition-colors">Terms</Link>
-                                <Link href="/integritet" className="hover:text-white transition-colors">Privacy</Link>
+                                <Link href="/about" className="hover:text-white transition-colors">About</Link>
+                                <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+                                <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+                                <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
                             </div>
                         </div>
                     </div>

@@ -31,7 +31,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
             const data = await res.json();
 
             if (!res.ok || data.error) {
-                setError(data.error || "Något gick fel");
+                setError(data.error || "Something went wrong");
                 setIsLoading(false);
                 return;
             }
@@ -69,7 +69,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-black text-white">Premium Reset</h2>
-                                    <p className="text-xs text-white/40">Starta om i toppen</p>
+                                    <p className="text-xs text-white/40">Restart at the top</p>
                                 </div>
                             </div>
                             <button
@@ -88,10 +88,10 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                                     <RotateCcw className="w-10 h-10 text-white" />
                                 </div>
                                 <h3 className="text-lg font-bold text-white mb-2">
-                                    Dags för en nystart?
+                                    Time for a fresh start?
                                 </h3>
                                 <p className="text-white/60 text-sm leading-relaxed">
-                                    Nollställ din historik, hämta <span className="text-emerald-400 font-bold">100 000 kr</span> i nytt kapital
+                                    Reset your history, get <span className="text-emerald-400 font-bold">$10,000</span> in new capital
                                     and show that you belong at the top.
                                 </p>
                             </div>
@@ -102,27 +102,27 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                                     <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                                         <Sparkles className="w-4 h-4 text-emerald-400" />
                                     </div>
-                                    <span className="text-sm text-white/80">100 000 kr virtuellt startkapital</span>
+                                    <span className="text-sm text-white/80">$10,000 virtual starting capital</span>
                                 </div>
                                 <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/10">
                                     <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                                         <RotateCcw className="w-4 h-4 text-emerald-400" />
                                     </div>
-                                    <span className="text-sm text-white/80">Ren slate på leaderboarden</span>
+                                    <span className="text-sm text-white/80">Clean slate on the leaderboard</span>
                                 </div>
                                 <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/10">
                                     <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                                         <Zap className="w-4 h-4 text-emerald-400" />
                                     </div>
-                                    <span className="text-sm text-white/80">Ingen cooldown – omedelbar reset</span>
+                                    <span className="text-sm text-white/80">No cooldown – immediate reset</span>
                                 </div>
                             </div>
 
                             {/* Price */}
                             <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-emerald-500/10 to-teal-500/10 border border-emerald-500/20 text-center">
-                                <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Engångsbetalning</p>
+                                <p className="text-xs text-white/40 uppercase tracking-widest mb-1">One-time payment</p>
                                 <p className="text-3xl font-black text-white">
-                                    49 <span className="text-lg text-white/60">kr</span>
+                                    49 <span className="text-lg text-white/60">SEK</span>
                                 </p>
                             </div>
 
@@ -137,7 +137,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                                 onClick={onClose}
                                 className="flex-1 px-4 py-3.5 rounded-xl bg-white/[0.06] text-white/60 font-bold hover:bg-white/10 transition-colors"
                             >
-                                Avbryt
+                                Cancel
                             </button>
                             <button
                                 onClick={handlePayAndReset}
@@ -158,7 +158,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                         {/* Footer */}
                         <div className="px-6 pb-4">
                             <p className="text-[10px] text-white/30 text-center">
-                                Säker betalning via Polar.sh • Moms inkluderad
+                                Secure payment via Polar.sh • VAT included
                             </p>
                         </div>
                     </motion.div>

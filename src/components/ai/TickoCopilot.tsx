@@ -51,7 +51,7 @@ export function TickoCopilot() {
         try {
             // Context from URL (basic)
             const path = window.location.pathname;
-            const contextTicker = path.startsWith("/aktie/") ? path.split("/")[2] : null;
+            const contextTicker = path.startsWith("/stock/") ? path.split("/")[2] : null;
 
             const res = await fetch("/api/ai/copilot", {
                 method: "POST",

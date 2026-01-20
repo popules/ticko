@@ -41,7 +41,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
     const isOwnPost = user?.id === post.user_id;
 
     const handleDelete = async () => {
-        if (!confirm("Är du säker på att du vill ta bort detta inlägg?")) return;
+        if (!confirm("Are you sure you want to delete this post?")) return;
 
         setIsDeleting(true);
         try {
@@ -62,7 +62,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
             <div className="flex gap-4">
                 {/* Avatar */}
                 <div className="flex-shrink-0">
-                    <Link href={`/profil/${post.user_id}`}>
+                    <Link href={`/profile/${post.user_id}`}>
                         <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-semibold shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform cursor-pointer">
                             {profile?.username?.charAt(0).toUpperCase() || "?"}
                         </div>
@@ -74,10 +74,10 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                     {/* Header */}
                     <div className="flex items-center gap-2 mb-2">
                         <Link
-                            href={`/profil/${post.user_id}`}
+                            href={`/profile/${post.user_id}`}
                             className="text-[15px] font-bold text-white truncate hover:text-emerald-400 transition-colors"
                         >
-                            {profile?.username || "Anonym"}
+                            {profile?.username || "Anonymous"}
                         </Link>
 
                         {/* Level Badge */}
@@ -94,9 +94,9 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
 
                         {/* Skin in the Game Badge */}
                         {authorOwnsStock && post.ticker_symbol && (
-                            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-cyan-500/10 text-cyan-400 border border-cyan-500/20" title={`Äger ${post.ticker_symbol}`}>
+                            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-cyan-500/10 text-cyan-400 border border-cyan-500/20" title={`Owns ${post.ticker_symbol}`}>
                                 <Gem className="w-3 h-3" />
-                                Ägare
+                                Owner
                             </span>
                         )}
 
@@ -198,7 +198,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                     {post.ticker_symbol && (
                         <div className="mt-3">
                             <Link
-                                href={`/aktie/${post.ticker_symbol}`}
+                                href={`/stock/${post.ticker_symbol}`}
                                 className="inline-block text-xs bg-white/[0.06] text-emerald-400 px-3 py-1.5 rounded-full border border-white/[0.08] hover:bg-white/[0.1] hover:border-emerald-500/30 transition-all"
                             >
                                 ${post.ticker_symbol}
@@ -221,7 +221,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                                     onClick={handleDelete}
                                     disabled={isDeleting}
                                     className="flex items-center gap-2 text-sm text-white/20 hover:text-rose-400 transition-colors disabled:opacity-50"
-                                    title="Ta bort inlägg"
+                                    title="Delete post"
                                 >
                                     {isDeleting ? (
                                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -233,13 +233,13 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                             {/* Share button */}
                             <ShareButton
                                 url={`https://www.ticko.se/post/${post.id}`}
-                                title={`Inlägg av ${profile?.username || 'Anonym'} på Ticko`}
+                                title={`Post by ${profile?.username || 'Anonymous'} on Ticko`}
                             />
                             {/* Report button */}
                             <button
                                 onClick={() => setIsReportModalOpen(true)}
                                 className="flex items-center gap-2 text-sm text-white/20 hover:text-rose-400 transition-colors"
-                                title="Anmäl inlägg"
+                                title="Report post"
                             >
                                 <Flag className="w-4 h-4" />
                             </button>

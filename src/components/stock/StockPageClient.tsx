@@ -20,10 +20,10 @@ export function StockPageActions({ symbol }: StockPageActionsProps) {
     if (!user) {
         return (
             <Link
-                href="/registrera"
+                href="/register"
                 className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all"
             >
-                Registrera för att bevaka
+                Register to watch
             </Link>
         );
     }
@@ -59,7 +59,7 @@ export function AIAnalysisSection({ ticker, currencySymbol }: AIAnalysisSectionP
                 description="In-depth AI-driven analysis of bull/bear cases and catalysts."
             >
                 <Link
-                    href={`/aktie/${ticker}/analys`}
+                    href={`/stock/${ticker}/analysis`}
                     className="flex items-center justify-between p-5 rounded-2xl bg-gradient-to-br from-violet-500/10 to-violet-600/5 border border-violet-500/20 hover:border-violet-500/40 transition-all group"
                 >
                     <div className="flex items-center gap-3">
@@ -67,7 +67,7 @@ export function AIAnalysisSection({ ticker, currencySymbol }: AIAnalysisSectionP
                             <Brain className="w-5 h-5 text-violet-400" />
                         </div>
                         <div>
-                            <h4 className="font-bold text-white text-sm">Gör en Deep Dive</h4>
+                            <h4 className="font-bold text-white text-sm">Do a Deep Dive</h4>
                             <p className="text-xs text-white/40">Get an in-depth AI analysis of bull/bear cases and catalysts</p>
                         </div>
                     </div>
@@ -93,11 +93,11 @@ export function PerformanceMetricsSection({ symbol }: PerformanceMetricsSectionP
 
     return (
         <Link
-            href="/registrera"
+            href="/register"
             className="flex items-center gap-2 text-sm text-white/40 hover:text-emerald-400 transition-colors group"
         >
             <span>View YTD, 1-year, and 5-year returns.</span>
-            <span className="text-emerald-400 font-medium group-hover:underline">Gratis för registrerade användare.</span>
+            <span className="text-emerald-400 font-medium group-hover:underline">Free for registered users.</span>
         </Link>
     );
 }
