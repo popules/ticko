@@ -46,17 +46,8 @@ type LeaderboardTab = "reputation" | "paper";
 type PaperTimeframe = "season" | "alltime";
 
 export default function LeaderboardPage() {
-    const { user, isLoading: authLoading } = useAuth();
-    const router = useRouter();
     const [activeTab, setActiveTab] = useState<LeaderboardTab>("reputation");
     const [paperTimeframe, setPaperTimeframe] = useState<PaperTimeframe>("season");
-
-    // Redirect to login if not authenticated
-    useEffect(() => {
-        if (!authLoading && !user) {
-            router.replace("/logga-in");
-        }
-    }, [user, authLoading, router]);
 
     // Reputation leaderboard
     const { data: reputationLeaders, isLoading: isRepLoading } = useQuery<Leader[]>({
