@@ -142,7 +142,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                                         <TrendingUp className="w-3 h-3 text-violet-400" />
                                     </div>
                                     <p className={`text-lg font-black ${data.stats.totalPnl >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
-                                        {data.stats.totalPnl >= 0 ? "+" : ""}{data.stats.totalPnl.toLocaleString("sv-SE")}
+                                        {data.stats.totalPnl >= 0 ? "+" : ""}{data.stats.totalPnl.toLocaleString("en-US")}
                                     </p>
                                     <p className="text-[10px] text-white/40">Total P&L</p>
                                 </div>

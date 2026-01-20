@@ -365,7 +365,7 @@ export default function LeaderboardPage() {
                     {showPodium && leaders && (
                         <div className="grid grid-cols-3 gap-4 items-end mb-12">
                             {/* 2nd Place */}
-                            <Link href={`/profil/${leaders[1].username}`} className="order-1 group">
+                            <Link href={`/profile/${leaders[1].username}`} className="order-1 group">
                                 <div className="relative flex flex-col items-center">
                                     <div className="relative mb-3 transition-transform group-hover:-translate-y-2 duration-300">
                                         <div className="w-20 h-20 rounded-full p-1 bg-gradient-to-b from-slate-300 to-slate-500">
@@ -396,7 +396,7 @@ export default function LeaderboardPage() {
                             </Link>
 
                             {/* 1st Place */}
-                            <Link href={`/profil/${leaders[0].username}`} className="order-2 group z-10 -mt-8">
+                            <Link href={`/profile/${leaders[0].username}`} className="order-2 group z-10 -mt-8">
                                 <div className="relative flex flex-col items-center">
                                     <div className="absolute -top-10 left-1/2 -translate-x-1/2 text-yellow-400 animate-bounce">
                                         <Crown className="w-8 h-8 fill-yellow-400/20" />
@@ -435,7 +435,7 @@ export default function LeaderboardPage() {
                             </Link>
 
                             {/* 3rd Place */}
-                            <Link href={`/profil/${leaders[2].username}`} className="order-3 group">
+                            <Link href={`/profile/${leaders[2].username}`} className="order-3 group">
                                 <div className="relative flex flex-col items-center">
                                     <div className="relative mb-3 transition-transform group-hover:-translate-y-2 duration-300">
                                         <div className="w-20 h-20 rounded-full p-1 bg-gradient-to-b from-orange-400 to-amber-700">
@@ -475,7 +475,7 @@ export default function LeaderboardPage() {
 
                             return (
                                 <Link
-                                    href={`/profil/${user.username}`}
+                                    href={`/profile/${user.username}`}
                                     key={user.id}
                                     className="flex items-center gap-4 p-4 border-b border-white/5 hover:bg-white/[0.02] transition-colors last:border-0"
                                 >

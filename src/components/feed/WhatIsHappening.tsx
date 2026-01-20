@@ -179,7 +179,7 @@ export function WhatIsHappening() {
                         </div>
                         <div>
                             <h3 className="text-sm font-bold text-white uppercase tracking-wide">🔥 Hett just nu</h3>
-                            <p className="text-[10px] text-white/40">Aktier som diskuteras mest</p>
+                            <p className="text-[10px] text-white/40">Most discussed stocks</p>
                         </div>
                     </div>
                     <Link

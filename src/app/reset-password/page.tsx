@@ -59,7 +59,7 @@ export default function ResetPasswordPage() {
                                 Vi har skickat en återställningslänk till <span className="text-white">{email}</span>
                             </p>
                             <Link
-                                href="/logga-in"
+                                href="/login"
                                 className="text-emerald-400 hover:text-emerald-300 font-medium"
                             >
                                 ← Tillbaka till inloggning
@@ -117,7 +117,7 @@ export default function ResetPasswordPage() {
 
                             {/* Back to login */}
                             <p className="text-center text-white/50 mt-6">
-                                <Link href="/logga-in" className="text-emerald-400 hover:text-emerald-300 font-bold">
+                                <Link href="/login" className="text-emerald-400 hover:text-emerald-300 font-bold">
                                     ← Tillbaka till inloggning
                                 </Link>
                             </p>

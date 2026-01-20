@@ -143,7 +143,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                     Log in to share your insights, follow other investors, and build your portfolio.
                 </p>
                 <a
-                    href="/logga-in"
+                    href="/login"
                     className="inline-flex items-center gap-2 px-8 py-3 btn-gradient text-white rounded-xl font-bold text-sm hover:scale-[1.02] transition-all"
                 >
                     Log in now

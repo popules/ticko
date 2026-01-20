@@ -66,7 +66,7 @@ export default function ProfilePage() {
                     <div className="space-y-4">
                         <h1 className="text-2xl font-black text-white uppercase tracking-widest">Log in to view profile</h1>
                         <p className="text-white/50">You must be logged in to view your personal page.</p>
-                        <Link href="/logga-in" className="btn-gradient px-6 py-2 rounded-xl text-white font-bold inline-block">
+                        <Link href="/login" className="btn-gradient px-6 py-2 rounded-xl text-white font-bold inline-block">
                             Log in
                         </Link>
                     </div>
@@ -175,7 +175,7 @@ export default function ProfilePage() {
                                             watchlist.map((stock) => (
                                                 <Link
                                                     key={stock.symbol}
-                                                    href={`/aktie/${stock.symbol}`}
+                                                    href={`/stock/${stock.symbol}`}
                                                     className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10"
                                                 >
                                                     <span className="text-sm font-bold text-white">${stock.symbol}</span>

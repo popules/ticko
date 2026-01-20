@@ -41,13 +41,13 @@ export function PremiumGate({
                     {description}
                 </p>
                 <Link
-                    href="/registrera"
+                    href="/register"
                     className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-105"
                 >
                     Skapa konto gratis
                 </Link>
                 <Link
-                    href="/logga-in"
+                    href="/login"
                     className="mt-2 text-xs text-white/30 hover:text-white/60 transition-colors"
                 >
                     Already have an account? Log in

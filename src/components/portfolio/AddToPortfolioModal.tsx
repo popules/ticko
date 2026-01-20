@@ -120,7 +120,7 @@ export function AddToPortfolioModal({
                                     <Wallet className="w-8 h-8 text-emerald-400" />
                                 </motion.div>
                                 <h3 className="text-xl font-bold text-white mb-2">Tillagd i portföljen!</h3>
-                                <p className="text-white/50">{shares} aktier i ${symbol}</p>
+                                <p className="text-white/50">{shares} shares of ${symbol}</p>
                             </div>
                         ) : (
                             <>
@@ -152,7 +152,7 @@ export function AddToPortfolioModal({
 
                                     <div>
                                         <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-3">
-                                            Antal aktier
+                                            Number of shares
                                         </label>
                                         <div className="flex items-center gap-4">
                                             <button

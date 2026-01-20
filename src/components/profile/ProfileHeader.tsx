@@ -40,7 +40,7 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
         fetchStats();
     }, [profile?.id, user]);
 
-    const joinedDate = new Date(currentProfile.created_at).toLocaleDateString('sv-SE', {
+    const joinedDate = new Date(currentProfile.created_at).toLocaleDateString('en-US', {
         month: 'long',
         year: 'numeric'
     });

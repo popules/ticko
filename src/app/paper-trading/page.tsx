@@ -318,7 +318,7 @@ export default function PaperTradingPage() {
                     <div className="text-center">
                         <Gamepad2 className="w-16 h-16 text-white/20 mx-auto mb-4" />
                         <h2 className="text-xl font-bold text-white mb-2">Log in to try paper trading</h2>
-                        <Link href="/logga-in" className="text-emerald-400 hover:underline">
+                        <Link href="/login" className="text-emerald-400 hover:underline">
                             Log in →
                         </Link>
                     </div>
@@ -556,13 +556,13 @@ export default function PaperTradingPage() {
                                     <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center mx-auto mb-4">
                                         <Gamepad2 className="w-8 sm:w-10 h-8 sm:h-10 text-violet-400" />
                                     </div>
-                                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Inga virtuella innehav</h3>
+                                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2">No virtual holdings</h3>
                                     <p className="text-white/40 mb-6 max-w-md mx-auto text-sm">
-                                        Du har {cashBalance.toLocaleString("sv-SE")} kr virtuella kronor att investera.
+                                        Du har {cashBalance.toLocaleString("en-US")} kr virtual dollars to invest.
                                         Go to a stock page and click &quot;Paper Trade&quot;!
                                     </p>
                                     <Link
-                                        href="/upptack"
+                                        href="/discover"
                                         className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-xl font-bold transition-transform hover:scale-105"
                                     >
                                         <Plus className="w-4 h-4" />
@@ -573,7 +573,7 @@ export default function PaperTradingPage() {
                                 <div className="space-y-3">
                                     <h3 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4 flex items-center gap-2">
                                         <Gamepad2 className="w-4 h-4" />
-                                        Dina virtuella innehav
+                                        Your virtual holdings
                                     </h3>
                                     {portfolio.map((item, index) => {
                                         const isSek = item.currency === "SEK";
@@ -592,7 +592,7 @@ export default function PaperTradingPage() {
                                                 transition={{ delay: index * 0.05 }}
                                                 className="flex items-center justify-between p-4 sm:p-5 rounded-2xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.06] transition-all group"
                                             >
-                                                <Link href={`/aktie/${item.symbol}`} className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                                                <Link href={`/stock/${item.symbol}`} className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
                                                     <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl bg-gradient-to-br from-violet-400 to-fuchsia-600 flex items-center justify-center text-white font-black text-[10px] sm:text-xs shrink-0">
                                                         {item.symbol.split('.')[0].slice(0, 4)}
                                                     </div>
@@ -609,9 +609,9 @@ export default function PaperTradingPage() {
                                                             )}
                                                         </div>
                                                         <div className="flex flex-wrap items-center gap-1 mt-0.5 text-[10px] text-white/50">
-                                                            <span>{item.shares} st</span>
+                                                            <span>{item.shares} pcs</span>
                                                             <span>•</span>
-                                                            <span>GAV: {item.buy_price.toLocaleString("sv-SE", { maximumFractionDigits: 2 })}</span>
+                                                            <span>Avg: {item.buy_price.toLocaleString("en-US", { maximumFractionDigits: 2 })}</span>
                                                         </div>
                                                     </div>
                                                 </Link>
@@ -644,12 +644,12 @@ export default function PaperTradingPage() {
 
 
                                                 <div className="text-right mx-2 sm:mx-4 shrink-0">
-                                                    <p className="text-xs sm:text-sm font-bold text-white tabular-nums">{item.shares} st</p>
+                                                    <p className="text-xs sm:text-sm font-bold text-white tabular-nums">{item.shares} pcs</p>
                                                 </div>
 
                                                 <div className="text-right mr-2 sm:mr-6 shrink-0">
                                                     <p className="font-bold text-white tabular-nums text-sm sm:text-base">
-                                                        {currentValueSek.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                        {currentValueSek.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
                                                     </p>
                                                     <div className={`flex items-center justify-end gap-1 text-xs font-bold tabular-nums ${pl >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
                                                         {pl >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
@@ -693,10 +693,10 @@ export default function PaperTradingPage() {
                                             ? "bg-emerald-500/10 border-emerald-500/20"
                                             : "bg-rose-500/10 border-rose-500/20"
                                             }`}>
-                                            <span className="text-white/60 text-sm">Realiserad vinst/förlust</span>
+                                            <span className="text-white/60 text-sm">Realiserad vinst/förlupcs</span>
                                             <span className={`text-xl font-black tabular-nums ${totalRealizedPnl >= 0 ? "text-emerald-400" : "text-rose-400"
                                                 }`}>
-                                                {totalRealizedPnl >= 0 ? "+" : ""}{totalRealizedPnl.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                {totalRealizedPnl >= 0 ? "+" : ""}{totalRealizedPnl.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
                                             </span>
                                         </div>
 
@@ -728,16 +728,16 @@ export default function PaperTradingPage() {
                                                         </div>
                                                         <div className="text-right">
                                                             <p className="font-bold text-white tabular-nums">
-                                                                {isBuy ? "-" : "+"}{tx.total_sek.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                                {isBuy ? "-" : "+"}{tx.total_sek.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
                                                             </p>
                                                             {!isBuy && tx.realized_pnl !== 0 && (
                                                                 <p className={`text-xs font-bold tabular-nums ${tx.realized_pnl >= 0 ? "text-emerald-400" : "text-rose-400"
                                                                     }`}>
-                                                                    {tx.realized_pnl >= 0 ? "+" : ""}{tx.realized_pnl.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                                    {tx.realized_pnl >= 0 ? "+" : ""}{tx.realized_pnl.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
                                                                 </p>
                                                             )}
                                                             <p className="text-[10px] text-white/30 mt-1">
-                                                                {date.toLocaleDateString("sv-SE")}
+                                                                {date.toLocaleDateString("en-US")}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -762,12 +762,12 @@ export default function PaperTradingPage() {
                                         <BarChart3 className="w-12 h-12 text-white/20 mx-auto mb-4" />
                                         <h3 className="text-lg font-bold text-white mb-2">Inte tillräckligt med data</h3>
                                         <p className="text-white/40 text-sm max-w-md mx-auto">
-                                            Grafen visas när vi har minst 2 dagars data.
+                                            Graph shows när vi har minst 2 dagars data.
                                             Ditt portföljvärde sparas automatiskt varje natt.
                                         </p>
                                         <div className="mt-6 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20 max-w-sm mx-auto">
                                             <p className="text-violet-400 text-sm">
-                                                📊 Nuvarande värde: <span className="font-bold">{(totalValue + cashBalance).toLocaleString("sv-SE")} kr</span>
+                                                📊 Nuvarande värde: <span className="font-bold">{(totalValue + cashBalance).toLocaleString("en-US")} kr</span>
                                             </p>
                                         </div>
                                     </div>
@@ -786,7 +786,7 @@ export default function PaperTradingPage() {
                                                         </defs>
                                                         <XAxis
                                                             dataKey="snapshot_date"
-                                                            tickFormatter={(date) => new Date(date).toLocaleDateString("sv-SE", { day: "numeric", month: "short" })}
+                                                            tickFormatter={(date) => new Date(date).toLocaleDateString("en-US", { day: "numeric", month: "short" })}
                                                             stroke="#ffffff20"
                                                             tick={{ fill: "#ffffff40", fontSize: 11 }}
                                                         />
@@ -803,8 +803,8 @@ export default function PaperTradingPage() {
                                                                 borderRadius: "12px",
                                                                 color: "white"
                                                             }}
-                                                            labelFormatter={(date) => new Date(date).toLocaleDateString("sv-SE", { dateStyle: "long" })}
-                                                            formatter={(value) => [`${(value as number || 0).toLocaleString("sv-SE")} kr`, "Värde"]}
+                                                            labelFormatter={(date) => new Date(date).toLocaleDateString("en-US", { dateStyle: "long" })}
+                                                            formatter={(value) => [`${(value as number || 0).toLocaleString("en-US")} kr`, "Värde"]}
                                                         />
                                                         <Area
                                                             type="monotone"
@@ -823,13 +823,13 @@ export default function PaperTradingPage() {
                                             <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
                                                 <p className="text-xs text-white/40 mb-1">Startpunkt</p>
                                                 <p className="text-lg font-bold text-white tabular-nums">
-                                                    {snapshots[0]?.total_value.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                    {snapshots[0]?.total_value.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
                                                 </p>
                                             </div>
                                             <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
                                                 <p className="text-xs text-white/40 mb-1">Nuvarande</p>
                                                 <p className="text-lg font-bold text-white tabular-nums">
-                                                    {(totalValue + cashBalance).toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                    {(totalValue + cashBalance).toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
                                                 </p>
                                             </div>
                                         </div>
@@ -894,7 +894,7 @@ export default function PaperTradingPage() {
                                     <div className="text-sm text-amber-400/80">
                                         <p className="font-bold mb-1">Detta kommer att:</p>
                                         <ul className="list-disc list-inside text-xs space-y-1">
-                                            <li>Radera alla dina virtuella innehav</li>
+                                            <li>Radera alla Your virtual holdings</li>
                                             <li>Återställa din kassa till 100 000 kr</li>
                                             <li>Öka din reset-räknare (synlig för andra)</li>
                                         </ul>

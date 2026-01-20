@@ -176,14 +176,14 @@ export function SeasonHistory({ userId }: SeasonHistoryProps) {
                                 <p className="text-sm font-bold text-white">{result.season_name}</p>
                                 <p className="text-[10px] text-white/40">
                                     {result.season_end_date
-                                        ? new Date(result.season_end_date).toLocaleDateString("sv-SE", { month: "short", year: "numeric" })
+                                        ? new Date(result.season_end_date).toLocaleDateString("en-US", { month: "short", year: "numeric" })
                                         : ""}
                                 </p>
                             </div>
                         </div>
                         <div className="text-right">
                             <p className="text-sm font-bold text-emerald-400 tabular-nums">
-                                {result.final_value.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                {result.final_value.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                             </p>
                         </div>
                     </div>

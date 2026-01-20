@@ -21,7 +21,7 @@ export default function ChooseAliasPage() {
     // Redirect if not logged in
     useEffect(() => {
         if (!authLoading && !user) {
-            router.push("/logga-in");
+            router.push("/login");
         }
     }, [user, authLoading, router]);
 
