@@ -15,8 +15,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     // Engagement achievements
     EARLY_ADOPTER: {
         key: "early_adopter",
-        name: "Pionjär",
-        description: "Gick med under beta-perioden",
+        name: "Pioneer",
+        description: "Joined during the beta period",
         emoji: "🚀",
         category: "milestone",
         rarity: "rare",
@@ -24,8 +24,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     FIRST_POST: {
         key: "first_post",
-        name: "Första Inlägget",
-        description: "Skapade ditt första inlägg",
+        name: "First Post",
+        description: "Created your first post",
         emoji: "✍️",
         category: "engagement",
         rarity: "common",
@@ -33,8 +33,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     PROLIFIC_POSTER: {
         key: "prolific_poster",
-        name: "Aktiv Skribent",
-        description: "Skapat 50+ inlägg",
+        name: "Prolific Poster",
+        description: "Created 50+ posts",
         emoji: "📝",
         category: "engagement",
         rarity: "uncommon",
@@ -42,8 +42,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     CENTURY_CLUB: {
         key: "century_club",
-        name: "Hundraklubben",
-        description: "Skapat 100+ inlägg",
+        name: "Century Club",
+        description: "Created 100+ posts",
         emoji: "💯",
         category: "engagement",
         rarity: "rare",
@@ -53,8 +53,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     // Community achievements
     FIRST_FOLLOWER: {
         key: "first_follower",
-        name: "Första Följaren",
-        description: "Fick din första följare",
+        name: "First Follower",
+        description: "Got your first follower",
         emoji: "👋",
         category: "community",
         rarity: "common",
@@ -63,7 +63,7 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     INFLUENCER: {
         key: "influencer",
         name: "Influencer",
-        description: "Har 50+ följare",
+        description: "Has 50+ followers",
         emoji: "⭐",
         category: "community",
         rarity: "rare",
@@ -71,8 +71,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     CELEBRITY: {
         key: "celebrity",
-        name: "Kändis",
-        description: "Har 100+ följare",
+        name: "Celebrity",
+        description: "Has 100+ followers",
         emoji: "🌟",
         category: "community",
         rarity: "epic",
@@ -81,7 +81,7 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     SUPPORTER: {
         key: "supporter",
         name: "Supporter",
-        description: "Reaktade på 50+ inlägg",
+        description: "Reacted to 50+ posts",
         emoji: "❤️",
         category: "community",
         rarity: "common",
@@ -89,8 +89,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     COMMENTER: {
         key: "commenter",
-        name: "Kommentator",
-        description: "Skrev 25+ kommentarer",
+        name: "Commenter",
+        description: "Wrote 25+ comments",
         emoji: "💬",
         category: "community",
         rarity: "uncommon",
@@ -100,8 +100,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     // Prediction achievements
     FIRST_PREDICTION: {
         key: "first_prediction",
-        name: "Siare",
-        description: "Gjorde din första förutsägelse",
+        name: "Seer",
+        description: "Made your first prediction",
         emoji: "🔮",
         category: "prediction",
         rarity: "common",
@@ -109,8 +109,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     ORACLE: {
         key: "oracle",
-        name: "Orakel",
-        description: "5 korrekta förutsägelser i rad",
+        name: "Oracle",
+        description: "5 correct predictions in a row",
         emoji: "🎯",
         category: "prediction",
         rarity: "epic",
@@ -118,8 +118,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     CRYSTAL_BALL: {
         key: "crystal_ball",
-        name: "Kristallkula",
-        description: "10 korrekta förutsägelser totalt",
+        name: "Crystal Ball",
+        description: "10 correct predictions total",
         emoji: "🪄",
         category: "prediction",
         rarity: "rare",
@@ -127,8 +127,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     PROPHET: {
         key: "prophet",
-        name: "Profet",
-        description: "25 korrekta förutsägelser totalt",
+        name: "Prophet",
+        description: "25 correct predictions total",
         emoji: "🏆",
         category: "prediction",
         rarity: "legendary",
@@ -138,8 +138,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     // Milestone achievements
     RISING_STAR: {
         key: "rising_star",
-        name: "Stigande Stjärna",
-        description: "Nådde 100 reputation",
+        name: "Rising Star",
+        description: "Reached 100 reputation",
         emoji: "✨",
         category: "milestone",
         rarity: "common",
@@ -148,7 +148,7 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     VETERAN: {
         key: "veteran",
         name: "Veteran",
-        description: "Nådde 1000 reputation",
+        description: "Reached 1,000 reputation",
         emoji: "🏅",
         category: "milestone",
         rarity: "rare",
@@ -157,7 +157,7 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     LEGEND: {
         key: "legend",
         name: "Legend",
-        description: "Nådde 10000 reputation",
+        description: "Reached 10,000 reputation",
         emoji: "👑",
         category: "milestone",
         rarity: "legendary",
@@ -165,8 +165,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     WATCHLIST_KING: {
         key: "watchlist_king",
-        name: "Bevakningskung",
-        description: "Har 25+ aktier på bevakningslistan",
+        name: "Watchlist King",
+        description: "Has 25+ stocks on watchlist",
         emoji: "👁️",
         category: "engagement",
         rarity: "uncommon",
@@ -174,8 +174,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     PORTFOLIO_PRO: {
         key: "portfolio_pro",
-        name: "Portföljproffs",
-        description: "Lade till 10+ aktier i portföljen",
+        name: "Portfolio Pro",
+        description: "Added 10+ stocks to portfolio",
         emoji: "💼",
         category: "engagement",
         rarity: "uncommon",
@@ -185,8 +185,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     // Paper Trading achievements
     FIRST_PAPER_TRADE: {
         key: "first_paper_trade",
-        name: "Första Pappershandeln",
-        description: "Genomförde din första paper trade",
+        name: "First Trade",
+        description: "Completed your first paper trade",
         emoji: "🎮",
         category: "engagement",
         rarity: "common",
@@ -194,8 +194,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     PAPER_10X: {
         key: "paper_10x",
-        name: "Tiodubblingen",
-        description: "Nådde 1M kr i paper trading",
+        name: "10x Trader",
+        description: "Reached $100k in paper trading",
         emoji: "🚀",
         category: "milestone",
         rarity: "epic",
@@ -203,8 +203,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     PAPER_WINNER: {
         key: "paper_winner",
-        name: "Säsongens Vinnare",
-        description: "Vann en veckas paper trading-topplista",
+        name: "Season Winner",
+        description: "Won a weekly paper trading leaderboard",
         emoji: "🏆",
         category: "milestone",
         rarity: "legendary",
@@ -213,7 +213,7 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     PAPER_COMEBACK: {
         key: "paper_comeback",
         name: "Comeback Kid",
-        description: "Gick från -50% till positiv avkastning",
+        description: "Went from -50% to positive returns",
         emoji: "💪",
         category: "milestone",
         rarity: "rare",
@@ -221,8 +221,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     PAPER_STREAK_3: {
         key: "paper_streak_3",
-        name: "Tre i Rad",
-        description: "3 lönsamma trades i rad",
+        name: "Hot Streak",
+        description: "3 profitable trades in a row",
         emoji: "🔥",
         category: "engagement",
         rarity: "uncommon",
@@ -230,8 +230,8 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
     },
     PAPER_DIVERSIFIED: {
         key: "paper_diversified",
-        name: "Diversifierad",
-        description: "Har 10+ olika aktier i paper portföljen",
+        name: "Diversified",
+        description: "Has 10+ different stocks in paper portfolio",
         emoji: "🌐",
         category: "engagement",
         rarity: "uncommon",
@@ -280,11 +280,11 @@ export async function awardXp(userId: string, amount: number): Promise<boolean> 
 }
 
 export const RARITY_NAMES: Record<Achievement["rarity"], string> = {
-    common: "Vanlig",
-    uncommon: "Ovanlig",
-    rare: "Sällsynt",
-    epic: "Episk",
-    legendary: "Legendarisk",
+    common: "Common",
+    uncommon: "Uncommon",
+    rare: "Rare",
+    epic: "Epic",
+    legendary: "Legendary",
 };
 
 /**
