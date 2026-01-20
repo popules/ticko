@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     description: APP_CONFIG.description,
     url: APP_CONFIG.baseUrl,
     siteName: APP_CONFIG.name,
-    locale: 'sv_SE',
+    locale: 'en_US',
     type: 'website',
   },
   twitter: {
@@ -56,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="sv" className="dark">
+    <html lang="en" className="dark">
       <body className={`${inter.variable} font-sans antialiased`}>
         <QueryProvider>
           <AuthProvider>

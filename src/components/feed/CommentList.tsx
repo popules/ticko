@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { formatDistanceToNow } from "date-fns";
-import { sv } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { Trash2 } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 
@@ -73,7 +73,7 @@ export function CommentList({ postId, refreshTrigger }: CommentListProps) {
                         <div className="flex items-baseline gap-2">
                             <span className="font-bold text-white text-sm">@{comment.profiles.username}</span>
                             <span className="text-white/30 text-xs">
-                                {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: sv })}
+                                {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: enUS })}
                             </span>
                             {comment.profiles.reputation_score > 50 && (
                                 <span className="px-1.5 py-0.5 rounded-full bg-yellow-500/10 text-yellow-500 text-[10px] font-bold">PRO</span>

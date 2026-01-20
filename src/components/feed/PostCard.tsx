@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { sv } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { TrendingUp, TrendingDown, Flag, Trash2, Loader2, Gem } from "lucide-react";
 import { ShareButton } from "@/components/ui/ShareButton";
 import { renderWithCashtags } from "@/lib/cashtag";
@@ -89,7 +89,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
 
                         <span className="text-white/30">·</span>
                         <span className="text-white/50 text-[12px] font-medium">
-                            {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: sv })}
+                            {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: enUS })}
                         </span>
 
                         {/* Skin in the Game Badge */}
@@ -151,7 +151,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                             <div className="flex flex-col pr-4 border-r border-white/10">
                                 <span className="text-[10px] text-white/40 uppercase font-black tracking-widest">Target</span>
                                 <span className="text-sm font-bold text-white">
-                                    {post.target_date ? formatDistanceToNow(new Date(post.target_date), { locale: sv }) : "—"}
+                                    {post.target_date ? formatDistanceToNow(new Date(post.target_date), { locale: enUS }) : "—"}
                                 </span>
                             </div>
 

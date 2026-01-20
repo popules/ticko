@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { sv } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { Newspaper, ExternalLink, TrendingUp, TrendingDown, Loader2 } from "lucide-react";
 import Link from "next/link";
 
@@ -52,7 +52,7 @@ export function NewsFeed({ symbol }: NewsFeedProps) {
         return (
             <div className="text-center py-8 text-white/40">
                 <Newspaper className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                <p className="text-sm">Inga nyheter just nu</p>
+                <p className="text-sm">No news right now</p>
             </div>
         );
     }
@@ -95,10 +95,10 @@ export function NewsFeed({ symbol }: NewsFeedProps) {
                                         try {
                                             return formatDistanceToNow(new Date(item.publishedAt), {
                                                 addSuffix: true,
-                                                locale: sv,
+                                                locale: enUS,
                                             });
                                         } catch (e) {
-                                            return "Nyligen";
+                                            return "Recently";
                                         }
                                     })()}
                                 </span>

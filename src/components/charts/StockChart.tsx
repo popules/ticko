@@ -85,7 +85,7 @@ export function StockChart({ symbol, theme = "dark", height = 400 }: StockChartP
             timezone: "Europe/Stockholm",
             theme: theme,
             style: "3", // 3 = Area chart (cleaner look like Avanza), 1 = Candles
-            locale: "sv",
+            locale: "en",
             enable_publishing: false,
             backgroundColor: "rgba(2, 6, 23, 1)", // Match app background
             gridColor: "rgba(255, 255, 255, 0.03)", // Subtle grid

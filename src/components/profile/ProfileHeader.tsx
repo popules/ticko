@@ -84,11 +84,11 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                                 <div className="flex items-center gap-4 text-white/50 text-sm font-medium">
                                     <span className="flex items-center gap-1.5">
                                         <Calendar className="w-4 h-4" />
-                                        Gick med {joinedDate}
+                                        Joined {joinedDate}
                                     </span>
                                     <span className="flex items-center gap-1.5">
                                         <MapPin className="w-4 h-4" />
-                                        {currentProfile.location || "Sverige"}
+                                        {currentProfile.location || "Unknown"}
                                     </span>
                                 </div>
                             </div>
@@ -108,8 +108,8 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                             {isOwnProfile && (
                                 <div className="flex items-center gap-3">
                                     <ShareButton
-                                        url={`https://www.ticko.se/profil/${profile.id}`}
-                                        title={`${currentProfile.username} på Ticko`}
+                                        url={`https://www.ticko.se/profile/${profile.id}`}
+                                        title={`${currentProfile.username} on Ticko`}
                                         iconOnly={false}
                                     />
                                     <button
@@ -117,7 +117,7 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                                         className="flex items-center gap-2 px-6 py-2.5 bg-white text-black rounded-xl font-bold text-sm hover:bg-white/90 transition-all shadow-xl shadow-white/5"
                                     >
                                         <Pencil className="w-4 h-4" />
-                                        Redigera Profil
+                                        Edit Profile
                                     </button>
                                 </div>
                             )}
@@ -133,11 +133,11 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                         <div className="flex gap-8 pt-4">
                             <div>
                                 <p className="text-xl font-black text-white">{stats.followers}</p>
-                                <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Följare</p>
+                                <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Followers</p>
                             </div>
                             <div>
                                 <p className="text-xl font-black text-white">{stats.following}</p>
-                                <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Följer</p>
+                                <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Following</p>
                             </div>
                             <div>
                                 {(() => {

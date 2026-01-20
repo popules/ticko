@@ -114,7 +114,7 @@ export default function MarketPage() {
                             {UI_STRINGS.markets}
                         </h1>
                         <p className="text-xs font-bold text-white/30 tracking-widest uppercase mt-1">
-                            Live Market Data • Realtid
+                            Live Market Data • Real-time
                         </p>
                     </div>
                     <div className="flex items-center gap-3">
@@ -126,7 +126,7 @@ export default function MarketPage() {
                             <span className="text-sm">🇸🇪</span>
                             <div className={`w-2 h-2 rounded-full ${marketStatus.swedenOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
                             <span className={`text-[10px] font-bold uppercase ${marketStatus.swedenOpen ? "text-emerald-400" : "text-white/40"}`}>
-                                {marketStatus.swedenOpen ? "Öppen" : "Stängd"}
+                                {marketStatus.swedenOpen ? "Open" : "Closed"}
                             </span>
                         </div>
                         {/* US market status */}
@@ -137,7 +137,7 @@ export default function MarketPage() {
                             <span className="text-sm">🇺🇸</span>
                             <div className={`w-2 h-2 rounded-full ${marketStatus.usOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
                             <span className={`text-[10px] font-bold uppercase ${marketStatus.usOpen ? "text-emerald-400" : "text-white/40"}`}>
-                                {marketStatus.usOpen ? "Öppen" : "Stängd"}
+                                {marketStatus.usOpen ? "Open" : "Closed"}
                             </span>
                         </div>
                     </div>
@@ -148,7 +148,7 @@ export default function MarketPage() {
                         <div className="h-96 flex flex-col items-center justify-center gap-4">
                             <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
                             <p className="text-white/40 font-bold uppercase tracking-widest text-[10px]">
-                                Hämtar marknadsdata...
+                                Loading market data...
                             </p>
                         </div>
                     ) : (
@@ -187,9 +187,9 @@ export default function MarketPage() {
                             <div className="flex items-center gap-2 mb-6">
                                 <span className="text-xs font-bold text-white/40 uppercase tracking-widest mr-2">Market:</span>
                                 {[
-                                    { id: "all" as const, label: "Alla", flag: "🌐" },
+                                    { id: "all" as const, label: "All", flag: "🌐" },
                                     { id: "us" as const, label: "USA", flag: "🇺🇸" },
-                                    { id: "se" as const, label: "Sverige", flag: "🇸🇪" }
+                                    { id: "se" as const, label: "Sweden", flag: "🇸🇪" }
                                 ].map((tab) => (
                                     <button
                                         key={tab.id}
@@ -210,7 +210,7 @@ export default function MarketPage() {
                                 <div className="rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden">
                                     <div className="px-6 py-4 border-b border-white/10 flex items-center gap-3 bg-emerald-500/5">
                                         <TrendingUp className="w-5 h-5 text-emerald-400" />
-                                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Dagens Vinnare</h3>
+                                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Today's Gainers</h3>
                                     </div>
                                     <div className="divide-y divide-white/5">
                                         {(moversData?.gainers || []).map((stock: StockMovement, i: number) => (
@@ -242,7 +242,7 @@ export default function MarketPage() {
                                 <div className="rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden">
                                     <div className="px-6 py-4 border-b border-white/10 flex items-center gap-3 bg-rose-500/5">
                                         <TrendingDown className="w-5 h-5 text-rose-400" />
-                                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Dagens Förlorare</h3>
+                                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Today's Losers</h3>
                                     </div>
                                     <div className="divide-y divide-white/5">
                                         {(moversData?.losers || []).map((stock: StockMovement, i: number) => (
@@ -274,7 +274,7 @@ export default function MarketPage() {
                             {/* === MOST TRADED SECTION === */}
                             <section>
                                 <h2 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                    <Zap className="w-4 h-4" /> Mest Handlade
+                                    <Zap className="w-4 h-4" /> Most Traded
                                 </h2>
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     {(tradedData || []).map((stock: TradedStock) => (
@@ -294,7 +294,7 @@ export default function MarketPage() {
                                             <p className="text-xs text-white/40 truncate mb-3">{stock.name}</p>
                                             <div className="flex justify-between items-end">
                                                 <div>
-                                                    <p className="text-[10px] text-white/30 uppercase tracking-widest">Volym</p>
+                                                    <p className="text-[10px] text-white/30 uppercase tracking-widest">Volume</p>
                                                     <p className="text-sm font-bold text-white/70">{stock.volumeFormatted}</p>
                                                 </div>
                                                 <p className="text-xl font-black text-white tabular-nums">{stock.price.toFixed(2)}</p>
@@ -313,7 +313,7 @@ export default function MarketPage() {
                                     Ticko Sentiment Radar
                                 </h2>
                                 <p className="text-xs text-white/30 mb-6">
-                                    Baserat på {sentimentData?.totalPosts || 0} inlägg senaste 24 timmarna.
+                                    Based on {sentimentData?.totalPosts || 0} posts in the last 24 hours.
                                 </p>
 
                                 <div className="flex items-center justify-center gap-8 py-8">
@@ -323,7 +323,7 @@ export default function MarketPage() {
                                             <span className="text-2xl font-black text-white">{sentimentData?.fear || 30}%</span>
                                         </div>
                                         <p className={`text-xs font-bold uppercase tracking-widest mt-3 ${sentimentData?.dominant === "fear" ? "text-rose-400" : "text-white/40"
-                                            }`}>Rädsla</p>
+                                            }`}>Fear</p>
                                     </div>
                                     <div className="h-16 w-px bg-white/10" />
                                     <div className="text-center">
@@ -332,7 +332,7 @@ export default function MarketPage() {
                                             <span className="text-4xl font-black text-white">{sentimentData?.greed || 50}%</span>
                                         </div>
                                         <p className={`text-xs font-bold uppercase tracking-widest mt-3 ${sentimentData?.dominant === "greed" ? "text-emerald-400" : "text-white/40"
-                                            }`}>Girighet</p>
+                                            }`}>Greed</p>
                                     </div>
                                     <div className="h-16 w-px bg-white/10" />
                                     <div className="text-center">

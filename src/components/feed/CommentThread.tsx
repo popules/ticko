@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { sv } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Send, Loader2, Reply, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
@@ -67,12 +67,12 @@ function CommentItem({
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                         <span className={`${depth === 0 ? 'text-sm' : 'text-xs'} font-semibold text-white`}>
-                            {comment.profiles?.username || "Anonym"}
+                            {comment.profiles?.username || "Anonymous"}
                         </span>
                         <span className="text-xs text-white/30">
                             {formatDistanceToNow(new Date(comment.created_at), {
                                 addSuffix: true,
-                                locale: sv
+                                locale: enUS
                             })}
                         </span>
                     </div>
@@ -87,7 +87,7 @@ function CommentItem({
                             className="flex items-center gap-1 mt-2 text-xs text-white/40 hover:text-emerald-400 transition-colors"
                         >
                             <Reply className="w-3 h-3" />
-                            Svara
+                            Reply
                         </button>
                     )}
 
@@ -103,7 +103,7 @@ function CommentItem({
                                     type="text"
                                     value={replyContent}
                                     onChange={(e) => setReplyContent(e.target.value)}
-                                    placeholder={`Svara @${comment.profiles?.username || 'Anonym'}...`}
+                                    placeholder={`Reply to @${comment.profiles?.username || 'Anonymous'}...`}
                                     className="flex-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-xs text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 transition-all"
                                     autoFocus
                                 />
@@ -133,7 +133,7 @@ function CommentItem({
                             ) : (
                                 <ChevronDown className="w-3 h-3" />
                             )}
-                            {comment.replies!.length} {comment.replies!.length === 1 ? 'svar' : 'svar'}
+                            {comment.replies!.length} {comment.replies!.length === 1 ? 'reply' : 'replies'}
                         </button>
                     )}
                 </div>
@@ -295,7 +295,7 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
                 className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
             >
                 <MessageCircle className="w-4 h-4" />
-                <span>{count} kommentarer</span>
+                <span>{count} comments</span>
             </button>
 
             {/* Comments Section */}
@@ -332,7 +332,7 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
 
                                     {comments.length === 0 && !isLoading && (
                                         <p className="text-sm text-white/30 text-center py-4">
-                                            Inga kommentarer än. Var först!
+                                            No comments yet. Be the first!
                                         </p>
                                     )}
                                 </>
@@ -345,7 +345,7 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
                                         type="text"
                                         value={newComment}
                                         onChange={(e) => setNewComment(e.target.value)}
-                                        placeholder="Skriv en kommentar..."
+                                        placeholder="Write a comment..."
                                         className="flex-1 px-4 py-2.5 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 transition-all"
                                     />
                                     <button

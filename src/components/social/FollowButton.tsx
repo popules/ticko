@@ -65,8 +65,8 @@ export function FollowButton({ targetUserId, onFollowChange }: FollowButtonProps
             onClick={handleFollow}
             disabled={isPending}
             className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold transition-all ${isFollowing
-                    ? "bg-white/[0.06] text-white/80 hover:bg-rose-500/10 hover:text-rose-400 border border-white/10"
-                    : "btn-gradient text-white shadow-lg shadow-emerald-500/20"
+                ? "bg-white/[0.06] text-white/80 hover:bg-rose-500/10 hover:text-rose-400 border border-white/10"
+                : "btn-gradient text-white shadow-lg shadow-emerald-500/20"
                 } disabled:opacity-50`}
         >
             <AnimatePresence mode="wait">
@@ -88,7 +88,7 @@ export function FollowButton({ targetUserId, onFollowChange }: FollowButtonProps
                         className="flex items-center gap-2"
                     >
                         <UserMinus className="w-4 h-4" />
-                        <span>Följer</span>
+                        <span>Following</span>
                     </motion.div>
                 ) : (
                     <motion.div
@@ -99,7 +99,7 @@ export function FollowButton({ targetUserId, onFollowChange }: FollowButtonProps
                         className="flex items-center gap-2"
                     >
                         <UserPlus className="w-4 h-4" />
-                        <span>Följ</span>
+                        <span>Follow</span>
                     </motion.div>
                 )}
             </AnimatePresence>

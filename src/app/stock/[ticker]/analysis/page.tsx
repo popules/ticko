@@ -24,17 +24,17 @@ interface DeepDiveData {
 }
 
 const verdictStyles: Record<string, { bg: string; text: string; icon: React.ReactNode }> = {
-    "STARK KÖPARE": { bg: "bg-emerald-500/20", text: "text-emerald-400", icon: <TrendingUp className="w-6 h-6" /> },
-    "KÖPARE": { bg: "bg-emerald-500/10", text: "text-emerald-400", icon: <TrendingUp className="w-5 h-5" /> },
-    "HÅLL": { bg: "bg-amber-500/10", text: "text-amber-400", icon: <ShieldQuestion className="w-5 h-5" /> },
-    "SÄLJ": { bg: "bg-rose-500/10", text: "text-rose-400", icon: <TrendingDown className="w-5 h-5" /> },
-    "STARK SÄLJARE": { bg: "bg-rose-500/20", text: "text-rose-400", icon: <TrendingDown className="w-6 h-6" /> },
+    "STRONG BUY": { bg: "bg-emerald-500/20", text: "text-emerald-400", icon: <TrendingUp className="w-6 h-6" /> },
+    "BUY": { bg: "bg-emerald-500/10", text: "text-emerald-400", icon: <TrendingUp className="w-5 h-5" /> },
+    "HOLD": { bg: "bg-amber-500/10", text: "text-amber-400", icon: <ShieldQuestion className="w-5 h-5" /> },
+    "SELL": { bg: "bg-rose-500/10", text: "text-rose-400", icon: <TrendingDown className="w-5 h-5" /> },
+    "STRONG SELL": { bg: "bg-rose-500/20", text: "text-rose-400", icon: <TrendingDown className="w-6 h-6" /> },
 };
 
 const riskStyles: Record<string, { bg: string; text: string; icon: React.ReactNode }> = {
-    "Låg": { bg: "bg-emerald-500/10", text: "text-emerald-400", icon: <ShieldCheck className="w-4 h-4" /> },
-    "Medel": { bg: "bg-amber-500/10", text: "text-amber-400", icon: <ShieldQuestion className="w-4 h-4" /> },
-    "Hög": { bg: "bg-rose-500/10", text: "text-rose-400", icon: <ShieldAlert className="w-4 h-4" /> },
+    "Low": { bg: "bg-emerald-500/10", text: "text-emerald-400", icon: <ShieldCheck className="w-4 h-4" /> },
+    "Medium": { bg: "bg-amber-500/10", text: "text-amber-400", icon: <ShieldQuestion className="w-4 h-4" /> },
+    "High": { bg: "bg-rose-500/10", text: "text-rose-400", icon: <ShieldAlert className="w-4 h-4" /> },
 };
 
 export default function DeepDiveAnalysisPage() {
@@ -67,8 +67,8 @@ export default function DeepDiveAnalysisPage() {
         fetchAnalysis();
     }, [ticker]);
 
-    const verdictStyle = data?.verdict ? verdictStyles[data.verdict] || verdictStyles["HÅLL"] : verdictStyles["HÅLL"];
-    const riskStyle = data?.riskLevel ? riskStyles[data.riskLevel] || riskStyles["Medel"] : riskStyles["Medel"];
+    const verdictStyle = data?.verdict ? verdictStyles[data.verdict] || verdictStyles["HOLD"] : verdictStyles["HOLD"];
+    const riskStyle = data?.riskLevel ? riskStyles[data.riskLevel] || riskStyles["Medium"] : riskStyles["Medium"];
 
     return (
         <div className="flex min-h-screen">
@@ -79,7 +79,7 @@ export default function DeepDiveAnalysisPage() {
                 <header className="sticky top-0 z-10 backdrop-blur-xl bg-[#020617]/80 border-b border-white/10 px-6 py-5">
                     <div className="flex items-center gap-4">
                         <Link
-                            href={`/aktie/${ticker}`}
+                            href={`/stock/${ticker}`}
                             className="p-2 -ml-2 rounded-xl hover:bg-white/[0.06] text-white/60 hover:text-white transition-colors"
                         >
                             <ArrowLeft className="w-5 h-5" />
@@ -93,7 +93,7 @@ export default function DeepDiveAnalysisPage() {
                             </div>
                             {data && (
                                 <p className="text-xs text-white/30 mt-1">
-                                    Genererad: {new Date(data.generatedAt).toLocaleString("sv-SE")}
+                                    Generated: {new Date(data.generatedAt).toLocaleString("en-US")}
                                 </p>
                             )}
                         </div>
@@ -111,7 +111,7 @@ export default function DeepDiveAnalysisPage() {
                                 </div>
                             </div>
                             <p className="text-white/50 font-bold uppercase tracking-widest text-xs">
-                                AI analyserar {ticker}...
+                                AI analyzing {ticker}...
                             </p>
                             <Loader2 className="w-6 h-6 animate-spin text-violet-400" />
                         </div>
@@ -130,7 +130,7 @@ export default function DeepDiveAnalysisPage() {
                             <div className={`p-8 rounded-[2rem] border border-white/10 ${verdictStyle.bg}`}>
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-xs text-white/40 uppercase tracking-widest mb-2">AI:s Slutgiltiga Bedömning</p>
+                                        <p className="text-xs text-white/40 uppercase tracking-widest mb-2">AI's Final Assessment</p>
                                         <div className="flex items-center gap-3">
                                             <span className={`${verdictStyle.text}`}>{verdictStyle.icon}</span>
                                             <h2 className={`text-3xl font-black ${verdictStyle.text}`}>{data.verdict}</h2>
@@ -183,7 +183,7 @@ export default function DeepDiveAnalysisPage() {
                             <div className="p-6 rounded-[2rem] bg-amber-500/5 border border-amber-500/10">
                                 <div className="flex items-center gap-2 mb-4">
                                     <Zap className="w-5 h-5 text-amber-400" />
-                                    <h3 className="text-sm font-bold text-amber-400 uppercase tracking-widest">Kommande Katalysatorer</h3>
+                                    <h3 className="text-sm font-bold text-amber-400 uppercase tracking-widest">Upcoming Catalysts</h3>
                                 </div>
                                 <ul className="space-y-3">
                                     {data.catalysts.map((item, idx) => (

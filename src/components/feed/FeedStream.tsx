@@ -202,7 +202,7 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
             <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-6 text-center border border-white/10">
                 <p className="text-rose-400">Could not load feed</p>
                 <p className="text-sm text-white/40 mt-1">
-                    {error instanceof Error ? error.message : "Okänt fel"}
+                    {error instanceof Error ? error.message : "Unknown error"}
                 </p>
             </div>
         );
@@ -235,7 +235,7 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
                             : "text-white/40 hover:text-white"
                             }`}
                     >
-                        Följer
+                        Following
                     </button>
                 </div>
             )}
@@ -243,7 +243,7 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
             {/* Live indicator */}
             <div className="flex items-center justify-between px-2">
                 <h2 className="text-lg font-semibold text-white">
-                    {tickerFilter ? `$${tickerFilter}` : feedType === "global" ? UI_STRINGS.liveFeed : "Inlägg från personer du följer"}
+                    {tickerFilter ? `$${tickerFilter}` : feedType === "global" ? UI_STRINGS.liveFeed : "Posts from people you follow"}
                 </h2>
                 <button
                     onClick={() => setIsLive(!isLive)}

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { sv } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { Bell, Heart, MessageCircle, User, Loader2, Check } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
@@ -91,7 +91,7 @@ export default function AlertsPage() {
     };
 
     const getLink = (n: Notification) => {
-        if (n.type === 'follow') return `/profil/${n.profiles?.username}`;
+        if (n.type === 'follow') return `/profile/${n.profiles?.username}`;
         if (n.type === 'like' || n.type === 'comment') return `/post/${n.entity_id}`;
         return '#';
     };
@@ -114,14 +114,14 @@ export default function AlertsPage() {
             <main className="flex-1 border-x border-white/5 overflow-y-auto">
                 <div className="max-w-2xl mx-auto py-8 px-4">
                     <div className="flex items-center justify-between mb-8">
-                        <h1 className="text-2xl font-extrabold text-white tracking-tight">Notiser</h1>
+                        <h1 className="text-2xl font-extrabold text-white tracking-tight">Notifications</h1>
                         {notifications.some(n => !n.is_read) && (
                             <button
                                 onClick={markAllRead}
                                 className="flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
                             >
                                 <Check className="w-4 h-4" />
-                                Markera alla som lästa
+                                Mark all as read
                             </button>
                         )}
                     </div>
@@ -130,7 +130,7 @@ export default function AlertsPage() {
                         {notifications.length === 0 ? (
                             <div className="text-center py-12 bg-white/[0.02] rounded-3xl border border-dashed border-white/10">
                                 <Bell className="w-8 h-8 text-white/20 mx-auto mb-3" />
-                                <p className="text-white/40">Inga nya notiser</p>
+                                <p className="text-white/40">No new notifications</p>
                             </div>
                         ) : (
                             notifications.map((n) => (
@@ -155,14 +155,14 @@ export default function AlertsPage() {
                                                         <span className="text-[8px] font-bold text-indigo-300">{n.profiles?.username?.[0] || "?"}</span>
                                                     )}
                                                 </div>
-                                                <span className="font-bold text-white text-sm">@{n.profiles?.username || "Okänd"}</span>
-                                                <span className="text-white/40 text-xs">• {formatDistanceToNow(new Date(n.created_at), { addSuffix: true, locale: sv })}</span>
+                                                <span className="font-bold text-white text-sm">@{n.profiles?.username || "Unknown"}</span>
+                                                <span className="text-white/40 text-xs">• {formatDistanceToNow(new Date(n.created_at), { addSuffix: true, locale: enUS })}</span>
                                             </div>
                                             <p className="text-sm text-white/80">
-                                                {n.type === 'like' && "gillade ditt inlägg"}
-                                                {n.type === 'comment' && `kommenterade: "${n.content || ''}"`}
-                                                {n.type === 'follow' && "började följa dig"}
-                                                {n.type === 'system' && (n.content || "Systemmeddelande")}
+                                                {n.type === 'like' && "liked your post"}
+                                                {n.type === 'comment' && `commented: "${n.content || ''}"`}
+                                                {n.type === 'follow' && "started following you"}
+                                                {n.type === 'system' && (n.content || "System notification")}
                                             </p>
                                         </div>
                                         {!n.is_read && (
