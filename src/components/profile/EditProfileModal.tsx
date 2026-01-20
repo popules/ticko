@@ -58,7 +58,7 @@ export function EditProfileModal({
             onUpdate({ username, bio, location });
             onClose();
         } catch (err: any) {
-            setError(err.message || "Kunde inte uppdatera profilen. Försök igen.");
+            setError(err.message || "Could not update profile. Please try again.");
             console.error("Profile update error:", err);
         } finally {
             setIsSubmitting(false);

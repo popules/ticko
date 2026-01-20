@@ -41,7 +41,7 @@ export async function GET(_request: Request) {
 
         if (stocks.length === 0) {
             return NextResponse.json({
-                message: "Vi kunde inte hämta marknadsdata just nu. Försök igen senare."
+                message: "We could not fetch market data right now. Please try again later."
             });
         }
 

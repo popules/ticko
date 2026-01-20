@@ -29,11 +29,11 @@ export default function ContactPage() {
                 body: JSON.stringify({ name, email, subject, message })
             });
 
-            if (!res.ok) throw new Error("Kunde inte skicka meddelandet");
+            if (!res.ok) throw new Error("Could not send message");
 
             setIsSuccess(true);
         } catch (err: any) {
-            setError(err.message || "Ett fel uppstod. Försök igen senare.");
+            setError(err.message || "An error occurred. Please try again later.");
         } finally {
             setIsSubmitting(false);
         }
@@ -53,7 +53,7 @@ export default function ContactPage() {
                         <TickoLogo />
                     </Link>
                     <Link href="/logga-in" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
-                        Logga in
+                        Log in
                     </Link>
                 </div>
             </nav>
@@ -66,7 +66,7 @@ export default function ContactPage() {
                 >
                     <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">Kontakta oss</h1>
                     <p className="text-white/50 text-lg max-w-xl mx-auto">
-                        Har du frågor, förslag eller vill du bara säga hej? Vi svarar oftast inom 24 timmar.
+                        Do you have questions, suggestions, or just want to say hi? We usually answer within 24 hours.
                     </p>
                 </motion.div>
 
@@ -92,7 +92,7 @@ export default function ContactPage() {
                             </div>
                             <h3 className="text-lg font-bold mb-1">Support</h3>
                             <p className="text-white/50 text-sm leading-relaxed">
-                                För teknisk hjälp eller anmälningar, skicka ett mail så hjälper vårt team dig så snart som möjligt.
+                                For technical help or reports, send an email and our team will help you as soon as possible.
                             </p>
                         </div>
                     </motion.div>
@@ -110,7 +110,7 @@ export default function ContactPage() {
                                     <CheckCircle2 className="w-10 h-10 text-emerald-400" />
                                 </div>
                                 <h2 className="text-2xl font-bold mb-2">Tack för ditt meddelande!</h2>
-                                <p className="text-white/50 mb-8 lowercase text-sm">Vi har tagit emot ditt meddelande och återkommer till dig inom kort.</p>
+                                <p className="text-white/50 mb-8 lowercase text-sm">We have received your message and will get back to you shortly.</p>
                                 <button
                                     onClick={() => setIsSuccess(false)}
                                     className="px-8 py-3 bg-white text-black rounded-full font-bold text-sm transform transition-all active:scale-95"

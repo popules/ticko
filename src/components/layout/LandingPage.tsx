@@ -628,8 +628,8 @@ export function LandingPage() {
                             <p className="text-white/40 text-sm max-w-sm mt-4 leading-relaxed">
                                 The modern community for investors. Discuss stocks, follow sentiment, and build your track record.
                             </p>
-                            <a href="mailto:hej@ticko.se" className="text-emerald-400/80 hover:text-emerald-400 text-sm font-medium mt-4 block transition-colors">
-                                hej@ticko.se
+                            <a href="mailto:hello@ticko.se" className="text-emerald-400/80 hover:text-emerald-400 text-sm font-medium mt-4 block transition-colors">
+                                hello@ticko.se
                             </a>
                         </div>
 

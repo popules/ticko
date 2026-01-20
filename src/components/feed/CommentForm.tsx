@@ -93,7 +93,7 @@ export function CommentForm({ postId, postOwnerId, onCommentAdded }: CommentForm
                 <input
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    placeholder="Svara på inlägget... (@användarnamn för att nämna)"
+                    placeholder="Reply to post... (@username to mention)"
                     className="w-full bg-transparent border-none outline-none text-white placeholder:text-white/40 h-10 focus:ring-0"
                     disabled={isSubmitting}
                 />

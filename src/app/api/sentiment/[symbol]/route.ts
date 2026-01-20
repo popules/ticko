@@ -51,7 +51,7 @@ export async function GET(
             sentimentData = {
                 sentiment: 50,
                 upside: 0,
-                summary: "Kunde inte analysera sentimentet just nu.",
+                summary: "Could not analyze sentiment right now.",
                 confidence: "low",
             };
         }

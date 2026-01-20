@@ -82,7 +82,7 @@ export default function ChooseAliasPage() {
             .eq("id", user.id);
 
         if (updateError) {
-            setError("Kunde inte spara användarnamnet. Försök igen.");
+            setError("Could not save username. Please try again.");
             setIsLoading(false);
         } else {
             // Also update auth metadata
@@ -164,7 +164,7 @@ export default function ChooseAliasPage() {
                                 </div>
                             </div>
                             <p className="text-xs text-white/40 mt-2">
-                                Endast bokstäver, siffror och understreck. 3-20 tecken.
+                                Only letters, numbers, and underscores. 3-20 characters.
                             </p>
                         </div>
 

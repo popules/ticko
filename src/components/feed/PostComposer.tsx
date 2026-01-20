@@ -75,7 +75,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                     else if (predictionPeriod === "3m") now.setMonth(now.getMonth() + 3);
                     targetDate = now.toISOString();
                 } else {
-                    throw new Error("Kunde inte hämta aktuellt pris för förutsägelse");
+                    throw new Error("Could not fetch current price for prediction");
                 }
             }
 
@@ -122,7 +122,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
             onNewPost?.();
         } catch (err: any) {
             console.error("Post error:", err);
-            setError(err.message || "Kunde inte publicera inlägget");
+            setError(err.message || "Could not publish post");
         }
 
         setIsSubmitting(false);
@@ -138,15 +138,15 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                 <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
                     <AtSign className="w-6 h-6 text-emerald-400" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">Gå med i diskussionen</h3>
+                <h3 className="text-lg font-bold text-white mb-2">Join the discussion</h3>
                 <p className="text-white/40 mb-6 text-sm max-w-xs mx-auto">
-                    Logga in för att dela dina insikter, följa andra investerare och bygga din portfölj.
+                    Log in to share your insights, follow other investors, and build your portfolio.
                 </p>
                 <a
                     href="/logga-in"
                     className="inline-flex items-center gap-2 px-8 py-3 btn-gradient text-white rounded-xl font-bold text-sm hover:scale-[1.02] transition-all"
                 >
-                    Logga in nu
+                    Log in now
                 </a>
             </div>
         );
@@ -167,7 +167,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
             <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder={tickerFilter ? `Vad tänker du om $${tickerFilter}?` : "Vad händer på marknaden?"}
+                placeholder={tickerFilter ? `What do you think about $${tickerFilter}?` : "What's happening in the market?"}
                 className="w-full bg-transparent border-none outline-none resize-none text-white placeholder:text-white/40 min-h-[80px] text-sm leading-relaxed focus:ring-0"
                 disabled={isSubmitting}
                 rows={3}
@@ -213,7 +213,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                 <div className="mt-4 p-4 rounded-xl bg-[#020617] border border-white/10 space-y-3 animate-in fade-in slide-in-from-top-2">
                     {pollOptions.map((option, index) => (
                         <div key={index} className="flex items-center gap-2">
-                            <span className="text-white/30 text-xs font-bold w-12 text-right">Val {index + 1}</span>
+                            <span className="text-white/30 text-xs font-bold w-12 text-right">Opt {index + 1}</span>
                             <input
                                 type="text"
                                 value={option}
@@ -222,7 +222,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                                     newOptions[index] = e.target.value;
                                     setPollOptions(newOptions);
                                 }}
-                                placeholder={`Alternativ ${index + 1}`}
+                                placeholder={`Option ${index + 1}`}
                                 className="flex-1 bg-white/[0.04] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-500/50 outline-none transition-colors"
                             />
                             {index > 1 && (
@@ -246,7 +246,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                             className="ml-14 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1"
                         >
                             <Plus className="w-3 h-3" />
-                            Lägg till alternativ
+                            Add option
                         </button>
                     )}
                 </div>
@@ -259,7 +259,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                         type="button"
                         onClick={() => setShowGiphyPicker(!showGiphyPicker)}
                         className={`p-2.5 rounded-full transition-colors ${showGiphyPicker ? 'bg-violet-500/10 text-violet-400' : 'text-emerald-400 hover:bg-emerald-500/10'}`}
-                        title="Lägg till GIF"
+                        title="Add GIF"
                     >
                         <Image className="w-5 h-5" />
                     </button>
@@ -272,7 +272,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                             setSentiment(null);
                         }}
                         className={`p-2.5 rounded-full transition-colors ${isPoll ? 'bg-blue-500/10 text-blue-400' : 'text-emerald-400 hover:bg-emerald-500/10'}`}
-                        title="Skapa omröstning"
+                        title="Create poll"
                     >
                         <BarChart2 className="w-5 h-5" />
                     </button>
@@ -315,7 +315,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                                     }`}
                             >
                                 <TrendingUp className="w-3 h-3" />
-                                {isPrediction ? "Kursmål PÅ" : "Kursmål"}
+                                {isPrediction ? "Target Price ON" : "Target Price"}
                             </button>
 
                             {isPrediction && (
@@ -325,10 +325,10 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                                         onChange={(e) => setPredictionPeriod(e.target.value)}
                                         className="bg-[#020617] border border-white/10 rounded-lg px-2 py-1 text-[10px] font-bold text-white/70 outline-none"
                                     >
-                                        <option value="1w">1 vecka</option>
-                                        <option value="1m">1 månad</option>
-                                        <option value="3m">3 månader</option>
-                                        <option value="1y">1 år</option>
+                                        <option value="1w">1 week</option>
+                                        <option value="1m">1 month</option>
+                                        <option value="3m">3 months</option>
+                                        <option value="1y">1 year</option>
                                     </select>
                                     {stockData && (
                                         <span className="hidden sm:inline-flex text-[10px] text-emerald-400 font-medium ml-2 bg-emerald-500/10 px-2 py-1 rounded animate-in fade-in">
@@ -355,7 +355,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                         {isSubmitting ? (
                             <div className="w-5 h-5 border-2 border-[#020617]/30 border-t-[#020617] rounded-full animate-spin" />
                         ) : (
-                            "Publicera"
+                            "Publish"
                         )}
                     </button>
                 </div>

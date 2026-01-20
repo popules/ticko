@@ -69,7 +69,7 @@ export default function DiscoveryPage() {
 
             } catch (error) {
                 console.error("Failed to add to watchlist on swipe:", error);
-                setToast({ message: "Kunde inte spara aktien", type: "error" });
+                setToast({ message: "Could not save stock", type: "error" });
                 setTimeout(() => setToast(null), 3000);
             }
         }

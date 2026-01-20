@@ -35,6 +35,6 @@ export async function createCheckoutSession(
         return { checkoutUrl: checkout.url };
     } catch (error) {
         console.error("Polar checkout error:", error);
-        return { error: "Kunde inte skapa betalningssession" };
+        return { error: "Could not create payment session" };
     }
 }

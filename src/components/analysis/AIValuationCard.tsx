@@ -68,7 +68,7 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
     if (aiError) {
         return (
             <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-8 border border-white/10 text-center">
-                <p className="text-rose-400">Kunde inte utföra AI-analys</p>
+                <p className="text-rose-400">Could not perform AI analysis</p>
                 <p className="text-sm text-white/40 mt-2">Kontrollera OpenAI API-nyckel i .env.local</p>
             </div>
         );
@@ -181,7 +181,7 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
             {/* Legal Disclaimer */}
             <div className="pt-4 border-t border-white/5">
                 <p className="text-[10px] text-white/30 text-center leading-relaxed">
-                    AI-analysen är baserad på historisk data och offentlig information. Den ska ses som ett komplement till din egen research och utgör inte en köp- eller säljrekommendation.
+                    The AI analysis is based on historical data and public information. It should be seen as a complement to your own research and does not constitute a buy or sell recommendation.
                 </p>
             </div>
         </div>

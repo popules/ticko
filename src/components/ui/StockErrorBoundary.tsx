@@ -49,7 +49,7 @@ export class StockErrorBoundary extends Component<Props, State> {
                             className="flex items-center gap-2 px-8 py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-2xl font-bold text-sm transition-all shadow-xl shadow-rose-500/20"
                         >
                             <RefreshCw className="w-4 h-4" />
-                            Försök igen
+                            Try again
                         </button>
                     </div>
                 )

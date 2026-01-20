@@ -200,7 +200,7 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
     if (error) {
         return (
             <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-6 text-center border border-white/10">
-                <p className="text-rose-400">Kunde inte ladda flödet</p>
+                <p className="text-rose-400">Could not load feed</p>
                 <p className="text-sm text-white/40 mt-1">
                     {error instanceof Error ? error.message : "Okänt fel"}
                 </p>

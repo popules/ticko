@@ -57,7 +57,7 @@ export default function DeepDiveAnalysisPage() {
                 const result = await res.json();
                 setData(result);
             } catch (err) {
-                setError("Kunde inte hämta analys. Försök igen senare.");
+                setError("Could not fetch analysis. Please try again later.");
                 console.error(err);
             } finally {
                 setIsLoading(false);
@@ -200,7 +200,7 @@ export default function DeepDiveAnalysisPage() {
                             {/* Disclaimer */}
                             <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center">
                                 <p className="text-[10px] text-white/30 uppercase tracking-widest">
-                                    Denna analys är AI-genererad och utgör inte finansiell rådgivning. Gör alltid din egen research.
+                                    This analysis is AI-generated and does not constitute financial advice. Always do your own research.
                                 </p>
                             </div>
                         </motion.div>

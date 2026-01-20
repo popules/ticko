@@ -43,7 +43,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
             console.error("Failed to fetch insights:", error);
             setData({
                 insight: null,
-                message: "Kunde inte hämta insikter just nu. Försök igen senare.",
+                message: "Could not fetch insights right now. Please try again later.",
             });
         } finally {
             setIsLoading(false);
@@ -59,7 +59,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                     </div>
                     <div>
                         <h3 className="text-sm font-bold text-white">Ticko AI</h3>
-                        <p className="text-[10px] text-white/40">Personliga insikter</p>
+                        <p className="text-[10px] text-white/40">Personal Insights</p>
                     </div>
                 </div>
 
@@ -68,7 +68,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                         onClick={fetchInsights}
                         disabled={isLoading}
                         className="p-2 rounded-lg hover:bg-white/5 text-white/40 hover:text-white transition-colors"
-                        title="Uppdatera"
+                        title="Refresh"
                     >
                         <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
                     </button>
@@ -88,7 +88,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                             <Sparkles className="w-8 h-8 text-violet-400" />
                         </div>
                         <p className="text-white/60 text-sm mb-4 max-w-xs mx-auto">
-                            Få AI-driven analys av dina trading-mönster. Vad gör du bra? Vad kan förbättras?
+                            Get AI-driven analysis of your trading patterns. What are you doing well? What can be improved?
                         </p>
                         <button
                             onClick={fetchInsights}
@@ -98,12 +98,12 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                             {isLoading ? (
                                 <>
                                     <Loader2 className="w-4 h-4 animate-spin" />
-                                    Analyserar...
+                                    Analyzing...
                                 </>
                             ) : (
                                 <>
                                     <Brain className="w-4 h-4" />
-                                    Analysera min trading
+                                    Analyze my trading
                                 </>
                             )}
                         </button>
@@ -117,7 +117,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                         className="text-center py-8"
                     >
                         <Loader2 className="w-8 h-8 animate-spin text-violet-400 mx-auto mb-3" />
-                        <p className="text-white/40 text-sm">AI:n gräver i din historik...</p>
+                        <p className="text-white/40 text-sm">The AI is digging into your history...</p>
                     </motion.div>
                 ) : data?.insight ? (
                     <motion.div
@@ -151,7 +151,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                                         <Clock className="w-3 h-3 text-blue-400" />
                                     </div>
                                     <p className="text-lg font-black text-white">{data.stats.avgHoldDays}d</p>
-                                    <p className="text-[10px] text-white/40">Snitt hålltid</p>
+                                    <p className="text-[10px] text-white/40">Avg Hold Time</p>
                                 </div>
                             </div>
                         )}
@@ -172,7 +172,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                         className="text-center py-6"
                     >
                         <p className="text-white/50 text-sm mb-4">
-                            {data?.message || (data as any)?.error || "Något gick fel vid analysen. Försök igen."}
+                            {data?.message || (data as any)?.error || "Something went wrong during the analysis. Please try again."}
                         </p>
 
                         {/* Retry button inside the empty state */}
@@ -180,7 +180,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                             onClick={fetchInsights}
                             className="text-xs text-white/30 underline hover:text-white/50"
                         >
-                            Försök igen
+                            Try again
                         </button>
                     </motion.div>
                 )}

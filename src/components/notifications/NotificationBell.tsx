@@ -5,7 +5,7 @@ import { Bell, Heart, MessageCircle, UserPlus, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
-import { sv } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 
@@ -81,13 +81,13 @@ export function NotificationBell() {
     };
 
     const getMessage = (n: any) => {
-        const actor = n.actor?.username || "Någon";
+        const actor = n.actor?.username || "Someone";
         switch (n.type) {
-            case "like": return <span><b>{actor}</b> gillade ditt inlägg</span>;
-            case "comment": return <span><b>{actor}</b> kommenterade ditt inlägg</span>;
-            case "mention": return <span><b>{actor}</b> nämnde dig i en kommentar</span>;
-            case "follow": return <span><b>{actor}</b> började följa dig</span>;
-            default: return <span>Ny händelse från <b>{actor}</b></span>;
+            case "like": return <span><b>{actor}</b> liked your post</span>;
+            case "comment": return <span><b>{actor}</b> commented on your post</span>;
+            case "mention": return <span><b>{actor}</b> mentioned you in a comment</span>;
+            case "follow": return <span><b>{actor}</b> started following you</span>;
+            default: return <span>New event from <b>{actor}</b></span>;
         }
     };
 
@@ -123,7 +123,7 @@ export function NotificationBell() {
                             className="absolute left-0 mt-4 w-80 bg-[#0B0F17]/95 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl z-50 overflow-hidden"
                         >
                             <div className="p-5 border-b border-white/10 flex items-center justify-between">
-                                <h3 className="text-sm font-bold text-white uppercase tracking-widest">Notiser</h3>
+                                <h3 className="text-sm font-bold text-white uppercase tracking-widest">Notifications</h3>
                                 {isLoading && <Loader2 className="w-3 h-3 animate-spin text-white/40" />}
                             </div>
 
@@ -141,7 +141,7 @@ export function NotificationBell() {
                                                     {getMessage(n)}
                                                 </p>
                                                 <p className="text-[10px] text-white/30 mt-1 uppercase tracking-tighter">
-                                                    {formatDistanceToNow(new Date(n.created_at), { addSuffix: true, locale: sv })}
+                                                    {formatDistanceToNow(new Date(n.created_at), { addSuffix: true, locale: enUS })}
                                                 </p>
                                             </div>
                                             {!n.is_read && (
@@ -152,7 +152,7 @@ export function NotificationBell() {
                                 ) : (
                                     <div className="p-12 text-center">
                                         <Bell className="w-12 h-12 text-white/5 mx-auto mb-4" />
-                                        <p className="text-sm text-white/20 italic">Inga notiser ännu.</p>
+                                        <p className="text-sm text-white/20 italic">No notifications yet.</p>
                                     </div>
                                 )}
                             </div>
@@ -162,7 +162,7 @@ export function NotificationBell() {
                                 onClick={() => setIsOpen(false)}
                                 className="block p-4 text-center text-xs font-bold text-emerald-400 hover:bg-white/[0.04] transition-colors"
                             >
-                                Visa alla notiser
+                                Show all notifications
                             </Link>
                         </motion.div>
                     </>

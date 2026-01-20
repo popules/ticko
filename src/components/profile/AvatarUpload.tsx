@@ -69,7 +69,7 @@ export function AvatarUpload({ currentUrl, onUploadComplete }: AvatarUploadProps
 
         } catch (error: any) {
             console.error("Upload failed:", error);
-            alert("Kunde inte ladda upp bilden: " + error.message);
+            alert("Could not upload image: " + error.message);
             // Revert preview on error
             setPreviewUrl(currentUrl);
         } finally {

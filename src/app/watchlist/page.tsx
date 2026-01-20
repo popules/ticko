@@ -66,12 +66,12 @@ export default function WatchlistPage() {
                 <Sidebar />
                 <main className="flex-1 flex flex-col items-center justify-center p-6 text-center border-x border-white/5">
                     <Star className="w-12 h-12 text-white/10 mb-6" />
-                    <h1 className="text-xl font-extrabold text-white mb-2">Bevakningslista</h1>
+                    <h1 className="text-xl font-extrabold text-white mb-2">Watchlist</h1>
                     <p className="text-white/50 mb-8 max-w-sm">
-                        Logga in för att spara och bevaka dina favoritaktier.
+                        Log in to save and track your favorite stocks.
                     </p>
                     <Link href="/logga-in" className="px-8 py-3 bg-emerald-500 text-[#020617] font-bold rounded-xl hover:bg-emerald-400 transition-colors">
-                        Logga in
+                        Log in
                     </Link>
                 </main>
                 <RightPanel />
@@ -85,8 +85,8 @@ export default function WatchlistPage() {
 
             <main className="flex-1 border-x border-white/5">
                 <div className="p-8 border-b border-white/5">
-                    <h1 className="text-2xl font-extrabold text-white tracking-tight">Bevakningslista</h1>
-                    <p className="text-[13px] text-white/40 font-medium mt-1">Håll koll på dina favoriter</p>
+                    <h1 className="text-2xl font-extrabold text-white tracking-tight">Watchlist</h1>
+                    <p className="text-[13px] text-white/40 font-medium mt-1">Keep track of your favorites</p>
                 </div>
 
                 <div className="p-8">
@@ -114,7 +114,7 @@ export default function WatchlistPage() {
                                                 </div>
                                                 <div>
                                                     <h3 className="text-base font-bold text-white">{stock.symbol}</h3>
-                                                    <p className="text-xs text-white/40 font-medium">{stock.name || 'Aktie'}</p>
+                                                    <p className="text-xs text-white/40 font-medium">{stock.name || 'Stock'}</p>
                                                 </div>
                                             </div>
 
@@ -135,7 +135,7 @@ export default function WatchlistPage() {
                                                 removeFromWatchlist(stock.symbol);
                                             }}
                                             className="absolute md:opacity-0 md:group-hover:opacity-100 right-4 top-1/2 -translate-y-1/2 p-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg transition-all"
-                                            title="Ta bort"
+                                            title="Remove"
                                         >
                                             <Trash2 className="w-5 h-5" />
                                         </button>
@@ -146,12 +146,12 @@ export default function WatchlistPage() {
                     ) : (
                         <div className="text-center py-20 rounded-[3rem] bg-white/[0.02] border border-white/5 border-dashed">
                             <Star className="w-12 h-12 text-white/10 mx-auto mb-4" />
-                            <h3 className="text-lg font-bold text-white mb-2">Din lista är tom</h3>
+                            <h3 className="text-lg font-bold text-white mb-2">Your list is empty</h3>
                             <p className="text-white/40 mb-6 max-w-sm mx-auto">
-                                Sök upp aktier du är intresserad av och klicka på stjärnan för att lägga till dem här.
+                                Search for stocks you are interested in and click the star to add them here.
                             </p>
                             <Link href="/marknad" className="px-6 py-3 bg-white/[0.06] hover:bg-white/10 text-white rounded-xl font-bold transition-all">
-                                Gå till Marknaden
+                                Go to Market
                             </Link>
                         </div>
                     )}

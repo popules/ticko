@@ -16,11 +16,11 @@ interface ReportBody {
 }
 
 const REASON_LABELS: Record<string, string> = {
-    market_manipulation: "Marknadsmanipulation / Pump & Dump",
-    spam: "Spam eller annonsering",
-    harassment: "Trakasserier eller hatpropaganda",
-    misinformation: "Falsk information",
-    other: "Annat"
+    market_manipulation: "Market Manipulation / Pump & Dump",
+    spam: "Spam or advertising",
+    harassment: "Harassment or hate speech",
+    misinformation: "False Information",
+    other: "Other"
 };
 
 export async function POST(request: NextRequest) {
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
                                 
                                 <p><strong>Innehåll:</strong></p>
                                 <blockquote style="background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; border-left: 4px solid #10b981; margin: 0;">
-                                    ${post?.content || "Kunde inte hämta innehåll"}
+                                    ${post?.content || "Could not fetch content"}
                                 </blockquote>
                                 
                                 <p style="margin-top: 24px;">

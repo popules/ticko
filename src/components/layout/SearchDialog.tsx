@@ -68,7 +68,7 @@ export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                             autoFocus
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Sök aktier ($TSLA) eller användare (@namn)..."
+                            placeholder="Search stocks ($TSLA) or users (@username)..."
                             className="flex-1 bg-transparent border-none outline-none text-white placeholder:text-white/30 text-lg h-8"
                         />
                         {isLoading && <Loader2 className="w-5 h-5 animate-spin text-emerald-500" />}
@@ -78,7 +78,7 @@ export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                         {/* Stocks */}
                         {results.stocks.length > 0 && (
                             <div className="mb-4">
-                                <h3 className="px-3 py-2 text-xs font-bold text-white/40 uppercase tracking-wider">Aktier</h3>
+                                <h3 className="px-3 py-2 text-xs font-bold text-white/40 uppercase tracking-wider">Stocks</h3>
                                 {results.stocks.map((stock: any) => (
                                     <Link
                                         key={stock.symbol}
@@ -104,7 +104,7 @@ export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                         {/* Users */}
                         {results.users.length > 0 && (
                             <div className="mb-2">
-                                <h3 className="px-3 py-2 text-xs font-bold text-white/40 uppercase tracking-wider">Användare</h3>
+                                <h3 className="px-3 py-2 text-xs font-bold text-white/40 uppercase tracking-wider">Users</h3>
                                 {results.users.map((user: any) => (
                                     <Link
                                         key={user.id}
@@ -134,15 +134,15 @@ export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
                         {query.length > 1 && !isLoading && results.stocks.length === 0 && results.users.length === 0 && (
                             <div className="p-8 text-center text-white/30">
-                                Inga resultat för "{query}"
+                                No results for "{query}"
                             </div>
                         )}
 
                         {!query && (
                             <div className="p-8 text-center">
                                 <p className="text-sm text-white/30">
-                                    Sök efter <span className="text-emerald-400 font-mono">$TSLA</span>, <span className="text-emerald-400 font-mono">$VOLV</span><br />
-                                    eller community-medlemmar.
+                                    Search for <span className="text-emerald-400 font-mono">$TSLA</span>, <span className="text-emerald-400 font-mono">$VOLV</span><br />
+                                    or community members.
                                 </p>
                             </div>
                         )}

@@ -339,7 +339,7 @@ export async function awardAchievement(userId: string, achievementKey: string): 
         await (supabase as any).from("notifications").insert({
             user_id: userId,
             type: "achievement",
-            title: `🏆 Ny prestation: ${achievement.name}!`,
+            title: `🏆 New Achievement: ${achievement.name}!`,
             content: achievement.description,
             read: false,
         });

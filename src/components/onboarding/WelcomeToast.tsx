@@ -56,7 +56,7 @@ export function WelcomeToast() {
                                     Välkommen till Ticko! 🚀
                                 </h3>
                                 <p className="text-xs text-white/50 leading-relaxed mb-3">
-                                    Utforska marknaden och gå med i Sveriges största investeringscommunity.
+                                    Explore the market and join our growing investment community.
                                 </p>
                                 <Link
                                     href="/upptack"

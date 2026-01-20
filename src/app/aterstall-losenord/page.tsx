@@ -22,7 +22,7 @@ export default function ResetPasswordPage() {
         const { error } = await resetPassword(email);
 
         if (error) {
-            setError("Kunde inte skicka återställningslänk. Kontrollera din e-postadress.");
+            setError("Could not send recovery link. Check your email address.");
             setIsLoading(false);
         } else {
             setIsSuccess(true);

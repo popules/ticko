@@ -85,7 +85,7 @@ export function AddToPortfolioModal({
                 setShares(1);
             }, 1500);
         } catch (err) {
-            setError("Kunde inte lägga till i portföljen. Försök igen.");
+            setError("Could not add to portfolio. Please try again.");
             console.error("Portfolio error:", err);
         } finally {
             setIsSubmitting(false);

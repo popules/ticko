@@ -99,7 +99,7 @@ export function GiphyPicker({ onSelect, onClose }: GiphyPickerProps) {
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Sök GIF..."
+                        placeholder="Search GIF..."
                         className="w-full bg-white/[0.06] border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 text-sm"
                     />
                 </div>

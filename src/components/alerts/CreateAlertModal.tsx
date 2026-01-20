@@ -48,7 +48,7 @@ export function CreateAlertModal({
 
             onClose();
         } catch (err) {
-            setError("Kunde inte skapa varningen. Försök igen.");
+            setError("Could not create alert. Please try again.");
             console.error("Alert creation error:", err);
         } finally {
             setIsSubmitting(false);

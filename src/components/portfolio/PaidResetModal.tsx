@@ -39,7 +39,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
             // Redirect to Polar checkout
             window.location.href = data.checkoutUrl;
         } catch {
-            setError("Kunde inte ansluta till betalning");
+            setError("Could not connect to payment");
             setIsLoading(false);
         }
     };
@@ -92,7 +92,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                                 </h3>
                                 <p className="text-white/60 text-sm leading-relaxed">
                                     Nollställ din historik, hämta <span className="text-emerald-400 font-bold">100 000 kr</span> i nytt kapital
-                                    och visa att du hör hemma i toppen.
+                                    and show that you belong at the top.
                                 </p>
                             </div>
 
@@ -149,7 +149,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                                 ) : (
                                     <>
                                         <CreditCard className="w-4 h-4" />
-                                        Betala och återställ
+                                        Pay and reset
                                     </>
                                 )}
                             </button>

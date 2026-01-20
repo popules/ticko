@@ -114,7 +114,7 @@ export default function SettingsPage() {
             const res = await fetch('/api/account/delete', { method: 'DELETE' });
             if (!res.ok) {
                 const data = await res.json();
-                throw new Error(data.error || 'Kunde inte radera konto');
+                throw new Error(data.error || 'Could not delete account');
             }
 
             // Sign out and redirect
@@ -278,7 +278,7 @@ export default function SettingsPage() {
                                         Är du säker? Detta går inte att ångra.
                                     </p>
                                     <p className="text-xs text-white/40 mt-1">
-                                        Alla dina inlägg, kommentarer och reaktioner kommer tas bort permanent.
+                                        All your posts, comments, and reactions will be permanently deleted.
                                     </p>
                                 </div>
                             </div>

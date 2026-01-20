@@ -39,7 +39,7 @@ export async function DELETE(
 
         if (deleteError) {
             console.error("Delete error:", deleteError);
-            return NextResponse.json({ error: "Kunde inte ta bort inlägg" }, { status: 500 });
+            return NextResponse.json({ error: "Could not delete post" }, { status: 500 });
         }
 
         return NextResponse.json({ success: true, message: "Inlägg borttaget" });

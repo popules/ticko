@@ -12,11 +12,11 @@ interface ReportModalProps {
 }
 
 const REPORT_REASONS = [
-    { id: "market_manipulation", label: "Marknadsmanipulation / Pump & Dump", icon: AlertTriangle, color: "text-amber-400" },
-    { id: "spam", label: "Spam eller annonsering", icon: Flag, color: "text-blue-400" },
-    { id: "harassment", label: "Trakasserier eller hatpropaganda", icon: ShieldCheck, color: "text-rose-400" },
-    { id: "misinformation", label: "Falsk information", icon: AlertTriangle, color: "text-orange-400" },
-    { id: "other", label: "Annat", icon: Flag, color: "text-white/40" },
+    { id: "market_manipulation", label: "Market Manipulation / Pump & Dump", icon: AlertTriangle, color: "text-amber-400" },
+    { id: "spam", label: "Spam or advertising", icon: Flag, color: "text-blue-400" },
+    { id: "harassment", label: "Harassment or hate speech", icon: ShieldCheck, color: "text-rose-400" },
+    { id: "misinformation", label: "False Information", icon: AlertTriangle, color: "text-orange-400" },
+    { id: "other", label: "Other", icon: Flag, color: "text-white/40" },
 ];
 
 export function ReportModal({ isOpen, onClose, postId }: ReportModalProps) {

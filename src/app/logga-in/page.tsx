@@ -25,7 +25,7 @@ export default function LoginPage() {
         const { error } = await signIn(email, password);
 
         if (error) {
-            setError("Fel e-post eller lösenord");
+            setError("Invalid email or password");
             setIsLoading(false);
         } else {
             router.push("/");
@@ -36,7 +36,7 @@ export default function LoginPage() {
         setIsGoogleLoading(true);
         const { error } = await signInWithGoogle();
         if (error) {
-            setError("Kunde inte logga in med Google");
+            setError("Could not log in with Google");
             setIsGoogleLoading(false);
         }
     };
@@ -60,14 +60,14 @@ export default function LoginPage() {
 
                 {/* Login card */}
                 <div className="bg-white/[0.04] backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl">
-                    <h1 className="text-2xl font-bold text-white mb-2">Välkommen tillbaka</h1>
-                    <p className="text-white/50 mb-8">Logga in för att fortsätta till {APP_CONFIG.name}</p>
+                    <h1 className="text-2xl font-bold text-white mb-2">Welcome back</h1>
+                    <p className="text-white/50 mb-8">Log in to continue to {APP_CONFIG.name}</p>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         {/* Email */}
                         <div>
                             <label className="block text-sm font-medium text-white/70 mb-2">
-                                E-post
+                                Email
                             </label>
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -75,7 +75,7 @@ export default function LoginPage() {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="din@email.se"
+                                    placeholder="your@email.com"
                                     className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
                                     required
                                 />
@@ -85,7 +85,7 @@ export default function LoginPage() {
                         {/* Password */}
                         <div>
                             <label className="block text-sm font-medium text-white/70 mb-2">
-                                Lösenord
+                                Password
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -104,7 +104,7 @@ export default function LoginPage() {
                                     href="/aterstall-losenord"
                                     className="text-sm text-gray-400 hover:text-white/70 transition-colors"
                                 >
-                                    Glömt lösenord?
+                                    Forgot password?
                                 </Link>
                             </div>
                         </div>
@@ -126,7 +126,7 @@ export default function LoginPage() {
                                 <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
                                 <>
-                                    Logga in
+                                    Log in
                                     <ArrowRight className="w-5 h-5" />
                                 </>
                             )}
@@ -136,7 +136,7 @@ export default function LoginPage() {
                     {/* Divider */}
                     <div className="flex items-center gap-4 my-6">
                         <div className="flex-1 h-px bg-white/10" />
-                        <span className="text-sm text-white/40">eller logga in med</span>
+                        <span className="text-sm text-white/40">or log in with</span>
                         <div className="flex-1 h-px bg-white/10" />
                     </div>
 
@@ -168,16 +168,16 @@ export default function LoginPage() {
                                         d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                                     />
                                 </svg>
-                                Fortsätt med Google
+                                Continue with Google
                             </>
                         )}
                     </button>
 
                     {/* Register link */}
                     <p className="text-center text-white/50 mt-6">
-                        Har du inget konto?{" "}
+                        Don't have an account?{" "}
                         <Link href="/registrera" className="text-emerald-400 hover:text-emerald-300 font-bold">
-                            Registrera dig
+                            Sign up
                         </Link>
                     </p>
                 </div>

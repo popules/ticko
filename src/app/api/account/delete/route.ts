@@ -26,7 +26,7 @@ export async function DELETE() {
 
         if (deleteError) {
             console.error("Delete user error:", deleteError);
-            return NextResponse.json({ error: "Kunde inte radera konto" }, { status: 500 });
+            return NextResponse.json({ error: "Could not delete account" }, { status: 500 });
         }
 
         return NextResponse.json({ success: true, message: "Konto raderat" });

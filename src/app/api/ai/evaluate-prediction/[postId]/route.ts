@@ -40,7 +40,7 @@ export async function POST(
         const stockData = await res.json();
 
         if (!stockData || !stockData.price) {
-            throw new Error("Kunde inte hämta aktuellt pris för evaluering");
+            throw new Error("Could not fetch current price for evaluation");
         }
 
         const currentPrice = stockData.price;

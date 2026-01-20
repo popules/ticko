@@ -50,7 +50,7 @@ AKTIEDATA:
     } catch (error: any) {
         console.error("Copilot error:", error);
         return NextResponse.json(
-            { reply: "Jag har lite problem att koppla upp mig mot marknaden just nu. Försök igen om en stund." },
+            { reply: "I'm having trouble connecting to the market right now. Please try again in a moment." },
             { status: 500 }
         );
     }

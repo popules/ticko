@@ -20,7 +20,7 @@ export function TickoCopilot() {
         {
             id: "welcome",
             role: "assistant",
-            content: "Hej! Jag är din Ticko Copilot. Jag kan hjälpa dig med marknadsanalys, aktiedata eller sentimentkoll. Vad undrar du idag?",
+            content: "Hi! I am your Ticko Copilot. I can help you with market analysis, stock data, or sentiment checks. What's on your mind today?",
             timestamp: Date.now(),
         },
     ]);
@@ -69,7 +69,7 @@ export function TickoCopilot() {
             const botMsg: Message = {
                 id: (Date.now() + 1).toString(),
                 role: "assistant",
-                content: data.reply || "Jag kunde inte svara på det just nu.",
+                content: data.reply || "I could not answer that right now.",
                 timestamp: Date.now(),
             };
 
@@ -81,7 +81,7 @@ export function TickoCopilot() {
                 {
                     id: Date.now().toString(),
                     role: "assistant",
-                    content: "Ett fel uppstod. Försök igen senare.",
+                    content: "An error occurred. Please try again later.",
                     timestamp: Date.now(),
                 },
             ]);

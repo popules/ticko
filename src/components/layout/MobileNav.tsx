@@ -10,11 +10,11 @@ export function MobileNav() {
     const { open } = useSearch();
 
     const navItems = [
-        { icon: Home, label: "Hem", href: "/" },
-        { icon: Search, label: "Sök", action: open },
-        { icon: TrendingUp, label: "Marknad", href: "/marknad" },
-        { icon: Wallet, label: "Portfölj", href: "/portfolio" },
-        { icon: User, label: "Profil", href: "/profil" },
+        { icon: Home, label: "Home", href: "/" },
+        { icon: Search, label: "Search", action: open },
+        { icon: TrendingUp, label: "Market", href: "/marknad" },
+        { icon: Wallet, label: "Portfolio", href: "/portfolio" },
+        { icon: User, label: "Profile", href: "/profil" },
     ];
 
     return (

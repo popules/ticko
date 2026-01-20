@@ -24,7 +24,7 @@ const slides = [
         icon: TrendingUp,
         color: "from-emerald-400 to-emerald-600",
         title: "Följ sentimentet",
-        description: "Håll koll på vad marknaden tycker. Se trender och diskussioner för att fatta bättre beslut.",
+        description: "Keep track of market sentiment. See trends and discussions to make better decisions.",
     },
 ];
 

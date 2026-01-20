@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { sv } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     Bell,
@@ -90,13 +90,13 @@ export function NotificationList() {
     };
 
     const getMessage = (notification: Notification) => {
-        const actor = notification.actor?.username || "Någon";
+        const actor = notification.actor?.username || "Someone";
         switch (notification.type) {
-            case "like": return `${actor} gillade ditt inlägg`;
-            case "comment": return `${actor} kommenterade ditt inlägg`;
-            case "follow": return `${actor} började följa dig`;
-            case "alert": return "En prisvarning har triggats!";
-            default: return "Ny notifikation";
+            case "like": return `${actor} liked your post`;
+            case "comment": return `${actor} commented on your post`;
+            case "follow": return `${actor} started following you`;
+            case "alert": return "A price alert was triggered!";
+            default: return "New notification";
         }
     };
 
@@ -136,14 +136,14 @@ export function NotificationList() {
                         >
                             {/* Header */}
                             <div className="flex items-center justify-between p-4 border-b border-white/10">
-                                <h3 className="font-bold text-white">Notifikationer</h3>
+                                <h3 className="font-bold text-white">Notifications</h3>
                                 {unreadCount > 0 && (
                                     <button
                                         onClick={markAllAsRead}
                                         className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
                                     >
                                         <Check className="w-3 h-3" />
-                                        Markera alla som lästa
+                                        Mark all as read
                                     </button>
                                 )}
                             </div>
@@ -157,7 +157,7 @@ export function NotificationList() {
                                 ) : notifications.length === 0 ? (
                                     <div className="p-8 text-center text-white/40">
                                         <Bell className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                                        <p className="text-sm">Inga notifikationer</p>
+                                        <p className="text-sm">No notifications</p>
                                     </div>
                                 ) : (
                                     notifications.map((notification) => (
@@ -176,7 +176,7 @@ export function NotificationList() {
                                                 <p className="text-xs text-white/30 mt-0.5">
                                                     {formatDistanceToNow(new Date(notification.created_at), {
                                                         addSuffix: true,
-                                                        locale: sv,
+                                                        locale: enUS,
                                                     })}
                                                 </p>
                                             </div>

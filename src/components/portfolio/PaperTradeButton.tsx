@@ -165,7 +165,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                 setInputValue(inputMode === "shares" ? "1" : "1000");
             }, 2500);
         } catch (err) {
-            setError("Kunde inte genomföra köpet");
+            setError("Could not complete purchase");
         } finally {
             setIsLoading(false);
         }

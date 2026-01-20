@@ -124,7 +124,7 @@ export function MorningReport() {
                         {report}
                     </motion.div>
                 ) : (
-                    <p className="text-sm text-white/40 italic py-4">Kunde inte generera rapporten just nu.</p>
+                    <p className="text-sm text-white/40 italic py-4">Could not generate report right now.</p>
                 )}
             </div>
 

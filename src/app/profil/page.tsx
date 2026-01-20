@@ -64,10 +64,10 @@ export default function ProfilePage() {
                 <Sidebar />
                 <main className="flex-1 flex items-center justify-center p-6 text-center">
                     <div className="space-y-4">
-                        <h1 className="text-2xl font-black text-white uppercase tracking-widest">Logga in för att se profil</h1>
-                        <p className="text-white/50">Du måste vara inloggad för att se din personliga sida.</p>
+                        <h1 className="text-2xl font-black text-white uppercase tracking-widest">Log in to view profile</h1>
+                        <p className="text-white/50">You must be logged in to view your personal page.</p>
                         <Link href="/logga-in" className="btn-gradient px-6 py-2 rounded-xl text-white font-bold inline-block">
-                            Logga in
+                            Log in
                         </Link>
                     </div>
                 </main>
@@ -85,7 +85,7 @@ export default function ProfilePage() {
                     <div className="h-full flex flex-col items-center justify-center gap-4">
                         <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
                         <p className="text-white/40 font-bold uppercase tracking-widest text-xs">
-                            Hämtar profil...
+                            Loading profile...
                         </p>
                     </div>
                 ) : (
@@ -101,7 +101,7 @@ export default function ProfilePage() {
                             <div className="md:col-span-2 space-y-6">
                                 <div className="flex items-center gap-2 mb-2">
                                     <MessageSquare className="w-5 h-5 text-emerald-400" />
-                                    <h3 className="text-sm font-bold text-white uppercase tracking-widest">Dina Inlägg</h3>
+                                    <h3 className="text-sm font-bold text-white uppercase tracking-widest">Your Posts</h3>
                                 </div>
 
                                 {posts.length > 0 ? (
@@ -112,9 +112,9 @@ export default function ProfilePage() {
                                     </div>
                                 ) : (
                                     <div className="p-12 rounded-[2rem] border border-white/5 bg-white/[0.02] text-center space-y-4">
-                                        <p className="text-white/30 text-sm">Du har inte delat några tankar än.</p>
+                                        <p className="text-white/30 text-sm">You haven't shared any thoughts yet.</p>
                                         <Link href="/upptack" className="text-emerald-400 font-bold text-sm hover:underline block">
-                                            Utforska marknaden
+                                            Explore the market
                                         </Link>
                                     </div>
                                 )}
@@ -126,15 +126,15 @@ export default function ProfilePage() {
                                 <div className="p-6 rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.08] to-transparent">
                                     <div className="flex items-center gap-2 mb-6">
                                         <TrendingUp className="w-5 h-5 text-blue-400" />
-                                        <h3 className="text-sm font-bold text-white uppercase tracking-widest">Statistik</h3>
+                                        <h3 className="text-sm font-bold text-white uppercase tracking-widest">Statistics</h3>
                                     </div>
                                     <div className="space-y-4">
                                         <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
-                                            <span className="text-xs text-white/50">Inlägg</span>
+                                            <span className="text-xs text-white/50">Posts</span>
                                             <span className="text-sm font-bold text-white">{posts.length}</span>
                                         </div>
                                         <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
-                                            <span className="text-xs text-white/50">Rykte</span>
+                                            <span className="text-xs text-white/50">Reputation</span>
                                             <span className="text-sm font-bold text-emerald-400">{posts.reduce((sum, post) => sum + (post.up_count || 0), 0)}</span>
                                         </div>
                                         {/* Prediction stats */}
@@ -142,14 +142,14 @@ export default function ProfilePage() {
                                             <>
                                                 <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
                                                     <span className="text-xs text-white/50 flex items-center gap-1">
-                                                        <Target className="w-3 h-3" /> Träffsäkerhet
+                                                        <Target className="w-3 h-3" /> Accuracy
                                                     </span>
                                                     <span className="text-sm font-bold text-purple-400">
                                                         {Math.round(((profile?.correct_predictions || 0) / (profile?.total_predictions || 1)) * 100)}%
                                                     </span>
                                                 </div>
                                                 <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
-                                                    <span className="text-xs text-white/50">Förutsägelser</span>
+                                                    <span className="text-xs text-white/50">Predictions</span>
                                                     <span className="text-sm font-bold text-white">
                                                         {profile?.correct_predictions || 0}/{profile?.total_predictions || 0}
                                                     </span>
@@ -168,7 +168,7 @@ export default function ProfilePage() {
                                 <div className="p-6 rounded-[2rem] border border-white/10 bg-white/[0.02]">
                                     <div className="flex items-center gap-2 mb-6">
                                         <Star className="w-5 h-5 text-yellow-400" />
-                                        <h3 className="text-sm font-bold text-white uppercase tracking-widest">Bevakat</h3>
+                                        <h3 className="text-sm font-bold text-white uppercase tracking-widest">Watched</h3>
                                     </div>
                                     <div className="space-y-2">
                                         {watchlist.length > 0 ? (
@@ -185,7 +185,7 @@ export default function ProfilePage() {
                                                 </Link>
                                             ))
                                         ) : (
-                                            <p className="text-xs text-white/30 italic">Här kommer dina favoritaktier att synas.</p>
+                                            <p className="text-xs text-white/30 italic">Your favorite stocks will appear here.</p>
                                         )}
                                     </div>
                                 </div>

@@ -124,7 +124,7 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                         </div>
 
                         <p className="text-white/70 max-w-2xl text-[15px] leading-relaxed">
-                            {currentProfile.bio || "Ingen biografi ännu. Investerare som älskar trender och AI-analyser."}
+                            {currentProfile.bio || "No bio yet. Investor who loves trends and AI analysis."}
                         </p>
 
                         <BadgeRack userId={profile.id} />

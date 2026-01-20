@@ -364,7 +364,7 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
 
                             {!user && (
                                 <p className="text-xs text-white/30 text-center py-2">
-                                    Logga in för att kommentera
+                                    Log in to comment
                                 </p>
                             )}
                         </div>

@@ -13,7 +13,7 @@ interface PremiumGateProps {
 export function PremiumGate({
     children,
     featureName = "Premium-funktion",
-    description = "Registrera dig gratis för att låsa upp AI-analys, bevakningslistor och mycket mer."
+    description = "Sign up for free to unlock AI analysis, watchlists, and much more."
 }: PremiumGateProps) {
     const { user } = useAuth();
 
@@ -50,7 +50,7 @@ export function PremiumGate({
                     href="/logga-in"
                     className="mt-2 text-xs text-white/30 hover:text-white/60 transition-colors"
                 >
-                    Har redan konto? Logga in
+                    Already have an account? Log in
                 </Link>
             </div>
         </div>

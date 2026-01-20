@@ -46,7 +46,7 @@ export function AIAnalysisSection({ ticker, currencySymbol }: AIAnalysisSectionP
         <div className="space-y-4">
             <PremiumGate
                 featureName="AI-värdering"
-                description="Få AI-genererade riktkurser och fundamental analys. Gratis för registrerade användare."
+                description="Get AI-generated target prices and fundamental analysis. Free for registered users."
             >
                 <AIValuationCard
                     ticker={ticker}
@@ -56,7 +56,7 @@ export function AIAnalysisSection({ ticker, currencySymbol }: AIAnalysisSectionP
 
             <PremiumGate
                 featureName="Deep Dive-analys"
-                description="Djupgående AI-driven analys av bull/bear case och katalysatorer."
+                description="In-depth AI-driven analysis of bull/bear cases and catalysts."
             >
                 <Link
                     href={`/aktie/${ticker}/analys`}
@@ -68,7 +68,7 @@ export function AIAnalysisSection({ ticker, currencySymbol }: AIAnalysisSectionP
                         </div>
                         <div>
                             <h4 className="font-bold text-white text-sm">Gör en Deep Dive</h4>
-                            <p className="text-xs text-white/40">Få en djupgående AI-analys av bull/bear case och katalysatorer</p>
+                            <p className="text-xs text-white/40">Get an in-depth AI analysis of bull/bear cases and catalysts</p>
                         </div>
                     </div>
                     <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
@@ -96,7 +96,7 @@ export function PerformanceMetricsSection({ symbol }: PerformanceMetricsSectionP
             href="/registrera"
             className="flex items-center gap-2 text-sm text-white/40 hover:text-emerald-400 transition-colors group"
         >
-            <span>Se YTD, 1-års och 5-års avkastning.</span>
+            <span>View YTD, 1-year, and 5-year returns.</span>
             <span className="text-emerald-400 font-medium group-hover:underline">Gratis för registrerade användare.</span>
         </Link>
     );

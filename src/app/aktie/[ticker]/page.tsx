@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: AktiePageProps): Promise<Meta
     if (!stock) return { title: "Aktie hittades inte - Ticko" };
 
     return {
-        title: `${stock.name} ($${stock.symbol}) - Analys, sentiment och diskussion på Ticko`,
-        description: `Se senaste nytt, AI-analys och community-sentiment för ${stock.name}. Diskutera $${stock.symbol} med andra småsparare på Ticko.`,
+        title: `${stock.name} ($${stock.symbol}) - Analysis, sentiment, and discussion on Ticko`,
+        description: `See latest news, AI analysis, and community sentiment for ${stock.name}. Discuss $${stock.symbol} with other investors on Ticko.`,
         openGraph: {
             title: `${stock.name} ($${stock.symbol}) på Ticko`,
-            description: `Häng med i snacket kring ${stock.name}. AI-insikter och realtidsdata för svenska småsparare.`,
+            description: `Join the discussion about ${stock.name}. AI insights and real-time data for retail investors.`,
             images: [
                 {
                     url: `https://www.ticko.se/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`,

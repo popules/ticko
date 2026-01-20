@@ -33,7 +33,7 @@ export default function UpdatePasswordPage() {
         setIsLoading(true);
 
         if (!supabase) {
-            setError("Kunde inte ansluta till servern");
+            setError("Could not connect to server");
             setIsLoading(false);
             return;
         }
@@ -43,7 +43,7 @@ export default function UpdatePasswordPage() {
         });
 
         if (error) {
-            setError("Kunde inte uppdatera lösenordet. Försök igen.");
+            setError("Could not update password. Please try again.");
             setIsLoading(false);
         } else {
             setIsSuccess(true);

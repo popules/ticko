@@ -7,82 +7,82 @@ export default function IntegritetPage() {
     const sections = [
         {
             icon: Database,
-            title: "1. Insamling av data och rättslig grund",
-            content: "Vi behandlar dina personuppgifter för att fullgöra vårt avtal med dig eller baserat på vårt berättigade intresse att tillhandahålla en säker tjänst.",
+            title: "1. Data Collection and Legal Basis",
+            content: "We process your personal data to fulfill our agreement with you or based on our legitimate interest in providing a secure service.",
             subsections: [
-                { label: "Kontoinformation", text: "E-post och användarnamn (via Supabase)." },
-                { label: "Användarinnehåll", text: "Inlägg, kommentarer, bevakningslistor och portföljdata som du väljer att dela." },
-                { label: "Teknisk data", text: "IP-adress, webbläsartyp och enhetsinformation för säkerhetsanalys och spambekämpning." }
+                { label: "Account Information", text: "Email and username (via Supabase)." },
+                { label: "User Content", text: "Posts, comments, watchlists, and portfolio data that you choose to share." },
+                { label: "Technical Data", text: "IP address, browser type, and device information for security analysis and spam prevention." }
             ]
         },
         {
             icon: Eye,
-            title: "2. Offentlig data (Paper Trading)",
+            title: "2. Public Data (Paper Trading)",
             highlight: true,
-            content: "För att möjliggöra leaderboard och community-funktioner är följande data offentlig som standard:",
+            content: "To enable leaderboard and community features, the following data is public by default:",
             list: [
-                "Transaktioner i din pappersportfölj (köp/sälj)",
-                "P&L (Profit & Loss) data och avkastning",
-                "XP, Level och Win Streak",
-                "Ditt användarnamn och track record"
+                "Transactions in your paper portfolio (buy/sell)",
+                "P&L (Profit & Loss) data and returns",
+                "XP, Level, and Win Streak",
+                "Your username and track record"
             ],
-            footer: "Denna transparens är grundläggande för Tickos vision om verifierbara track records. Om du inte vill att din trading-data ska vara synlig bör du inte använda Paper Trading-funktionen."
+            footer: "This transparency is fundamental to Ticko's vision of verifiable track records. If you do not want your trading data to be visible, you should not use the Paper Trading function."
         },
         {
             icon: Shield,
-            title: "3. Användning av data",
-            content: "Din data används för att driva plattformen, möjliggöra social interaktion och tillhandahålla Ticko AI.",
-            footer: "Vid användning av Ticko AI skickas endast din specifika fråga till vår underleverantör; vi delar aldrig din personprofil eller e-post med AI-leverantörer utan ditt medgivande."
+            title: "3. Use of Data",
+            content: "Your data is used to operate the platform, enable social interaction, and provide Ticko AI.",
+            footer: "When using Ticko AI, only your specific query is sent to our sub-processor; we never share your personal profile or email with AI providers without your consent."
         },
         {
             icon: Share2,
-            title: "4. Delning med tredje part",
-            content: "Vi använder underleverantörer för drift:",
+            title: "4. Sharing with Third Parties",
+            content: "We use sub-processors for operations:",
             list: [
-                "Supabase (Databas & Auth)",
+                "Supabase (Database & Auth)",
                 "Vercel (Hosting)",
-                "OpenAI (AI-analys)"
+                "OpenAI (AI Analysis)"
             ],
-            footer: "Vid överföring av data utanför EU/EES säkerställer vi skyddet genom lagstadgade standardavtalsklausuler."
+            footer: "When transferring data outside EU/EES, we ensure protection through standard contractual clauses."
         },
         {
             icon: Trash2,
-            title: "5. Anonymisering vid radering",
-            content: "Om du väljer att radera ditt konto:",
+            title: "5. Anonymization upon Deletion",
+            content: "If you choose to delete your account:",
             list: [
-                "Alla personuppgifter (e-post, inloggningsdata) raderas permanent.",
-                "Inlägg och kommentarer kan komma att behållas i anonymiserad form för att inte förstöra sammanhanget i forumtrådar.",
-                "Anonymiserade inlägg visar 'Raderad användare' istället för ditt användarnamn."
+                "All personal data (email, login credentials) is permanently deleted.",
+                "Posts and comments may be retained in anonymized form to not destroy the context of forum threads.",
+                "Anonymized posts show 'Deleted User' instead of your username."
             ],
-            footer: "Detta säkerställer att diskussioner förblir meningsfulla även efter att en användare lämnat plattformen."
+            footer: "This ensures that discussions remain meaningful even after a user has left the platform."
         },
         {
             icon: Clock,
-            title: "6. Lagring",
-            content: "Vi lagrar dina uppgifter så länge ditt konto är aktivt. Inaktiva konton kan efter 24 månaders inaktivitet raderas automatiskt med förvarning via e-post."
+            title: "6. Storage",
+            content: "We store your data as long as your account is active. Inactive accounts may be deleted automatically after 24 months of inactivity with prior notice via email."
         },
         {
             icon: Cookie,
-            title: "7. Cookies och spårning",
+            title: "7. Cookies and Tracking",
             highlight: true,
-            content: "Vi använder cookies för följande ändamål:",
+            content: "We use cookies for the following purposes:",
             list: [
-                "Nödvändiga cookies: För att hålla dig inloggad och säkerställa grundläggande funktionalitet.",
-                "Analyscookies: För att förstå hur tävlingen och plattformen används så att vi kan förbättra upplevelsen.",
-                "Inga reklamcookies: Vi säljer aldrig din data till annonsörer."
+                "Necessary cookies: To keep you logged in and ensure basic functionality.",
+                "Analytics cookies: To understand how the competition and platform are used so we can improve the experience.",
+                "No advertising cookies: We never sell your data to advertisers."
             ],
-            footer: "Du kan hantera cookies via din webbläsares inställningar, men detta kan påverka plattformens funktionalitet."
+            footer: "You can manage cookies via your browser settings, but this may affect platform functionality."
         },
         {
             icon: UserCheck,
-            title: "8. Dina rättigheter (GDPR)",
-            content: "Du har rätt till:",
+            title: "8. Your Rights (GDPR)",
+            content: "You have the right to:",
             list: [
-                "Registerutdrag: Få veta vilken data vi har om dig.",
-                "Rättelse: Korrigera felaktig information.",
-                "Radering ('Rätten att bli glömd'): Ta bort ditt konto och personuppgifter.",
-                "Dataportabilitet: Exportera din data.",
-                "Invändning: Motsätta dig viss behandling."
+                "Registry Extract: Know what data we have about you.",
+                "Correction: Correct incorrect information.",
+                "Deletion ('Right to be forgotten'): Remove your account and personal data.",
+                "Data Portability: Export your data.",
+                "Objection: Object to certain processing."
             ],
             contact: "privacy@ticko.se"
         }
@@ -96,15 +96,15 @@ export default function IntegritetPage() {
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-6">
                         <Shield className="w-8 h-8 text-blue-400" />
                     </div>
-                    <h1 className="text-4xl font-bold text-white mb-4">Integritetspolicy för Ticko</h1>
-                    <p className="text-white/40 text-sm">Senast uppdaterad: 19 januari 2026</p>
+                    <h1 className="text-4xl font-bold text-white mb-4">Privacy Policy for Ticko</h1>
+                    <p className="text-white/40 text-sm">Last updated: January 19, 2026</p>
                 </div>
 
                 {/* GDPR Summary Box */}
                 <div className="bg-emerald-500/[0.05] border border-emerald-500/20 rounded-2xl p-6 mb-8">
-                    <h2 className="text-lg font-bold text-emerald-400 mb-3">Sammanfattning</h2>
+                    <h2 className="text-lg font-bold text-emerald-400 mb-3">Summary</h2>
                     <p className="text-white/60 leading-relaxed">
-                        Ticko samlar in e-post, användarnamn och trading-data. Din Paper Trading-data är offentlig för att möjliggöra leaderboarden. Vi säljer aldrig din data. Du kan när som helst radera ditt konto.
+                        Ticko collects email, username, and trading data. Your Paper Trading data is public to enable the leaderboard. We never sell your data. You can delete your account at any time.
                     </p>
                 </div>
 
@@ -162,11 +162,11 @@ export default function IntegritetPage() {
 
                                     {section.contact && (
                                         <p className="mt-4 text-white/60">
-                                            Kontakta oss på{" "}
+                                            Contact us at{" "}
                                             <a href={`mailto:${section.contact}`} className="text-blue-400 hover:text-blue-300 transition-colors">
                                                 {section.contact}
                                             </a>{" "}
-                                            för att utöva dina rättigheter.
+                                            to exercise your rights.
                                         </p>
                                     )}
                                 </div>
@@ -181,14 +181,14 @@ export default function IntegritetPage() {
                         href="/villkor"
                         className="text-white/40 hover:text-white/60 transition-colors"
                     >
-                        Användarvillkor
+                        Terms of Service
                     </Link>
                     <span className="text-white/20">|</span>
                     <Link
                         href="/"
                         className="text-white/40 hover:text-white/60 transition-colors"
                     >
-                        ← Tillbaka till Ticko
+                        ← Back to Ticko
                     </Link>
                 </div>
             </div>

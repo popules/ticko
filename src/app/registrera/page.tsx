@@ -25,22 +25,22 @@ export default function RegisterPage() {
         setError("");
 
         if (password !== confirmPassword) {
-            setError("Lösenorden matchar inte");
+            setError("Passwords do not match");
             return;
         }
 
         if (password.length < 6) {
-            setError("Lösenordet måste vara minst 6 tecken");
+            setError("Password must be at least 6 characters");
             return;
         }
 
         if (username.length < 3) {
-            setError("Användarnamnet måste vara minst 3 tecken");
+            setError("Username must be at least 3 characters");
             return;
         }
 
         if (!acceptedTerms) {
-            setError("Du måste godkänna användarvillkoren för att fortsätta");
+            setError("You must accept the terms of service to continue");
             return;
         }
 
@@ -49,7 +49,7 @@ export default function RegisterPage() {
         const { error } = await signUp(email, password, username);
 
         if (error) {
-            setError(error.message || "Något gick fel vid registreringen");
+            setError(error.message || "Something went wrong during registration");
             setIsLoading(false);
         } else {
             // Send welcome email (fire and forget - don't block on failure)
@@ -67,7 +67,7 @@ export default function RegisterPage() {
         setIsGoogleLoading(true);
         const { error } = await signInWithGoogle();
         if (error) {
-            setError("Kunde inte fortsätta med Google");
+            setError("Could not continue with Google");
             setIsGoogleLoading(false);
         }
     };
@@ -91,8 +91,8 @@ export default function RegisterPage() {
 
                 {/* Register card */}
                 <div className="bg-white/[0.04] backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl">
-                    <h1 className="text-2xl font-bold text-white mb-2">Skapa konto</h1>
-                    <p className="text-white/50 mb-6">Gå med i {APP_CONFIG.name} idag</p>
+                    <h1 className="text-2xl font-bold text-white mb-2">Create account</h1>
+                    <p className="text-white/50 mb-6">Join {APP_CONFIG.name} today</p>
 
                     {/* Google Signup - First for better conversion */}
                     <button
@@ -122,7 +122,7 @@ export default function RegisterPage() {
                                         d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                                     />
                                 </svg>
-                                Fortsätt med Google
+                                Continue with Google
                             </>
                         )}
                     </button>
@@ -130,7 +130,7 @@ export default function RegisterPage() {
                     {/* Divider */}
                     <div className="flex items-center gap-4 mb-6">
                         <div className="flex-1 h-px bg-white/10" />
-                        <span className="text-sm text-white/40">eller registrera med e-post</span>
+                        <span className="text-sm text-white/40">or sign up with email</span>
                         <div className="flex-1 h-px bg-white/10" />
                     </div>
 
@@ -138,7 +138,7 @@ export default function RegisterPage() {
                         {/* Username */}
                         <div>
                             <label className="block text-sm font-medium text-white/70 mb-2">
-                                Användarnamn
+                                Username
                             </label>
                             <div className="relative">
                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -146,7 +146,7 @@ export default function RegisterPage() {
                                     type="text"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
-                                    placeholder="Välj ett alias..."
+                                    placeholder="Choose an alias..."
                                     className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
                                     required
                                 />
@@ -156,7 +156,7 @@ export default function RegisterPage() {
                         {/* Email */}
                         <div>
                             <label className="block text-sm font-medium text-white/70 mb-2">
-                                E-post
+                                Email
                             </label>
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -164,7 +164,7 @@ export default function RegisterPage() {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="din@email.se"
+                                    placeholder="your@email.com"
                                     className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
                                     required
                                 />
@@ -174,7 +174,7 @@ export default function RegisterPage() {
                         {/* Password */}
                         <div>
                             <label className="block text-sm font-medium text-white/70 mb-2">
-                                Lösenord
+                                Password
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -192,7 +192,7 @@ export default function RegisterPage() {
                         {/* Confirm Password */}
                         <div>
                             <label className="block text-sm font-medium text-white/70 mb-2">
-                                Bekräfta lösenord
+                                Confirm password
                             </label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -222,7 +222,7 @@ export default function RegisterPage() {
                                 className="mt-1 h-4 w-4 rounded border-white/20 bg-white/5 text-emerald-500 focus:ring-emerald-500/30 focus:ring-offset-0"
                             />
                             <span className="text-sm text-white/60 leading-relaxed">
-                                Jag godkänner <Link href="/villkor" className="text-emerald-400 hover:underline" target="_blank">användarvillkoren</Link> och <Link href="/integritet" className="text-emerald-400 hover:underline" target="_blank">integritetspolicyn</Link>, och förstår att Ticko inte tillhandahåller finansiell rådgivning.
+                                I accept the <Link href="/villkor" className="text-emerald-400 hover:underline" target="_blank">terms of service</Link> and <Link href="/integritet" className="text-emerald-400 hover:underline" target="_blank">privacy policy</Link>, and understand that Ticko does not provide financial advice.
                             </span>
                         </label>
 
@@ -236,7 +236,7 @@ export default function RegisterPage() {
                                 <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
                                 <>
-                                    Skapa konto
+                                    Create account
                                     <ArrowRight className="w-5 h-5" />
                                 </>
                             )}
@@ -245,9 +245,9 @@ export default function RegisterPage() {
 
                     {/* Login link */}
                     <p className="text-center text-white/50 mt-6">
-                        Har du redan ett konto?{" "}
+                        Already have an account?{" "}
                         <Link href="/logga-in" className="text-emerald-400 hover:text-emerald-300 font-bold">
-                            Logga in
+                            Log in
                         </Link>
                     </p>
                 </div>

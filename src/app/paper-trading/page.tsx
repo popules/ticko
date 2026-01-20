@@ -317,9 +317,9 @@ export default function PaperTradingPage() {
                 <main className="flex-1 flex items-center justify-center">
                     <div className="text-center">
                         <Gamepad2 className="w-16 h-16 text-white/20 mx-auto mb-4" />
-                        <h2 className="text-xl font-bold text-white mb-2">Logga in för att testa paper trading</h2>
+                        <h2 className="text-xl font-bold text-white mb-2">Log in to try paper trading</h2>
                         <Link href="/logga-in" className="text-emerald-400 hover:underline">
-                            Logga in →
+                            Log in →
                         </Link>
                     </div>
                 </main>
@@ -475,7 +475,7 @@ export default function PaperTradingPage() {
                                 <div>
                                     <p className="text-sm font-bold text-rose-400">Portfölj under 25 000 kr</p>
                                     <p className="text-xs text-white/50 mt-1">
-                                        Du kan återställa till 100 000 kr och börja om.
+                                        You can reset to 100,000 kr and start over.
                                         {isOnCooldown && (
                                             <span className="text-amber-400 ml-2">
                                                 <Clock className="w-3 h-3 inline mr-1" />
@@ -560,7 +560,7 @@ export default function PaperTradingPage() {
                                     <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Inga virtuella innehav</h3>
                                     <p className="text-white/40 mb-6 max-w-md mx-auto text-sm">
                                         Du har {cashBalance.toLocaleString("sv-SE")} kr virtuella kronor att investera.
-                                        Gå till en aktiesida och klicka &quot;Paper Trade&quot;!
+                                        Go to a stock page and click &quot;Paper Trade&quot;!
                                     </p>
                                     <Link
                                         href="/upptack"
@@ -685,7 +685,7 @@ export default function PaperTradingPage() {
                                     <div className="text-center py-12">
                                         <History className="w-12 h-12 text-white/20 mx-auto mb-4" />
                                         <h3 className="text-lg font-bold text-white mb-2">Ingen historik ännu</h3>
-                                        <p className="text-white/40 text-sm">Dina köp och sälj kommer visas här.</p>
+                                        <p className="text-white/40 text-sm">Your buys and sells will appear here.</p>
                                     </div>
                                 ) : (
                                     <div className="space-y-4">
