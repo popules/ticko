@@ -93,7 +93,7 @@ export async function GET(request: Request) {
                             <span style="color: white; font-weight: 600;">$${ticker}</span>
                         </td>
                         <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: right;">
-                            <span style="color: rgba(255,255,255,0.5);">${stats.count} inlägg</span>
+                            <span style="color: rgba(255,255,255,0.5);">${stats.count} posts</span>
                         </td>
                         <td style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: right;">
                             <span style="color: ${stats.bullish > stats.bearish ? '#10B981' : '#F43F5E'};">
@@ -102,7 +102,7 @@ export async function GET(request: Request) {
                         </td>
                     </tr>
                 `).join('')
-                : '<tr><td colspan="3" style="padding: 24px; text-align: center; color: rgba(255,255,255,0.4);">Lugn vecka på marknaden!</td></tr>';
+                : '<tr><td colspan="3" style="padding: 24px; text-align: center; color: rgba(255,255,255,0.4);">Quiet week in the market!</td></tr>';
 
             const emailHtml = `
 <!DOCTYPE html>
@@ -130,10 +130,10 @@ export async function GET(request: Request) {
                     <tr>
                         <td style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 32px;">
                             <h1 style="margin: 0 0 8px 0; font-size: 24px; color: white; text-align: center;">
-                                Din veckorapport 📊
+                                Your Weekly Report 📊
                             </h1>
                             <p style="margin: 0 0 32px 0; color: rgba(255,255,255,0.5); text-align: center;">
-                                Hej ${user.username}! Här är vad som hände på Ticko denna vecka.
+                                Hi ${user.username}! Here's what happened on Ticko this week.
                             </p>
 
                             <!-- Stats -->
@@ -141,7 +141,7 @@ export async function GET(request: Request) {
                                 <tr>
                                     <td width="33%" style="text-align: center; padding: 16px;">
                                         <p style="margin: 0; font-size: 32px; font-weight: 800; color: #10B981;">${totalPosts}</p>
-                                        <p style="margin: 4px 0 0 0; font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase;">Nya inlägg</p>
+                                        <p style="margin: 4px 0 0 0; font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase;">New Posts</p>
                                     </td>
                                     <td width="33%" style="text-align: center; padding: 16px; border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1);">
                                         <p style="margin: 0; font-size: 32px; font-weight: 800; color: #F59E0B;">${totalLikes}</p>
@@ -149,14 +149,14 @@ export async function GET(request: Request) {
                                     </td>
                                     <td width="33%" style="text-align: center; padding: 16px;">
                                         <p style="margin: 0; font-size: 32px; font-weight: 800; color: #3B82F6;">+${newFollowers || 0}</p>
-                                        <p style="margin: 4px 0 0 0; font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase;">Följare</p>
+                                        <p style="margin: 4px 0 0 0; font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase;">Followers</p>
                                     </td>
                                 </tr>
                             </table>
 
                             <!-- Trending -->
                             <h3 style="margin: 0 0 16px 0; font-size: 14px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px;">
-                                🔥 Veckans mest diskuterade
+                                🔥 Most Discussed This Week
                             </h3>
                             <table width="100%" cellpadding="0" cellspacing="0" style="background: rgba(255,255,255,0.02); border-radius: 12px; overflow: hidden;">
                                 ${trendingHtml}
@@ -167,7 +167,7 @@ export async function GET(request: Request) {
                                 <tr>
                                     <td align="center">
                                         <a href="https://www.ticko.se" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #2DD4BF, #14B8A6); color: #0B0F17; font-weight: 700; font-size: 14px; text-decoration: none; border-radius: 12px;">
-                                            Se vad som händer →
+                                            See what's happening →
                                         </a>
                                     </td>
                                 </tr>
@@ -179,8 +179,8 @@ export async function GET(request: Request) {
                     <tr>
                         <td style="padding-top: 32px; text-align: center;">
                             <p style="margin: 0; font-size: 12px; color: rgba(255,255,255,0.3);">
-                                Du får detta mail för att du är medlem på Ticko.<br>
-                                <a href="https://www.ticko.se/settings" style="color: rgba(255,255,255,0.4);">Hantera notifikationer</a>
+                                You're receiving this email because you're a member of Ticko.<br>
+                                <a href="https://www.ticko.se/settings" style="color: rgba(255,255,255,0.4);">Manage notifications</a>
                             </p>
                         </td>
                     </tr>
@@ -203,7 +203,7 @@ export async function GET(request: Request) {
                     body: JSON.stringify({
                         from: "Ticko <weekly@ticko.se>",
                         to: user.email,
-                        subject: `📊 Din veckorapport på Ticko`,
+                        subject: `📊 Your Weekly Report on Ticko`,
                         html: emailHtml,
                     }),
                 });

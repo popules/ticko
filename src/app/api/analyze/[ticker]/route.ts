@@ -38,25 +38,25 @@ export async function GET(
         }
 
         const currentPrice = stockData.price;
-        const prompt = `Du är en erfaren finansanalytiker. Analysera aktien ${stockData.name} (${upperTicker}) och ge en kort värdering.
+        const prompt = `You are an experienced financial analyst. Analyze the stock ${stockData.name} (${upperTicker}) and provide a brief valuation.
         
-Aktuell data:
-- Kurs: ${currentPrice} ${stockData.currency}
-- Förändring: ${stockData.changePercent.toFixed(2)}%
-- Volym: ${stockData.volume}
-- Börsvärde: ${stockData.marketCap}
+Current data:
+- Price: ${currentPrice} ${stockData.currency}
+- Change: ${stockData.changePercent.toFixed(2)}%
+- Volume: ${stockData.volume}
+- Market Cap: ${stockData.marketCap}
 - P/E: ${stockData.pe}
-- 52v intervall: ${stockData.week52Range}
+- 52w Range: ${stockData.week52Range}
 
-Svara på svenska med följande JSON-format:
+Respond in the following JSON format:
 {
-  "fairValue": [ditt uppskattade rimliga värde som nummer],
-  "reasoning": "[en kort mening på svenska som förklarar din analys, max 100 tecken]",
+  "fairValue": [your estimated fair value as a number],
+  "reasoning": "[a short sentence explaining your analysis, max 100 characters]",
   "sentiment": "[bullish/bearish/neutral]",
-  "confidence": [0-100 som representerar din konfidensnivå]
+  "confidence": [0-100 representing your confidence level]
 }
 
-Basera din analys på typiska värderingsmetoder och marknadstrender. Var realistisk men ge en tydlig rekommendation.`;
+Base your analysis on typical valuation methods and market trends. Be realistic but give a clear recommendation.`;
 
         const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
@@ -64,7 +64,7 @@ Basera din analys på typiska värderingsmetoder och marknadstrender. Var realis
                 {
                     role: "system",
                     content:
-                        "Du är en professionell finansanalytiker som ger korta, koncisa aktievärderingar på svenska. Svara alltid med giltig JSON.",
+                        "You are a professional financial analyst who gives short, concise stock valuations. Always respond with valid JSON.",
                 },
                 {
                     role: "user",
@@ -91,7 +91,7 @@ Basera din analys på typiska värderingsmetoder och marknadstrender. Var realis
             // Fallback response if parsing fails
             analysis = {
                 fairValue: currentPrice * 1.1,
-                reasoning: "Teknisk analys indikerar potential för uppgång på kort sikt.",
+                reasoning: "Technical analysis indicates potential for short-term upside.",
                 sentiment: "neutral",
                 confidence: 60,
             };
@@ -101,7 +101,7 @@ Basera din analys på typiska värderingsmetoder och marknadstrender. Var realis
             ticker: upperTicker,
             currentPrice,
             fairValue: analysis.fairValue || currentPrice * 1.1,
-            reasoning: analysis.reasoning || "Ingen analys tillgänglig.",
+            reasoning: analysis.reasoning || "No analysis available.",
             sentiment: analysis.sentiment || "neutral",
             confidence: analysis.confidence || 50,
         };

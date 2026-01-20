@@ -27,27 +27,27 @@ export async function GET(
         }
 
 
-        const systemPrompt = `Du är en senior aktieanalytiker som ger djupgående, professionella analyser på svenska. Din uppgift är att ge en balanserad men insiktsfull analys av aktier. Svara ALLTID i följande JSON-format:
+        const systemPrompt = `You are a senior stock analyst who provides in-depth, professional analyses in English. Your task is to give a balanced but insightful analysis of stocks. ALWAYS respond in the following JSON format:
 
 {
   "bullCase": ["Argument 1", "Argument 2", "Argument 3"],
   "bearCase": ["Argument 1", "Argument 2", "Argument 3"],
-  "catalysts": ["Katalysator 1", "Katalysator 2"],
-  "verdict": "STARK KÖPARE" | "KÖPARE" | "HÅLL" | "SÄLJ" | "STARK SÄLJARE",
-  "verdictReason": "En mening som förklarar varför.",
-  "riskLevel": "Låg" | "Medel" | "Hög"
+  "catalysts": ["Catalyst 1", "Catalyst 2"],
+  "verdict": "STRONG BUY" | "BUY" | "HOLD" | "SELL" | "STRONG SELL",
+  "verdictReason": "One sentence explaining why.",
+  "riskLevel": "Low" | "Medium" | "High"
 }
 
-Håll varje punkt koncis (max 20 ord). Svara ENDAST med valid JSON, ingen annan text.`;
+Keep each point concise (max 20 words). Respond ONLY with valid JSON, no other text.`;
 
-        const userPrompt = `Analysera aktien ${stockData.name} (${upperTicker}):
-- Nuvarande pris: ${stockData.currencySymbol}${stockData.price.toFixed(2)}
-- Förändring idag: ${stockData.changePercent.toFixed(2)}%
-- P/E-tal: ${stockData.pe.toFixed(1)}
-- Börsvärde: ${stockData.marketCap}
-- 52-veckorsintervall: ${stockData.week52Range}
+        const userPrompt = `Analyze the stock ${stockData.name} (${upperTicker}):
+- Current price: ${stockData.currencySymbol}${stockData.price.toFixed(2)}
+- Change today: ${stockData.changePercent.toFixed(2)}%
+- P/E ratio: ${stockData.pe.toFixed(1)}
+- Market cap: ${stockData.marketCap}
+- 52-week range: ${stockData.week52Range}
 
-Ge en djupgående analys med bull case, bear case, kommande katalysatorer och din slutgiltiga bedömning.`;
+Provide an in-depth analysis with bull case, bear case, upcoming catalysts and your final verdict.`;
 
         const completion = await openai.chat.completions.create({
             model: "gpt-4o",

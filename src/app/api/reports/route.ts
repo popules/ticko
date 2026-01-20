@@ -93,35 +93,35 @@ export async function POST(request: NextRequest) {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        from: "Ticko Anmälningar <noreply@ticko.se>",
+                        from: "Ticko Reports <noreply@ticko.se>",
                         to: ADMIN_EMAIL,
-                        subject: `⚠️ Ny anmälan: ${REASON_LABELS[reason] || reason}`,
+                        subject: `⚠️ New Report: ${REASON_LABELS[reason] || reason}`,
                         html: `
                             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto;">
-                                <h2 style="color: #10b981;">🚨 Ny anmälan på Ticko</h2>
+                                <h2 style="color: #10b981;">🚨 New Report on Ticko</h2>
                                 
                                 <div style="background: #f8fafc; border-radius: 12px; padding: 20px; margin: 20px 0;">
-                                    <p style="margin: 0 0 12px 0;"><strong>Anledning:</strong> ${REASON_LABELS[reason] || reason}</p>
-                                    <p style="margin: 0 0 12px 0;"><strong>Författare:</strong> @${(post?.profiles as any)?.username || "Okänd"}</p>
-                                    <p style="margin: 0;"><strong>Inlägg ID:</strong> <code>${post_id}</code></p>
+                                    <p style="margin: 0 0 12px 0;"><strong>Reason:</strong> ${REASON_LABELS[reason] || reason}</p>
+                                    <p style="margin: 0 0 12px 0;"><strong>Author:</strong> @${(post?.profiles as any)?.username || "Unknown"}</p>
+                                    <p style="margin: 0;"><strong>Post ID:</strong> <code>${post_id}</code></p>
                                 </div>
                                 
-                                <p><strong>Innehåll:</strong></p>
+                                <p><strong>Content:</strong></p>
                                 <blockquote style="background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; border-left: 4px solid #10b981; margin: 0;">
                                     ${post?.content || "Could not fetch content"}
                                 </blockquote>
                                 
                                 <p style="margin-top: 24px;">
                                     <a href="https://ticko.se/post/${post_id}" style="background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">
-                                        Visa inlägg →
+                                        View Post →
                                     </a>
                                 </p>
                                 
                                 <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 32px 0;">
                                 
                                 <p style="color: #64748b; font-size: 12px;">
-                                    Rapport ID: ${report?.id}<br>
-                                    Tid: ${new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })}
+                                    Report ID: ${report?.id}<br>
+                                    Time: ${new Date().toLocaleString("en-US", { timeZone: "America/New_York" })}
                                 </p>
                             </div>
                         `

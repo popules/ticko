@@ -57,18 +57,18 @@ export async function GET(
         // Fallback: Generate placeholder news using symbol context
         const placeholderNews = [
             {
-                title: `${symbol}: Aktien i fokus denna vecka`,
+                title: `${symbol}: Stock in Focus This Week`,
                 url: "#",
-                source: "Ticko Analys",
-                summary: `Ticko har analyserat de senaste rörelserna i ${symbol} och ser intressanta mönster.`,
+                source: "Ticko Analysis",
+                summary: `Ticko has analyzed the latest movements in ${symbol} and sees interesting patterns.`,
                 publishedAt: new Date().toISOString(),
                 sentiment: "Neutral",
             },
             {
-                title: `Marknaden reagerar på ${symbol} kvartalsrapport`,
+                title: `Market Reacts to ${symbol} Quarterly Report`,
                 url: "#",
-                source: "Ticko Nyheter",
-                summary: `Investerare följer noga utvecklingen efter den senaste rapporten från ${symbol}.`,
+                source: "Ticko News",
+                summary: `Investors are closely following developments after the latest report from ${symbol}.`,
                 publishedAt: new Date(Date.now() - 3600000).toISOString(),
                 sentiment: "Bullish",
             },

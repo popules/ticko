@@ -29,11 +29,11 @@ export async function GET(
             messages: [
                 {
                     role: "system",
-                    content: `Du är Ticko, en AI-driven marknadsanalytiker. Analysera sentimentet för en aktie baserat på aktuella trender, nyheter och social buzz. Svara ENDAST med ett JSON-objekt utan markdown-formatering.`,
+                    content: `You are Ticko, an AI-driven market analyst. Analyze the sentiment for a stock based on current trends, news, and social buzz. Respond ONLY with a JSON object without markdown formatting.`,
                 },
                 {
                     role: "user",
-                    content: `Analysera sentimentet för ${symbol}. Returnera JSON: { "sentiment": 0-100, "upside": -20 till +20, "summary": "en kort mening", "confidence": "low"|"medium"|"high" }`,
+                    content: `Analyze the sentiment for ${symbol}. Return JSON: { "sentiment": 0-100, "upside": -20 to +20, "summary": "a short sentence", "confidence": "low"|"medium"|"high" }`,
                 },
             ],
             max_tokens: 200,

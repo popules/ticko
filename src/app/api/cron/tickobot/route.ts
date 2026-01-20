@@ -65,25 +65,25 @@ async function generateMarketPost(): Promise<string> {
     const mover = await getMarketMover();
 
     const prompt = mover
-        ? `Skriv ett kort, energiskt inlägg (max 150 tecken) om att ${mover.name} (${mover.ticker}) rört sig ${mover.change > 0 ? "upp" : "ner"} ${Math.abs(mover.change).toFixed(1)}% idag. Var nyfiken, inte rådgivande. Inkludera $${mover.ticker.replace(".ST", "")} som en cashtag.`
-        : `Skriv ett kort, engagerande inlägg (max 150 tecken) om börsen idag. Fråga vad folk håller koll på. Var social och nyfiken.`;
+        ? `Write a short, energetic post (max 150 characters) about ${mover.name} (${mover.ticker}) moving ${mover.change > 0 ? "up" : "down"} ${Math.abs(mover.change).toFixed(1)}% today. Be curious, not advisory. Include $${mover.ticker.replace(".ST", "")} as a cashtag.`
+        : `Write a short, engaging post (max 150 characters) about the stock market today. Ask what people are watching. Be social and curious.`;
 
     try {
         const openai = getOpenAI();
         if (!openai) {
-            return "God morgon! Vad håller ni koll på idag? 🔍";
+            return "Good morning! What are you watching today? 🔍";
         }
         const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
-                { role: "system", content: "Du är TickoBot, en vänlig börs-entusiast som delar marknadsuppdateringar på Ticko. Du ger ALDRIG råd, bara observationer och frågor." },
+                { role: "system", content: "You are TickoBot, a friendly stock market enthusiast sharing market updates on Ticko. You NEVER give advice, only observations and questions." },
                 { role: "user", content: prompt }
             ],
             max_tokens: 100
         });
-        return completion.choices[0]?.message?.content?.trim() || "Hur ser er torsdag ut på börsen? 📈";
+        return completion.choices[0]?.message?.content?.trim() || "How's your Thursday going in the market? 📈";
     } catch {
-        return "God morgon! Vad håller ni koll på idag? 🔍";
+        return "Good morning! What are you watching today? 🔍";
     }
 }
 

@@ -28,7 +28,7 @@ export async function GET(_request: Request) {
 
         if (!watchlist || watchlist.length === 0) {
             return NextResponse.json({
-                message: "Lägg till aktier i din watchlist för att få en personlig marknadsrapport!"
+                message: "Add stocks to your watchlist to get a personalized market report!"
             });
         }
 
@@ -57,17 +57,17 @@ export async function GET(_request: Request) {
                 )).join("\n");
 
                 const prompt = `
-Skapa en ${timeInfo.period}srapport för användarens watchlist.
+Create a ${timeInfo.period} report for the user's watchlist.
 
-AKTIER ATT ANALYSERA:
+STOCKS TO ANALYZE:
 ${stockContext}
 
-INSTRUKTIONER:
-- Börja med "${timeInfo.greeting}!" 
-- Nämn dagens vinnare och förlorare kort
-- Ge en observation eller insikt
-- Max 3 korta stycken totalt
-- Ton: Professionell men varm
+INSTRUCTIONS:
+- Start with "${timeInfo.greeting}!" 
+- Briefly mention today's winners and losers
+- Give an observation or insight
+- Max 3 short paragraphs total
+- Tone: Professional but warm
                 `;
 
                 const response = await openai.chat.completions.create({
@@ -91,9 +91,9 @@ INSTRUKTIONER:
             const sorted = [...stocks].sort((a, b) => b!.changePercent - a!.changePercent);
             const winner = sorted[0];
             const loser = sorted[sorted.length - 1];
-            const sentiment = winner!.changePercent > 0 ? "positiv" : "försiktig";
+            const sentiment = winner!.changePercent > 0 ? "positive" : "cautious";
 
-            report = `God morgon! Här är din snabbkoll på marknaden.\n\nMarknadsklimatet verkar ${sentiment} just nu. Din portfölj leds idag av ${winner!.name} (${winner!.symbol}) som rör sig ${winner!.changePercent > 0 ? '+' : ''}${winner!.changePercent.toFixed(2)}%.\n\nHåll ett öga på ${loser!.name} som har det lite tuffare. Lycka till med dagens handel!`;
+            report = `Good morning! Here's your quick market snapshot.\n\nMarket sentiment looks ${sentiment} right now. Your portfolio is led today by ${winner!.name} (${winner!.symbol}) moving ${winner!.changePercent > 0 ? '+' : ''}${winner!.changePercent.toFixed(2)}%.\n\nKeep an eye on ${loser!.name} which is having a tougher day. Good luck with today's trading!`;
         }
 
         return NextResponse.json({ report });

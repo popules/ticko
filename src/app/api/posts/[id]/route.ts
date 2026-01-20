@@ -12,7 +12,7 @@ export async function DELETE(
         // Get current user
         const { data: { user }, error: authError } = await supabase.auth.getUser();
         if (!user || authError) {
-            return NextResponse.json({ error: "Ej autentiserad" }, { status: 401 });
+            return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
         }
 
         // Get the post first to verify ownership
@@ -23,12 +23,12 @@ export async function DELETE(
             .single();
 
         if (fetchError || !post) {
-            return NextResponse.json({ error: "Inlägg hittades inte" }, { status: 404 });
+            return NextResponse.json({ error: "Post not found" }, { status: 404 });
         }
 
         // Check if user owns the post
         if (post.user_id !== user.id) {
-            return NextResponse.json({ error: "Ej behörig att ta bort detta inlägg" }, { status: 403 });
+            return NextResponse.json({ error: "Not authorized to delete this post" }, { status: 403 });
         }
 
         // Delete the post
@@ -42,9 +42,9 @@ export async function DELETE(
             return NextResponse.json({ error: "Could not delete post" }, { status: 500 });
         }
 
-        return NextResponse.json({ success: true, message: "Inlägg borttaget" });
+        return NextResponse.json({ success: true, message: "Post deleted" });
     } catch (error) {
         console.error("Delete post error:", error);
-        return NextResponse.json({ error: "Serverfel" }, { status: 500 });
+        return NextResponse.json({ error: "Server error" }, { status: 500 });
     }
 }

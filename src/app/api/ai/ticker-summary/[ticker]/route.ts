@@ -30,7 +30,7 @@ export async function GET(
 
         if (!posts || posts.length === 0) {
             return NextResponse.json({
-                summary: `Inga nyliga inlägg hittades för $${ticker}. Bli den första att dela din analys!`
+                summary: `No recent posts found for $${ticker}. Be the first to share your analysis!`
             });
         }
 
@@ -38,13 +38,13 @@ export async function GET(
         const postsContent = posts.map(p => p.content).join("\n---\n");
 
         const prompt = `
-Analysera följande ${posts.length} inlägg från Ticko-communityt gällande $${ticker}:
+Analyze the following ${posts.length} posts from the Ticko community regarding $${ticker}:
 
-INLÄGG:
+POSTS:
 ${postsContent}
 
-UPPGIFT:
-Sammanfatta community-snacket enligt instruktionerna i din systemprompt.
+TASK:
+Summarize the community discussion according to the instructions in your system prompt.
         `;
 
         const response = await openai.chat.completions.create({

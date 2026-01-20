@@ -48,8 +48,8 @@ export async function POST(request: Request) {
             return NextResponse.json({
                 insight: null,
                 message: holdingsCount > 0
-                    ? `Du har ${holdingsCount} öppen${holdingsCount === 1 ? "" : "a"} position${holdingsCount === 1 ? "" : "er"}. Sälj någon aktie först så kan jag analysera din trading-stil! 📊`
-                    : "Du har inga trades ännu. Börja köpa aktier så kan jag analysera din trading-stil! 🚀",
+                    ? `You have ${holdingsCount} open position${holdingsCount === 1 ? "" : "s"}. Sell some stock first and I can analyze your trading style! 📊`
+                    : "You don't have any trades yet. Start buying stocks and I can analyze your trading style! 🚀",
             });
         }
 
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
         // Calculate day-of-week patterns
         const dayStats: Record<string, { count: number; pnl: number }> = {};
         for (const sell of sells) {
-            const day = new Date(sell.created_at).toLocaleDateString("sv-SE", { weekday: "long" });
+            const day = new Date(sell.created_at).toLocaleDateString("en-US", { weekday: "long" });
             if (!dayStats[day]) dayStats[day] = { count: 0, pnl: 0 };
             dayStats[day].count++;
             dayStats[day].pnl += sell.realized_pnl || 0;
@@ -92,31 +92,31 @@ export async function POST(request: Request) {
 
         // Create prompt for OpenAI
         const statsContext = `
-ANVÄNDARENS TRADING-STATISTIK:
-- Totalt antal trades: ${transactions.length} (${buys.length} köp, ${sells.length} sälj)
+USER'S TRADING STATISTICS:
+- Total number of trades: ${transactions.length} (${buys.length} buys, ${sells.length} sells)
 - Win rate: ${winRate.toFixed(1)}%
-- Total realiserad P&L: ${totalPnl >= 0 ? "+" : ""}${totalPnl.toFixed(0)} kr
-- Genomsnittlig hålltid: ${avgHoldDays.toFixed(1)} dagar
-- Bästa trade: ${bestTrade?.symbol} (+${(bestTrade?.realized_pnl || 0).toFixed(0)} kr)
-- Sämsta trade: ${worstTrade?.symbol} (${(worstTrade?.realized_pnl || 0).toFixed(0)} kr)
-- Handlade aktier: ${[...new Set(transactions.map((t) => t.symbol))].join(", ")}
-- Mest aktiva dagar: ${Object.entries(dayStats)
+- Total realized P&L: ${totalPnl >= 0 ? "+" : ""}$${totalPnl.toFixed(0)}
+- Average hold time: ${avgHoldDays.toFixed(1)} days
+- Best trade: ${bestTrade?.symbol} (+$${(bestTrade?.realized_pnl || 0).toFixed(0)})
+- Worst trade: ${worstTrade?.symbol} ($${(worstTrade?.realized_pnl || 0).toFixed(0)})
+- Traded stocks: ${[...new Set(transactions.map((t) => t.symbol))].join(", ")}
+- Most active days: ${Object.entries(dayStats)
                 .sort((a, b) => b[1].count - a[1].count)
                 .slice(0, 3)
                 .map(([day, stats]) => `${day} (${stats.count} trades)`)
                 .join(", ")}
 `;
 
-        const systemPrompt = `Du är en rolig men insiktsfull trading-coach som analyserar användares paper trading-mönster.
+        const systemPrompt = `You are a funny but insightful trading coach who analyzes users' paper trading patterns.
 
-Din uppgift:
-1. Ge 2-3 konkreta insikter baserat på statistiken
-2. Var lite "roastig" men vänlig - tänk stand-up comedian som ger investeringsråd
-3. Använd emojis sparsamt men effektivt
-4. Håll det kort och minnesvärt (max 150 ord)
-5. Avsluta med ett uppmuntrande råd
+Your task:
+1. Give 2-3 concrete insights based on the statistics
+2. Be a bit "roasty" but friendly - think stand-up comedian giving investment advice
+3. Use emojis sparingly but effectively
+4. Keep it short and memorable (max 150 words)
+5. End with an encouraging tip
 
-Skriv på svenska. Var personlig och specifik - referera till deras faktiska siffror.`;
+Write in English. Be personal and specific - reference their actual numbers.`;
 
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
