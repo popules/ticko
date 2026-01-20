@@ -1,13 +1,13 @@
 // Central application configuration
 // Change NEXT_PUBLIC_APP_NAME in .env.local to update the app name globally
 
-export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "ticko";
+export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Ticko";
 
 export const APP_CONFIG = {
   name: APP_NAME,
-  tagline: "Där resultat räknas",
-  title: "Ticko | Slå börsen riskfritt",
-  description: "Gå med i Ticko Arena. Handla aktier med virtuella pengar, klättra på leaderboards och använd Ticko AI för att bemästra marknaden.",
+  tagline: "Where results matter",
+  title: "Ticko | Beat the market risk-free",
+  description: "Join Ticko Arena. Trade stocks with virtual money, climb the leaderboards, and use Ticko AI to master the market.",
   baseUrl: "https://www.ticko.se",
 } as const;
 
@@ -22,54 +22,55 @@ export const THEME = {
   bearish: "#F43F5E", // Rose-500
 } as const;
 
-// Swedish UI strings
+// UI strings (English)
 export const UI_STRINGS = {
   // Navigation
-  home: "Hem",
-  discovery: "Trendradarn",
-  markets: "Marknader",
-  watchlist: "Bevakningslista",
-  portfolio: "Portfölj",
-  alerts: "Aviseringar",
-  profile: "Profil",
-  settings: "Inställningar",
-  search: "Sök aktier...",
-  trending: "Trendande just nu",
+  home: "Home",
+  discovery: "Discover",
+  markets: "Markets",
+  watchlist: "Watchlist",
+  portfolio: "Portfolio",
+  alerts: "Alerts",
+  profile: "Profile",
+  settings: "Settings",
+  search: "Search stocks...",
+  trending: "Trending now",
 
   // Feed
-  liveFeed: "Liveflöde",
+  liveFeed: "Live Feed",
   live: "Live",
-  paused: "Pausad",
-  noPosts: "Inga inlägg ännu",
-  beFirst: "Bli den första att dela dina marknadsinsikter!",
-  post: "Publicera",
+  paused: "Paused",
+  noPosts: "No posts yet",
+  beFirst: "Be the first to share your market insights!",
+  post: "Post",
 
   // Composer
-  composerPlaceholder: "Vad händer på marknaden?",
-  composerHint: "Använd $TICKER för att tagga aktier (t.ex. $TSLA, $VOLV-B)",
+  composerPlaceholder: "What's happening in the market?",
+  composerHint: "Use $TICKER to tag stocks (e.g. $TSLA, $AAPL)",
   sentiment: "Sentiment:",
   bullish: "Bullish",
   bearish: "Bearish",
 
   // Analysis
-  aiAnalysis: "AI-analys",
-  currentPrice: "Kurs nu",
-  fairValue: "AI Riktkurs",
-  upside: "uppsida",
-  downside: "nedsida",
-  aiReasoning: "AI-resonemang",
-  communitySentiment: "Community-sentiment",
-  updatedAgo: "Uppdaterad",
+  aiAnalysis: "AI Analysis",
+  currentPrice: "Current Price",
+  fairValue: "AI Target",
+  upside: "upside",
+  downside: "downside",
+  aiReasoning: "AI Reasoning",
+  communitySentiment: "Community Sentiment",
+  updatedAgo: "Updated",
 
   // Market
-  marketOverview: "Marknadsöversikt",
-  viewFullWatchlist: "Visa hela bevakningslistan",
+  marketOverview: "Market Overview",
+  viewFullWatchlist: "View full watchlist",
 
   // Stock page
-  trade: "Handla",
-  volume: "Volym",
-  marketCap: "Börsvärde",
-  peRatio: "P/E-tal",
-  week52Range: "52v Intervall",
-  discussion: "Diskussion",
+  trade: "Trade",
+  volume: "Volume",
+  marketCap: "Market Cap",
+  peRatio: "P/E Ratio",
+  week52Range: "52W Range",
+  discussion: "Discussion",
 } as const;
+
