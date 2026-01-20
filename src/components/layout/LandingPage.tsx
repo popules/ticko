@@ -60,21 +60,21 @@ export function LandingPage() {
                     </div>
 
                     <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
-                        <Link href="#features" className="hover:text-white transition-colors">Funktioner</Link>
-                        <Link href="#how-it-works" className="hover:text-white transition-colors">Hur det fungerar</Link>
+                        <Link href="#features" className="hover:text-white transition-colors">Features</Link>
+                        <Link href="#how-it-works" className="hover:text-white transition-colors">How it works</Link>
                         <Link href="#community" className="hover:text-white transition-colors">Community</Link>
-                        <Link href="/om-oss" className="hover:text-white transition-colors">Om oss</Link>
+                        <Link href="/om-oss" className="hover:text-white transition-colors">About</Link>
                     </div>
 
                     <div className="flex items-center gap-6">
                         <Link href="/logga-in" className="text-sm font-medium text-white/60 hover:text-white transition-colors hidden sm:block">
-                            Logga in
+                            Log in
                         </Link>
                         <Link
                             href="/registrera"
                             className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] rounded-full font-bold text-sm hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-0.5"
                         >
-                            Bli Medlem — Gratis
+                            Join Free
                         </Link>
                     </div>
                 </div>
@@ -104,9 +104,9 @@ export function LandingPage() {
                         transition={{ delay: 0.2, duration: 0.8 }}
                         className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.1] max-w-4xl mx-auto"
                     >
-                        <span className="block text-white">Här är 100 000 kr.</span>
+                        <span className="block text-white">Here's $10,000.</span>
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
-                            Visa att du kan slå börsen.
+                            Prove you can beat the market.
                         </span>
                     </motion.h1>
 
@@ -116,7 +116,7 @@ export function LandingPage() {
                         transition={{ delay: 0.4 }}
                         className="text-base md:text-lg text-white/50 max-w-2xl font-medium leading-relaxed mb-12 mx-auto"
                     >
-                        Handla aktier med virtuella pengar i Ticko Arena. Klättra på leaderboarden, bygg din streak och använd <span className="text-emerald-400">Ticko AI</span> för att hitta nästa vinnare. <span className="text-white">Helt gratis och utan risk.</span>
+                        Trade stocks with virtual money in Ticko Arena. Climb the leaderboard, build your streak, and use <span className="text-emerald-400">Ticko AI</span> to find your next winner. <span className="text-white">100% free, zero risk.</span>
                     </motion.p>
 
                     <motion.div
@@ -129,7 +129,7 @@ export function LandingPage() {
                             href="/registrera"
                             className="group px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-bold text-base shadow-lg shadow-emerald-500/25 transition-all flex items-center gap-2 hover:scale-105"
                         >
-                            Starta din utmaning nu
+                            Start your challenge now
                             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                         </Link>
                         <a
@@ -137,7 +137,7 @@ export function LandingPage() {
                             className="group px-6 py-4 bg-white/[0.04] border border-white/20 hover:bg-white/[0.08] text-white rounded-full font-bold text-sm backdrop-blur-lg transition-all flex items-center gap-2"
                         >
                             <Play className="w-4 h-4" />
-                            Se hur det fungerar
+                            See how it works
                         </a>
                     </motion.div>
 
@@ -179,7 +179,7 @@ export function LandingPage() {
                     className="absolute bottom-8 left-1/2 -translate-x-1/2"
                 >
                     <a href="#problem" className="flex flex-col items-center gap-2 text-white/30 hover:text-white/60 transition-colors">
-                        <span className="text-xs font-medium">Scrolla för att läsa mer</span>
+                        <span className="text-xs font-medium">Scroll to learn more</span>
                         <ChevronDown className="w-5 h-5 animate-bounce" />
                     </a>
                 </motion.div>
@@ -194,11 +194,11 @@ export function LandingPage() {
                         viewport={{ once: true }}
                         className="text-center mb-20"
                     >
-                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">Så här funkar det</span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">How it works</span>
                         <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
-                            Så här startar du din <span className="text-emerald-400">trading-utmaning</span>
+                            Start your <span className="text-emerald-400">trading challenge</span>
                         </h2>
-                        <p className="text-white/50 text-lg max-w-2xl mx-auto">Från nybörjare till verifierad investerare i tre enkla steg.</p>
+                        <p className="text-white/50 text-lg max-w-2xl mx-auto">From beginner to verified trader in three simple steps.</p>
                     </motion.div>
 
                     <div className="grid md:grid-cols-3 gap-8 relative">
@@ -208,20 +208,20 @@ export function LandingPage() {
                         {[
                             {
                                 step: "01",
-                                title: "Få 100 000 kr direkt",
-                                desc: "Skapa ditt gratis konto och få en portfölj fylld med 100 000 kr i virtuella pengar. Redo att användas på marknaden direkt.",
+                                title: "Get $10,000 instantly",
+                                desc: "Create your free account and get a portfolio filled with $10,000 in virtual money. Ready to use on the market right away.",
                                 icon: Wallet
                             },
                             {
                                 step: "02",
-                                title: "Handla smart och rättvist",
-                                desc: "Använd Ticko AI för research och lägg dina ordrar. Varje köp är låst i 30 minuter för att garantera en rättvis tävling utan arbitrage-fusk.",
+                                title: "Trade smart and fair",
+                                desc: "Use Ticko AI for research and place your orders. Every buy is locked for 30 minutes to ensure a fair competition without arbitrage.",
                                 icon: TrendingUp
                             },
                             {
                                 step: "03",
-                                title: "Bevisa din skicklighet",
-                                desc: "Varje trade du gör bygger ditt track record. Visa communityt att du har vad som krävs.",
+                                title: "Prove your skills",
+                                desc: "Every trade you make builds your track record. Show the community you have what it takes.",
                                 icon: Award
                             }
                         ].map((item, i) => (
@@ -256,7 +256,7 @@ export function LandingPage() {
                             href="/registrera"
                             className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-bold text-base shadow-lg shadow-emerald-500/25 transition-all hover:scale-105"
                         >
-                            Starta min resa mot toppen — Gratis
+                            Start my journey to the top — Free
                             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                         </Link>
                     </motion.div>
@@ -272,9 +272,9 @@ export function LandingPage() {
                         viewport={{ once: true }}
                         className="text-center mb-20"
                     >
-                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">Verktygslådan</span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">The Toolkit</span>
                         <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
-                            Verktygen som <span className="text-emerald-400">sätter dig i täten</span>
+                            Tools that <span className="text-emerald-400">put you ahead</span>
                         </h2>
                     </motion.div>
 
@@ -282,39 +282,39 @@ export function LandingPage() {
                         {[
                             {
                                 icon: TrendingUp,
-                                title: "Realtidssentiment",
-                                desc: "Se exakt vad communityt tror om varje aktie just nu. Bull eller Bear? Följ trenden.",
+                                title: "Real-time Sentiment",
+                                desc: "See exactly what the community thinks about every stock right now. Bull or Bear? Follow the trend.",
                                 tag: "Live data"
                             },
                             {
                                 icon: Bell,
-                                title: "Smarta alerts",
-                                desc: "Få notiser när aktier du följer diskuteras, trendar eller rör sig kraftigt.",
-                                tag: "Push-notiser"
+                                title: "Smart Alerts",
+                                desc: "Get notified when stocks you follow are discussed, trending, or moving significantly.",
+                                tag: "Push notifications"
                             },
                             {
                                 icon: Award,
-                                title: "Tävla & Rankas",
-                                desc: "XP och Levels visar vem som faktiskt är en skicklig investerare — och vem som bara pratar. Bygg ditt track record.",
+                                title: "Compete & Rank",
+                                desc: "XP and Levels show who's actually a skilled trader — and who's just talking. Build your track record.",
                                 tag: "Gamification"
                             },
                             {
                                 icon: Brain,
                                 title: "Ticko AI",
-                                desc: "Ditt hemliga vapen i tävlingen. AI:n sammanfattar nyheter, analyserar sentiment och ger dig övertaget.",
-                                tag: "Pro-verktyg"
+                                desc: "Your secret weapon in the competition. The AI summarizes news, analyzes sentiment, and gives you the edge.",
+                                tag: "Pro Tool"
                             },
                             {
                                 icon: BarChart3,
                                 title: "Watchlist & Portfolio",
-                                desc: "Håll koll på dina aktier med live-priser, daglig utveckling och personliga alerts.",
-                                tag: "Personligt"
+                                desc: "Keep track of your stocks with live prices, daily performance, and personal alerts.",
+                                tag: "Personal"
                             },
                             {
                                 icon: Shield,
-                                title: "Veriferade track records",
-                                desc: "Varje prediktion sparas. Du bygger ett synligt track record som andra kan se.",
-                                tag: "Transparens"
+                                title: "Verified Track Records",
+                                desc: "Every prediction is saved. You build a visible track record that others can see.",
+                                tag: "Transparency"
                             }
                         ].map((item, i) => (
                             <motion.div
@@ -356,28 +356,28 @@ export function LandingPage() {
                     >
                         <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 block">Community</span>
                         <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
-                            Vad säger <span className="text-emerald-400">medlemmarna</span>?
+                            What do <span className="text-emerald-400">members</span> say?
                         </h2>
                     </motion.div>
 
                     <div className="grid md:grid-cols-3 gap-6">
                         {[
                             {
-                                quote: "Äntligen en svensk plattform där man kan diskutera aktier utan allt brus. Kvalitén på diskussionerna är helt annan nivå.",
+                                quote: "Finally a platform where you can discuss stocks without all the noise. The quality of discussions is on another level.",
                                 name: "Erik L.",
-                                title: "Privatinvesterare",
+                                title: "Private Investor",
                                 avatar: "E"
                             },
                             {
-                                quote: "Jag älskar att man kan se andras track records. Det gör att man faktiskt kan lita på dem som ger tips.",
+                                quote: "I love that you can see others' track records. It means you can actually trust people giving tips.",
                                 name: "Sofia K.",
-                                title: "Daytrader",
+                                title: "Day Trader",
                                 avatar: "S"
                             },
                             {
-                                quote: "Ticko AI är sjukt bra. Sparar mig timmar varje vecka på research. Plus att communityt alltid har insikter jag missar.",
+                                quote: "Ticko AI is incredibly good. Saves me hours every week on research. Plus the community always has insights I miss.",
                                 name: "Marcus A.",
-                                title: "Tech-investerare",
+                                title: "Tech Investor",
                                 avatar: "M"
                             }
                         ].map((item, i) => (
@@ -416,7 +416,7 @@ export function LandingPage() {
                         className="text-center mb-12"
                     >
                         <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-4">
-                            Varför gå med <span className="text-emerald-400">nu</span>?
+                            Why join <span className="text-emerald-400">now</span>?
                         </h2>
                     </motion.div>
 
@@ -424,18 +424,18 @@ export function LandingPage() {
                         {[
                             {
                                 emoji: "💬",
-                                title: "Väx med communityt",
-                                desc: "Diskutera strategier, dela analyser och lär dig av andra. Tillsammans blir vi bättre."
+                                title: "Grow with the community",
+                                desc: "Discuss strategies, share analyses, and learn from others. Together we get better."
                             },
                             {
                                 emoji: "🎯",
-                                title: "100% riskfritt",
-                                desc: "Handla med virtuella pengar och bygg ditt track record — utan att riskera en enda krona."
+                                title: "100% risk-free",
+                                desc: "Trade with virtual money and build your track record — without risking a single dollar."
                             },
                             {
                                 emoji: "🏆",
-                                title: "Bygg ditt track record",
-                                desc: "Ju tidigare du börjar dela analyser, desto mer imponerande blir din historik."
+                                title: "Build your track record",
+                                desc: "The earlier you start sharing analyses, the more impressive your history becomes."
                             }
                         ].map((item, i) => (
                             <motion.div
@@ -465,7 +465,7 @@ export function LandingPage() {
                         className="text-center mb-12"
                     >
                         <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-4">
-                            Vanliga <span className="text-emerald-400">frågor</span>
+                            Frequently asked <span className="text-emerald-400">questions</span>
                         </h2>
                     </motion.div>
 
@@ -477,11 +477,11 @@ export function LandingPage() {
                             className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
                         >
                             <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
-                                <span className="text-lg font-bold">Kan jag ta ut vinsten i riktiga pengar?</span>
+                                <span className="text-lg font-bold">Can I withdraw winnings as real money?</span>
                                 <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
                             </summary>
                             <div className="px-6 pb-6 text-white/60 leading-relaxed">
-                                <strong className="text-white">Nej.</strong> De 100 000 kr du handlar med, och alla vinster du gör i utmaningen, är helt virtuella. Syftet är att bygga ett verifierat "track record" och tävla om äran och XP — utan ekonomisk risk.
+                                <strong className="text-white">No.</strong> The $10,000 you trade with, and all profits you make in the challenge, are entirely virtual. The purpose is to build a verified track record and compete for glory and XP — without financial risk.
                             </div>
                         </motion.details>
 
@@ -493,11 +493,11 @@ export function LandingPage() {
                             className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
                         >
                             <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
-                                <span className="text-lg font-bold">Kostar det något att vara med?</span>
+                                <span className="text-lg font-bold">Does it cost anything?</span>
                                 <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
                             </summary>
                             <div className="px-6 pb-6 text-white/60 leading-relaxed">
-                                <strong className="text-white">Nej, det är 100% gratis</strong> att skapa konto, få startkapitalet och använda plattformen. Vi tror på att finansiell utbildning och community ska vara tillgängligt för alla.
+                                <strong className="text-white">No, it's 100% free</strong> to create an account, get the starting capital, and use the platform. We believe financial education and community should be accessible to everyone.
                             </div>
                         </motion.details>
 
@@ -509,11 +509,11 @@ export function LandingPage() {
                             className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
                         >
                             <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
-                                <span className="text-lg font-bold">Är detta investeringsrådgivning?</span>
+                                <span className="text-lg font-bold">Is this investment advice?</span>
                                 <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
                             </summary>
                             <div className="px-6 pb-6 text-white/60 leading-relaxed">
-                                <strong className="text-white">Nej!</strong> Ticko är en utbildnings- och diskussionsplattform. Ingen av informationen här utgör finansiell rådgivning. Gör alltid din egen research.
+                                <strong className="text-white">No!</strong> Ticko is an educational and discussion platform. None of the information here constitutes financial advice. Always do your own research.
                             </div>
                         </motion.details>
 
@@ -525,11 +525,11 @@ export function LandingPage() {
                             className="group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden"
                         >
                             <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-white/[0.02] transition-colors">
-                                <span className="text-lg font-bold">Hur fungerar Ticko AI?</span>
+                                <span className="text-lg font-bold">How does Ticko AI work?</span>
                                 <ChevronRight className="w-5 h-5 text-white/40 transition-transform group-open:rotate-90" />
                             </summary>
                             <div className="px-6 pb-6 text-white/60 leading-relaxed">
-                                Ticko AI sammanfattar nyheter, analyserar sentiment och svarar på frågor om aktier. Den är ett <strong className="text-emerald-400">hjälpverktyg</strong>, inte en rådgivare.
+                                Ticko AI summarizes news, analyzes sentiment, and answers questions about stocks. It's a <strong className="text-emerald-400">tool to help you</strong>, not an advisor.
                             </div>
                         </motion.details>
                     </div>
@@ -546,7 +546,7 @@ export function LandingPage() {
                         className="text-center mb-16"
                     >
                         <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
-                            Ge dig själv ett <span className="text-emerald-400">försprång</span>
+                            Give yourself an <span className="text-emerald-400">edge</span>
                         </h2>
                     </motion.div>
 
@@ -554,18 +554,18 @@ export function LandingPage() {
                         {[
                             {
                                 icon: Users,
-                                title: "Sluta gissa",
-                                desc: "Följ diskussioner som faktiskt betyder något. På Ticko ser du direkt vilka teser som håller och vilka som bara är snack."
+                                title: "Stop guessing",
+                                desc: "Follow discussions that actually matter. On Ticko you see immediately which theses hold up and which are just talk."
                             },
                             {
                                 icon: Sparkles,
-                                title: "Fokusera på rätt data",
-                                desc: "Istället för att drunkna i nyheter använder du Ticko AI för att filtrera fram de viktigaste signalerna för din nästa trade."
+                                title: "Focus on the right data",
+                                desc: "Instead of drowning in news, use Ticko AI to filter out the most important signals for your next trade."
                             },
                             {
                                 icon: Shield,
-                                title: "Verifierad kunskap",
-                                desc: "Här räknas resultat, inte följare. Vår leaderboard visar svart på vitt vem som faktiskt slår börsen – ett track record du kan lita på."
+                                title: "Verified knowledge",
+                                desc: "Results matter here, not followers. Our leaderboard shows in black and white who actually beats the market – a track record you can trust."
                             }
                         ].map((item, i) => (
                             <motion.div
@@ -599,22 +599,22 @@ export function LandingPage() {
                     className="relative z-10 max-w-2xl"
                 >
                     <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
-                        Sluta vara <span className="text-white/40">ensam</span> med dina investeringar.
+                        Stop being <span className="text-white/40">alone</span> with your investments.
                     </h2>
                     <p className="text-lg text-white/50 mb-10 leading-relaxed">
-                        Börja bygga ditt track record idag – helt gratis, helt utan risk. Det tar 30 sekunder.
+                        Start building your track record today – 100% free, zero risk. It takes 30 seconds.
                     </p>
 
                     <Link
                         href="/registrera"
                         className="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-black text-lg transition-all hover:scale-105 shadow-2xl shadow-emerald-500/20"
                     >
-                        Skapa konto gratis
+                        Create free account
                         <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
                     </Link>
 
                     <p className="text-white/30 text-sm mt-6">
-                        Inga kreditkort. Inga bindningstider. 100% gratis.
+                        No credit cards. No commitments. 100% free.
                     </p>
                 </motion.div>
             </section>
@@ -626,7 +626,7 @@ export function LandingPage() {
                         <div className="md:col-span-2">
                             <TickoLogo />
                             <p className="text-white/40 text-sm max-w-sm mt-4 leading-relaxed">
-                                Sveriges modernaste community för investerare. Diskutera aktier, följ sentiment och bygg ditt track record.
+                                The modern community for investors. Discuss stocks, follow sentiment, and build your track record.
                             </p>
                             <a href="mailto:hej@ticko.se" className="text-emerald-400/80 hover:text-emerald-400 text-sm font-medium mt-4 block transition-colors">
                                 hej@ticko.se
@@ -634,20 +634,20 @@ export function LandingPage() {
                         </div>
 
                         <div>
-                            <h4 className="font-bold text-sm mb-4 text-white/60 uppercase tracking-wider">Kom igång</h4>
+                            <h4 className="font-bold text-sm mb-4 text-white/60 uppercase tracking-wider">Get Started</h4>
                             <div className="flex flex-col gap-3 text-sm text-white/40">
-                                <Link href="/registrera" className="hover:text-white transition-colors">Skapa konto</Link>
-                                <Link href="/logga-in" className="hover:text-white transition-colors">Logga in</Link>
+                                <Link href="/registrera" className="hover:text-white transition-colors">Create account</Link>
+                                <Link href="/logga-in" className="hover:text-white transition-colors">Log in</Link>
                             </div>
                         </div>
 
                         <div>
-                            <h4 className="font-bold text-sm mb-4 text-white/60 uppercase tracking-wider">Företag</h4>
+                            <h4 className="font-bold text-sm mb-4 text-white/60 uppercase tracking-wider">Company</h4>
                             <div className="flex flex-col gap-3 text-sm text-white/40">
-                                <Link href="/om-oss" className="hover:text-white transition-colors">Om oss</Link>
-                                <Link href="/kontakt" className="hover:text-white transition-colors">Kontakt</Link>
-                                <Link href="/villkor" className="hover:text-white transition-colors">Villkor</Link>
-                                <Link href="/integritet" className="hover:text-white transition-colors">Integritet</Link>
+                                <Link href="/om-oss" className="hover:text-white transition-colors">About</Link>
+                                <Link href="/kontakt" className="hover:text-white transition-colors">Contact</Link>
+                                <Link href="/villkor" className="hover:text-white transition-colors">Terms</Link>
+                                <Link href="/integritet" className="hover:text-white transition-colors">Privacy</Link>
                             </div>
                         </div>
                     </div>
@@ -655,12 +655,12 @@ export function LandingPage() {
                     {/* Legal Disclaimer */}
                     <div className="pt-8 border-t border-white/[0.03]">
                         <p className="text-[11px] text-white/20 leading-relaxed max-w-4xl">
-                            <strong className="text-white/30">Disclaimer:</strong> Innehållet på Ticko, inklusive data och analyser från Ticko AI, utgör inte finansiell rådgivning eller köprekommendationer. Allt investerande innebär risk och historisk avkastning är ingen garanti för framtida resultat. Marknadsdata kan vara fördröjd. Åsikter som delas av användare är deras egna och representerar inte Ticko.
+                            <strong className="text-white/30">Disclaimer:</strong> Content on Ticko, including data and analyses from Ticko AI, does not constitute financial advice or buy recommendations. All investing involves risk and past performance is no guarantee of future results. Market data may be delayed. Opinions shared by users are their own and do not represent Ticko.
                         </p>
                     </div>
 
                     <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/20 font-medium">
-                        <span>&copy; 2026 {APP_CONFIG.name}. Alla rättigheter förbehållna.</span>
+                        <span>&copy; 2026 {APP_CONFIG.name}. All rights reserved.</span>
                     </div>
                 </div>
             </footer >
