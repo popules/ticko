@@ -56,10 +56,10 @@ export default function PostPage() {
             <div className="flex min-h-screen bg-[#020617]">
                 <Sidebar />
                 <main className="flex-1 flex flex-col items-center justify-center border-x border-white/5 p-8 text-center">
-                    <h1 className="text-2xl font-bold text-white mb-2">Inlägget hittades inte</h1>
+                    <h1 className="text-2xl font-bold text-white mb-2">Post not found</h1>
                     <Link href="/" className="text-emerald-400 hover:text-emerald-300 flex items-center gap-2">
                         <MoveLeft className="w-4 h-4" />
-                        Tillbaka till flödet
+                        Back to feed
                     </Link>
                 </main>
                 <RightPanel />
@@ -76,7 +76,7 @@ export default function PostPage() {
                     <Link href="/" className="p-2 hover:bg-white/5 rounded-full text-white/60 hover:text-white transition-colors">
                         <MoveLeft className="w-5 h-5" />
                     </Link>
-                    <h1 className="text-lg font-bold text-white">Diskussion</h1>
+                    <h1 className="text-lg font-bold text-white">Discussion</h1>
                 </div>
 
                 <div className="p-6">
@@ -85,7 +85,7 @@ export default function PostPage() {
                     </div>
 
                     <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6">
-                        <h3 className="text-sm font-bold text-white/40 uppercase tracking-widest mb-4">Svar</h3>
+                        <h3 className="text-sm font-bold text-white/40 uppercase tracking-widest mb-4">Replies</h3>
                         <CommentForm
                             postId={id}
                             onCommentAdded={() => setRefreshComments(prev => prev + 1)}

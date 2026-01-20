@@ -178,7 +178,7 @@ export function WhatIsHappening() {
                             <Flame className="w-4 h-4 text-orange-400" />
                         </div>
                         <div>
-                            <h3 className="text-sm font-bold text-white uppercase tracking-wide">🔥 Hett just nu</h3>
+                            <h3 className="text-sm font-bold text-white uppercase tracking-wide">🔥 Hot right now</h3>
                             <p className="text-[10px] text-white/40">Most discussed stocks</p>
                         </div>
                     </div>
@@ -186,7 +186,7 @@ export function WhatIsHappening() {
                         href="/upptack"
                         className="flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors"
                     >
-                        Visa alla <ArrowRight className="w-3 h-3" />
+                        View all <ArrowRight className="w-3 h-3" />
                     </Link>
                 </div>
 

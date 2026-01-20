@@ -762,7 +762,7 @@ export default function PaperTradingPage() {
                                         <BarChart3 className="w-12 h-12 text-white/20 mx-auto mb-4" />
                                         <h3 className="text-lg font-bold text-white mb-2">Inte tillräckligt med data</h3>
                                         <p className="text-white/40 text-sm max-w-md mx-auto">
-                                            Graph shows när vi har minst 2 dagars data.
+                                            Graph shows när vi har minst 2 days of data.
                                             Ditt portföljvärde sparas automatiskt varje natt.
                                         </p>
                                         <div className="mt-6 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20 max-w-sm mx-auto">

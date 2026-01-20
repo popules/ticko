@@ -135,7 +135,7 @@ export default function BevakningslistaPage() {
                                                 {(stock.changePercent ?? 0) >= 0 ? "+" : ""}
                                                 {(stock.changePercent ?? 0).toFixed(2)}%
                                             </span>
-                                            <p className="text-xs text-white/30">idag</p>
+                                            <p className="text-xs text-white/30">today</p>
                                         </div>
                                         <button
                                             onClick={() => toggleWatch.mutate(stock.symbol)}

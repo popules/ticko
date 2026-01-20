@@ -89,13 +89,13 @@ export default function PublicProfilePage() {
                     <div className="h-full flex flex-col items-center justify-center gap-4">
                         <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
                         <p className="text-white/40 font-bold uppercase tracking-widest text-xs">
-                            Hämtar profil...
+                            Loading profile...
                         </p>
                     </div>
                 ) : !profile ? (
                     <div className="h-full flex flex-col items-center justify-center gap-4">
-                        <h1 className="text-2xl font-black text-white">Användaren hittades inte</h1>
-                        <p className="text-white/40">Denna profil verkar inte existera.</p>
+                        <h1 className="text-2xl font-black text-white">User not found</h1>
+                        <p className="text-white/40">This profile doesn't seem to exist.</p>
                     </div>
                 ) : (
                     <motion.div
@@ -110,7 +110,7 @@ export default function PublicProfilePage() {
                             <div className="md:col-span-2 space-y-6">
                                 <div className="flex items-center gap-2 mb-2">
                                     <MessageSquare className="w-5 h-5 text-emerald-400" />
-                                    <h3 className="text-sm font-bold text-white uppercase tracking-widest">Inlägg</h3>
+                                    <h3 className="text-sm font-bold text-white uppercase tracking-widest">Posts</h3>
                                 </div>
 
                                 {posts.length > 0 ? (
@@ -121,7 +121,7 @@ export default function PublicProfilePage() {
                                     </div>
                                 ) : (
                                     <div className="p-12 rounded-[2rem] border border-white/5 bg-white/[0.02] text-center">
-                                        <p className="text-white/30 text-sm">Inga inlägg ännu.</p>
+                                        <p className="text-white/30 text-sm">No posts yet.</p>
                                     </div>
                                 )}
                             </div>
@@ -131,15 +131,15 @@ export default function PublicProfilePage() {
                                 <div className="p-6 rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.08] to-transparent">
                                     <div className="flex items-center gap-2 mb-6">
                                         <TrendingUp className="w-5 h-5 text-blue-400" />
-                                        <h3 className="text-sm font-bold text-white uppercase tracking-widest">Aktivitet</h3>
+                                        <h3 className="text-sm font-bold text-white uppercase tracking-widest">Activity</h3>
                                     </div>
                                     <div className="space-y-4">
                                         <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
-                                            <span className="text-xs text-white/50">Rykte</span>
+                                            <span className="text-xs text-white/50">Reputation</span>
                                             <span className="text-sm font-bold text-emerald-400">{posts.reduce((sum, post) => sum + (post.up_count || 0), 0)}</span>
                                         </div>
                                         <div className="flex justify-between items-center p-3 rounded-xl bg-white/[0.04]">
-                                            <span className="text-xs text-white/50">Antal inlägg</span>
+                                            <span className="text-xs text-white/50">Post count</span>
                                             <span className="text-sm font-bold text-white">{posts.length}</span>
                                         </div>
                                     </div>

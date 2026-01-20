@@ -94,7 +94,7 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
                         onClick={() => setShowAll(!showAll)}
                         className="text-xs text-emerald-400 hover:text-emerald-300 font-medium transition-colors"
                     >
-                        {showAll ? "Visa färre" : "Visa alla"}
+                        {showAll ? "Visa färre" : "Show all"}
                     </button>
                 )}
             </div>
