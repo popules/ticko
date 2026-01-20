@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Scale, AlertTriangle, Shield, Users, FileText, Lock, RefreshCw, Gavel, Coins, Timer, Ban, AlertCircle } from "lucide-react";
 
-export default function VillkorPage() {
+export default function TermsPage() {
     const sections = [
         {
             icon: FileText,
@@ -79,7 +79,7 @@ export default function VillkorPage() {
         {
             icon: Users,
             title: "8. Rules for User Generated Content",
-            content: "As a user, you agree to follow Swedish law. It is strictly prohibited to:",
+            content: "As a user, you agree to follow applicable laws and regulations. It is strictly prohibited to:",
             list: [
                 "Spread misleading information aimed at influencing stock prices.",
                 "Publish material that is offensive, illegal, or constitutes defamation.",

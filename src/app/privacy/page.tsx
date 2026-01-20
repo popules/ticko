@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Shield, Database, Share2, Clock, UserCheck, Cookie, Eye, Trash2 } from "lucide-react";
 
-export default function IntegritetPage() {
+export default function PrivacyPage() {
     const sections = [
         {
             icon: Database,
