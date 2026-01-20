@@ -16,13 +16,13 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: APP_CONFIG.name,
+    default: APP_CONFIG.title,
     template: `%s | ${APP_CONFIG.name}`,
   },
   description: APP_CONFIG.description,
   metadataBase: new URL(APP_CONFIG.baseUrl),
   openGraph: {
-    title: `${APP_CONFIG.name} - ${APP_CONFIG.tagline}`,
+    title: APP_CONFIG.title,
     description: APP_CONFIG.description,
     url: APP_CONFIG.baseUrl,
     siteName: APP_CONFIG.name,
@@ -31,11 +31,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${APP_CONFIG.name} - ${APP_CONFIG.tagline}`,
+    title: APP_CONFIG.title,
     description: APP_CONFIG.description,
   },
   icons: {
-    icon: '/icons/icon-192.png',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icons/icon-192.png', type: 'image/png', sizes: '192x192' },
+    ],
     apple: '/icons/apple-touch-icon.png',
   },
   appleWebApp: {
