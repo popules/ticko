@@ -2,34 +2,34 @@
 
 export const SUBSCRIPTION_TIERS = {
     FREE: {
-        name: "Gratis",
+        name: "Free",
         price: 0,
         paperTrading: {
-            startingCapital: 100000, // 100k SEK
-            resetThreshold: 25000, // Can reset when < 25k
+            startingCapital: 10000, // $10k USD
+            resetThreshold: 2500, // Can reset when < $2.5k
             resetCooldownDays: 7, // 7 days between resets
         },
         features: [
-            "Paper trading med 100k virtuella kronor",
-            "Obegränsade inlägg och reaktioner",
-            "Bevakningslista",
-            "AI-aktieanalys",
+            "Paper trading with $10k virtual dollars",
+            "Unlimited posts and reactions",
+            "Watchlist",
+            "AI stock analysis",
         ],
     },
     PRO: {
         name: "Pro",
-        price: 29, // 29 kr/månad
+        price: 4.99, // $4.99/month
         paperTrading: {
-            startingCapital: 1000000, // 1M SEK
-            resetThreshold: 100000, // Can reset when < 100k
+            startingCapital: 100000, // $100k USD
+            resetThreshold: 10000, // Can reset when < $10k
             resetCooldownDays: 3, // 3 days between resets
         },
         features: [
-            "Paper trading med 1M virtuella kronor",
-            "Snabbare reset (3 dagar istället för 7)",
-            "Pro-badge på profilen",
-            "Prioriterad support",
-            "Tidig tillgång till nya funktioner",
+            "Paper trading with $100k virtual dollars",
+            "Faster reset (3 days instead of 7)",
+            "Pro badge on profile",
+            "Priority support",
+            "Early access to new features",
         ],
         badge: {
             emoji: "👑",

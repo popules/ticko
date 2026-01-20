@@ -8,7 +8,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/lib/supabase/client";
 
 // Constants
-const STARTING_CAPITAL = 100000; // 100,000 SEK
+const STARTING_CAPITAL = 10000; // $10,000 USD
 const USD_TO_SEK = 10.5; // Approximate exchange rate
 
 interface PaperTradeButtonProps {

@@ -10,7 +10,7 @@ interface PaperTradingStatsProps {
     compact?: boolean;
 }
 
-const STARTING_CAPITAL = 100000;
+const STARTING_CAPITAL = 10000; // $10,000 USD
 
 export function PaperTradingStats({ userId, compact = false }: PaperTradingStatsProps) {
     const [stats, setStats] = useState<{

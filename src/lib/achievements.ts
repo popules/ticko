@@ -461,11 +461,11 @@ export async function checkPaperTradingAchievements(
     realizedPnl: number
 ): Promise<string[]> {
     const awarded: string[] = [];
-    const STARTING_CAPITAL = 100000;
+    const STARTING_CAPITAL = 10000; // $10k USD
 
     try {
-        // 1. Check PAPER_10X (reached 1M kr = 10x starting capital)
-        if (totalPortfolioValue >= 1000000) {
+        // 1. Check PAPER_10X (reached $100k = 10x starting capital)
+        if (totalPortfolioValue >= 100000) {
             const wasAwarded = await awardAchievement(userId, "paper_10x");
             if (wasAwarded) awarded.push("paper_10x");
         }

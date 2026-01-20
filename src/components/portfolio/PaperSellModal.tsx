@@ -144,7 +144,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
             })();
 
             // Check for paper trading achievements (fire and forget)
-            checkPaperTradingAchievements(userId, totalProceeds + 100000, pnl).catch(console.error);
+            checkPaperTradingAchievements(userId, totalProceeds + 10000, pnl).catch(console.error);
 
             // Notify parent after animation
             setTimeout(() => {
@@ -201,7 +201,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                     transition={{ delay: 0.2 }}
                                     className="text-2xl font-black text-white mb-2"
                                 >
-                                    {realizedPnl >= 0 ? "Katching! 💰" : "Sålt!"}
+                                    {realizedPnl >= 0 ? "Ka-ching! 💰" : "Sold!"}
                                 </motion.h2>
 
                                 <motion.p
@@ -211,7 +211,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                     className={`text-3xl font-black tabular-nums ${realizedPnl >= 0 ? "text-emerald-400" : "text-rose-400"
                                         }`}
                                 >
-                                    {realizedPnl >= 0 ? "+" : ""}{realizedPnl.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                    {realizedPnl >= 0 ? "+" : ""}${realizedPnl.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                 </motion.p>
 
                                 <motion.p
@@ -220,7 +220,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                     transition={{ delay: 0.4 }}
                                     className="text-white/40 text-sm mt-2"
                                 >
-                                    Realiserad {realizedPnl >= 0 ? "vinst" : "förlust"}
+                                    Realized {realizedPnl >= 0 ? "profit" : "loss"}
                                 </motion.p>
 
                                 {/* Share Button (only for wins) */}
@@ -229,13 +229,13 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.5 }}
-                                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🎮 Paper Trading vinst på Ticko!\n\n$${item.symbol}: +${pnlPercent.toFixed(1)}% \n\nJoin: ticko.se`)}`}
+                                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🎮 Paper Trading win on Ticko!\n\n$${item.symbol}: +${pnlPercent.toFixed(1)}% \n\nJoin: ticko.se`)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold hover:scale-105 transition-transform"
                                     >
                                         <Share2 className="w-4 h-4" />
-                                        Dela vinst
+                                        Share win
                                     </motion.a>
                                 )}
                             </div>
@@ -252,7 +252,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                             <DollarSign className="w-5 h-5 text-white" />
                                         </div>
                                         <div>
-                                            <h2 className="text-lg font-bold text-white">Sälj ${item.symbol}</h2>
+                                            <h2 className="text-lg font-bold text-white">Sell ${item.symbol}</h2>
                                             <p className="text-xs text-white/40">{item.name}</p>
                                         </div>
                                     </div>
@@ -265,20 +265,20 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                                     <Sparkles className="w-5 h-5 text-emerald-400" />
                                                 </div>
                                                 <div>
-                                                    <p className="text-white font-bold text-sm">Snyggt jobbat!</p>
-                                                    <p className="text-white/50 text-xs">Visa upp din vinst för världen</p>
+                                                    <p className="text-white font-bold text-sm">Nice work!</p>
+                                                    <p className="text-white/50 text-xs">Show off your win to the world</p>
                                                 </div>
                                             </div>
 
                                             <div className="grid grid-cols-2 gap-2">
                                                 <a
-                                                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Jag ligger ${pnlPercent.toFixed(1)}% plus på $${item.symbol} i Ticko-utmaningen! 🚀\n\nKan du slå mig? 👇\nhttps://ticko.se`)}&url=${encodeURIComponent("https://ticko.se")}`}
+                                                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`I'm up ${pnlPercent.toFixed(1)}% on $${item.symbol} in the Ticko challenge! 🚀\n\nCan you beat me? 👇\nhttps://ticko.se`)}&url=${encodeURIComponent("https://ticko.se")}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-black/40 hover:bg-black/60 border border-white/10 text-white/80 transition-colors text-xs font-medium"
                                                 >
                                                     <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
-                                                    Dela på X
+                                                    Share on X
                                                 </a>
                                                 <button
                                                     onClick={async () => {
@@ -287,14 +287,14 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                                             // Try native share first
                                                             if (navigator.share) {
                                                                 await navigator.share({
-                                                                    title: 'Min Ticko Vinst',
-                                                                    text: `Jag ligger +${pnlPercent.toFixed(1)}% på $${item.symbol}!`,
+                                                                    title: 'My Ticko Win',
+                                                                    text: `I'm up +${pnlPercent.toFixed(1)}% on $${item.symbol}!`,
                                                                     url: "https://ticko.se" // TODO: Should preferably share the Image? Native share mostly shares URL.
                                                                 });
                                                             } else {
                                                                 // Fallback to clipboard
                                                                 await navigator.clipboard.writeText(shareUrl);
-                                                                alert("Länk till bild kopierad!");
+                                                                alert("Image link copied!");
                                                             }
                                                         } catch (err) {
                                                             console.error("Share failed", err);
@@ -303,7 +303,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                                     className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-400 transition-colors text-xs font-medium"
                                                 >
                                                     <Share2 className="w-3 h-3" />
-                                                    Dela bild
+                                                    Share image
                                                 </button>
                                             </div>
                                         </div>
@@ -324,8 +324,8 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                             <Lock className="w-5 h-5 text-amber-400" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-bold text-amber-400">Position låst</p>
-                                            <p className="text-xs text-white/50">Kan säljas om <span className="font-mono text-amber-400">{lockMinutes}:{lockSeconds.toString().padStart(2, '0')}</span></p>
+                                            <p className="text-sm font-bold text-amber-400">Position locked</p>
+                                            <p className="text-xs text-white/50">Can sell in <span className="font-mono text-amber-400">{lockMinutes}:{lockSeconds.toString().padStart(2, '0')}</span></p>
                                         </div>
                                     </div>
                                 )}
@@ -335,13 +335,13 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                     {/* Current Holdings */}
                                     <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
                                         <div className="flex justify-between items-center mb-2">
-                                            <span className="text-white/40 text-sm">Ditt innehav</span>
-                                            <span className="text-white font-bold">{item.shares} st</span>
+                                            <span className="text-white/40 text-sm">Your holdings</span>
+                                            <span className="text-white font-bold">{item.shares} shares</span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-white/40 text-sm">Nuvarande pris</span>
+                                            <span className="text-white/40 text-sm">Current price</span>
                                             <span className="text-white font-bold tabular-nums">
-                                                {currentPricePerShareSek.toLocaleString("sv-SE", { maximumFractionDigits: 2 })} kr/st
+                                                ${currentPricePerShareSek.toLocaleString("en-US", { maximumFractionDigits: 2 })}/share
                                             </span>
                                         </div>
                                     </div>
@@ -349,7 +349,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                     {/* Shares Slider */}
                                     <div>
                                         <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-3">
-                                            Antal att sälja
+                                            Shares to sell
                                         </label>
                                         <div className="space-y-3">
                                             <input
@@ -369,12 +369,12 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                                     onChange={(e) => setSharesToSell(Math.min(item.shares, Math.max(1, parseInt(e.target.value) || 1)))}
                                                     className="w-24 px-3 py-2 rounded-xl bg-white/[0.06] border border-white/10 text-white text-center font-bold tabular-nums focus:border-violet-500/50 focus:outline-none"
                                                 />
-                                                <span className="text-white/40 text-sm">av {item.shares} st</span>
+                                                <span className="text-white/40 text-sm">of {item.shares} shares</span>
                                                 <button
                                                     onClick={() => setSharesToSell(item.shares)}
                                                     className="ml-auto px-3 py-1.5 rounded-lg bg-violet-500/20 text-violet-400 text-xs font-bold hover:bg-violet-500/30 transition-colors"
                                                 >
-                                                    Sälj allt
+                                                    Sell all
                                                 </button>
                                             </div>
                                         </div>
@@ -386,17 +386,17 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                         : "bg-rose-500/10 border-rose-500/20"
                                         }`}>
                                         <div className="flex justify-between items-center mb-3">
-                                            <span className="text-white/60 text-sm">Du får</span>
+                                            <span className="text-white/60 text-sm">You receive</span>
                                             <span className="text-xl font-black text-white tabular-nums">
-                                                {totalProceeds.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                ${totalProceeds.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-white/60 text-sm">Realiserad vinst/förlust</span>
+                                            <span className="text-white/60 text-sm">Realized P&L</span>
                                             <div className={`flex items-center gap-1.5 font-bold tabular-nums ${isProfit ? "text-emerald-400" : "text-rose-400"
                                                 }`}>
                                                 {isProfit ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                                                {isProfit ? "+" : ""}{pnl.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                {isProfit ? "+" : ""}${pnl.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                                 <span className="text-xs opacity-60">({isProfit ? "+" : ""}{pnlPercent.toFixed(1)}%)</span>
                                             </div>
                                         </div>
@@ -407,7 +407,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                         <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-2">
                                             <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                                             <p className="text-xs text-amber-400/80">
-                                                Du säljer med förlust. Är du säker?
+                                                You're selling at a loss. Are you sure?
                                             </p>
                                         </div>
                                     )}
@@ -419,7 +419,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                         onClick={onClose}
                                         className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] text-white/60 font-bold hover:bg-white/10 transition-colors"
                                     >
-                                        Avbryt
+                                        Cancel
                                     </button>
                                     <button
                                         onClick={handleSell}
@@ -434,7 +434,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                         ) : (
                                             <>
                                                 <DollarSign className="w-4 h-4" />
-                                                Sälj {sharesToSell} st
+                                                Sell {sharesToSell} shares
                                             </>
                                         )}
                                     </button>

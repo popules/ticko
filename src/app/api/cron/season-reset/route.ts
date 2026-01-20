@@ -116,8 +116,8 @@ export async function GET(request: Request) {
             await supabase.from("notifications").insert({
                 user_id: winner.userId,
                 type: "season_winner",
-                title: `🏆 Grattis! Du vann ${currentSeason.name}!`,
-                content: `Du slutade på första plats med ${winner.totalValue.toLocaleString("sv-SE")} kr!`,
+                title: `🏆 Congratulations! You won ${currentSeason.name}!`,
+                content: `You finished in first place with $${winner.totalValue.toLocaleString("en-US")}!`,
                 read: false,
             });
         }
@@ -133,7 +133,7 @@ export async function GET(request: Request) {
         const { data: newSeason } = await supabase
             .from("seasons")
             .insert({
-                name: `Säsong ${newSeasonNumber}`,
+                name: `Season ${newSeasonNumber}`,
                 start_date: new Date().toISOString(),
                 is_active: true,
             })
@@ -154,7 +154,7 @@ export async function GET(request: Request) {
         await supabase
             .from("profiles")
             .update({
-                paper_cash_balance: 100000,
+                paper_cash_balance: 10000, // $10k USD
                 paper_total_pnl: 0,
                 paper_season_pnl: 0,
                 paper_win_streak: 0,
