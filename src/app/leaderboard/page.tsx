@@ -221,7 +221,7 @@ export default function LeaderboardPage() {
                         <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 mb-4 shadow-[0_0_30px_-10px_rgba(234,179,8,0.3)]">
                             <Trophy className="w-8 h-8 text-yellow-400" />
                         </div>
-                        <h1 className="text-2xl font-extrabold text-white mb-2 tracking-tight">Topplistan</h1>
+                        <h1 className="text-2xl font-extrabold text-white mb-2 tracking-tight">Leaderboard</h1>
                         <p className="text-sm text-white/40">The best stock analysts in the world</p>
                     </div>
 

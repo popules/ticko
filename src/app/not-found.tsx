@@ -31,7 +31,7 @@ export default function NotFound() {
                         className="w-full px-6 py-4 bg-white/[0.04] text-white hover:bg-white/[0.08] rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2"
                     >
                         <MoveLeft className="w-4 h-4" />
-                        Tillbaka hem
+                        Back home
                     </Link>
                 </div>
             </div>
