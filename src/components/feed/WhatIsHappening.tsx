@@ -202,7 +202,7 @@ export function WhatIsHappening() {
                         {trendingData?.map((stock, index) => (
                             <Link
                                 key={stock.ticker_symbol}
-                                href={`/aktie/${stock.ticker_symbol}`}
+                                href={`/stock/${stock.ticker_symbol}`}
                                 className="p-3 bg-white/[0.04] rounded-xl border border-white/[0.08] hover:bg-white/[0.08] hover:border-white/[0.15] transition-all group/card"
                             >
                                 <div className="flex items-start justify-between mb-2">
@@ -237,7 +237,7 @@ export function WhatIsHappening() {
 
                                 <div className="flex items-center gap-1 mt-2 text-[10px] text-white/30">
                                     <MessageCircle className="w-3 h-3" />
-                                    {stock.post_count} inlägg
+                                    {stock.post_count} posts
                                 </div>
                             </Link>
                         ))}
@@ -245,8 +245,8 @@ export function WhatIsHappening() {
                 ) : (
                     /* Empty state when no trending stocks */
                     <div className="py-6 text-center">
-                        <p className="text-white/40 text-sm">Inga trendande aktier just nu</p>
-                        <p className="text-white/20 text-xs mt-1">Börja diskutera för att dyka upp här!</p>
+                        <p className="text-white/40 text-sm">No trending stocks right now</p>
+                        <p className="text-white/20 text-xs mt-1">Start discussing to appear here!</p>
                     </div>
                 )}
             </div>
@@ -278,7 +278,7 @@ export function WhatIsHappening() {
                         {watchlistData?.filter(w => w.comment_count > 0).slice(0, 3).map((item) => (
                             <Link
                                 key={item.symbol}
-                                href={`/aktie/${item.symbol}`}
+                                href={`/stock/${item.symbol}`}
                                 className="flex items-center justify-between p-3 bg-white/[0.04] rounded-xl border border-white/[0.08] hover:bg-white/[0.08] transition-all"
                             >
                                 <div className="flex items-center gap-3">
@@ -291,7 +291,7 @@ export function WhatIsHappening() {
                                 </div>
                                 <span className="flex items-center gap-1 text-xs text-emerald-400 font-medium">
                                     <MessageCircle className="w-3 h-3" />
-                                    +{item.comment_count} nya
+                                    +{item.comment_count} new
                                 </span>
                             </Link>
                         ))}

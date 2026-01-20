@@ -2,9 +2,9 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'Ticko - Där investerare möts',
+        name: 'Ticko - Where investors meet',
         short_name: 'Ticko',
-        description: 'En modern social plattform för aktieinvesterare',
+        description: 'A modern social platform for stock investors',
         start_url: '/',
         display: 'standalone',
         background_color: '#020617',
@@ -25,19 +25,19 @@ export default function manifest(): MetadataRoute.Manifest {
             },
         ],
         categories: ['finance', 'social', 'business'],
-        lang: 'sv',
+        lang: 'en',
         dir: 'ltr',
         scope: '/',
         shortcuts: [
             {
-                name: 'Marknad',
-                url: '/marknad',
-                description: 'Se marknadsöversikt',
+                name: 'Market',
+                url: '/market',
+                description: 'View market overview',
             },
             {
-                name: 'Trendradar',
-                url: '/upptack',
-                description: 'Upptäck trendande aktier',
+                name: 'Discover',
+                url: '/discover',
+                description: 'Discover trending stocks',
             },
         ],
     };

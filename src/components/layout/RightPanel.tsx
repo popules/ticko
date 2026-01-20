@@ -114,9 +114,9 @@ export function RightPanel() {
                         {UI_STRINGS.watchlist}
                     </h3>
                     <Link
-                        href="/upptack"
+                        href="/discover"
                         className="p-2 rounded-xl hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors"
-                        title="Upptäck aktier att bevaka"
+                        title="Discover stocks to watch"
                     >
                         <Plus className="w-4 h-4" />
                     </Link>
@@ -133,7 +133,7 @@ export function RightPanel() {
                                 key={item.symbol}
                                 className="group flex items-center justify-between p-4 bg-white/[0.04] rounded-2xl hover:bg-white/[0.08] transition-all border border-white/[0.08] hover:border-white/[0.12]"
                             >
-                                <Link href={`/aktie/${item.symbol}`} className="flex items-center gap-3 flex-1 min-w-0">
+                                <Link href={`/stock/${item.symbol}`} className="flex items-center gap-3 flex-1 min-w-0">
                                     <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center border border-white/10 flex-shrink-0">
                                         <span className="text-xs font-bold text-white">
                                             {item.symbol.charAt(0)}
@@ -168,7 +168,7 @@ export function RightPanel() {
                     ) : (
                         <div className="py-12 text-center rounded-2xl bg-white/[0.02] border border-dashed border-white/10">
                             <p className="text-xs text-white/30 uppercase tracking-widest leading-relaxed px-4">
-                                Din bevakningslista är tom. Lägg till aktier för att följa dem live.
+                                Your watchlist is empty. Add stocks to follow them live.
                             </p>
                         </div>
                     )}
@@ -176,7 +176,7 @@ export function RightPanel() {
 
                 {/* Quick action - links to full watchlist page */}
                 <Link
-                    href="/bevakningslista"
+                    href="/watchlist"
                     className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/[0.04] hover:bg-white/[0.08] rounded-2xl text-sm text-white/60 hover:text-white transition-all border border-white/[0.08] hover:border-white/[0.12]"
                 >
                     <Eye className="w-4 h-4" />

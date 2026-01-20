@@ -114,12 +114,12 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
         if (!user || !supabase || !stockPrice) return;
 
         if (shares < 1) {
-            setError("Du måste köpa minst 1 aktie");
+            setError("You must buy at least 1 share");
             return;
         }
 
         if (!canAfford) {
-            setError("Du har inte tillräckligt med virtuella kronor");
+            setError("You don't have enough virtual dollars");
             return;
         }
 
@@ -218,7 +218,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                         </div>
                                         <div>
                                             <h2 className="text-lg font-bold text-white">Paper Trade</h2>
-                                            <p className="text-xs text-white/40">Köp ${symbol}</p>
+                                            <p className="text-xs text-white/40">Buy ${symbol}</p>
                                         </div>
                                     </div>
                                     <button
@@ -235,13 +235,13 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                 <div className="mx-4 sm:mx-6 mt-4 sm:mt-6 p-3 sm:p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <Wallet className="w-4 h-4 text-emerald-400" />
-                                        <span className="text-xs sm:text-sm text-emerald-400/80">Tillgängligt saldo</span>
+                                        <span className="text-xs sm:text-sm text-emerald-400/80">Available balance</span>
                                     </div>
                                     {isLoadingBalance ? (
                                         <Loader2 className="w-4 h-4 animate-spin text-emerald-400" />
                                     ) : (
                                         <span className="text-base sm:text-lg font-bold text-emerald-400 tabular-nums">
-                                            {cashBalance.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                            ${cashBalance.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                         </span>
                                     )}
                                 </div>
@@ -250,8 +250,8 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                 <div className="mx-4 sm:mx-6 mt-3 p-2 sm:p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-2">
                                     <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                                     <div className="text-[10px] sm:text-xs text-amber-400/80">
-                                        <p>Simulering med virtuella pengar. Inga riktiga transaktioner.</p>
-                                        <p className="mt-1 text-white/40">⏱️ <strong>Fair Play:</strong> Priser är ~15 min fördröjda. Minsta innehavstid 30 min.</p>
+                                        <p>Simulation with virtual money. No real transactions.</p>
+                                        <p className="mt-1 text-white/40">⏱️ <strong>Fair Play:</strong> Prices are ~15 min delayed. Min holding time 30 min.</p>
                                     </div>
                                 </div>
 
@@ -281,14 +281,14 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                     >
                                         <ArrowLeftRight className="w-3 h-3" />
                                         {inputMode === "shares"
-                                            ? "Byt till köp med belopp (kr)"
-                                            : "Byt till köp med antal aktier"}
+                                            ? "Switch to buy by amount ($)"
+                                            : "Switch to buy by shares"}
                                     </button>
 
                                     {/* Input */}
                                     <div>
                                         <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-2">
-                                            {inputMode === "shares" ? "Antal aktier" : "Belopp i kr"}
+                                            {inputMode === "shares" ? "Number of shares" : "Amount in $"}
                                         </label>
                                         <div className="relative">
                                             <input
@@ -301,15 +301,15 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                                 placeholder={inputMode === "shares" ? "1" : "10000"}
                                             />
                                             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 text-sm">
-                                                {inputMode === "shares" ? "st" : "kr"}
+                                                {inputMode === "shares" ? "pcs" : "$"}
                                             </span>
                                         </div>
                                         {inputMode === "amount" && shares > 0 && (
                                             <p className="text-xs text-white/40 mt-2">
-                                                = {shares} aktie{shares !== 1 ? "r" : ""}
+                                                = {shares} share{shares !== 1 ? "s" : ""}
                                                 {totalCostSek < parseFloat(inputValue) && (
                                                     <span className="text-amber-400 ml-1">
-                                                        (kvar: {(parseFloat(inputValue) - totalCostSek).toFixed(2)} kr)
+                                                        (remaining: ${(parseFloat(inputValue) - totalCostSek).toFixed(2)})
                                                     </span>
                                                 )}
                                             </p>
@@ -322,14 +322,14 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                         : "bg-rose-500/10 border-rose-500/20"
                                         }`}>
                                         <div>
-                                            <span className="text-xs sm:text-sm text-white/60">Total kostnad</span>
+                                            <span className="text-xs sm:text-sm text-white/60">Total cost</span>
                                             {!canAfford && shares > 0 && (
-                                                <p className="text-[10px] text-rose-400">Inte tillräckligt saldo</p>
+                                                <p className="text-[10px] text-rose-400">Insufficient balance</p>
                                             )}
                                         </div>
                                         <span className={`text-lg sm:text-xl font-black tabular-nums ${canAfford ? "text-violet-400" : "text-rose-400"
                                             }`}>
-                                            {totalCostSek.toLocaleString("sv-SE", { maximumFractionDigits: 2 })} kr
+                                            ${totalCostSek.toLocaleString("en-US", { maximumFractionDigits: 2 })}
                                         </span>
                                     </div>
 
@@ -351,16 +351,16 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                             >
                                                 <PartyPopper className="w-8 h-8 text-white" />
                                             </motion.div>
-                                            <h3 className="text-xl font-black text-white mb-2">Köp genomfört! 🎉</h3>
+                                            <h3 className="text-xl font-black text-white mb-2">Purchase complete! 🎉</h3>
                                             <p className="text-white/60 text-sm mb-3">
-                                                Du har köpt <span className="font-bold text-white">{shares} st</span> av <span className="font-bold text-violet-400">${symbol}</span>
+                                                You bought <span className="font-bold text-white">{shares}</span> shares of <span className="font-bold text-violet-400">${symbol}</span>
                                             </p>
                                             <p className="text-2xl font-black text-violet-400 tabular-nums">
-                                                {totalCostSek.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                ${totalCostSek.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                             </p>
                                             <div className="mt-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs text-amber-400">
                                                 <Lock className="w-3 h-3" />
-                                                <span>Låst i 30 min (Fair Play)</span>
+                                                <span>Locked for 30 min (Fair Play)</span>
                                             </div>
                                         </motion.div>
                                     )}
@@ -372,7 +372,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                         onClick={() => setIsOpen(false)}
                                         className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] text-white/60 font-bold hover:bg-white/10 transition-colors"
                                     >
-                                        Avbryt
+                                        Cancel
                                     </button>
                                     <button
                                         onClick={handleBuy}
@@ -386,7 +386,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                         ) : (
                                             <>
                                                 <Gamepad2 className="w-4 h-4" />
-                                                Köp (Paper)
+                                                Buy (Paper)
                                             </>
                                         )}
                                     </button>

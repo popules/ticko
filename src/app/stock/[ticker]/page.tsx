@@ -12,11 +12,11 @@ import { fetchStockData } from "@/lib/stocks-api";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
-export async function generateMetadata({ params }: AktiePageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: StockPageProps): Promise<Metadata> {
     const { ticker } = await params;
     const stock = await fetchStockData(ticker.toUpperCase());
 
-    if (!stock) return { title: "Aktie hittades inte - Ticko" };
+    if (!stock) return { title: "Stock not found - Ticko" };
 
     return {
         title: `${stock.name} ($${stock.symbol}) - Analysis, sentiment, and discussion on Ticko`,
@@ -44,11 +44,11 @@ export async function generateMetadata({ params }: AktiePageProps): Promise<Meta
 
 // Mock stock data removed - using centralized lib
 
-interface AktiePageProps {
+interface StockPageProps {
     params: Promise<{ ticker: string }>;
 }
 
-export default async function AktiePage({ params }: AktiePageProps) {
+export default async function StockPage({ params }: StockPageProps) {
     const { ticker } = await params;
     const upperTicker = ticker.toUpperCase();
 
@@ -94,7 +94,7 @@ export default async function AktiePage({ params }: AktiePageProps) {
                                     >
                                         {((stock.change ?? 0) >= 0) ? "+" : ""}
                                         {(stock.changePercent ?? 0).toFixed(2)}%
-                                        <span className="opacity-50 ml-1 font-normal">idag</span>
+                                        <span className="opacity-50 ml-1 font-normal">today</span>
                                     </span>
                                 </div>
                             </div>
@@ -154,7 +154,7 @@ export default async function AktiePage({ params }: AktiePageProps) {
 
                         {/* TradingView Chart */}
                         <div className="mb-6">
-                            <h3 className="text-sm font-bold text-white/40 uppercase tracking-widest mb-4">Prisutveckling</h3>
+                            <h3 className="text-sm font-bold text-white/40 uppercase tracking-widest mb-4">Price History</h3>
                             <StockChart symbol={upperTicker} height={450} />
                         </div>
 
@@ -168,7 +168,7 @@ export default async function AktiePage({ params }: AktiePageProps) {
                     {/* News Section */}
                     <div className="p-6 border-b border-white/10">
                         <h2 className="text-sm font-bold text-white/40 uppercase tracking-widest mb-4">
-                            Senaste Nyheterna
+                            Latest News
                         </h2>
                         <NewsFeed symbol={upperTicker} />
                     </div>

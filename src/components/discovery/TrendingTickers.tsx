@@ -75,7 +75,7 @@ export function TrendingTickers() {
             <div className="p-5 border-b border-white/10">
                 <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Flame className="w-3.5 h-3.5 text-orange-400" />
-                    Mest diskuterade
+                    Most discussed
                 </h3>
                 <div className="space-y-2">
                     {[1, 2, 3].map((i) => (
@@ -91,10 +91,10 @@ export function TrendingTickers() {
             <div className="p-5 border-b border-white/10">
                 <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Flame className="w-3.5 h-3.5 text-orange-400" />
-                    Mest diskuterade
+                    Most discussed
                 </h3>
                 <p className="text-xs text-white/30 text-center py-4">
-                    Inga aktier diskuteras just nu
+                    No stocks being discussed right now
                 </p>
             </div>
         );
@@ -104,13 +104,13 @@ export function TrendingTickers() {
         <div className="p-5 border-b border-white/10">
             <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Flame className="w-3.5 h-3.5 text-orange-400" />
-                Mest diskuterade
+                Most discussed
             </h3>
             <div className="space-y-2">
                 {trendingData.map((item, index) => (
                     <Link
                         key={item.ticker_symbol}
-                        href={`/aktie/${item.ticker_symbol}`}
+                        href={`/stock/${item.ticker_symbol}`}
                         className="flex items-center gap-3 p-3 bg-white/[0.04] rounded-xl hover:bg-white/[0.08] transition-all border border-white/[0.08] hover:border-white/[0.12] group"
                     >
                         {/* Rank */}

@@ -75,7 +75,7 @@ export default function BevakningslistaPage() {
                         <div>
                             <h1 className="text-3xl font-black text-white mb-2">Bevakningslista</h1>
                             <p className="text-white/50">
-                                {stocks.length} {stocks.length === 1 ? "aktie" : "aktier"} i din lista
+                                {stocks.length} {stocks.length === 1 ? "stock" : "stockr"} in your list
                             </p>
                         </div>
                         <Link
@@ -83,7 +83,7 @@ export default function BevakningslistaPage() {
                             className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 transition-all"
                         >
                             <Plus className="w-4 h-4" />
-                            Lägg till aktier
+                            Lägg till stockr
                         </Link>
                     </div>
 
@@ -96,7 +96,7 @@ export default function BevakningslistaPage() {
                             <Star className="w-12 h-12 text-white/20 mx-auto mb-4" />
                             <h2 className="text-xl font-bold text-white mb-2">Din bevakningslista är tom</h2>
                             <p className="text-white/40 mb-2">Go to a stock page and click the ⭐ star</p>
-                            <p className="text-white/30 text-sm">eller använd knappen ovan för att hitta aktier.</p>
+                            <p className="text-white/30 text-sm">eller använd knappen ovan för att hitta stockr.</p>
                         </div>
                     ) : (
                         <div className="space-y-3">
@@ -105,7 +105,7 @@ export default function BevakningslistaPage() {
                                     key={stock.symbol}
                                     className="group flex items-center justify-between p-5 bg-white/[0.04] rounded-2xl hover:bg-white/[0.08] transition-all border border-white/[0.08] hover:border-white/[0.12]"
                                 >
-                                    <Link href={`/aktie/${stock.symbol}`} className="flex items-center gap-4 flex-1">
+                                    <Link href={`/stock/${stock.symbol}`} className="flex items-center gap-4 flex-1">
                                         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 flex items-center justify-center border border-emerald-500/20">
                                             <Star className="w-5 h-5 text-emerald-400 fill-emerald-400" />
                                         </div>

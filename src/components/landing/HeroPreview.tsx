@@ -7,12 +7,12 @@ import { useEffect, useState } from "react";
 // Realistic mock data
 const mockPosts = [
     {
-        user: "Erik_Investerar",
+        user: "TraderMike",
         avatar: "🧑‍💼",
-        ticker: "$VOLV-B",
+        ticker: "$TSLA",
         tickerColor: "text-emerald-400",
         sentiment: "bullish",
-        text: "Stark Q4-rapport! Orderingången överträffar förväntningarna. Håller min position.",
+        text: "Strong Q4 report! Order intake exceeds expectations. Holding my position.",
         likes: 24,
         comments: 8,
         time: "2 min",
@@ -20,10 +20,10 @@ const mockPosts = [
     {
         user: "AnnaTrader",
         avatar: "👩‍💻",
-        ticker: "$ERIC-B",
+        ticker: "$AAPL",
         tickerColor: "text-violet-400",
         sentiment: "bearish",
-        text: "Lite orolig över 5G-marknaden just nu. Avvaktar tills vi ser bättre signaler.",
+        text: "A bit worried about the smartphone market right now. Waiting for better signals.",
         likes: 12,
         comments: 5,
         time: "5 min",
@@ -37,17 +37,17 @@ const topUsers = [
 ];
 
 const tickerTapeItems = [
-    "Erik_Investerar köpte $VOLV-B",
-    "AnnaTrader bevakar $SEB-A",
-    "StockMaster sålde $HM-B",
-    "NordicInvestor gillade ett inlägg",
-    "TechTrader kommenterade på $ERIC-B",
+    "TraderMike bought $TSLA",
+    "AnnaTrader is watching $AAPL",
+    "StockMaster sold $MSFT",
+    "NordicInvestor liked a post",
+    "TechTrader commented on $NVDA",
 ];
 
 const trendingStocks = [
-    { ticker: "VOLV-B", price: "289,50", change: "+2.4%", up: true },
-    { ticker: "ERIC-B", price: "78,20", change: "-1.2%", up: false },
-    { ticker: "SEB-A", price: "142,80", change: "+0.8%", up: true },
+    { ticker: "TSLA", price: "248.50", change: "+2.4%", up: true },
+    { ticker: "AAPL", price: "178.20", change: "-1.2%", up: false },
+    { ticker: "NVDA", price: "542.80", change: "+0.8%", up: true },
 ];
 
 export function HeroPreview() {
@@ -142,7 +142,7 @@ export function HeroPreview() {
 
                         {/* Nav items */}
                         <div className="pt-4 space-y-2">
-                            {["Hem", "Upptäck", "Bevakningar"].map((item, i) => (
+                            {["Home", "Discover", "Watchlist"].map((item, i) => (
                                 <div key={i} className="h-9 w-full bg-white/[0.02] rounded-lg flex items-center px-3">
                                     <span className="text-[11px] text-white/40">{item}</span>
                                 </div>
@@ -164,11 +164,11 @@ export function HeroPreview() {
                             </div>
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-sm font-bold text-white">$VOLV-B</span>
-                                    <span className="text-xs text-emerald-400 font-semibold">289,50 kr</span>
+                                    <span className="text-sm font-bold text-white">$TSLA</span>
+                                    <span className="text-xs text-emerald-400 font-semibold">$248.50</span>
                                     <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">+2.4%</span>
                                 </div>
-                                <div className="text-[11px] text-white/40">Volvo Group • Mest diskuterad idag</div>
+                                <div className="text-[11px] text-white/40">Tesla Inc • Most discussed today</div>
                             </div>
                             {/* Mini chart */}
                             <svg className="w-20 h-10" viewBox="0 0 80 40">
@@ -211,13 +211,13 @@ export function HeroPreview() {
                                             <span className="text-sm font-semibold text-white/90">{post.user}</span>
                                             <span className={`text-xs font-bold ${post.tickerColor}`}>{post.ticker}</span>
                                             <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase ${post.sentiment === "bullish"
-                                                    ? "bg-emerald-500/20 text-emerald-400"
-                                                    : "bg-rose-500/20 text-rose-400"
+                                                ? "bg-emerald-500/20 text-emerald-400"
+                                                : "bg-rose-500/20 text-rose-400"
                                                 }`}>
                                                 {post.sentiment === "bullish" ? "🐂 Bull" : "🐻 Bear"}
                                             </span>
                                         </div>
-                                        <span className="text-[10px] text-white/30">{post.time} sedan</span>
+                                        <span className="text-[10px] text-white/30">{post.time} ago</span>
                                     </div>
                                 </div>
                                 <p className="text-[13px] text-white/60 leading-relaxed">{post.text}</p>
@@ -253,7 +253,7 @@ export function HeroPreview() {
                         >
                             <div className="flex items-center gap-2 mb-4">
                                 <Trophy className="w-4 h-4 text-amber-500" />
-                                <span className="text-[11px] font-bold text-white/60 uppercase tracking-wider">Topplistan</span>
+                                <span className="text-[11px] font-bold text-white/60 uppercase tracking-wider">Leaderboard</span>
                             </div>
                             {topUsers.map((user, i) => (
                                 <motion.div
@@ -281,9 +281,9 @@ export function HeroPreview() {
                         >
                             <div className="flex items-center gap-2 mb-1">
                                 <Bell className="w-3.5 h-3.5 text-violet-400" />
-                                <span className="text-[10px] font-bold text-violet-400">Ny notis</span>
+                                <span className="text-[10px] font-bold text-violet-400">New notification</span>
                             </div>
-                            <p className="text-[11px] text-white/50">StockMaster kommenterade på din analys av $VOLV-B</p>
+                            <p className="text-[11px] text-white/50">StockMaster commented on your $TSLA analysis</p>
                         </motion.div>
                     </div>
                 </div>

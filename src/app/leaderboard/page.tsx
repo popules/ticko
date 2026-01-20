@@ -197,7 +197,7 @@ export default function LeaderboardPage() {
         }
         const pnl = paperTimeframe === "season" ? (user.paper_season_pnl || 0) : (user.paper_total_pnl || 0);
         const prefix = pnl >= 0 ? "+" : "";
-        return `${prefix}${pnl.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr`;
+        return `${prefix}${pnl.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr`;
     };
 
     const getScoreColor = (user: Leader, position: number) => {
@@ -222,7 +222,7 @@ export default function LeaderboardPage() {
                             <Trophy className="w-8 h-8 text-yellow-400" />
                         </div>
                         <h1 className="text-2xl font-extrabold text-white mb-2 tracking-tight">Topplistan</h1>
-                        <p className="text-sm text-white/40">Sveriges vassaste aktieanalytiker</p>
+                        <p className="text-sm text-white/40">The best stock analysts in the world</p>
                     </div>
 
                     {/* Tab Selector */}
@@ -282,7 +282,7 @@ export default function LeaderboardPage() {
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-bold text-white">{currentSeasonName}</p>
-                                            <p className="text-xs text-white/40">Vem tar hem kronan?</p>
+                                            <p className="text-xs text-white/40">Who takes the crown?</p>
                                         </div>
                                         <div className="text-right">
                                             <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
@@ -307,7 +307,7 @@ export default function LeaderboardPage() {
                                             </div>
                                         </div>
                                         <span className="text-emerald-400 font-bold text-sm">
-                                            {seasonWinners[0].final_value?.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                            {seasonWinners[0].final_value?.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
                                         </span>
                                     </div>
                                 </div>
@@ -346,10 +346,10 @@ export default function LeaderboardPage() {
                                                     </div>
                                                     <div className="text-right">
                                                         <p className="text-emerald-400 font-bold text-sm tabular-nums">
-                                                            {winner.final_value?.toLocaleString("sv-SE", { maximumFractionDigits: 0 })} kr
+                                                            {winner.final_value?.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
                                                         </p>
                                                         <p className="text-[10px] text-white/30">
-                                                            {winner.ended_at ? new Date(winner.ended_at).toLocaleDateString("sv-SE") : ""}
+                                                            {winner.ended_at ? new Date(winner.ended_at).toLocaleDateString("en-US") : ""}
                                                         </p>
                                                     </div>
                                                 </div>

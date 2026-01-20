@@ -114,7 +114,7 @@ export default function MarketPage() {
                             {UI_STRINGS.markets}
                         </h1>
                         <p className="text-xs font-bold text-white/30 tracking-widest uppercase mt-1">
-                            Live Marknadsdata • Realtid
+                            Live Market Data • Realtid
                         </p>
                     </div>
                     <div className="flex items-center gap-3">
@@ -185,7 +185,7 @@ export default function MarketPage() {
                             {/* === GAINERS & LOSERS SECTION === */}
                             {/* Market Filter Tabs */}
                             <div className="flex items-center gap-2 mb-6">
-                                <span className="text-xs font-bold text-white/40 uppercase tracking-widest mr-2">Marknad:</span>
+                                <span className="text-xs font-bold text-white/40 uppercase tracking-widest mr-2">Market:</span>
                                 {[
                                     { id: "all" as const, label: "Alla", flag: "🌐" },
                                     { id: "us" as const, label: "USA", flag: "🇺🇸" },
@@ -217,7 +217,7 @@ export default function MarketPage() {
                                             <motion.button
                                                 key={stock.symbol}
                                                 whileHover={{ backgroundColor: 'rgba(255,255,255,0.04)' }}
-                                                onClick={() => router.push(`/aktie/${stock.symbol}`)}
+                                                onClick={() => router.push(`/stock/${stock.symbol}`)}
                                                 className="w-full px-6 py-4 flex items-center justify-between transition-all text-left"
                                             >
                                                 <div className="flex items-center gap-4">
@@ -249,7 +249,7 @@ export default function MarketPage() {
                                             <motion.button
                                                 key={stock.symbol}
                                                 whileHover={{ backgroundColor: 'rgba(255,255,255,0.04)' }}
-                                                onClick={() => router.push(`/aktie/${stock.symbol}`)}
+                                                onClick={() => router.push(`/stock/${stock.symbol}`)}
                                                 className="w-full px-6 py-4 flex items-center justify-between transition-all text-left"
                                             >
                                                 <div className="flex items-center gap-4">
@@ -282,7 +282,7 @@ export default function MarketPage() {
                                             key={stock.symbol}
                                             whileHover={{ scale: 1.03, y: -4 }}
                                             whileTap={{ scale: 0.97 }}
-                                            onClick={() => router.push(`/aktie/${stock.symbol}`)}
+                                            onClick={() => router.push(`/stock/${stock.symbol}`)}
                                             className="relative rounded-2xl p-5 bg-white/[0.04] border border-white/10 hover:border-white/20 text-left transition-all overflow-hidden group"
                                         >
                                             <div className="flex justify-between items-start mb-3">

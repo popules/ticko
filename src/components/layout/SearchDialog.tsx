@@ -82,7 +82,7 @@ export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                                 {results.stocks.map((stock: any) => (
                                     <Link
                                         key={stock.symbol}
-                                        href={`/aktie/${stock.symbol}`}
+                                        href={`/stock/${stock.symbol}`}
                                         onClick={onClose}
                                         className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors group"
                                     >
@@ -108,7 +108,7 @@ export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                                 {results.users.map((user: any) => (
                                     <Link
                                         key={user.id}
-                                        href={`/profil/${user.id}`}
+                                        href={`/profile/${user.id}`}
                                         onClick={onClose}
                                         className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors group"
                                     >

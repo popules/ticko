@@ -114,10 +114,10 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                     </div>
 
                     <Link
-                        href={`/aktie/${stock.symbol}`}
+                        href={`/stock/${stock.symbol}`}
                         className="w-full flex items-center justify-center gap-2 py-4 btn-gradient text-white rounded-[1.25rem] font-bold text-sm shadow-xl shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
                     >
-                        Visa Analys
+                        View Analysis
                     </Link>
                 </div>
             </div>
