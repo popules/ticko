@@ -6,7 +6,7 @@ export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "ticko";
 export const APP_CONFIG = {
   name: APP_NAME,
   tagline: "Där resultat räknas",
-  title: "Ticko Arena | Slå börsen riskfritt",
+  title: "Ticko | Slå börsen riskfritt",
   description: "Gå med i Ticko Arena. Handla aktier med virtuella pengar, klättra på leaderboards och använd Ticko AI för att bemästra marknaden.",
   baseUrl: "https://www.ticko.se",
 } as const;
