@@ -92,7 +92,7 @@ export function LandingPage() {
                         transition={{ duration: 0.5 }}
                         className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 mb-6 backdrop-blur-sm"
                     >
-                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                        <Sparkles className="w-3.5 h-3.5 text-emerald-400 hidden" />
                         <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
                             🏆 TICKO ARENA
                         </span>
@@ -609,7 +609,7 @@ export function LandingPage() {
                         href="/registrera"
                         className="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-[#020617] rounded-full font-black text-lg transition-all hover:scale-105 shadow-2xl shadow-emerald-500/20"
                     >
-                        Skapa mitt gratis konto
+                        Skapa konto gratis
                         <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
                     </Link>
 
