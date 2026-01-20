@@ -35,28 +35,28 @@ export async function POST(request: NextRequest) {
     <div style="max-width: 500px; margin: 0 auto; background-color: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden;">
         
         <div style="padding: 40px 30px; text-align: center;">
-            <h1 style="font-size: 24px; margin-bottom: 10px; color: #ffffff; font-weight: 700;">Välkommen till arenan!</h1>
+            <h1 style="font-size: 24px; margin-bottom: 10px; color: #ffffff; font-weight: 700;">Welcome to the arena!</h1>
             <p style="font-size: 16px; color: rgba(255,255,255,0.7); margin-bottom: 24px;">
-                Grymt att du är ombord. Nu har du verktygen du behöver för att jaga resultat och ta din trading till nästa nivå.
+                Great to have you on board. Now you have the tools you need to chase results and take your trading to the next level.
             </p>
             
             <div style="background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); padding: 20px; border-radius: 12px; margin-bottom: 30px;">
                 <p style="margin: 0; font-size: 15px; color: rgba(255,255,255,0.9);">
-                    <strong>Kom igång direkt</strong><br>
-                    Logga in på ditt konto och börja logga dina trades. Det är så vi blir bättre.
+                    <strong>Get started now</strong><br>
+                    Log in to your account and start tracking your trades. That's how we get better.
                 </p>
             </div>
 
             <div style="margin-bottom: 30px;">
                 <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://ticko.se'}" 
                    style="display: inline-block; background-color: #10B981; background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 50px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
-                   Till min dashboard
+                   Go to my dashboard
                 </a>
             </div>
         </div>
 
         <div style="padding: 20px; text-align: center; background-color: rgba(0, 0, 0, 0.2); font-size: 12px; color: rgba(255, 255, 255, 0.3);">
-            <p style="margin: 0; font-weight: 600;">Där resultat räknas.</p>
+            <p style="margin: 0; font-weight: 600;">Where results matter.</p>
             <p style="margin: 5px 0 0;">&copy; 2026 Ticko</p>
         </div>
     </div>
@@ -71,9 +71,9 @@ export async function POST(request: NextRequest) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                from: "Anton från Ticko <hej@ticko.se>",
+                from: "Anton from Ticko <hey@ticko.se>",
                 to: email,
-                subject: `Välkommen till Ticko – Dina 100 000 kr är redo! 📈`,
+                subject: `Welcome to Ticko – Your $10,000 is ready! 📈`,
                 html: emailHtml
             })
         });

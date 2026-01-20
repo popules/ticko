@@ -33,7 +33,7 @@ const navItems = [
     { icon: TrendingUp, label: UI_STRINGS.markets, href: "/marknad" },
     { icon: Gamepad2, label: "Paper Trading", href: "/paper-trading", badge: "🎮" },
     { icon: Star, label: UI_STRINGS.watchlist, href: "/watchlist" },
-    { icon: Trophy, label: "Topplistan", href: "/leaderboard" },
+    { icon: Trophy, label: "Leaderboard", href: "/leaderboard" },
     { icon: User, label: UI_STRINGS.profile, href: "/profil" },
 ];
 
@@ -126,7 +126,7 @@ export function Sidebar() {
                             </div>
                             {item.isNew && (
                                 <span className="text-[9px] font-bold bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-md border border-emerald-500/20 group-hover:bg-emerald-500/30 transition-colors">
-                                    NY
+                                    NEW
                                 </span>
                             )}
                             {(item as any).badge && (
@@ -159,7 +159,7 @@ export function Sidebar() {
                         className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/40 hover:text-rose-400 hover:bg-rose-400/10 transition-all group"
                     >
                         <LogOut className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-                        <span className="text-[13px] font-medium">Logga ut</span>
+                        <span className="text-[13px] font-medium">Log out</span>
                     </button>
                 ) : (
                     <Link
@@ -168,7 +168,7 @@ export function Sidebar() {
                         className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-emerald-400 hover:bg-emerald-400/10 transition-all group"
                     >
                         <LogOut className="w-4 h-4 rotate-180 group-hover:-rotate-[168deg] transition-transform" />
-                        <span className="text-[13px] font-medium">Logga in</span>
+                        <span className="text-[13px] font-medium">Log in</span>
                     </Link>
                 )}
             </div>
