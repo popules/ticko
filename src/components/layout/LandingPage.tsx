@@ -94,7 +94,7 @@ export function LandingPage() {
                     >
                         <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                         <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                            Paper Trading Utmaningen
+                            🏆 TICKO ARENA
                         </span>
                     </motion.div>
 
@@ -116,7 +116,7 @@ export function LandingPage() {
                         transition={{ delay: 0.4 }}
                         className="text-base md:text-lg text-white/50 max-w-2xl font-medium leading-relaxed mb-12 mx-auto"
                     >
-                        Handla aktier i realtid med virtuella pengar. Klättra på leaderboarden, bygg din streak och använd <span className="text-emerald-400">Ticko AI</span> för att hitta nästa vinnare. <span className="text-white">Helt gratis och utan risk.</span>
+                        Handla aktier med virtuella pengar i Ticko Arena. Klättra på leaderboarden, bygg din streak och använd <span className="text-emerald-400">Ticko AI</span> för att hitta nästa vinnare. <span className="text-white">Helt gratis och utan risk.</span>
                     </motion.p>
 
                     <motion.div
@@ -134,7 +134,7 @@ export function LandingPage() {
                         </Link>
                         <a
                             href="#how-it-works"
-                            className="group px-6 py-4 bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] text-white rounded-full font-bold text-sm backdrop-blur-lg transition-all flex items-center gap-2"
+                            className="group px-6 py-4 bg-white/[0.04] border border-white/20 hover:bg-white/[0.08] text-white rounded-full font-bold text-sm backdrop-blur-lg transition-all flex items-center gap-2"
                         >
                             <Play className="w-4 h-4" />
                             Se hur det fungerar
