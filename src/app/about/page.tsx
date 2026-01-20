@@ -23,8 +23,8 @@ export default function OmOssPage() {
         },
         {
             icon: Brain,
-            title: "AI Copilot – Information, Not Advice",
-            desc: "Our AI summarizes news and analyzes sentiment to help you make your own decisions faster. It never gives buy or sell advice.",
+            title: "Ticko AI – Information, Not Advice",
+            desc: "Our AI helps you make faster decisions by summarizing news and analyzing sentiment. It provides intelligence, never buy or sell advice.",
             color: "text-violet-400",
             bg: "bg-violet-500/10"
         },
@@ -55,12 +55,12 @@ export default function OmOssPage() {
                     {/* Hero Section */}
                     <div className="mb-20">
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-8 leading-[1.1]">
-                            About Ticko – <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300">Education through Simulation</span>
+                            About Ticko – <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300">Master the Markets. Zero Risk.</span>
                         </h1>
 
                         <div className="space-y-8">
                             <section>
-                                <h2 className="text-2xl font-bold text-white mb-4">Vision: Learn to Trade – Without Risk</h2>
+                                <h2 className="text-2xl font-bold text-white mb-4">Learn to Trade. Prove Your Skills.</h2>
                                 <p className="text-white/60 text-lg leading-relaxed">
                                     Ticko is an <strong className="text-white">educational platform</strong> and a <strong className="text-white">social network</strong> for people who want to learn more about stocks and trading. We offer a risk-free environment where you can practice with virtual money, discuss strategies, and build knowledge together with others.
                                 </p>
@@ -84,7 +84,7 @@ export default function OmOssPage() {
                             <div>
                                 <h3 className="text-lg font-bold text-violet-400 mb-2">AI Disclaimer</h3>
                                 <p className="text-white/60 leading-relaxed">
-                                    Ticko's AI analyses ("Ticko AI", "AI Copilot") are automated tools to facilitate information retrieval and summarization of publicly available data. They do not constitute, and should not be interpreted as, buy or sell advice or financial advice of any kind.
+                                    Ticko's AI analyses ("Ticko AI") are automated tools to facilitate information retrieval and summarization of publicly available data. They do not constitute, and should not be interpreted as, buy or sell advice or financial advice of any kind.
                                 </p>
                             </div>
                         </div>
@@ -113,7 +113,7 @@ export default function OmOssPage() {
                         <div className="p-8 rounded-3xl bg-emerald-500/[0.03] border border-emerald-500/10">
                             <h2 className="text-2xl font-bold text-white mb-4">Our Vision: Kill the Toxic Forum Culture</h2>
                             <p className="text-white/60 text-lg leading-relaxed">
-                                We believe online stock discussions have a problem: anonymity without accountability. Anyone can shout "buy!" or "sell!" without consequences. At Ticko, we link every user's opinions to a <strong className="text-emerald-400">verifiable track record</strong> via simulated trading. Results speak louder than words.
+                                We believe online stock discussions have a problem: anonymity without accountability. Anyone can shout "buy!" or "sell!" without consequences. At Ticko, we link every user's opinions to a <strong className="text-emerald-400">verifiable track record</strong>. Results speak louder than words.
                             </p>
                         </div>
                     </div>
