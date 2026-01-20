@@ -54,19 +54,19 @@ export default function ChooseAliasPage() {
         setError("");
 
         if (username.length < 3) {
-            setError("Användarnamnet måste vara minst 3 tecken");
+            setError("Username must be at least 3 characters");
             return;
         }
 
         if (!isAvailable) {
-            setError("Detta användarnamn är redan taget");
+            setError("This username is already taken");
             return;
         }
 
         setIsLoading(true);
 
         if (!supabase || !user) {
-            setError("Du måste vara inloggad");
+            setError("You must be logged in");
             setIsLoading(false);
             return;
         }
@@ -130,16 +130,16 @@ export default function ChooseAliasPage() {
 
                 {/* Choose alias card */}
                 <div className="bg-white/[0.04] backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl">
-                    <h1 className="text-2xl font-bold text-white mb-2">Välj ditt alias</h1>
+                    <h1 className="text-2xl font-bold text-white mb-2">Choose your alias</h1>
                     <p className="text-white/50 mb-8">
-                        Andra användare kommer att se dig som detta namn på {APP_CONFIG.name}.
+                        Other users will see you as this name on {APP_CONFIG.name}.
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         {/* Username */}
                         <div>
                             <label className="block text-sm font-medium text-white/70 mb-2">
-                                Användarnamn
+                                Username
                             </label>
                             <div className="relative">
                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -147,7 +147,7 @@ export default function ChooseAliasPage() {
                                     type="text"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, ""))}
-                                    placeholder="Välj ett alias..."
+                                    placeholder="Choose an alias..."
                                     className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-12 text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
                                     required
                                     maxLength={20}
@@ -185,7 +185,7 @@ export default function ChooseAliasPage() {
                                 <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
                                 <>
-                                    Fortsätt till {APP_CONFIG.name}
+                                    Continue to {APP_CONFIG.name}
                                     <ArrowRight className="w-5 h-5" />
                                 </>
                             )}

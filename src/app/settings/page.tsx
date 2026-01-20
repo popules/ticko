@@ -58,10 +58,10 @@ export default function SettingsPage() {
                 .eq("id", user.id);
 
             if (error) throw error;
-            setMessage({ type: 'success', text: "Profil uppdaterad!" });
+            setMessage({ type: 'success', text: "Profile updated!" });
         } catch (error: any) {
             if (error.code === '23505') {
-                setMessage({ type: 'error', text: "Användarnamnet är redan upptaget." });
+                setMessage({ type: 'error', text: "Username is already taken." });
             } else {
                 setMessage({ type: 'error', text: error.message });
             }
@@ -73,11 +73,11 @@ export default function SettingsPage() {
     const handlePasswordChange = async (e: React.FormEvent) => {
         e.preventDefault();
         if (newPassword !== confirmPassword) {
-            setMessage({ type: 'error', text: 'Lösenorden matchar inte.' });
+            setMessage({ type: 'error', text: 'Passwords do not match.' });
             return;
         }
         if (newPassword.length < 6) {
-            setMessage({ type: 'error', text: 'Lösenordet måste vara minst 6 tecken.' });
+            setMessage({ type: 'error', text: 'Password must be at least 6 characters.' });
             return;
         }
 
@@ -91,7 +91,7 @@ export default function SettingsPage() {
 
             if (error) throw error;
 
-            setMessage({ type: 'success', text: 'Lösenord ändrat!' });
+            setMessage({ type: 'success', text: 'Password changed!' });
             setNewPassword("");
             setConfirmPassword("");
             setShowPasswordForm(false);
@@ -104,7 +104,7 @@ export default function SettingsPage() {
 
     const handleDeleteAccount = async () => {
         if (deleteConfirmText !== username) {
-            setMessage({ type: 'error', text: 'Skriv ditt användarnamn korrekt för att bekräfta.' });
+            setMessage({ type: 'error', text: 'Please type your username correctly to confirm.' });
             return;
         }
 
@@ -135,7 +135,7 @@ export default function SettingsPage() {
 
     return (
         <div className="max-w-2xl mx-auto p-6 md:p-12">
-            <h1 className="text-2xl font-extrabold text-white mb-8 tracking-tight">Inställningar</h1>
+            <h1 className="text-2xl font-extrabold text-white mb-8 tracking-tight">Settings</h1>
 
             <div className="bg-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/10 p-8">
                 {/* Avatar Section */}
@@ -150,14 +150,14 @@ export default function SettingsPage() {
                 <form onSubmit={handleSave} className="space-y-6">
                     <div>
                         <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-2">
-                            Användarnamn
+                            Username
                         </label>
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             className="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-[15px] text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
-                            placeholder="Ditt användarnamn"
+                            placeholder="Your username"
                         />
                     </div>
 
@@ -171,7 +171,7 @@ export default function SettingsPage() {
                             disabled
                             className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-4 py-3 text-[15px] text-white/40 cursor-not-allowed"
                         />
-                        <p className="text-[10px] text-white/20 mt-1">Email kan inte ändras.</p>
+                        <p className="text-[10px] text-white/20 mt-1">Email cannot be changed.</p>
                     </div>
 
                     {message && (
@@ -191,7 +191,7 @@ export default function SettingsPage() {
                         ) : (
                             <>
                                 <Save className="w-4 h-4" />
-                                Spara ändringar
+                                Save changes
                             </>
                         )}
                     </button>
@@ -204,33 +204,33 @@ export default function SettingsPage() {
                         className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm font-medium"
                     >
                         <Lock className="w-4 h-4" />
-                        Byt lösenord
+                        Change password
                     </button>
 
                     {showPasswordForm && (
                         <form onSubmit={handlePasswordChange} className="mt-4 space-y-4">
                             <div>
                                 <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-2">
-                                    Nytt lösenord
+                                    New password
                                 </label>
                                 <input
                                     type="password"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     className="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-[15px] text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
-                                    placeholder="Minst 6 tecken"
+                                    placeholder="At least 6 characters"
                                 />
                             </div>
                             <div>
                                 <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-2">
-                                    Bekräfta lösenord
+                                    Confirm password
                                 </label>
                                 <input
                                     type="password"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     className="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-[15px] text-white focus:outline-none focus:border-emerald-500/50 transition-colors"
-                                    placeholder="Upprepa lösenord"
+                                    placeholder="Repeat password"
                                 />
                             </div>
                             <button
@@ -241,7 +241,7 @@ export default function SettingsPage() {
                                 {isChangingPassword ? (
                                     <Loader2 className="w-4 h-4 animate-spin" />
                                 ) : (
-                                    "Ändra lösenord"
+                                    "Change password"
                                 )}
                             </button>
                         </form>
@@ -255,7 +255,7 @@ export default function SettingsPage() {
                         className="w-full flex items-center justify-center gap-2 py-3.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl font-bold transition-all text-sm group"
                     >
                         <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                        Logga ut från Ticko
+                        Log out from Ticko
                     </button>
                 </div>
 
@@ -266,7 +266,7 @@ export default function SettingsPage() {
                         className="flex items-center gap-2 text-white/30 hover:text-rose-400 transition-colors text-xs font-medium"
                     >
                         <Trash2 className="w-3 h-3" />
-                        Radera mitt konto permanent
+                        Delete my account permanently
                     </button>
 
                     {showDeleteConfirm && (
@@ -275,7 +275,7 @@ export default function SettingsPage() {
                                 <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
                                 <div>
                                     <p className="text-sm font-medium text-rose-400">
-                                        Är du säker? Detta går inte att ångra.
+                                        Are you sure? This cannot be undone.
                                     </p>
                                     <p className="text-xs text-white/40 mt-1">
                                         All your posts, comments, and reactions will be permanently deleted.
@@ -284,7 +284,7 @@ export default function SettingsPage() {
                             </div>
                             <div>
                                 <label className="block text-xs text-white/40 mb-2">
-                                    Skriv <span className="text-rose-400 font-bold">{username}</span> för att bekräfta
+                                    Type <span className="text-rose-400 font-bold">{username}</span> to confirm
                                 </label>
                                 <input
                                     type="text"
@@ -304,7 +304,7 @@ export default function SettingsPage() {
                                 ) : (
                                     <>
                                         <Trash2 className="w-4 h-4" />
-                                        Radera konto permanent
+                                        Delete account permanently
                                     </>
                                 )}
                             </button>

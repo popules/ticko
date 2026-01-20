@@ -40,9 +40,9 @@ export class StockErrorBoundary extends Component<Props, State> {
                         <div className="w-16 h-16 bg-rose-500/10 rounded-2xl flex items-center justify-center mb-6">
                             <AlertCircle className="w-8 h-8 text-rose-500" />
                         </div>
-                        <h2 className="text-2xl font-black text-white mb-2">Hoppsan! Något gick fel.</h2>
+                        <h2 className="text-2xl font-black text-white mb-2">Oops! Something went wrong.</h2>
                         <p className="text-white/40 text-sm mb-8 max-w-sm mx-auto">
-                            Ett tekniskt fel uppstod när sidan laddades. Det kan bero på tillfälliga problem med datakällan.
+                            A technical error occurred while loading the page. This may be due to temporary issues with the data source.
                         </p>
                         <button
                             onClick={this.handleReset}

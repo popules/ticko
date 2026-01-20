@@ -60,7 +60,7 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
         return (
             <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-12 flex flex-col items-center justify-center border border-white/10">
                 <Loader2 className="w-8 h-8 animate-spin text-violet-400 mb-4" />
-                <p className="text-white/60">Analyserar ${ticker} med AI...</p>
+                <p className="text-white/60">Analyzing ${ticker} with AI...</p>
             </div>
         );
     }
@@ -69,14 +69,14 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
         return (
             <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-8 border border-white/10 text-center">
                 <p className="text-rose-400">Could not perform AI analysis</p>
-                <p className="text-sm text-white/40 mt-2">Kontrollera OpenAI API-nyckel i .env.local</p>
+                <p className="text-sm text-white/40 mt-2">Check OpenAI API key in .env.local</p>
             </div>
         );
     }
 
     const currentPrice = aiData?.currentPrice || 0;
     const fairValue = aiData?.fairValue || 0;
-    const reasoning = aiData?.reasoning || "Ingen analys tillgänglig.";
+    const reasoning = aiData?.reasoning || "No analysis available.";
     const bullishPercent = sentimentData?.[0]?.bullish_percent ?? 50;
     const bearishPercent = 100 - bullishPercent;
     const upside = currentPrice > 0 ? ((fairValue - currentPrice) / currentPrice) * 100 : 0;
@@ -154,7 +154,7 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
                         {UI_STRINGS.communitySentiment}
                     </span>
                     <span className="text-[10px] tabular-nums">
-                        Baserat på {sentimentData?.[0]?.total_posts || 0} inlägg
+                        Based on {sentimentData?.[0]?.total_posts || 0} posts
                     </span>
                 </div>
 

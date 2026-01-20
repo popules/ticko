@@ -892,17 +892,17 @@ export default function PaperTradingPage() {
                                 <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
                                     <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
                                     <div className="text-sm text-amber-400/80">
-                                        <p className="font-bold mb-1">Detta kommer att:</p>
+                                        <p className="font-bold mb-1">This will:</p>
                                         <ul className="list-disc list-inside text-xs space-y-1">
-                                            <li>Radera alla Your virtual holdings</li>
-                                            <li>Återställa din kassa till 100 000 kr</li>
-                                            <li>Öka din reset-räknare (synlig för andra)</li>
+                                            <li>Delete all your virtual holdings</li>
+                                            <li>Reset your cash to $10,000</li>
+                                            <li>Increase your reset counter (visible to others)</li>
                                         </ul>
                                     </div>
                                 </div>
 
                                 <p className="text-sm text-white/50 text-center">
-                                    Du har återställt <span className="text-white font-bold">{resetCount}</span> gång{resetCount !== 1 ? "er" : ""} tidigare.
+                                    You have reset <span className="text-white font-bold">{resetCount}</span> time{resetCount !== 1 ? "s" : ""} before.
                                 </p>
                             </div>
 

@@ -22,7 +22,7 @@ export function PerformanceMetrics({ symbol }: PerformanceMetricsProps) {
         return (
             <div className="flex items-center gap-4 py-2">
                 <Loader2 className="w-4 h-4 animate-spin text-white/40" />
-                <span className="text-xs text-white/40">Laddar prestanda...</span>
+                <span className="text-xs text-white/40">Loading performance...</span>
             </div>
         );
     }

@@ -54,29 +54,29 @@ export default function ResetPasswordPage() {
                             <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
                                 <CheckCircle className="w-8 h-8 text-emerald-400" />
                             </div>
-                            <h1 className="text-2xl font-bold text-white mb-2">Kolla din inkorg</h1>
+                            <h1 className="text-2xl font-bold text-white mb-2">Check your inbox</h1>
                             <p className="text-white/50 mb-6">
-                                Vi har skickat en återställningslänk till <span className="text-white">{email}</span>
+                                We've sent a recovery link to <span className="text-white">{email}</span>
                             </p>
                             <Link
                                 href="/login"
                                 className="text-emerald-400 hover:text-emerald-300 font-medium"
                             >
-                                ← Tillbaka till inloggning
+                                ← Back to login
                             </Link>
                         </div>
                     ) : (
                         <>
-                            <h1 className="text-2xl font-bold text-white mb-2">Återställ lösenord</h1>
+                            <h1 className="text-2xl font-bold text-white mb-2">Reset password</h1>
                             <p className="text-white/50 mb-8">
-                                Ange din e-postadress så skickar vi en länk för att återställa ditt lösenord.
+                                Enter your email address and we'll send you a link to reset your password.
                             </p>
 
                             <form onSubmit={handleSubmit} className="space-y-5">
                                 {/* Email */}
                                 <div>
                                     <label className="block text-sm font-medium text-white/70 mb-2">
-                                        E-post
+                                        Email
                                     </label>
                                     <div className="relative">
                                         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -84,7 +84,7 @@ export default function ResetPasswordPage() {
                                             type="email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="din@email.se"
+                                            placeholder="you@email.com"
                                             className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
                                             required
                                         />
@@ -108,7 +108,7 @@ export default function ResetPasswordPage() {
                                         <Loader2 className="w-5 h-5 animate-spin" />
                                     ) : (
                                         <>
-                                            Skicka återställningslänk
+                                            Send recovery link
                                             <ArrowRight className="w-5 h-5" />
                                         </>
                                     )}
@@ -118,7 +118,7 @@ export default function ResetPasswordPage() {
                             {/* Back to login */}
                             <p className="text-center text-white/50 mt-6">
                                 <Link href="/login" className="text-emerald-400 hover:text-emerald-300 font-bold">
-                                    ← Tillbaka till inloggning
+                                    ← Back to login
                                 </Link>
                             </p>
                         </>

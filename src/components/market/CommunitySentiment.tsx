@@ -73,7 +73,7 @@ export function CommunitySentiment() {
                 </div>
                 <div className="flex items-center gap-1 text-[10px] text-white/30">
                     <Users className="w-3 h-3" />
-                    {totalPosts} inlägg (24h)
+                    {totalPosts} posts (24h)
                 </div>
             </div>
 

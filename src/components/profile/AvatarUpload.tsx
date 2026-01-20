@@ -117,7 +117,7 @@ export function AvatarUpload({ currentUrl, onUploadComplete }: AvatarUploadProps
             </div>
 
             <div className="text-center">
-                <p className="text-sm font-medium text-white/80">Profilbild</p>
+                <p className="text-sm font-medium text-white/80">Profile picture</p>
                 <p className="text-xs text-white/40 mt-1">
                     Max 2MB
                 </p>

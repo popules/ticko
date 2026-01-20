@@ -262,15 +262,15 @@ export function WhatIsHappening() {
                                 <Eye className="w-4 h-4 text-emerald-400" />
                             </div>
                             <div>
-                                <h3 className="text-sm font-bold text-white uppercase tracking-wide">👀 Din watchlist</h3>
-                                <p className="text-[10px] text-white/40">Aktivitet på aktier du bevakar</p>
+                                <h3 className="text-sm font-bold text-white uppercase tracking-wide">👀 Your watchlist</h3>
+                                <p className="text-[10px] text-white/40">Activity on stocks you watch</p>
                             </div>
                         </div>
                         <Link
-                            href="/bevakningslista"
+                            href="/watchlist"
                             className="flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors"
                         >
-                            Se alla <ArrowRight className="w-3 h-3" />
+                            See all <ArrowRight className="w-3 h-3" />
                         </Link>
                     </div>
 

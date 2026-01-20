@@ -89,15 +89,15 @@ export function ReportModal({ isOpen, onClose, postId }: ReportModalProps) {
                                 <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto">
                                     <ShieldCheck className="w-8 h-8 text-emerald-400" />
                                 </div>
-                                <h3 className="text-xl font-bold text-white">Anmälan skickad</h3>
+                                <h3 className="text-xl font-bold text-white">Report submitted</h3>
                                 <p className="text-white/60 text-sm px-8">
-                                    Tack för att du hjälper till att hålla Ticko tryggt. Vi kommer att granska inlägget inom kort.
+                                    Thanks for helping keep Ticko safe. We will review the post shortly.
                                 </p>
                             </div>
                         ) : (
                             <>
                                 <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-lg font-bold text-white">Anmäl inlägg</h3>
+                                    <h3 className="text-lg font-bold text-white">Report post</h3>
                                     <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-lg text-white/40 hover:text-white transition-colors">
                                         <X className="w-5 h-5" />
                                     </button>
@@ -130,7 +130,7 @@ export function ReportModal({ isOpen, onClose, postId }: ReportModalProps) {
                                     {isSubmitting ? (
                                         <Loader2 className="w-5 h-5 animate-spin" />
                                     ) : (
-                                        "Skicka anmälan"
+                                        "Submit report"
                                     )}
                                 </button>
                             </>

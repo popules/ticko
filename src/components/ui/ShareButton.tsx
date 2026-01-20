@@ -53,7 +53,7 @@ export function ShareButton({
         <button
             onClick={handleShare}
             className={`flex items-center gap-2 text-white/40 hover:text-white transition-colors ${className}`}
-            title="Dela"
+            title="Share"
         >
             <AnimatePresence mode="wait">
                 {copied ? (
@@ -76,7 +76,7 @@ export function ShareButton({
                         className="flex items-center gap-1.5"
                     >
                         <Share2 className="w-4 h-4" />
-                        {!iconOnly && <span className="text-xs font-medium">Dela</span>}
+                        {!iconOnly && <span className="text-xs font-medium">Share</span>}
                     </motion.div>
                 )}
             </AnimatePresence>

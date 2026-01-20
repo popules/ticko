@@ -81,7 +81,7 @@ export function GiphyPicker({ onSelect, onClose }: GiphyPickerProps) {
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                     <ImageIcon className="w-5 h-5 text-white/60" />
-                    <span className="font-medium text-white">Lägg till GIF</span>
+                    <span className="font-medium text-white">Add GIF</span>
                 </div>
                 <button
                     onClick={onClose}

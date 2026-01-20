@@ -119,7 +119,7 @@ export function AddToPortfolioModal({
                                 >
                                     <Wallet className="w-8 h-8 text-emerald-400" />
                                 </motion.div>
-                                <h3 className="text-xl font-bold text-white mb-2">Tillagd i portföljen!</h3>
+                                <h3 className="text-xl font-bold text-white mb-2">Added to portfolio!</h3>
                                 <p className="text-white/50">{shares} shares of ${symbol}</p>
                             </div>
                         ) : (
@@ -130,7 +130,7 @@ export function AddToPortfolioModal({
                                             <Wallet className="w-5 h-5 text-white" />
                                         </div>
                                         <div>
-                                            <h2 className="text-xl font-black text-white">Lägg till i Portfölj</h2>
+                                            <h2 className="text-xl font-black text-white">Add to Portfolio</h2>
                                             <p className="text-xs text-white/40">${symbol} · {name}</p>
                                         </div>
                                     </div>
@@ -144,7 +144,7 @@ export function AddToPortfolioModal({
 
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
-                                        <p className="text-xs text-white/40 mb-1">Nuvarande pris</p>
+                                        <p className="text-xs text-white/40 mb-1">Current price</p>
                                         <p className="text-2xl font-black text-white tabular-nums">
                                             {currencySymbol}{(currentPrice ?? 0).toFixed(2)}
                                         </p>
@@ -181,7 +181,7 @@ export function AddToPortfolioModal({
 
                                     <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
                                         <div className="flex justify-between items-center">
-                                            <p className="text-sm text-white/60">Totalt värde</p>
+                                            <p className="text-sm text-white/60">Total value</p>
                                             <p className="text-2xl font-black text-emerald-400 tabular-nums">
                                                 {currencySymbol}{totalValue.toFixed(2)}
                                             </p>
@@ -200,16 +200,16 @@ export function AddToPortfolioModal({
                                         {isSubmitting ? (
                                             <span className="flex items-center justify-center gap-2">
                                                 <Loader2 className="w-4 h-4 animate-spin" />
-                                                Lägger till...
+                                                Adding...
                                             </span>
                                         ) : (
-                                            "Lägg till i Portfölj"
+                                            "Add to Portfolio"
                                         )}
                                     </button>
 
                                     {!user && (
                                         <p className="text-xs text-white/30 text-center">
-                                            Du måste vara inloggad
+                                            You must be logged in
                                         </p>
                                     )}
                                 </form>

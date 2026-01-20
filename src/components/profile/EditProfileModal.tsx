@@ -87,7 +87,7 @@ export function EditProfileModal({
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-xl font-black text-white">Redigera Profil</h2>
+                            <h2 className="text-xl font-black text-white">Edit Profile</h2>
                             <button
                                 onClick={onClose}
                                 className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/10 text-white/40 hover:text-white transition-all"
@@ -106,7 +106,7 @@ export function EditProfileModal({
                                     <button
                                         type="button"
                                         className="absolute -bottom-2 -right-2 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white/60 border border-white/20 transition-all"
-                                        title="Ladda upp bild (kommer snart)"
+                                        title="Upload picture (coming soon)"
                                     >
                                         <Camera className="w-4 h-4" />
                                     </button>
@@ -116,7 +116,7 @@ export function EditProfileModal({
                             {/* Username */}
                             <div>
                                 <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-2">
-                                    Användarnamn
+                                    Username
                                 </label>
                                 <input
                                     type="text"
@@ -137,7 +137,7 @@ export function EditProfileModal({
                                     value={bio}
                                     onChange={(e) => setBio(e.target.value)}
                                     rows={3}
-                                    placeholder="Berätta lite om dig själv..."
+                                    placeholder="Tell us a bit about yourself..."
                                     className="w-full px-4 py-3 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 transition-all resize-none"
                                     maxLength={160}
                                 />
@@ -149,7 +149,7 @@ export function EditProfileModal({
                             {/* Location */}
                             <div>
                                 <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-2">
-                                    Plats
+                                    Location
                                 </label>
                                 <div className="relative">
                                     <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
@@ -157,7 +157,7 @@ export function EditProfileModal({
                                         type="text"
                                         value={location}
                                         onChange={(e) => setLocation(e.target.value)}
-                                        placeholder="Stockholm, Sverige"
+                                        placeholder="New York, USA"
                                         className="w-full pl-10 pr-4 py-3 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 transition-all"
                                         maxLength={50}
                                     />
@@ -178,10 +178,10 @@ export function EditProfileModal({
                                 {isSubmitting ? (
                                     <span className="flex items-center justify-center gap-2">
                                         <Loader2 className="w-4 h-4 animate-spin" />
-                                        Sparar...
+                                        Saving...
                                     </span>
                                 ) : (
-                                    "Spara Ändringar"
+                                    "Save Changes"
                                 )}
                             </button>
                         </form>
