@@ -767,7 +767,7 @@ export default function PaperTradingPage() {
                                         </p>
                                         <div className="mt-6 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20 max-w-sm mx-auto">
                                             <p className="text-violet-400 text-sm">
-                                                📊 Current Value: <span className="font-bold">${(totalValue + cashBalance).toLocaleString("en-US")}</span>
+                                                📊 Current Value: <span className="font-bold">${(totalValue + cashBalance).toLocaleString("en-US", { maximumFractionDigits: 2 })}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -804,7 +804,7 @@ export default function PaperTradingPage() {
                                                                 color: "white"
                                                             }}
                                                             labelFormatter={(date) => new Date(date).toLocaleDateString("en-US", { dateStyle: "long" })}
-                                                            formatter={(value) => [`${(value as number || 0).toLocaleString("en-US")} kr`, "Värde"]}
+                                                            formatter={(value) => [`$${(value as number || 0).toLocaleString("en-US", { maximumFractionDigits: 0 })}`, "Value"]}
                                                         />
                                                         <Area
                                                             type="monotone"
@@ -821,15 +821,15 @@ export default function PaperTradingPage() {
                                         {/* Stats */}
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
-                                                <p className="text-xs text-white/40 mb-1">Startpunkt</p>
+                                                <p className="text-xs text-white/40 mb-1">Start</p>
                                                 <p className="text-lg font-bold text-white tabular-nums">
-                                                    {snapshots[0]?.total_value.toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
+                                                    ${snapshots[0]?.total_value.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                                 </p>
                                             </div>
                                             <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
-                                                <p className="text-xs text-white/40 mb-1">Nuvarande</p>
+                                                <p className="text-xs text-white/40 mb-1">Current</p>
                                                 <p className="text-lg font-bold text-white tabular-nums">
-                                                    {(totalValue + cashBalance).toLocaleString("en-US", { maximumFractionDigits: 0 })} kr
+                                                    ${(totalValue + cashBalance).toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                                 </p>
                                             </div>
                                         </div>
