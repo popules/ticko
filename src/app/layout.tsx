@@ -6,7 +6,6 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { APP_CONFIG } from "@/config/app";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { SearchProvider } from "@/providers/SearchProvider";
-import { WelcomeToast } from "@/components/onboarding/WelcomeToast";
 import { CookieConsent } from "@/components/ui/CookieConsent";
 
 const inter = Inter({
@@ -64,7 +63,6 @@ export default function RootLayout({
             <SearchProvider>
               {children}
               <MobileNav />
-              <WelcomeToast />
               <CookieConsent />
             </SearchProvider>
           </AuthProvider>

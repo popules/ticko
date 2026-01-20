@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { DiscoveryCard } from "@/components/discovery/DiscoveryCard";
@@ -8,13 +9,17 @@ import type { StockData } from "@/lib/stocks-api";
 import { Loader2, RefreshCw, Info, Star, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function DiscoveryPage() {
+    const { user, isLoading: authLoading } = useAuth();
+    const router = useRouter();
     const [stocks, setStocks] = useState<StockData[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
     const loadDiscovery = async () => {
+        if (!user) return;
         setIsLoading(true);
         try {
             const res = await fetch("/api/discovery");
@@ -28,9 +33,16 @@ export default function DiscoveryPage() {
         setIsLoading(false);
     };
 
+    // Redirect to login if not authenticated
     useEffect(() => {
-        loadDiscovery();
-    }, []);
+        if (!authLoading && !user) {
+            router.replace("/logga-in");
+        }
+    }, [user, authLoading, router]);
+
+    useEffect(() => {
+        if (user) loadDiscovery();
+    }, [user]);
 
     const queryClient = useQueryClient();
     const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);

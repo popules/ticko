@@ -5,9 +5,20 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Star, X, TrendingUp, TrendingDown, Plus, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function BevakningslistaPage() {
+    const { user, isLoading: authLoading } = useAuth();
+    const router = useRouter();
     const queryClient = useQueryClient();
+
+    // Redirect to login if not authenticated
+    useEffect(() => {
+        if (!authLoading && !user) {
+            router.replace("/logga-in");
+        }
+    }, [user, authLoading, router]);
 
     const { data: watchlistData, isLoading, refetch } = useQuery({
         queryKey: ["watchlist"],

@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
 import { Trophy, Medal, TrendingUp, TrendingDown, User, Crown, Loader2, Gamepad2, RotateCcw, Calendar, Clock, ChevronDown, History } from "lucide-react";
@@ -8,6 +10,7 @@ import Link from "next/link";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { useState } from "react";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface Leader {
     id: string;
@@ -43,8 +46,17 @@ type LeaderboardTab = "reputation" | "paper";
 type PaperTimeframe = "season" | "alltime";
 
 export default function LeaderboardPage() {
+    const { user, isLoading: authLoading } = useAuth();
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState<LeaderboardTab>("reputation");
     const [paperTimeframe, setPaperTimeframe] = useState<PaperTimeframe>("season");
+
+    // Redirect to login if not authenticated
+    useEffect(() => {
+        if (!authLoading && !user) {
+            router.replace("/logga-in");
+        }
+    }, [user, authLoading, router]);
 
     // Reputation leaderboard
     const { data: reputationLeaders, isLoading: isRepLoading } = useQuery<Leader[]>({
