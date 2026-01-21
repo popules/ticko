@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
             {
                 userAgent: '*',
                 allow: '/',
-                disallow: ['/api/', '/settings/', '/bevakningslista/', '/alerts/'],
+                disallow: ['/api/', '/settings/', '/watchlist/', '/alerts/'],
             },
         ],
         sitemap: 'https://tickomarkets.com/sitemap.xml',

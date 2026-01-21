@@ -32,5 +32,5 @@ export async function GET(request: Request) {
     }
 
     // Something went wrong, redirect to login
-    return NextResponse.redirect(new URL("/logga-in", requestUrl.origin));
+    return NextResponse.redirect(new URL("/login", requestUrl.origin));
 }

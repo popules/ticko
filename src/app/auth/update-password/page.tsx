@@ -50,7 +50,7 @@ export default function UpdatePasswordPage() {
             setIsLoading(false);
             // Redirect to login after 2 seconds
             setTimeout(() => {
-                router.push("/logga-in");
+                router.push("/login");
             }, 2000);
         }
     };

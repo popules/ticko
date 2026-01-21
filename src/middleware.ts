@@ -1,6 +1,49 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Routes that don't require authentication
+const PUBLIC_ROUTES = [
+    '/',
+    '/login',
+    '/register',
+    '/reset-password',
+    '/about',
+    '/contact',
+    '/privacy',
+    '/terms',
+    '/auth/callback',
+    '/auth/update-password',
+    '/api/og',
+    '/api/og/trade-card',
+];
+
+// Routes that start with these prefixes are public
+const PUBLIC_PREFIXES = [
+    '/api/cron',
+    '/api/market',
+    '/_next',
+    '/favicon',
+    '/icons',
+];
+
+function isPublicRoute(pathname: string): boolean {
+    // Check exact matches
+    if (PUBLIC_ROUTES.includes(pathname)) return true;
+
+    // Check prefixes
+    for (const prefix of PUBLIC_PREFIXES) {
+        if (pathname.startsWith(prefix)) return true;
+    }
+
+    // Stock pages are public (SEO)
+    if (pathname.startsWith('/stock/')) return true;
+
+    // Static files are public
+    if (pathname.match(/\.(svg|png|jpg|jpeg|gif|webp|ico|js|css)$/)) return true;
+
+    return false;
+}
+
 export async function middleware(request: NextRequest) {
     let response = NextResponse.next({
         request: {
@@ -54,8 +97,22 @@ export async function middleware(request: NextRequest) {
         }
     )
 
-    // Refresh the session if needed - this is the critical step!
-    await supabase.auth.getUser()
+    // Get the user session
+    const { data: { user } } = await supabase.auth.getUser()
+
+    const pathname = request.nextUrl.pathname;
+
+    // If the route is public, allow access
+    if (isPublicRoute(pathname)) {
+        return response;
+    }
+
+    // If user is not logged in and trying to access protected route, redirect to login
+    if (!user) {
+        const loginUrl = new URL('/login', request.url);
+        loginUrl.searchParams.set('redirect', pathname); // Remember where they wanted to go
+        return NextResponse.redirect(loginUrl);
+    }
 
     return response
 }
@@ -67,7 +124,6 @@ export const config = {
          * - _next/static (static files)
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
-         * - public files
          */
         '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     ],
