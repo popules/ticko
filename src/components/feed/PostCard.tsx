@@ -232,7 +232,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                             )}
                             {/* Share button */}
                             <ShareButton
-                                url={`https://www.ticko.se/post/${post.id}`}
+                                url={`https://tickomarkets.com/post/${post.id}`}
                                 title={`Post by ${profile?.username || 'Anonymous'} on Ticko`}
                             />
                             {/* Report button */}

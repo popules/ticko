@@ -12,7 +12,7 @@ import { checkPaperTradingAchievements } from "@/lib/achievements";
 import { calculateTradeXP } from "@/lib/level-system";
 
 const USD_TO_SEK = 10.5;
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://ticko.se";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://tickomarkets.com";
 
 interface PortfolioItem {
     id: string;
@@ -229,7 +229,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.5 }}
-                                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🎮 Paper Trading win on Ticko!\n\n$${item.symbol}: +${pnlPercent.toFixed(1)}% \n\nJoin: ticko.se`)}`}
+                                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🎮 Paper Trading win on Ticko!\n\n$${item.symbol}: +${pnlPercent.toFixed(1)}% \n\nJoin: tickomarkets.com`)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold hover:scale-105 transition-transform"
@@ -272,7 +272,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
 
                                             <div className="grid grid-cols-2 gap-2">
                                                 <a
-                                                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`I'm up ${pnlPercent.toFixed(1)}% on $${item.symbol} in the Ticko challenge! 🚀\n\nCan you beat me? 👇\nhttps://ticko.se`)}&url=${encodeURIComponent("https://ticko.se")}`}
+                                                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`I'm up ${pnlPercent.toFixed(1)}% on $${item.symbol} in the Ticko challenge! 🚀\n\nCan you beat me? 👇\nhttps://tickomarkets.com`)}&url=${encodeURIComponent("https://tickomarkets.com")}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-black/40 hover:bg-black/60 border border-white/10 text-white/80 transition-colors text-xs font-medium"
@@ -289,7 +289,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                                                 await navigator.share({
                                                                     title: 'My Ticko Win',
                                                                     text: `I'm up +${pnlPercent.toFixed(1)}% on $${item.symbol}!`,
-                                                                    url: "https://ticko.se" // TODO: Should preferably share the Image? Native share mostly shares URL.
+                                                                    url: "https://tickomarkets.com" // TODO: Should preferably share the Image? Native share mostly shares URL.
                                                                 });
                                                             } else {
                                                                 // Fallback to clipboard

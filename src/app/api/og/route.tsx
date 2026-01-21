@@ -124,8 +124,8 @@ export async function GET(request: NextRequest) {
                         fontSize: 20,
                     }}
                 >
-                    <span>Se diskussionen på</span>
-                    <span style={{ color: '#10B981', fontWeight: 600 }}>ticko.se/aktie/{ticker}</span>
+                    <span>See the discussion at</span>
+                    <span style={{ color: '#10B981', fontWeight: 600 }}>tickomarkets.com/stock/{ticker}</span>
                 </div>
             </div>
         ),

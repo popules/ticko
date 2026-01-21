@@ -123,12 +123,12 @@ export default function OmOssPage() {
                         <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col items-center text-center">
                             <Mail className="w-8 h-8 text-emerald-400 mb-4" />
                             <h3 className="text-lg font-bold mb-2">Feedback & Ideas</h3>
-                            <a href="mailto:hello@ticko.se" className="text-emerald-400 hover:underline">hello@ticko.se</a>
+                            <a href="mailto:hello@tickomarkets.com" className="text-emerald-400 hover:underline">hello@tickomarkets.com</a>
                         </div>
                         <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col items-center text-center">
                             <Gavel className="w-8 h-8 text-blue-400 mb-4" />
                             <h3 className="text-lg font-bold mb-2">Legal Questions</h3>
-                            <a href="mailto:legal@ticko.se" className="text-blue-400 hover:underline">legal@ticko.se</a>
+                            <a href="mailto:legal@tickomarkets.com" className="text-blue-400 hover:underline">legal@tickomarkets.com</a>
                         </div>
                     </div>
 

@@ -165,7 +165,7 @@ export async function fetchDiscoveryStocks(): Promise<StockData[]> {
                         content: "You are a trend scout. A short sentence (max 6 words) about the stock. No financial advice."
                     }, {
                         role: "user",
-                        content: `Aktie: ${stock.name} (${stock.symbol}), Pris: ${stock.price} ${stock.currency}`
+                        content: `Stock: ${stock.name} (${stock.symbol}), Price: ${stock.price} ${stock.currency}`
                     }],
                     max_tokens: 30
                 });

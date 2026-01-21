@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
                 disallow: ['/api/', '/settings/', '/bevakningslista/', '/alerts/'],
             },
         ],
-        sitemap: 'https://www.ticko.se/sitemap.xml',
+        sitemap: 'https://tickomarkets.com/sitemap.xml',
     };
 }

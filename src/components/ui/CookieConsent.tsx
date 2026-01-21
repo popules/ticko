@@ -57,10 +57,10 @@ export function CookieConsent() {
                             {/* Content */}
                             <div className="flex-1 min-w-0">
                                 <h3 className="text-base font-bold text-white mb-1">
-                                    Här får du en kaka! 🍪
+                                    Here's a cookie for you! 🍪
                                 </h3>
                                 <p className="text-sm text-white/50 leading-relaxed">
-                                    Vi använder cookies för att ge dig bästa möjliga upplevelse. Ingen spårning, bara smarta minnen.
+                                    We use cookies to give you the best experience. No tracking, just smart memories.
                                 </p>
                             </div>
 
@@ -79,14 +79,14 @@ export function CookieConsent() {
                                 onClick={handleDecline}
                                 className="flex-1 py-2.5 px-4 rounded-xl bg-white/[0.04] hover:bg-white/10 text-white/60 text-sm font-medium transition-all"
                             >
-                                Nej tack
+                                No thanks
                             </button>
                             <button
                                 onClick={handleAccept}
                                 className="flex-1 py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#020617] text-sm font-bold transition-all flex items-center justify-center gap-2"
                             >
                                 <Check className="w-4 h-4" />
-                                Jag älskar kakor
+                                I love cookies
                             </button>
                         </div>
                     </div>

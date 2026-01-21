@@ -83,7 +83,7 @@ export default function ContactPage() {
                                 <Mail className="w-6 h-6 text-emerald-400" />
                             </div>
                             <h3 className="text-lg font-bold mb-1">Email</h3>
-                            <p className="text-emerald-400 font-medium">hello@ticko.se</p>
+                            <p className="text-emerald-400 font-medium">hello@tickomarkets.com</p>
                         </div>
 
                         <div className="p-6 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-xl">

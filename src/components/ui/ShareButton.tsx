@@ -14,7 +14,7 @@ interface ShareButtonProps {
 
 export function ShareButton({
     url,
-    title = "Kolla in detta på Ticko",
+    title = "Check this out on Ticko",
     text = "",
     className = "",
     iconOnly = true,

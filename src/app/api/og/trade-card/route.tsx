@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const ticker = searchParams.get('ticker') || 'AAPL';
     const returnPct = parseFloat(searchParams.get('return') || '0');
 
-    // User requested "Jag ligger +15% i Ticko-utmaningen"
+    // User requested "I'm up +15% in the Ticko challenge"
     const isPositive = returnPct >= 0;
     const returnSign = isPositive ? '+' : '';
     const formattedReturn = `${returnSign}${returnPct.toFixed(1)}%`;
@@ -109,7 +109,7 @@ export async function GET(request: NextRequest) {
                         }}
                     >
                         <div style={{ fontSize: '32px', color: 'rgba(255,255,255,0.7)' }}>
-                            Jag ligger
+                            I'm up
                         </div>
                         <div
                             style={{
@@ -123,7 +123,7 @@ export async function GET(request: NextRequest) {
                             {formattedReturn}
                         </div>
                         <div style={{ fontSize: '32px', color: 'rgba(255,255,255,0.7)' }}>
-                            i Ticko-utmaningen
+                            in the Ticko challenge
                         </div>
                     </div>
 
@@ -149,11 +149,11 @@ export async function GET(request: NextRequest) {
                                 gap: '12px',
                             }}
                         >
-                            <span>Kan du slå mig?</span>
+                            <span>Can you beat me?</span>
                             <span>👉</span>
                         </div>
                         <div style={{ fontSize: '20px', color: 'rgba(255,255,255,0.5)', marginTop: '8px' }}>
-                            ticko.se
+                            tickomarkets.com
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { createClient } from '@supabase/supabase-js';
 
-const BASE_URL = 'https://www.ticko.se';
+const BASE_URL = 'https://tickomarkets.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Static pages

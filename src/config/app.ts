@@ -8,7 +8,7 @@ export const APP_CONFIG = {
   tagline: "Where results matter",
   title: "Ticko | Beat the market risk-free",
   description: "Join Ticko Arena. Trade stocks with virtual money, climb the leaderboards, and use Ticko AI to master the market.",
-  baseUrl: "https://www.ticko.se",
+  baseUrl: "https://tickomarkets.com",
 } as const;
 
 export const BASE_URL = APP_CONFIG.baseUrl;

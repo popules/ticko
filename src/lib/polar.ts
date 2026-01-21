@@ -12,7 +12,7 @@ export const PORTFOLIO_RESET_PRODUCT_ID = process.env.POLAR_PRODUCT_ID || "";
 export const POLAR_WEBHOOK_SECRET = process.env.POLAR_WEBHOOK_SECRET || "";
 
 // App URL for redirects
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://ticko.se";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://tickomarkets.com";
 
 /**
  * Create a checkout session for portfolio reset

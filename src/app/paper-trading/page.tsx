@@ -628,10 +628,10 @@ export default function PaperTradingPage() {
                                                                 navigator.share({
                                                                     title: 'My Ticko Win',
                                                                     text: text,
-                                                                    url: "https://ticko.se"
+                                                                    url: "https://tickomarkets.com"
                                                                 }).catch(console.error);
                                                             } else {
-                                                                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text + " 🚀\n\nCan you beat me? 👇\nhttps://ticko.se")}&url=${encodeURIComponent("https://ticko.se")}`, '_blank');
+                                                                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text + " 🚀\n\nCan you beat me? 👇\nhttps://tickomarkets.com")}&url=${encodeURIComponent("https://tickomarkets.com")}`, '_blank');
                                                             }
                                                         }}
                                                         className="mr-3 p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-colors opacity-0 group-hover:opacity-100"

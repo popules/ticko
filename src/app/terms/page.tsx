@@ -115,7 +115,7 @@ export default function TermsPage() {
                 {/* Intro */}
                 <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-6 mb-8">
                     <p className="text-white/70 leading-relaxed">
-                        These terms of service (&quot;Terms&quot;) constitute a legally binding agreement between you (&quot;User&quot;) and Ticko regarding the use of the platform ticko.se and associated services. Ticko is an educational platform with simulated trading and not a financial service.
+                        These terms of service (&quot;Terms&quot;) constitute a legally binding agreement between you (&quot;User&quot;) and Ticko regarding the use of the platform tickomarkets.com and associated services. Ticko is an educational platform with simulated trading and not a financial service.
                     </p>
                 </div>
 

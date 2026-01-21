@@ -14,13 +14,13 @@ export async function POST(request: Request) {
             const stock = await fetchStockData(contextTicker);
             if (stock) {
                 contextData = `
-AKTIEDATA:
-• Namn: ${stock.name} (${stock.symbol})
-• Pris: ${stock.price} ${stock.currency}
-• Daglig förändring: ${stock.changePercent >= 0 ? '+' : ''}${stock.changePercent.toFixed(2)}%
-• P/E-tal: ${stock.pe || 'N/A'}
-• Börsvärde: ${stock.marketCap || 'N/A'}
-• 52-veckors H/L: ${stock.week52Range || 'N/A'}
+STOCK DATA:
+• Name: ${stock.name} (${stock.symbol})
+• Price: ${stock.price} ${stock.currency}
+• Daily change: ${stock.changePercent >= 0 ? '+' : ''}${stock.changePercent.toFixed(2)}%
+• P/E ratio: ${stock.pe || 'N/A'}
+• Market cap: ${stock.marketCap || 'N/A'}
+• 52-week H/L: ${stock.week52Range || 'N/A'}
                 `;
             }
         }

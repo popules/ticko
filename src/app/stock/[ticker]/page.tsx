@@ -22,22 +22,22 @@ export async function generateMetadata({ params }: StockPageProps): Promise<Meta
         title: `${stock.name} ($${stock.symbol}) - Analysis, sentiment, and discussion on Ticko`,
         description: `See latest news, AI analysis, and community sentiment for ${stock.name}. Discuss $${stock.symbol} with other investors on Ticko.`,
         openGraph: {
-            title: `${stock.name} ($${stock.symbol}) på Ticko`,
+            title: `${stock.name} ($${stock.symbol}) on Ticko`,
             description: `Join the discussion about ${stock.name}. AI insights and real-time data for retail investors.`,
             images: [
                 {
-                    url: `https://www.ticko.se/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`,
+                    url: `https://tickomarkets.com/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`,
                     width: 1200,
                     height: 630,
-                    alt: `${stock.name} på Ticko`,
+                    alt: `${stock.name} on Ticko`,
                 },
             ],
         },
         twitter: {
             card: 'summary_large_image',
-            title: `${stock.name} ($${stock.symbol}) på Ticko`,
-            description: `Diskutera $${stock.symbol} med Sveriges smartaste börssnackare.`,
-            images: [`https://www.ticko.se/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`],
+            title: `${stock.name} ($${stock.symbol}) on Ticko`,
+            description: `Discuss $${stock.symbol} with the smartest investors on Ticko.`,
+            images: [`https://tickomarkets.com/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`],
         },
     };
 }

@@ -84,7 +84,7 @@ export default function PrivacyPage() {
                 "Data Portability: Export your data.",
                 "Objection: Object to certain processing."
             ],
-            contact: "privacy@ticko.se"
+            contact: "privacy@tickomarkets.com"
         }
     ];
 
