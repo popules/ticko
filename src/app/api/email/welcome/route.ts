@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
             </div>
 
             <div style="margin-bottom: 30px;">
-                <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://ticko.se'}" 
+                <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://tickomarkets.com'}" 
                    style="display: inline-block; background-color: #10B981; background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 50px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
                    Go to my dashboard
                 </a>
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                from: "Ticko Team <hello@ticko.se>",
+                from: "Ticko Team <hello@tickomarkets.com>",
                 to: email,
                 subject: `Welcome to Ticko – Your $10,000 is ready! 📈`,
                 html: emailHtml

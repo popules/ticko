@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                from: "Ticko Contact <hello@ticko.se>",
-                to: "hello@ticko.se",
+                from: "Ticko Contact <hello@tickomarkets.com>",
+                to: "hello@tickomarkets.com",
                 reply_to: email,
                 subject: `New Contact Form: ${subject}`,
                 html: `

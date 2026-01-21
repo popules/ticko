@@ -7,7 +7,8 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 // Where to send report notifications (your inbox)
-const ADMIN_EMAIL = "support@ticko.se";
+// Where to send report notifications (your inbox)
+const ADMIN_EMAIL = "hello@tickomarkets.com";
 
 interface ReportBody {
     post_id: string;
@@ -93,7 +94,7 @@ export async function POST(request: NextRequest) {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        from: "Ticko Reports <noreply@ticko.se>",
+                        from: "Ticko Reports <hello@tickomarkets.com>",
                         to: ADMIN_EMAIL,
                         subject: `⚠️ New Report: ${REASON_LABELS[reason] || reason}`,
                         html: `
@@ -112,7 +113,7 @@ export async function POST(request: NextRequest) {
                                 </blockquote>
                                 
                                 <p style="margin-top: 24px;">
-                                    <a href="https://ticko.se/post/${post_id}" style="background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">
+                                    <a href="https://tickomarkets.com/post/${post_id}" style="background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">
                                         View Post →
                                     </a>
                                 </p>

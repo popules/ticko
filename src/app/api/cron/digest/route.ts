@@ -166,7 +166,7 @@ export async function GET(request: Request) {
                             <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 32px;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://www.ticko.se" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #2DD4BF, #14B8A6); color: #0B0F17; font-weight: 700; font-size: 14px; text-decoration: none; border-radius: 12px;">
+                                        <a href="https://tickomarkets.com" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #2DD4BF, #14B8A6); color: #0B0F17; font-weight: 700; font-size: 14px; text-decoration: none; border-radius: 12px;">
                                             See what's happening →
                                         </a>
                                     </td>
@@ -180,7 +180,7 @@ export async function GET(request: Request) {
                         <td style="padding-top: 32px; text-align: center;">
                             <p style="margin: 0; font-size: 12px; color: rgba(255,255,255,0.3);">
                                 You're receiving this email because you're a member of Ticko.<br>
-                                <a href="https://www.ticko.se/settings" style="color: rgba(255,255,255,0.4);">Manage notifications</a>
+                                <a href="https://tickomarkets.com/settings" style="color: rgba(255,255,255,0.4);">Manage notifications</a>
                             </p>
                         </td>
                     </tr>
@@ -201,7 +201,7 @@ export async function GET(request: Request) {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        from: "Ticko <weekly@ticko.se>",
+                        from: "Ticko <hello@tickomarkets.com>",
                         to: user.email,
                         subject: `📊 Your Weekly Report on Ticko`,
                         html: emailHtml,
