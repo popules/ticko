@@ -7,6 +7,7 @@ import { APP_CONFIG } from "@/config/app";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { SearchProvider } from "@/providers/SearchProvider";
 import { CookieConsent } from "@/components/ui/CookieConsent";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -64,6 +65,7 @@ export default function RootLayout({
               {children}
               <MobileNav />
               <CookieConsent />
+              <Analytics />
             </SearchProvider>
           </AuthProvider>
         </QueryProvider>
