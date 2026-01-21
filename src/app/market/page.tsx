@@ -5,16 +5,10 @@ import { useState } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { UI_STRINGS } from "@/config/app";
-import { Loader2, TrendingUp, TrendingDown, Activity, Zap, ArrowUpRight, ArrowDownRight, Monitor, Landmark, Flame, HeartPulse, ShoppingCart } from "lucide-react";
+import { Loader2, TrendingUp, TrendingDown, Activity, Monitor, Landmark, Flame, HeartPulse, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 
-interface IndexData {
-    label: string;
-    value: string;
-    change: number;
-    rawPrice: number;
-}
 
 interface StockMovement {
     symbol: string;
@@ -71,17 +65,6 @@ export default function MarketPage() {
     const [sectorFilter, setSectorFilter] = useState<SectorFilter>("all");
     const marketStatuses = getMarketStatus();
 
-    // Fetch indices
-    const { data: indicesData, isLoading: indicesLoading } = useQuery({
-        queryKey: ["marketIndices"],
-        queryFn: async () => {
-            const res = await fetch("/api/market/indices");
-            const data = await res.json();
-            return data.indices || [];
-        },
-        refetchInterval: 60000,
-    });
-
     // Fetch gainers/losers with sector filter
     const { data: moversData, isLoading: moversLoading } = useQuery({
         queryKey: ["marketMovers", sectorFilter],
@@ -99,17 +82,6 @@ export default function MarketPage() {
         refetchInterval: 60000,
     });
 
-    // Fetch most traded
-    const { data: tradedData, isLoading: tradedLoading } = useQuery({
-        queryKey: ["mostTraded"],
-        queryFn: async () => {
-            const res = await fetch(`/api/market/most-traded?market=us`);
-            const data = await res.json();
-            return data.mostTraded || [];
-        },
-        refetchInterval: 60000,
-    });
-
     // Fetch sentiment data
     const { data: sentimentData } = useQuery({
         queryKey: ["marketSentiment"],
@@ -121,7 +93,8 @@ export default function MarketPage() {
         refetchInterval: 5 * 60 * 1000, // Refresh every 5 minutes
     });
 
-    const isLoading = indicesLoading || moversLoading || tradedLoading;
+    // Only show full-page loading on initial load
+    const isInitialLoading = !moversData && moversLoading;
 
 
     return (
@@ -159,7 +132,7 @@ export default function MarketPage() {
                 </header>
 
                 <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide">
-                    {isLoading ? (
+                    {isInitialLoading ? (
                         <div className="h-96 flex flex-col items-center justify-center gap-4">
                             <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
                             <p className="text-white/40 font-bold uppercase tracking-widest text-[10px]">
@@ -168,37 +141,8 @@ export default function MarketPage() {
                         </div>
                     ) : (
                         <>
-                            {/* === INDEX HERO SECTION === */}
-                            <section>
-                                <h2 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                    <Activity className="w-4 h-4" /> Index
-                                </h2>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    {(indicesData || []).map((index: IndexData) => (
-                                        <motion.div
-                                            key={index.label}
-                                            whileHover={{ scale: 1.02, y: -4 }}
-                                            className="relative overflow-hidden rounded-3xl p-6 bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 hover:border-white/20 transition-all"
-                                        >
-                                            <div className="flex justify-between items-start gap-3">
-                                                <div className="min-w-0">
-                                                    <p className="text-sm font-semibold text-white/50 truncate">{index.label}</p>
-                                                    <p className="text-2xl md:text-3xl font-black text-white mt-1 tabular-nums">{index.value}</p>
-                                                </div>
-                                                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold whitespace-nowrap shrink-0 ${index.change >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
-                                                    {index.change >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-                                                    {index.change >= 0 ? '+' : ''}{index.change.toFixed(2)}%
-                                                </div>
-                                            </div>
-                                            {/* Decorative gradient */}
-                                            <div className={`absolute -bottom-8 -right-8 w-32 h-32 rounded-full blur-3xl opacity-20 ${index.change >= 0 ? 'bg-emerald-500' : 'bg-rose-500'}`} />
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </section>
-
                             {/* === GAINERS & LOSERS SECTION === */}
-                            {/* Market Filter Tabs */}
+                            {/* Sector Filter Tabs */}
                             <div className="flex items-center gap-2 mb-6 flex-wrap">
                                 <span className="text-xs font-bold text-white/40 uppercase tracking-widest mr-2">Sector:</span>
                                 {[
@@ -228,9 +172,14 @@ export default function MarketPage() {
                             <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 {/* Gainers */}
                                 <div className="rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden">
-                                    <div className="px-6 py-4 border-b border-white/10 flex items-center gap-3 bg-emerald-500/5">
-                                        <TrendingUp className="w-5 h-5 text-emerald-400" />
-                                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Today's Gainers</h3>
+                                    <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-emerald-500/5">
+                                        <div className="flex items-center gap-3">
+                                            <TrendingUp className="w-5 h-5 text-emerald-400" />
+                                            <h3 className="text-sm font-bold text-white uppercase tracking-wider">Today's Gainers</h3>
+                                        </div>
+                                        <span className="text-[10px] text-white/30 uppercase tracking-wider">
+                                            {sectorFilter === "all" ? "Top 30 US Stocks" : `${sectorFilter.charAt(0).toUpperCase() + sectorFilter.slice(1)} Sector`}
+                                        </span>
                                     </div>
                                     <div className="divide-y divide-white/5">
                                         {(moversData?.gainers || []).map((stock: StockMovement, i: number) => (
@@ -260,9 +209,14 @@ export default function MarketPage() {
 
                                 {/* Losers */}
                                 <div className="rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden">
-                                    <div className="px-6 py-4 border-b border-white/10 flex items-center gap-3 bg-rose-500/5">
-                                        <TrendingDown className="w-5 h-5 text-rose-400" />
-                                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Today's Losers</h3>
+                                    <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-rose-500/5">
+                                        <div className="flex items-center gap-3">
+                                            <TrendingDown className="w-5 h-5 text-rose-400" />
+                                            <h3 className="text-sm font-bold text-white uppercase tracking-wider">Today's Losers</h3>
+                                        </div>
+                                        <span className="text-[10px] text-white/30 uppercase tracking-wider">
+                                            {sectorFilter === "all" ? "Top 30 US Stocks" : `${sectorFilter.charAt(0).toUpperCase() + sectorFilter.slice(1)} Sector`}
+                                        </span>
                                     </div>
                                     <div className="divide-y divide-white/5">
                                         {(moversData?.losers || []).map((stock: StockMovement, i: number) => (
@@ -288,41 +242,6 @@ export default function MarketPage() {
                                             </motion.button>
                                         ))}
                                     </div>
-                                </div>
-                            </section>
-
-                            {/* === MOST TRADED SECTION === */}
-                            <section>
-                                <h2 className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                    <Zap className="w-4 h-4" /> Most Traded
-                                </h2>
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                    {(tradedData || []).map((stock: TradedStock) => (
-                                        <motion.button
-                                            key={stock.symbol}
-                                            whileHover={{ scale: 1.03, y: -4 }}
-                                            whileTap={{ scale: 0.97 }}
-                                            onClick={() => router.push(`/stock/${stock.symbol}`)}
-                                            className="relative rounded-2xl p-5 bg-white/[0.04] border border-white/10 hover:border-white/20 text-left transition-all overflow-hidden group"
-                                        >
-                                            <div className="flex justify-between items-start mb-3">
-                                                <p className="text-lg font-black text-white">${stock.displaySymbol}</p>
-                                                <span className={`text-xs font-bold px-2 py-1 rounded-lg ${stock.changePercent >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
-                                                    {stock.changePercent >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
-                                                </span>
-                                            </div>
-                                            <p className="text-xs text-white/40 truncate mb-3">{stock.name}</p>
-                                            <div className="flex justify-between items-end">
-                                                <div>
-                                                    <p className="text-[10px] text-white/30 uppercase tracking-widest">Volume</p>
-                                                    <p className="text-sm font-bold text-white/70">{stock.volumeFormatted}</p>
-                                                </div>
-                                                <p className="text-xl font-black text-white tabular-nums">{stock.price.toFixed(2)}</p>
-                                            </div>
-                                            {/* Hover effect */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                                        </motion.button>
-                                    ))}
                                 </div>
                             </section>
 
