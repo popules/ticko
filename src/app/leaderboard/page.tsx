@@ -169,7 +169,11 @@ export default function LeaderboardPage() {
         ? reputationLeaders
         : (paperTimeframe === "season" ? paperSeasonLeaders : paperAllTimeLeaders);
 
-    const currentSeasonName = currentSeason?.name || "Season 1: Genesis";
+    const formatSeasonName = (name: string) => {
+        return name.replace(/Säsong/g, "Season");
+    };
+
+    const currentSeasonName = currentSeason?.name ? formatSeasonName(currentSeason.name) : "Season 1: Genesis";
 
     // Calculate days until end of month reset
     const now = new Date();
@@ -340,7 +344,7 @@ export default function LeaderboardPage() {
                                                             <Crown className="w-3 h-3 text-amber-400" />
                                                         </div>
                                                         <div>
-                                                            <p className="text-xs text-white/40">{winner.season_name}</p>
+                                                            <p className="text-xs text-white/40">{formatSeasonName(winner.season_name)}</p>
                                                             <p className="text-sm font-bold text-white">@{winner.winner_username}</p>
                                                         </div>
                                                     </div>

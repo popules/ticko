@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 
-export default function BevakningslistaPage() {
+export default function WatchlistPage() {
     const { user, isLoading: authLoading } = useAuth();
     const router = useRouter();
     const queryClient = useQueryClient();
