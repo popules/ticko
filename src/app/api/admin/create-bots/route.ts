@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase-admin';
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
 const BOTS = [
     { username: 'StockWizard', name: 'Stock Wizard', bio: 'I see charts in my sleep. 🧙‍♂️', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=StockWizard' },
@@ -17,7 +17,7 @@ export async function POST() {
             const email = `${bot.username.toLowerCase()}@tickomarkets.com`;
 
             // 1. Check if exists
-            const { data: existingProfiles } = await supabaseAdmin
+            const { data: existingProfiles } = await getSupabaseAdmin()
                 .from('profiles')
                 .select('id')
                 .eq('username', bot.username)
@@ -29,7 +29,7 @@ export async function POST() {
             }
 
             // 2. Create Auth User
-            const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+            const { data: authData, error: authError } = await getSupabaseAdmin().auth.admin.createUser({
                 email,
                 password: 'bot-password-123', // Doesn't matter, they won't log in
                 email_confirm: true
@@ -44,7 +44,7 @@ export async function POST() {
             const userId = authData.user.id;
 
             // 3. Create Profile
-            const { error: profileError } = await supabaseAdmin
+            const { error: profileError } = await getSupabaseAdmin()
                 .from('profiles')
                 .insert({
                     id: userId,

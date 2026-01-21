@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase-admin';
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 import { openai } from '@/lib/openai';
 
 const BOT_USERNAMES = ['StockWizard', 'NordicTrader', 'BearHunter', 'ValueViking', 'MemeKing'];
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
         }
 
         // 1. Get Bot IDs
-        const { data: bots } = await supabaseAdmin
+        const { data: bots } = await getSupabaseAdmin()
             .from('profiles')
             .select('id, username, bio')
             .in('username', BOT_USERNAMES);
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
             const content = completion.choices[0].message.content?.replace(/"/g, '') || `Watching ${ticker}...`;
 
             // Insert post
-            const { data: post, error } = await supabaseAdmin
+            const { data: post, error } = await getSupabaseAdmin()
                 .from('posts')
                 .insert({
                     user_id: bot.id,
