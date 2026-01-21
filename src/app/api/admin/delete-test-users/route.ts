@@ -1,5 +1,3 @@
-'use server';
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
@@ -22,22 +20,23 @@ const TEST_USERNAMES = [
 
 export async function POST(request: NextRequest) {
     try {
-        const supabase = getSupabaseAdmin();
-
-        // Get the requesting user from the session cookie
-        const { data: { user: requestingUser } } = await supabase.auth.getUser();
-
-        // For now, we'll also accept from the request body for flexibility
+        // Get email from request body
         const body = await request.json().catch(() => ({}));
-        const email = body.email || requestingUser?.email;
+        const email = body.email;
+
+        console.log('Delete test users - email:', email);
 
         if (!email || !ALLOWED_EMAILS.includes(email)) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+            console.log('Unauthorized - email not in allowed list');
+            return NextResponse.json({ error: 'Unauthorized', email }, { status: 403 });
         }
 
+        const supabase = getSupabaseAdmin();
         const results: { username: string; status: string }[] = [];
 
         for (const username of TEST_USERNAMES) {
+            console.log(`Processing username: ${username}`);
+
             // Find the user profile
             const { data: profile, error: profileError } = await supabase
                 .from('profiles')
@@ -46,19 +45,26 @@ export async function POST(request: NextRequest) {
                 .single();
 
             if (profileError || !profile) {
+                console.log(`  ${username}: not found (${profileError?.message || 'no profile'})`);
                 results.push({ username, status: 'not found' });
                 continue;
             }
+
+            console.log(`  ${username}: found with id ${profile.id}, deleting...`);
 
             // Delete from auth.users (this will cascade to profiles due to FK)
             const { error: deleteError } = await supabase.auth.admin.deleteUser(profile.id);
 
             if (deleteError) {
+                console.log(`  ${username}: delete error - ${deleteError.message}`);
                 results.push({ username, status: `error: ${deleteError.message}` });
             } else {
+                console.log(`  ${username}: deleted successfully`);
                 results.push({ username, status: 'deleted' });
             }
         }
+
+        console.log('All done, results:', results);
 
         return NextResponse.json({
             success: true,

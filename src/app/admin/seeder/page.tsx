@@ -87,12 +87,18 @@ export default function SeederPage() {
                 body: JSON.stringify({ email: user?.email })
             });
             const data = await res.json();
-            if (data.results) {
+            addLog(`Response status: ${res.status}`);
+
+            if (data.error) {
+                addLog(`Error: ${data.error}`);
+            } else if (data.results) {
                 data.results.forEach((r: any) => addLog(`  ${r.username}: ${r.status}`));
+                addLog(`Cleanup complete! Processed ${data.results.length} users.`);
+            } else {
+                addLog(`Unexpected response: ${JSON.stringify(data)}`);
             }
-            addLog('Cleanup complete!');
         } catch (e: any) {
-            addLog(`Error: ${e.message}`);
+            addLog(`Fetch error: ${e.message}`);
         }
         setIsLoading(false);
     };
