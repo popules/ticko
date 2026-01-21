@@ -5,8 +5,8 @@ import { fetchStockData } from "@/lib/stocks-api";
 export async function GET() {
     try {
         // Tickers for major indices
-        // ^GSPC (S&P 500), ^IXIC (NASDAQ), ^OMXSPI (OMX Stockholm All-Share)
-        const indexTickers = ["^GSPC", "^IXIC", "^OMXSPI"];
+        // ^GSPC (S&P 500), ^IXIC (NASDAQ), ^OMXSPI (OMX Stockholm All-Share), ^FTSE (FTSE 100), ^GDAXI (DAX), ^N225 (Nikkei 225)
+        const indexTickers = ["^GSPC", "^IXIC", "^OMXSPI", "^FTSE", "^GDAXI", "^N225"];
 
         const indexPromises = indexTickers.map(ticker => fetchStockData(ticker));
         const results = await Promise.all(indexPromises);
@@ -18,7 +18,10 @@ export async function GET() {
             let label = data.symbol;
             if (data.symbol === "^GSPC") label = "S&P 500";
             if (data.symbol === "^IXIC") label = "NASDAQ";
-            if (data.symbol === "^OMXSPI") label = "OMX 30"; // Using SPI as proxy for OMX30 if quote varies
+            if (data.symbol === "^OMXSPI") label = "OMX 30";
+            if (data.symbol === "^FTSE") label = "FTSE 100";
+            if (data.symbol === "^GDAXI") label = "DAX";
+            if (data.symbol === "^N225") label = "Nikkei 225";
 
             return {
                 label,

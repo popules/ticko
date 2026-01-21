@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { UI_STRINGS } from "@/config/app";
-import { Loader2, TrendingUp, TrendingDown, Activity, Zap, ArrowUpRight, ArrowDownRight, Globe, Flag } from "lucide-react";
+import { Loader2, TrendingUp, TrendingDown, Activity, Zap, ArrowUpRight, ArrowDownRight, Monitor, Landmark, Flame, HeartPulse, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 
@@ -30,30 +30,46 @@ interface TradedStock extends StockMovement {
     volumeFormatted: string;
 }
 
-type MarketFilter = "all" | "us" | "se";
+type SectorFilter = "all" | "technology" | "financial" | "energy" | "healthcare" | "consumer";
 
-// Helper to check if markets are open
+// Helper to check if major markets are open
 function getMarketStatus() {
     const now = new Date();
-    const stockholmTime = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Stockholm" }));
-    const hour = stockholmTime.getHours();
-    const minute = stockholmTime.getMinutes();
-    const day = stockholmTime.getDay(); // 0 = Sunday
+    const day = now.getUTCDay(); // 0 = Sunday
     const isWeekend = day === 0 || day === 6;
 
-    // OMX: 09:00-17:30 CET
-    const swedenOpen = !isWeekend && hour >= 9 && (hour < 17 || (hour === 17 && minute <= 30));
+    // Get current hour in each timezone
+    const getHourInTimezone = (tz: string) => {
+        const time = new Date(now.toLocaleString("en-US", { timeZone: tz }));
+        return { hour: time.getHours(), minute: time.getMinutes() };
+    };
 
-    // NYSE/NASDAQ: 15:30-22:00 CET (09:30-16:00 EST)
-    const usOpen = !isWeekend && ((hour === 15 && minute >= 30) || (hour > 15 && hour < 22));
+    const nyTime = getHourInTimezone("America/New_York");
+    const londonTime = getHourInTimezone("Europe/London");
+    const frankfurtTime = getHourInTimezone("Europe/Berlin");
+    const tokyoTime = getHourInTimezone("Asia/Tokyo");
+    const hkTime = getHourInTimezone("Asia/Hong_Kong");
 
-    return { swedenOpen, usOpen, isWeekend };
+    // Market hours (local time)
+    const usOpen = !isWeekend && nyTime.hour >= 9 && nyTime.hour < 16; // NYSE 9:30-16:00
+    const ukOpen = !isWeekend && londonTime.hour >= 8 && londonTime.hour < 16; // LSE 8:00-16:30
+    const deOpen = !isWeekend && frankfurtTime.hour >= 9 && frankfurtTime.hour < 17; // XETRA 9:00-17:30
+    const jpOpen = !isWeekend && tokyoTime.hour >= 9 && tokyoTime.hour < 15; // TSE 9:00-15:00
+    const hkOpen = !isWeekend && hkTime.hour >= 9 && hkTime.hour < 16; // HKEX 9:30-16:00
+
+    return [
+        { label: "US", isOpen: usOpen },
+        { label: "UK", isOpen: ukOpen },
+        { label: "DE", isOpen: deOpen },
+        { label: "JP", isOpen: jpOpen },
+        { label: "HK", isOpen: hkOpen },
+    ];
 }
 
 export default function MarketPage() {
     const router = useRouter();
-    const [marketFilter, setMarketFilter] = useState<MarketFilter>("all");
-    const marketStatus = getMarketStatus();
+    const [sectorFilter, setSectorFilter] = useState<SectorFilter>("all");
+    const marketStatuses = getMarketStatus();
 
     // Fetch indices
     const { data: indicesData, isLoading: indicesLoading } = useQuery({
@@ -66,22 +82,28 @@ export default function MarketPage() {
         refetchInterval: 60000,
     });
 
-    // Fetch gainers/losers with market filter
+    // Fetch gainers/losers with sector filter
     const { data: moversData, isLoading: moversLoading } = useQuery({
-        queryKey: ["marketMovers", marketFilter],
+        queryKey: ["marketMovers", sectorFilter],
         queryFn: async () => {
-            const res = await fetch(`/api/market/gainers-losers?market=${marketFilter}`);
-            const data = await res.json();
-            return { gainers: data.gainers || [], losers: data.losers || [] };
+            if (sectorFilter === "all") {
+                const res = await fetch(`/api/market/gainers-losers?market=us`);
+                const data = await res.json();
+                return { gainers: data.gainers || [], losers: data.losers || [] };
+            } else {
+                const res = await fetch(`/api/market/sector-movers?sector=${sectorFilter}`);
+                const data = await res.json();
+                return { gainers: data.gainers || [], losers: data.losers || [] };
+            }
         },
         refetchInterval: 60000,
     });
 
-    // Fetch most traded with market filter
+    // Fetch most traded
     const { data: tradedData, isLoading: tradedLoading } = useQuery({
-        queryKey: ["mostTraded", marketFilter],
+        queryKey: ["mostTraded"],
         queryFn: async () => {
-            const res = await fetch(`/api/market/most-traded?market=${marketFilter}`);
+            const res = await fetch(`/api/market/most-traded?market=us`);
             const data = await res.json();
             return data.mostTraded || [];
         },
@@ -114,32 +136,25 @@ export default function MarketPage() {
                             {UI_STRINGS.markets}
                         </h1>
                         <p className="text-xs font-bold text-white/30 tracking-widest uppercase mt-1">
-                            Live Market Data • Real-time
+                            Market Data • 15m Delay
                         </p>
                     </div>
-                    <div className="flex items-center gap-3">
-                        {/* Sweden market status */}
-                        <div className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${marketStatus.swedenOpen
-                            ? "bg-emerald-500/10 border-emerald-500/30"
-                            : "bg-white/[0.04] border-white/10"
-                            }`}>
-                            <span className="text-sm">🇸🇪</span>
-                            <div className={`w-2 h-2 rounded-full ${marketStatus.swedenOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
-                            <span className={`text-[10px] font-bold uppercase ${marketStatus.swedenOpen ? "text-emerald-400" : "text-white/40"}`}>
-                                {marketStatus.swedenOpen ? "Open" : "Closed"}
-                            </span>
-                        </div>
-                        {/* US market status */}
-                        <div className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${marketStatus.usOpen
-                            ? "bg-emerald-500/10 border-emerald-500/30"
-                            : "bg-white/[0.04] border-white/10"
-                            }`}>
-                            <span className="text-sm">🇺🇸</span>
-                            <div className={`w-2 h-2 rounded-full ${marketStatus.usOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
-                            <span className={`text-[10px] font-bold uppercase ${marketStatus.usOpen ? "text-emerald-400" : "text-white/40"}`}>
-                                {marketStatus.usOpen ? "Open" : "Closed"}
-                            </span>
-                        </div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                        {marketStatuses.map((market) => (
+                            <div
+                                key={market.label}
+                                className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${market.isOpen
+                                    ? "bg-emerald-500/10 border-emerald-500/30"
+                                    : "bg-white/[0.04] border-white/10"
+                                    }`}
+                            >
+                                <span className="text-[10px] font-black text-white/60 bg-white/10 px-1.5 py-0.5 rounded">{market.label}</span>
+                                <div className={`w-2 h-2 rounded-full ${market.isOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
+                                <span className={`text-[10px] font-bold uppercase ${market.isOpen ? "text-emerald-400" : "text-white/40"}`}>
+                                    {market.isOpen ? "Open" : "Closed"}
+                                </span>
+                            </div>
+                        ))}
                     </div>
                 </header>
 
@@ -184,22 +199,27 @@ export default function MarketPage() {
 
                             {/* === GAINERS & LOSERS SECTION === */}
                             {/* Market Filter Tabs */}
-                            <div className="flex items-center gap-2 mb-6">
-                                <span className="text-xs font-bold text-white/40 uppercase tracking-widest mr-2">Market:</span>
+                            <div className="flex items-center gap-2 mb-6 flex-wrap">
+                                <span className="text-xs font-bold text-white/40 uppercase tracking-widest mr-2">Sector:</span>
                                 {[
-                                    { id: "all" as const, label: "All", flag: "🌐" },
-                                    { id: "us" as const, label: "USA", flag: "🇺🇸" },
-                                    { id: "se" as const, label: "Sweden", flag: "🇸🇪" }
+                                    { id: "all" as const, label: "All", icon: <Activity className="w-3.5 h-3.5" /> },
+                                    { id: "technology" as const, label: "Tech", icon: <Monitor className="w-3.5 h-3.5" /> },
+                                    { id: "financial" as const, label: "Finance", icon: <Landmark className="w-3.5 h-3.5" /> },
+                                    { id: "energy" as const, label: "Energy", icon: <Flame className="w-3.5 h-3.5" /> },
+                                    { id: "healthcare" as const, label: "Health", icon: <HeartPulse className="w-3.5 h-3.5" /> },
+                                    { id: "consumer" as const, label: "Consumer", icon: <ShoppingCart className="w-3.5 h-3.5" /> }
                                 ].map((tab) => (
                                     <button
                                         key={tab.id}
-                                        onClick={() => setMarketFilter(tab.id)}
-                                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${marketFilter === tab.id
+                                        onClick={() => setSectorFilter(tab.id)}
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${sectorFilter === tab.id
                                             ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
                                             : "bg-white/[0.04] text-white/60 border border-white/10 hover:bg-white/[0.08]"
                                             }`}
                                     >
-                                        <span className="text-base">{tab.flag}</span>
+                                        <div className={`flex items-center justify-center ${sectorFilter === tab.id ? "text-emerald-400" : "text-white/40"}`}>
+                                            {tab.icon}
+                                        </div>
                                         {tab.label}
                                     </button>
                                 ))}
