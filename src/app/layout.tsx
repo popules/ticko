@@ -21,6 +21,12 @@ export const metadata: Metadata = {
   },
   description: APP_CONFIG.description,
   metadataBase: new URL(APP_CONFIG.baseUrl),
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
   openGraph: {
     title: APP_CONFIG.title,
     description: APP_CONFIG.description,

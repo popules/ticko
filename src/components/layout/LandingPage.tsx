@@ -66,13 +66,13 @@ export function LandingPage() {
                         <Link href="/about" className="hover:text-white transition-colors">About</Link>
                     </div>
 
-                    <div className="flex items-center gap-6">
-                        <Link href="/login" className="text-sm font-medium text-white/60 hover:text-white transition-colors hidden sm:block">
+                    <div className="flex items-center gap-3 sm:gap-6">
+                        <Link href="/login" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
                             Log in
                         </Link>
                         <Link
                             href="/register"
-                            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] rounded-full font-bold text-sm hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-0.5"
+                            className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] rounded-full font-bold text-xs sm:text-sm hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-0.5"
                         >
                             Join Free
                         </Link>
