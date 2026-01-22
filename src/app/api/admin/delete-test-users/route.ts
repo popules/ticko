@@ -1,8 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
-
-// Only allow these emails to use this endpoint
-const ALLOWED_EMAILS = ['aberg.anton@gmail.com'];
+import { verifyAdmin, isErrorResponse } from '@/lib/admin-auth';
 
 // Usernames to delete (test/bot accounts)
 const TEST_USERNAMES = [
@@ -18,19 +16,14 @@ const TEST_USERNAMES = [
     'ValueSeeker'
 ];
 
-export async function POST(request: NextRequest) {
+export async function POST() {
+    // Verify admin access
+    const authResult = await verifyAdmin();
+    if (isErrorResponse(authResult)) {
+        return authResult;
+    }
+
     try {
-        // Get email from request body
-        const body = await request.json().catch(() => ({}));
-        const email = body.email;
-
-        console.log('Delete test users - email:', email);
-
-        if (!email || !ALLOWED_EMAILS.includes(email)) {
-            console.log('Unauthorized - email not in allowed list');
-            return NextResponse.json({ error: 'Unauthorized', email }, { status: 403 });
-        }
-
         const supabase = getSupabaseAdmin();
         const results: { username: string; status: string }[] = [];
 
@@ -72,8 +65,9 @@ export async function POST(request: NextRequest) {
             results
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
         console.error('Delete test users error:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

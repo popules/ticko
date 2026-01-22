@@ -153,35 +153,35 @@ export async function POST(request: NextRequest) {
 // GET endpoint to fetch user's own reports
 export async function GET(request: NextRequest) {
     try {
-        const { searchParams } = new URL(request.url);
-        const userId = searchParams.get("user_id");
-
-        if (!userId) {
-            return NextResponse.json(
-                { error: "user_id required" },
-                { status: 400 }
-            );
-        }
-
-        // Create Supabase client
         const cookieStore = await cookies();
         const supabase = createClient(supabaseUrl, supabaseAnonKey, {
             global: { headers: { Cookie: cookieStore.toString() } },
         });
 
+        // Verify user is authenticated
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
+            return NextResponse.json(
+                { error: "Authentication required" },
+                { status: 401 }
+            );
+        }
+
+        // Only allow users to fetch their own reports
         const { data: reports, error } = await supabase
             .from("reports")
             .select("*")
-            .eq("reporter_id", userId)
+            .eq("reporter_id", user.id)
             .order("created_at", { ascending: false });
 
         if (error) throw error;
 
         return NextResponse.json({ reports });
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
         console.error("Get reports error:", error);
         return NextResponse.json(
-            { error: error.message },
+            { error: message },
             { status: 500 }
         );
     }

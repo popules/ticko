@@ -1,10 +1,17 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 import { openai } from '@/lib/openai';
+import { verifyAdmin, isErrorResponse } from '@/lib/admin-auth';
 
 const BOT_USERNAMES = ['StockWizard', 'NordicTrader', 'BearHunter', 'ValueViking', 'MemeKing'];
 
 export async function POST(request: Request) {
+    // Verify admin access
+    const authResult = await verifyAdmin();
+    if (isErrorResponse(authResult)) {
+        return authResult;
+    }
+
     try {
         const { ticker, count = 3 } = await request.json();
 
@@ -58,7 +65,7 @@ export async function POST(request: Request) {
                     user_id: bot.id,
                     content: content,
                     ticker_symbol: ticker.toUpperCase(),
-                    sentiment: sentiment as any,
+                    sentiment: sentiment as 'bull' | 'bear' | null,
                 })
                 .select();
 
@@ -68,8 +75,9 @@ export async function POST(request: Request) {
         }
 
         return NextResponse.json({ success: true, count: posts.length, posts });
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
         console.error("Seed error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
+import { verifyAdmin, isErrorResponse } from '@/lib/admin-auth';
 
 const BOTS = [
     { username: 'StockWizard', name: 'Stock Wizard', bio: 'I see charts in my sleep. 🧙‍♂️', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=StockWizard' },
@@ -10,6 +11,12 @@ const BOTS = [
 ];
 
 export async function POST() {
+    // Verify admin access
+    const authResult = await verifyAdmin();
+    if (isErrorResponse(authResult)) {
+        return authResult;
+    }
+
     try {
         const results = [];
 
@@ -31,7 +38,7 @@ export async function POST() {
             // 2. Create Auth User
             const { data: authData, error: authError } = await getSupabaseAdmin().auth.admin.createUser({
                 email,
-                password: 'bot-password-123', // Doesn't matter, they won't log in
+                password: crypto.randomUUID(), // Random password - bots don't log in
                 email_confirm: true
             });
 
@@ -64,7 +71,8 @@ export async function POST() {
         }
 
         return NextResponse.json({ success: true, results });
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }
