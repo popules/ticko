@@ -1,11 +1,12 @@
 // Subscription tier configuration for Ticko
+// Note: All users get the same $10k budget to ensure fair competition
 
 export const SUBSCRIPTION_TIERS = {
     FREE: {
         name: "Free",
         price: 0,
         paperTrading: {
-            startingCapital: 10000, // $10k USD
+            startingCapital: 10000, // $10k USD - same for everyone for fair competition
             resetThreshold: 2500, // Can reset when < $2.5k
             resetCooldownDays: 7, // 7 days between resets
         },
@@ -14,40 +15,21 @@ export const SUBSCRIPTION_TIERS = {
             "Unlimited posts and reactions",
             "Watchlist",
             "AI stock analysis",
+            "Compete on the leaderboard",
         ],
-    },
-    PRO: {
-        name: "Pro",
-        price: 4.99, // $4.99/month
-        paperTrading: {
-            startingCapital: 100000, // $100k USD
-            resetThreshold: 10000, // Can reset when < $10k
-            resetCooldownDays: 3, // 3 days between resets
-        },
-        features: [
-            "Paper trading with $100k virtual dollars",
-            "Faster reset (3 days instead of 7)",
-            "Pro badge on profile",
-            "Priority support",
-            "Early access to new features",
-        ],
-        badge: {
-            emoji: "👑",
-            color: "text-amber-400",
-            bgColor: "bg-amber-500/10",
-            borderColor: "border-amber-500/30",
-        },
     },
 } as const;
 
 export type SubscriptionTier = keyof typeof SUBSCRIPTION_TIERS;
 
 // Helper to get user's tier settings
+// Note: isPro param kept for backwards compatibility but all users get same settings
 export function getUserTierSettings(isPro: boolean) {
-    return isPro ? SUBSCRIPTION_TIERS.PRO : SUBSCRIPTION_TIERS.FREE;
+    return SUBSCRIPTION_TIERS.FREE;
 }
 
 // Helper to get paper trading settings for a tier
 export function getPaperTradingSettings(isPro: boolean) {
-    return getUserTierSettings(isPro).paperTrading;
+    return SUBSCRIPTION_TIERS.FREE.paperTrading;
 }
+

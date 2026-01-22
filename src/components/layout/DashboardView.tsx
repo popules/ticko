@@ -3,11 +3,15 @@
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { FeedStream } from "@/components/feed/FeedStream";
+import { OnboardingModal } from "@/components/onboarding/OnboardingModal";
 import { APP_CONFIG } from "@/config/app";
 
 export function DashboardView() {
     return (
         <div className="flex min-h-screen">
+            {/* Onboarding Modal - Shows once for new users */}
+            <OnboardingModal />
+
             {/* Left Sidebar - Navigation & Trending - Hidden on mobile */}
             <div className="hidden lg:block">
                 <Sidebar />
@@ -38,3 +42,4 @@ export function DashboardView() {
         </div>
     );
 }
+
