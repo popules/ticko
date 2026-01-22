@@ -103,31 +103,33 @@ export default function MarketPage() {
 
             <main className="flex-1 border-r border-white/10 flex flex-col overflow-hidden">
                 {/* Header */}
-                <header className="px-8 py-6 border-b border-white/10 flex items-center justify-between bg-[#0B0F17]/50 backdrop-blur-xl">
-                    <div>
-                        <h1 className="text-2xl font-black text-white tracking-widest uppercase">
-                            {UI_STRINGS.markets}
-                        </h1>
-                        <p className="text-xs font-bold text-white/30 tracking-widest uppercase mt-1">
-                            Market Data • 15m Delay
-                        </p>
-                    </div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                        {marketStatuses.map((market) => (
-                            <div
-                                key={market.label}
-                                className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${market.isOpen
-                                    ? "bg-emerald-500/10 border-emerald-500/30"
-                                    : "bg-white/[0.04] border-white/10"
-                                    }`}
-                            >
-                                <span className="text-[10px] font-black text-white/60 bg-white/10 px-1.5 py-0.5 rounded">{market.label}</span>
-                                <div className={`w-2 h-2 rounded-full ${market.isOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
-                                <span className={`text-[10px] font-bold uppercase ${market.isOpen ? "text-emerald-400" : "text-white/40"}`}>
-                                    {market.isOpen ? "Open" : "Closed"}
-                                </span>
-                            </div>
-                        ))}
+                <header className="px-4 sm:px-8 py-4 sm:py-6 border-b border-white/10 bg-[#0B0F17]/50 backdrop-blur-xl">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <h1 className="text-xl sm:text-2xl font-black text-white tracking-widest uppercase">
+                                {UI_STRINGS.markets}
+                            </h1>
+                            <p className="text-xs font-bold text-white/30 tracking-widest uppercase mt-1">
+                                Market Data • 15m Delay
+                            </p>
+                        </div>
+                        <div className="hidden sm:flex items-center gap-2 flex-wrap">
+                            {marketStatuses.map((market) => (
+                                <div
+                                    key={market.label}
+                                    className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${market.isOpen
+                                        ? "bg-emerald-500/10 border-emerald-500/30"
+                                        : "bg-white/[0.04] border-white/10"
+                                        }`}
+                                >
+                                    <span className="text-[10px] font-black text-white/60 bg-white/10 px-1.5 py-0.5 rounded">{market.label}</span>
+                                    <div className={`w-2 h-2 rounded-full ${market.isOpen ? "bg-emerald-500 animate-pulse" : "bg-white/30"}`} />
+                                    <span className={`text-[10px] font-bold uppercase ${market.isOpen ? "text-emerald-400" : "text-white/40"}`}>
+                                        {market.isOpen ? "Open" : "Closed"}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </header>
 

@@ -188,7 +188,16 @@ export function Sidebar() {
                 <Link href="/">
                     <TickoLogo />
                 </Link>
-                <NotificationBell />
+                {user ? (
+                    <NotificationBell />
+                ) : (
+                    <Link
+                        href="/login"
+                        className="px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 text-sm font-bold border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors"
+                    >
+                        Log in
+                    </Link>
+                )}
             </div>
 
             {/* Mobile Spacer */}

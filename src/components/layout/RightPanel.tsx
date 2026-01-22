@@ -69,7 +69,7 @@ export function RightPanel() {
     });
 
     return (
-        <aside className="w-80 h-screen sticky top-0 flex flex-col border-l border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-y-auto scrollbar-hide">
+        <aside className="hidden md:flex w-80 h-screen sticky top-0 flex-col border-l border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-y-auto scrollbar-hide">
             {/* Market Overview */}
             <div className="p-5 border-b border-white/10">
                 <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4">
