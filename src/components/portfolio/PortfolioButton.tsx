@@ -21,7 +21,7 @@ export function PortfolioButton({ symbol, name, currentPrice, currencySymbol }: 
                 className="flex items-center gap-2 px-5 py-2.5 btn-gradient text-white rounded-xl font-semibold text-sm shadow-lg shadow-emerald-500/20 hover:scale-[1.02] transition-all"
             >
                 <Plus className="w-4 h-4" />
-                Köp
+                Buy
             </button>
 
             <AddToPortfolioModal

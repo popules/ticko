@@ -24,12 +24,12 @@ export function AvatarUpload({ currentUrl, onUploadComplete }: AvatarUploadProps
 
         // Client-side validation
         if (file.size > fileSizeLimit) {
-            alert("Bilden är för stor (max 2MB)");
+            alert("Image is too large (max 2MB)");
             return;
         }
 
         if (!file.type.startsWith("image/")) {
-            alert("Endast bildfiler är tillåtna");
+            alert("Only image files are allowed");
             return;
         }
 

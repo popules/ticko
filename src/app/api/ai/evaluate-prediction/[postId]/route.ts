@@ -27,14 +27,14 @@ export async function POST(
             .eq("id", postId)
             .single();
 
-        if (fetchError || !post) throw new Error("Inlägg hittades inte");
+        if (fetchError || !post) throw new Error("Post not found");
         if (!post.is_prediction || post.prediction_status !== "pending") {
-            return NextResponse.json({ message: "Ingen väntande förutsägelse att utvärdera" });
+            return NextResponse.json({ message: "No pending prediction to evaluate" });
         }
 
         // 2. Fetch current price
         const ticker = post.ticker_symbol;
-        if (!ticker) throw new Error("Inget ticker-symbol för inlägget");
+        if (!ticker) throw new Error("No ticker symbol for the post");
 
         const res = await fetch(`${new URL(request.url).origin}/api/stocks/${ticker}`);
         const stockData = await res.json();

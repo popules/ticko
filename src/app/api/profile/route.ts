@@ -29,7 +29,7 @@ export async function PUT(request: Request) {
             .maybeSingle();
 
         if (existingUser) {
-            return NextResponse.json({ error: 'Användarnamn är upptaget' }, { status: 409 });
+            return NextResponse.json({ error: 'Username is already taken' }, { status: 409 });
         }
 
         const { error: updateError } = await (supabase as any)

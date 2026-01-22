@@ -84,7 +84,7 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-amber-400" />
-                    <h3 className="text-lg font-bold text-white">Prestationer</h3>
+                    <h3 className="text-lg font-bold text-white">Achievements</h3>
                     <span className="text-xs text-white/40">
                         {userAchievements.length}/{allAchievements.length}
                     </span>
@@ -94,7 +94,7 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
                         onClick={() => setShowAll(!showAll)}
                         className="text-xs text-emerald-400 hover:text-emerald-300 font-medium transition-colors"
                     >
-                        {showAll ? "Visa färre" : "Show all"}
+                        {showAll ? "Show less" : "Show all"}
                     </button>
                 )}
             </div>

@@ -82,7 +82,7 @@ export function CreateAlertModal({
                                     <Bell className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black text-white">Prisvarning</h2>
+                                    <h2 className="text-xl font-black text-white">Price Alert</h2>
                                     <p className="text-xs text-white/40">${symbol}</p>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@ export function CreateAlertModal({
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {/* Current Price Info */}
                             <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
-                                <p className="text-xs text-white/40 mb-1">Nuvarande pris</p>
+                                <p className="text-xs text-white/40 mb-1">Current price</p>
                                 <p className="text-2xl font-black text-white tabular-nums">
                                     {currencySymbol}{(currentPrice ?? 0).toFixed(2)}
                                 </p>
@@ -114,7 +114,7 @@ export function CreateAlertModal({
                                         }`}
                                 >
                                     <TrendingUp className="w-5 h-5" />
-                                    <span className="font-bold">Över</span>
+                                    <span className="font-bold">Above</span>
                                 </button>
                                 <button
                                     type="button"
@@ -125,14 +125,14 @@ export function CreateAlertModal({
                                         }`}
                                 >
                                     <TrendingDown className="w-5 h-5" />
-                                    <span className="font-bold">Under</span>
+                                    <span className="font-bold">Below</span>
                                 </button>
                             </div>
 
                             {/* Target Price Input */}
                             <div>
                                 <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-2">
-                                    Målpris
+                                    Target price
                                 </label>
                                 <div className="relative">
                                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 font-bold">
@@ -160,12 +160,12 @@ export function CreateAlertModal({
                                 disabled={isSubmitting || !user}
                                 className="w-full py-4 btn-gradient text-white rounded-2xl font-bold text-sm shadow-xl shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {isSubmitting ? "Skapar..." : "Skapa Varning"}
+                                {isSubmitting ? "Creating..." : "Create Alert"}
                             </button>
 
                             {!user && (
                                 <p className="text-xs text-white/30 text-center">
-                                    Du måste vara inloggad för att skapa varningar
+                                    You must be logged in to create alerts
                                 </p>
                             )}
                         </form>

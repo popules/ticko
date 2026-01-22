@@ -45,7 +45,7 @@ export function AIAnalysisSection({ ticker, currencySymbol }: AIAnalysisSectionP
     return (
         <div className="space-y-4">
             <PremiumGate
-                featureName="AI-värdering"
+                featureName="AI Valuation"
                 description="Get AI-generated target prices and fundamental analysis. Free for registered users."
             >
                 <AIValuationCard

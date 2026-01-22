@@ -41,11 +41,11 @@ export function CommunitySentiment() {
     const clampedScore = Math.max(0, Math.min(100, sentimentScore));
 
     const getLabel = () => {
-        if (clampedScore >= 75) return "Extrem Girighet";
-        if (clampedScore >= 55) return "Girighet";
+        if (clampedScore >= 75) return "Extreme Greed";
+        if (clampedScore >= 55) return "Greed";
         if (clampedScore >= 45) return "Neutral";
-        if (clampedScore >= 25) return "Rädsla";
-        return "Extrem Rädsla";
+        if (clampedScore >= 25) return "Fear";
+        return "Extreme Fear";
     };
 
     const getColor = () => {
@@ -91,10 +91,10 @@ export function CommunitySentiment() {
                 {/* Labels */}
                 <div className="flex justify-between mt-1">
                     <span className="text-[10px] text-rose-400 flex items-center gap-1">
-                        <TrendingDown className="w-3 h-3" /> Rädsla
+                        <TrendingDown className="w-3 h-3" /> Fear
                     </span>
                     <span className="text-[10px] text-emerald-400 flex items-center gap-1">
-                        Girighet <TrendingUp className="w-3 h-3" />
+                        Greed <TrendingUp className="w-3 h-3" />
                     </span>
                 </div>
             </div>

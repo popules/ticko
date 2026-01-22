@@ -185,7 +185,7 @@ export function TickoCopilot() {
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
-                                    placeholder="Fråga om marknaden..."
+                                    placeholder="Ask about the market..."
                                     className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] transition-all pr-12"
                                 />
                                 <button
@@ -197,7 +197,7 @@ export function TickoCopilot() {
                                 </button>
                             </form>
                             <p className="text-[10px] text-center text-white/30 mt-2 px-2 leading-tight">
-                                <strong>Viktigt:</strong> Ticko AI utgör inte finansiell rådgivning. Historisk avkastning är ingen garanti för framtida vinst. Gör alltid din egen analys.
+                                <strong>Important:</strong> Ticko AI does not constitute financial advice. Historical returns are no guarantee of future gains. Always do your own analysis.
                             </p>
                         </div>
                     </motion.div>

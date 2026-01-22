@@ -128,7 +128,7 @@ export function PollView({ poll }: PollViewProps) {
                 );
             })}
             <div className="flex justify-between items-center px-1">
-                <span className="text-[10px] text-white/40">{totalVotes} röster</span>
+                <span className="text-[10px] text-white/40">{totalVotes} votes</span>
                 {poll.ends_at && <span className="text-[10px] text-white/40">Slutar {new Date(poll.ends_at).toLocaleDateString()}</span>}
             </div>
         </div>

@@ -882,8 +882,8 @@ export default function PaperTradingPage() {
                                         <RotateCcw className="w-5 h-5 text-rose-400" />
                                     </div>
                                     <div>
-                                        <h2 className="text-lg font-bold text-white">Återställ portfölj</h2>
-                                        <p className="text-xs text-white/40">Är du säker?</p>
+                                        <h2 className="text-lg font-bold text-white">Reset Portfolio</h2>
+                                        <p className="text-xs text-white/40">Are you sure?</p>
                                     </div>
                                 </div>
                             </div>
@@ -911,7 +911,7 @@ export default function PaperTradingPage() {
                                     onClick={() => setShowResetModal(false)}
                                     className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] text-white/60 font-bold hover:bg-white/10 transition-colors"
                                 >
-                                    Avbryt
+                                    Cancel
                                 </button>
                                 <button
                                     onClick={handleReset}
@@ -923,7 +923,7 @@ export default function PaperTradingPage() {
                                     ) : (
                                         <>
                                             <RotateCcw className="w-4 h-4" />
-                                            Ja, återställ
+                                            Yes, reset
                                         </>
                                     )}
                                 </button>

@@ -21,12 +21,12 @@ export default function UpdatePasswordPage() {
         setError("");
 
         if (password !== confirmPassword) {
-            setError("Lösenorden matchar inte");
+            setError("Passwords do not match");
             return;
         }
 
         if (password.length < 6) {
-            setError("Lösenordet måste vara minst 6 tecken");
+            setError("Password must be at least 6 characters");
             return;
         }
 
@@ -79,23 +79,23 @@ export default function UpdatePasswordPage() {
                             <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
                                 <CheckCircle className="w-8 h-8 text-emerald-400" />
                             </div>
-                            <h1 className="text-2xl font-bold text-white mb-2">Lösenord uppdaterat!</h1>
+                            <h1 className="text-2xl font-bold text-white mb-2">Password updated!</h1>
                             <p className="text-white/50 mb-6">
-                                Du skickas nu till inloggningssidan...
+                                You will be redirected to the login page...
                             </p>
                         </div>
                     ) : (
                         <>
-                            <h1 className="text-2xl font-bold text-white mb-2">Nytt lösenord</h1>
+                            <h1 className="text-2xl font-bold text-white mb-2">New password</h1>
                             <p className="text-white/50 mb-8">
-                                Ange ditt nya lösenord nedan.
+                                Enter your new password below.
                             </p>
 
                             <form onSubmit={handleSubmit} className="space-y-5">
                                 {/* Password */}
                                 <div>
                                     <label className="block text-sm font-medium text-white/70 mb-2">
-                                        Nytt lösenord
+                                        New password
                                     </label>
                                     <div className="relative">
                                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -113,7 +113,7 @@ export default function UpdatePasswordPage() {
                                 {/* Confirm Password */}
                                 <div>
                                     <label className="block text-sm font-medium text-white/70 mb-2">
-                                        Bekräfta lösenord
+                                        Confirm password
                                     </label>
                                     <div className="relative">
                                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -145,7 +145,7 @@ export default function UpdatePasswordPage() {
                                         <Loader2 className="w-5 h-5 animate-spin" />
                                     ) : (
                                         <>
-                                            Spara nytt lösenord
+                                            Save new password
                                             <ArrowRight className="w-5 h-5" />
                                         </>
                                     )}
