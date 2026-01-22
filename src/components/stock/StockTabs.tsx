@@ -4,11 +4,12 @@ import { useState } from "react";
 import { FeedStream } from "@/components/feed/FeedStream";
 import { NewsFeed } from "@/components/news/NewsFeed";
 import { AIAnalysisSection, PerformanceMetricsSection } from "@/components/stock/StockPageClient";
+import { AboutSection } from "@/components/stock/AboutSection";
 import { StockChart } from "@/components/charts/StockChart";
-import { MessageCircle, Brain, Newspaper, BarChart3 } from "lucide-react";
+import { Brain, Newspaper, BarChart3, Info } from "lucide-react";
 import { UI_STRINGS } from "@/config/app";
 
-type TabId = "overview" | "discussion" | "analysis" | "news";
+type TabId = "overview" | "about" | "analysis" | "news";
 
 interface Tab {
     id: TabId;
@@ -18,7 +19,7 @@ interface Tab {
 
 const tabs: Tab[] = [
     { id: "overview", label: "Overview", icon: <BarChart3 className="w-4 h-4" /> },
-    { id: "discussion", label: "Discussion", icon: <MessageCircle className="w-4 h-4" /> },
+    { id: "about", label: "About", icon: <Info className="w-4 h-4" /> },
     { id: "analysis", label: "Analysis", icon: <Brain className="w-4 h-4" /> },
     { id: "news", label: "News", icon: <Newspaper className="w-4 h-4" /> },
 ];
@@ -104,15 +105,20 @@ export function StockTabs({ ticker, currencySymbol, stock }: StockTabsProps) {
 
                         {/* Performance Metrics */}
                         <PerformanceMetricsSection symbol={ticker} />
+
+                        {/* Discussion Section - Moved here from separate tab */}
+                        <div>
+                            <h3 className="text-sm font-bold text-white/40 uppercase tracking-widest mb-4">
+                                {UI_STRINGS.discussion}
+                            </h3>
+                            <FeedStream tickerFilter={ticker} />
+                        </div>
                     </div>
                 )}
 
-                {activeTab === "discussion" && (
+                {activeTab === "about" && (
                     <div className="p-4 md:p-6 animate-in fade-in duration-300">
-                        <h2 className="text-lg font-semibold text-white mb-4">
-                            ${ticker} {UI_STRINGS.discussion}
-                        </h2>
-                        <FeedStream tickerFilter={ticker} />
+                        <AboutSection ticker={ticker} />
                     </div>
                 )}
 

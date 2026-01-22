@@ -21,6 +21,7 @@ const PUBLIC_ROUTES = [
 const PUBLIC_PREFIXES = [
     '/api/cron',
     '/api/market',
+    '/api/stock',  // Stock profile data - public for SEO
     '/_next',
     '/favicon',
     '/icons',

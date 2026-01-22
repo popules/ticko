@@ -21,6 +21,38 @@ export interface StockData {
     performanceCue?: string;
 }
 
+export interface StockProfile {
+    sector?: string;
+    industry?: string;
+    description?: string;
+    website?: string;
+    country?: string;
+    city?: string;
+    employees?: number;
+}
+
+export async function fetchStockProfile(ticker: string): Promise<StockProfile | null> {
+    try {
+        const result: any = await yf.quoteSummary(ticker, { modules: ['assetProfile'] });
+
+        if (!result?.assetProfile) return null;
+
+        const profile = result.assetProfile;
+        return {
+            sector: profile.sector,
+            industry: profile.industry,
+            description: profile.longBusinessSummary,
+            website: profile.website,
+            country: profile.country,
+            city: profile.city,
+            employees: profile.fullTimeEmployees,
+        };
+    } catch (error) {
+        console.error(`Error fetching profile for ${ticker}:`, error);
+        return null;
+    }
+}
+
 function getCurrencySymbol(currency: string): string {
     switch (currency) {
         case 'USD': return '$';
