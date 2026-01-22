@@ -96,7 +96,7 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
                     </div>
                 </div>
                 <span className="text-xs text-white/40 bg-white/[0.06] px-3 py-1.5 rounded-full">
-                    {UI_STRINGS.updatedAgo} nu
+                    {UI_STRINGS.updatedAgo} now
                 </span>
             </div>
 
