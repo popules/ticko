@@ -4,10 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Search, TrendingUp, Wallet, User } from "lucide-react";
 import { useSearch } from "@/providers/SearchProvider";
+import { useAuth } from "@/providers/AuthProvider";
 
 export function MobileNav() {
     const pathname = usePathname();
     const { open } = useSearch();
+    const { user } = useAuth();
+
+    // Don't show mobile nav for logged-out users
+    if (!user) {
+        return null;
+    }
 
     const navItems = [
         { icon: Home, label: "Home", href: "/" },

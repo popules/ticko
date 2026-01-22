@@ -120,7 +120,7 @@ export function AboutSection({ ticker }: AboutSectionProps) {
                             </div>
                             {item.isLink ? (
                                 <a
-                                    href={item.value}
+                                    href={item.value?.startsWith('http') ? item.value : `https://${item.value}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors truncate block"
