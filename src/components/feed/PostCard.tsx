@@ -63,7 +63,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                 {/* Avatar */}
                 <div className="flex-shrink-0">
                     <Link href={`/profile/${post.user_id}`}>
-                        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-semibold shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform cursor-pointer">
+                        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center text-white font-semibold shadow-lg shadow-violet-500/20 hover:scale-105 transition-transform cursor-pointer">
                             {profile?.username?.charAt(0).toUpperCase() || "?"}
                         </div>
                     </Link>

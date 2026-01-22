@@ -289,14 +289,28 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
 
     return (
         <div className="mt-4 pt-4 border-t border-white/5">
-            {/* Toggle Button */}
-            <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
-            >
-                <MessageCircle className="w-4 h-4" />
-                <span>{count} comments</span>
-            </button>
+            {/* Toggle Button & Reply Action */}
+            <div className="flex items-center gap-4">
+                <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
+                >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>{count} comments</span>
+                </button>
+                {user && (
+                    <button
+                        onClick={() => {
+                            setIsExpanded(true);
+                            // Focus will happen after render via autoFocus
+                        }}
+                        className="flex items-center gap-1.5 text-sm text-white/40 hover:text-emerald-400 transition-colors"
+                    >
+                        <Reply className="w-4 h-4" />
+                        <span>Reply</span>
+                    </button>
+                )}
+            </div>
 
             {/* Comments Section */}
             <AnimatePresence>

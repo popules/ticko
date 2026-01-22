@@ -33,8 +33,8 @@ export function PerformanceMetrics({ symbol }: PerformanceMetricsProps) {
 
     const periods = [
         { label: "YTD", value: data.performance.YTD },
-        { label: "1 År", value: data.performance["1Y"] },
-        { label: "5 År", value: data.performance["5Y"] },
+        { label: "1Y", value: data.performance["1Y"] },
+        { label: "5Y", value: data.performance["5Y"] },
     ];
 
     return (
