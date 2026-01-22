@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Send, Loader2, Reply, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
+import { ReactionBar } from "./ReactionBar";
 
 interface Comment {
     id: string;
@@ -80,16 +81,19 @@ function CommentItem({
                         {comment.content}
                     </p>
 
-                    {/* Reply button */}
-                    {user && depth < maxDepth && (
-                        <button
-                            onClick={() => onReply(comment.id)}
-                            className="flex items-center gap-1 mt-2 text-xs text-white/40 hover:text-emerald-400 transition-colors"
-                        >
-                            <Reply className="w-3 h-3" />
-                            Reply
-                        </button>
-                    )}
+                    {/* Comment Actions: Reply + React */}
+                    <div className="flex items-center gap-3 mt-2">
+                        {user && depth < maxDepth && (
+                            <button
+                                onClick={() => onReply(comment.id)}
+                                className="flex items-center gap-1 text-xs text-white/40 hover:text-emerald-400 transition-colors"
+                            >
+                                <Reply className="w-3 h-3" />
+                                Reply
+                            </button>
+                        )}
+                        <ReactionBar commentId={comment.id} compact />
+                    </div>
 
                     {/* Reply input */}
                     {replyingTo === comment.id && (
