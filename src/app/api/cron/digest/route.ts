@@ -9,7 +9,9 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE;
+
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !serviceRoleKey) {
         return NextResponse.json({ error: "Supabase not configured" }, { status: 500 });
     }
 
@@ -19,7 +21,7 @@ export async function GET(request: Request) {
 
     const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL,
-        process.env.SUPABASE_SERVICE_ROLE_KEY
+        serviceRoleKey
     );
 
     try {
