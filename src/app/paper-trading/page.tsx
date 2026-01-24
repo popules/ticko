@@ -757,13 +757,13 @@ export default function PaperTradingPage() {
                                     <div className="flex justify-center py-12">
                                         <Loader2 className="w-8 h-8 animate-spin text-white/40" />
                                     </div>
-                                ) : snapshots.length < 2 ? (
+                                ) : snapshots.length === 0 ? (
                                     <div className="text-center py-12">
                                         <BarChart3 className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                                        <h3 className="text-lg font-bold text-white mb-2">Not enough data</h3>
+                                        <h3 className="text-lg font-bold text-white mb-2">No data yet</h3>
                                         <p className="text-white/40 text-sm max-w-md mx-auto">
-                                            The graph shows when we have at least 2 days of data.
-                                            Your portfolio value is saved automatically every night.
+                                            The graph tracks your portfolio value over time.
+                                            Check back tomorrow for the first update.
                                         </p>
                                         <div className="mt-6 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20 max-w-sm mx-auto">
                                             <p className="text-violet-400 text-sm">
