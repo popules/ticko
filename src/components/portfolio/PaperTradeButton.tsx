@@ -111,7 +111,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
     const canAfford = totalCostSek <= cashBalance && shares > 0;
 
     const handleBuy = async () => {
-        if (!user || !supabase || !stockPrice) return;
+        if (!user || !stockPrice) return;
 
         if (shares < 1) {
             setError("You must buy at least 1 share");
@@ -127,35 +127,24 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
         setError("");
 
         try {
-            // Fair Play: Lock position for 30 minutes
-            const lockedUntil = new Date(Date.now() + 30 * 60 * 1000).toISOString();
-
-            const { error: dbError } = await (supabase as any)
-                .from("portfolio")
-                .insert({
-                    user_id: user.id,
-                    symbol: symbol,
+            const res = await fetch("/api/portfolio/trade", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    symbol,
                     name: stockName,
+                    type: "buy",
                     shares: shares,
-                    buy_price: stockPrice,
+                    price: stockPrice, // Only for UI/fallback logic, server verifies this
                     currency: stockCurrency,
-                    locked_until: lockedUntil,
-                });
-
-            if (dbError) throw dbError;
-
-            // Log transaction for history
-            await (supabase as any).from("transactions").insert({
-                user_id: user.id,
-                symbol: symbol,
-                name: stockName,
-                type: "buy",
-                shares: shares,
-                price: stockPrice,
-                currency: stockCurrency,
-                total_sek: totalCostSek,
-                realized_pnl: 0,
+                }),
             });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || "Purchase failed");
+            }
 
             setSuccess(true);
             // Keep modal open for 2.5 seconds to show success state
@@ -164,8 +153,8 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                 setSuccess(false);
                 setInputValue(inputMode === "shares" ? "1" : "1000");
             }, 2500);
-        } catch (err) {
-            setError("Could not complete purchase");
+        } catch (err: any) {
+            setError(err.message || "Could not complete purchase");
         } finally {
             setIsLoading(false);
         }

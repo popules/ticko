@@ -82,78 +82,36 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
         setIsLoading(true);
 
         try {
-            // Log transaction
-            await (supabase as any).from("transactions").insert({
-                user_id: userId,
-                symbol: item.symbol,
-                name: item.name,
-                type: "sell",
-                shares: sharesToSell,
-                price: currentPrice,
-                currency: item.currency,
-                total_sek: totalProceeds,
-                realized_pnl: pnl,
+            const res = await fetch("/api/portfolio/trade", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    symbol: item.symbol,
+                    shares: sharesToSell,
+                    type: "sell",
+                    portfolioId: item.id,
+                }),
             });
 
-            // Update or delete portfolio row
-            if (sharesToSell >= item.shares) {
-                // Sell all - delete row
-                await supabase.from("portfolio").delete().eq("id", item.id);
-            } else {
-                // Partial sell - update shares
-                await (supabase as any).from("portfolio")
-                    .update({ shares: item.shares - sharesToSell })
-                    .eq("id", item.id);
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || "Sell failed");
             }
 
-            setRealizedPnl(pnl);
+            // Trust the server's calculation for PnL
+            setRealizedPnl(data.pnl);
             setShowSuccess(true);
 
-            // Update streak and award XP (fire and forget)
-            (async () => {
-                try {
-                    // Fetch current streak
-                    const { data: profile } = await (supabase as any)
-                        .from("profiles")
-                        .select("paper_win_streak, paper_best_streak, reputation_score")
-                        .eq("id", userId)
-                        .single();
-
-                    const currentStreak = profile?.paper_win_streak || 0;
-                    const currentRep = profile?.reputation_score || 0;
-
-                    if (pnl > 0) {
-                        // Win: increment streak, award XP
-                        const newStreak = currentStreak + 1;
-                        const xpEarned = calculateTradeXP(pnl, newStreak);
-
-                        await (supabase as any).from("profiles").update({
-                            paper_win_streak: newStreak,
-                            paper_best_streak: Math.max(newStreak, profile?.paper_best_streak || 0),
-                            reputation_score: currentRep + xpEarned,
-                        }).eq("id", userId);
-                    } else {
-                        // Loss: reset streak
-                        await (supabase as any).from("profiles").update({
-                            paper_win_streak: 0,
-                        }).eq("id", userId);
-                    }
-                } catch (e) {
-                    console.error("Streak/XP update failed:", e);
-                }
-            })();
-
-            // Check for paper trading achievements (fire and forget)
-            checkPaperTradingAchievements(userId, totalProceeds + 10000, pnl).catch(console.error);
-
-            // Notify parent after animation
+            // Notify parent after animation (using backend PnL)
             setTimeout(() => {
-                onSold(item.id, sharesToSell, totalProceeds, pnl);
+                onSold(item.id, sharesToSell, data.totalProceeds, data.pnl);
                 onClose();
             }, 2000);
 
         } catch (err) {
             console.error("Sell error:", err);
+            alert("Could not sell position. Try again.");
         } finally {
             setIsLoading(false);
         }
