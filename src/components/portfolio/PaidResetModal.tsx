@@ -59,7 +59,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.95, opacity: 0, y: 20 }}
                         onClick={(e) => e.stopPropagation()}
-                        className="w-full max-w-md bg-[#0B0F17] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+                        className="w-full max-w-md bg-[#0B0F17] border border-white/10 rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
                     >
                         {/* Header */}
                         <div className="p-6 border-b border-white/10 flex items-center justify-between">
@@ -81,7 +81,7 @@ export function PaidResetModal({ onClose }: PaidResetModalProps) {
                         </div>
 
                         {/* Content */}
-                        <div className="p-6 space-y-6">
+                        <div className="p-6 space-y-6 overflow-y-auto bg-[#0B0F17]">
                             {/* Hero Section */}
                             <div className="text-center">
                                 <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/40">
