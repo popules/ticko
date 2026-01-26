@@ -300,7 +300,7 @@ export default function PaperTradingPage() {
 
     if (authLoading || isLoading) {
         return (
-            <div className="flex min-h-screen">
+            <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
                 <Sidebar />
                 <main className="flex-1 flex items-center justify-center">
                     <Loader2 className="w-8 h-8 animate-spin text-white/40" />
@@ -312,7 +312,7 @@ export default function PaperTradingPage() {
 
     if (!user) {
         return (
-            <div className="flex min-h-screen">
+            <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
                 <Sidebar />
                 <main className="flex-1 flex items-center justify-center">
                     <div className="text-center">
@@ -337,7 +337,7 @@ export default function PaperTradingPage() {
         .reduce((sum, t) => sum + (t.realized_pnl || 0), 0);
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
             <Sidebar />
 
             <main className="flex-1 border-r border-white/10">
