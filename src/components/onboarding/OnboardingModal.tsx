@@ -62,7 +62,7 @@ export function OnboardingModal() {
             if (!user) return;
 
             // 1. Fetch current profile to see username
-            const { data: profile } = await supabase
+            const { data: profile } = await (supabase as any)
                 .from("profiles")
                 .select("username")
                 .eq("id", user.id)
@@ -123,7 +123,7 @@ export function OnboardingModal() {
 
         try {
             // Check availability
-            const { data: existing } = await supabase
+            const { data: existing } = await (supabase as any)
                 .from("profiles")
                 .select("id")
                 .eq("username", cleanName)
@@ -138,7 +138,7 @@ export function OnboardingModal() {
 
             // Update profile
             setIsSubmittingName(true);
-            const { error: updateError } = await supabase
+            const { error: updateError } = await (supabase as any)
                 .from("profiles")
                 .update({ username: cleanName })
                 .eq("id", user.id);
