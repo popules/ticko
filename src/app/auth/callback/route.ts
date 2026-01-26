@@ -1,14 +1,30 @@
-import { createClient } from "@supabase/supabase-js";
-import { NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
+import { type NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
     const requestUrl = new URL(request.url);
     const code = requestUrl.searchParams.get("code");
 
     if (code) {
-        const supabase = createClient(
+        const cookieStore = cookies();
+
+        const supabase = createServerClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+                cookies: {
+                    get(name: string) {
+                        return cookieStore.get(name)?.value;
+                    },
+                    set(name: string, value: string, options: any) {
+                        cookieStore.set({ name, value, ...options });
+                    },
+                    remove(name: string, options: any) {
+                        cookieStore.set({ name, value: "", ...options });
+                    },
+                },
+            }
         );
 
         const { data, error } = await supabase.auth.exchangeCodeForSession(code);
@@ -22,11 +38,13 @@ export async function GET(request: Request) {
                 .single();
 
             // If no profile or no username, redirect to choose alias page
-            if (!profile || !profile.username) {
-                return NextResponse.redirect(new URL("/valj-alias", requestUrl.origin));
-            }
+            // NOTE: With the new OnboardingModal logic, we might not strictly need this redirection 
+            // anymore if the modal handles it on the client side, but it's safe to keep as a fallback 
+            // or we can just redirect to root and let the modal handle it for better UX.
+            // Let's redirect to root to ensure the cookie is set and client takes over.
 
-            // User has username, redirect to feed
+            // Actually, for now, let's keep the redirect to root which is the standard flow,
+            // and relying on OnboardingModal (client-side) to force the username choice.
             return NextResponse.redirect(new URL("/", requestUrl.origin));
         }
     }
