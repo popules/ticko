@@ -12,15 +12,15 @@ export function DashboardView() {
             {/* Onboarding Modal - Shows once for new users */}
             <OnboardingModal />
 
-            {/* Left Sidebar - Navigation & Trending - Hidden on mobile */}
-            <div className="hidden lg:block">
+            {/* Left Sidebar - Navigation & Trending - Handles its own responsive states */}
+            <div className="shrink-0">
                 <Sidebar />
             </div>
 
             {/* Main Content - Feed */}
             <main className="flex-1 lg:border-r border-white/10">
                 {/* Header */}
-                <header className="sticky top-0 md:top-0 z-10 backdrop-blur-xl bg-[#020617]/80 border-b border-white/10 px-4 md:px-6 py-3 md:py-4 mt-16 md:mt-0">
+                <header className="sticky top-0 md:top-0 z-10 backdrop-blur-xl bg-[#020617]/80 border-b border-white/10 px-4 md:px-6 py-3 md:py-4 md:mt-0">
                     <h1 className="text-base md:text-lg font-extrabold text-white tracking-tight">
                         {APP_CONFIG.name} Feed
                     </h1>
