@@ -98,12 +98,12 @@ export default function MarketPage() {
 
 
     return (
-        <div className="flex min-h-screen">
-            <Sidebar />
+        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
+            <div className="shrink-0 lg:h-screen lg:sticky lg:top-0"><Sidebar /></div>
 
-            <main className="flex-1 border-r border-white/10 flex flex-col overflow-hidden">
+            <main className="flex-1 min-w-0 border-r border-white/10 flex flex-col overflow-hidden">
                 {/* Header */}
-                <header className="px-4 sm:px-8 py-4 sm:py-6 border-b border-white/10 bg-[#0B0F17]/50 backdrop-blur-xl">
+                <header className="px-4 sm:px-8 py-4 sm:py-6 border-b border-white/10 bg-[#0B0F17]/50 backdrop-blur-xl md:mt-0">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                             <h1 className="text-xl sm:text-2xl font-black text-white tracking-widest uppercase">

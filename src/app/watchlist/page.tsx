@@ -67,9 +67,9 @@ export default function WatchlistPage() {
     const stocks = watchlistData?.stocks || [];
 
     return (
-        <div className="flex min-h-screen">
-            <Sidebar />
-            <main className="flex-1 p-8">
+        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
+            <div className="shrink-0 lg:h-screen lg:sticky lg:top-0"><Sidebar /></div>
+            <main className="flex-1 min-w-0 p-8">
                 <div className="max-w-4xl mx-auto">
                     <div className="flex items-center justify-between mb-8">
                         <div>
