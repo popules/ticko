@@ -389,41 +389,41 @@ export default function PaperTradingPage() {
                 <div className="p-4 sm:p-6 border-b border-white/10">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                         {/* Virtual Cash */}
-                        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 relative">
-                            <div className="flex items-center justify-between mb-2">
-                                <div className="flex items-center gap-2">
-                                    <Coins className="w-4 h-4 text-violet-400" />
-                                    <p className="text-[10px] text-violet-400/80 uppercase tracking-widest font-bold">Cash</p>
-                                </div>
-                                {/* Premium Reset Button - Absolute Top Right */}
-                                <button
-                                    onClick={() => setShowPaidResetModal(true)}
-                                    className={`
-                                        -mr-1 -mt-1
-                                        px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg 
-                                        bg-emerald-500/10
-                                        border border-emerald-500/30 
-                                        text-emerald-400/90 font-medium text-[10px]
-                                        hover:bg-emerald-500/15 hover:border-emerald-400/50
-                                        transition-all duration-300
-                                        flex items-center gap-1.5
-                                        whitespace-nowrap
-                                        ${(cashBalance + totalValue) < 50000
-                                            ? 'shadow-[0_0_12px_rgba(16,185,129,0.15)]'
-                                            : ''
-                                        }
-                                    `}
-                                    title="Premium Reset ($5)"
-                                >
-                                    <span className="hidden sm:inline">Fresh start</span>
-                                    <RotateCcw className="w-3 h-3" />
-                                </button>
+                        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 relative group">
+                            <div className="flex items-center gap-2 mb-2">
+                                <Coins className="w-4 h-4 text-violet-400" />
+                                <p className="text-[10px] text-violet-400/80 uppercase tracking-widest font-bold">Cash</p>
                             </div>
+
                             <div>
                                 <p className="text-lg sm:text-2xl font-black text-white tabular-nums">
                                     ${cashBalance.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                 </p>
                             </div>
+
+                            {/* Premium Reset Button - Absolute Top Right */}
+                            <button
+                                onClick={() => setShowPaidResetModal(true)}
+                                className={`
+                                    absolute top-3 right-3
+                                    px-2 py-1
+                                    rounded-lg 
+                                    text-emerald-400/60 font-medium text-[10px]
+                                    hover:bg-emerald-500/10 hover:text-emerald-400 hover:border-emerald-500/30
+                                    border border-transparent
+                                    transition-all duration-300
+                                    flex items-center gap-1
+                                    whitespace-nowrap
+                                    ${(cashBalance + totalValue) < 50000
+                                        ? 'animate-pulse text-emerald-400/80' // subtle pulse if low balance
+                                        : ''
+                                    }
+                                `}
+                                title="Premium Reset ($5)"
+                            >
+                                <span className={cashBalance + totalValue < 2000 ? "inline" : "hidden group-hover:inline transition-all"}>Fresh start</span>
+                                <RotateCcw className="w-3 h-3" />
+                            </button>
                         </div>
 
                         {/* Portfolio Value */}
