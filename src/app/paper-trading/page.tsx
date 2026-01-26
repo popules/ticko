@@ -338,11 +338,13 @@ export default function PaperTradingPage() {
 
     return (
         <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
-            <Sidebar />
+            <div className="shrink-0 lg:h-screen lg:sticky lg:top-0">
+                <Sidebar />
+            </div>
 
-            <main className="flex-1 border-r border-white/10">
+            <main className="flex-1 min-w-0 border-r border-white/10">
                 {/* Header */}
-                <header className="sticky top-0 z-10 backdrop-blur-xl bg-[#020617]/80 border-b border-white/10 px-4 sm:px-6 py-4 sm:py-5">
+                <header className="sticky top-0 z-10 backdrop-blur-xl bg-[#020617]/80 border-b border-white/10 px-4 sm:px-6 py-4 sm:py-5 md:mt-0">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-400 to-fuchsia-600 flex items-center justify-center shadow-lg">
