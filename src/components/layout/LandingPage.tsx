@@ -646,8 +646,8 @@ export function LandingPage() {
                             <div className="flex flex-col gap-3 text-sm text-white/40">
                                 <Link href="/about" className="hover:text-white transition-colors">About</Link>
                                 <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
-                                <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-                                <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+                                <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+                                <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
                             </div>
                         </div>
                     </div>
