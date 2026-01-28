@@ -7,7 +7,7 @@ import { useAuth } from "@/providers/AuthProvider";
 
 interface AvatarUploadProps {
     currentUrl: string | null;
-    onUploadComplete: (url: string) => void;
+    onUploadComplete: (url: string | null) => void;
 }
 
 export function AvatarUpload({ currentUrl, onUploadComplete }: AvatarUploadProps) {
@@ -77,6 +77,30 @@ export function AvatarUpload({ currentUrl, onUploadComplete }: AvatarUploadProps
         }
     };
 
+    const handleRemove = async () => {
+        if (!user || !previewUrl) return;
+
+        setIsUploading(true);
+        try {
+            // Update profile to remove avatar
+            const { error } = await supabase
+                .from("profiles")
+                // @ts-ignore
+                .update({ avatar_url: null })
+                .eq("id", user.id);
+
+            if (error) throw error;
+
+            setPreviewUrl(null);
+            onUploadComplete(null);
+        } catch (error: any) {
+            console.error("Remove failed:", error);
+            alert("Could not remove image: " + error.message);
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
     return (
         <div className="flex flex-col items-center gap-4">
             <div className="relative group">
@@ -121,6 +145,15 @@ export function AvatarUpload({ currentUrl, onUploadComplete }: AvatarUploadProps
                 <p className="text-xs text-white/40 mt-1">
                     Max 2MB
                 </p>
+                {previewUrl && (
+                    <button
+                        onClick={handleRemove}
+                        disabled={isUploading}
+                        className="mt-2 text-xs text-rose-400 hover:text-rose-300 transition-colors disabled:opacity-50"
+                    >
+                        Remove photo
+                    </button>
+                )}
             </div>
 
             <input
