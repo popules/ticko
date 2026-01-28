@@ -41,8 +41,8 @@ function isPublicRoute(pathname: string): boolean {
     // Stock pages are public (SEO)
     if (pathname.startsWith('/stock/')) return true;
 
-    // Static files are public
-    if (pathname.match(/\.(svg|png|jpg|jpeg|gif|webp|ico|js|css)$/)) return true;
+    // Static files are public (includes verification files like yandex_*.html)
+    if (pathname.match(/\.(svg|png|jpg|jpeg|gif|webp|ico|js|css|html|txt|xml)$/)) return true;
 
     return false;
 }
