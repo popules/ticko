@@ -18,6 +18,9 @@ export async function generateMetadata({ params }: StockPageProps): Promise<Meta
     return {
         title: `${stock.name} ($${stock.symbol}) - Analysis, sentiment, and discussion on Ticko`,
         description: `See latest news, AI analysis, and community sentiment for ${stock.name}. Discuss $${stock.symbol} with other investors on Ticko.`,
+        alternates: {
+            canonical: `/stock/${stock.symbol}`,
+        },
         openGraph: {
             title: `${stock.name} ($${stock.symbol}) on Ticko`,
             description: `Join the discussion about ${stock.name}. AI insights and real-time data for retail investors.`,

@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   },
   description: APP_CONFIG.description,
   metadataBase: new URL(APP_CONFIG.baseUrl),
+  alternates: {
+    canonical: '/',
+  },
   viewport: {
     width: 'device-width',
     initialScale: 1,
