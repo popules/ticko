@@ -254,7 +254,7 @@ export default function LeaderboardPage() {
                     </div>
 
                     {/* How Scores Work - Info Box */}
-                    <div className="mb-6 p-4 rounded-xl bg-white/[0.02] border border-white/5 relative z-10">
+                    <div className="mb-14 p-4 rounded-xl bg-white/[0.02] border border-white/5 relative z-10">
                         <div className="flex items-start gap-3">
                             <Info className="w-4 h-4 text-white/40 mt-0.5 flex-shrink-0" />
                             {activeTab === "paper" ? (
