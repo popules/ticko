@@ -11,6 +11,7 @@ const PUBLIC_ROUTES = [
     '/contact',
     '/privacy',
     '/terms',
+    '/community-guidelines',
     '/auth/callback',
     '/auth/update-password',
     '/api/og',

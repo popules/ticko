@@ -2,6 +2,7 @@
 
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
+import { AppFooter } from "@/components/layout/AppFooter";
 import { Shield, Heart, MessageSquare, AlertTriangle, ThumbsUp, Users } from "lucide-react";
 
 const guidelines = [
@@ -59,8 +60,8 @@ export default function CommunityGuidelinesPage() {
     return (
         <div className="flex min-h-screen bg-[#020617]">
             <Sidebar />
-            <main className="flex-1 border-x border-white/5 overflow-y-auto">
-                <div className="max-w-2xl mx-auto p-6 md:p-12 pb-24">
+            <main className="flex-1 border-x border-white/5 overflow-y-auto flex flex-col">
+                <div className="max-w-2xl mx-auto p-6 md:p-12 pb-8 flex-1">
                     {/* Header */}
                     <div className="text-center mb-10">
                         <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 border border-violet-500/30 mb-4">
@@ -106,6 +107,7 @@ export default function CommunityGuidelinesPage() {
                         Last updated: January 2026
                     </p>
                 </div>
+                <AppFooter />
             </main>
             <RightPanel />
         </div>
