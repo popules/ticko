@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Wallet, Trophy, Brain, MessageCircle, ChevronRight, Sparkles, User, Check, AlertCircle } from "lucide-react";
 import Link from "next/link";
@@ -47,6 +48,7 @@ const slides = [
 
 export function OnboardingModal() {
     const { user } = useAuth();
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -98,7 +100,9 @@ export function OnboardingModal() {
         if (currentSlide < slides.length - 1) {
             setCurrentSlide(currentSlide + 1);
         } else {
+            // On last slide, redirect to paper trading
             handleClose();
+            router.push("/paper-trading");
         }
     };
 
