@@ -164,6 +164,17 @@ export function Sidebar() {
                     </Link>
                 )}
             </div>
+
+            {/* Footer Links for logged-in users */}
+            <div className="px-4 pb-4 hidden md:block">
+                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-white/20">
+                    <Link href="/community-guidelines" className="hover:text-white/50 transition-colors">Guidelines</Link>
+                    <Link href="/terms" className="hover:text-white/50 transition-colors">Terms</Link>
+                    <Link href="/privacy" className="hover:text-white/50 transition-colors">Privacy</Link>
+                    <Link href="/about" className="hover:text-white/50 transition-colors">About</Link>
+                    <Link href="/contact" className="hover:text-white/50 transition-colors">Contact</Link>
+                </div>
+            </div>
         </>
     );
 
