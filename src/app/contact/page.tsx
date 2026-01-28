@@ -199,6 +199,7 @@ export default function ContactPage() {
                     <TickoLogo />
                     <div className="flex gap-8 text-sm font-medium text-white/40">
                         <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                        <Link href="/community-guidelines" className="hover:text-white transition-colors">Guidelines</Link>
                         <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
                         <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
                     </div>
