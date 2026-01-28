@@ -68,7 +68,7 @@ export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                             autoFocus
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Search stocks ($TSLA) or users (@username)..."
+                            placeholder="Search for stocks, tickers or users..."
                             className="flex-1 bg-transparent border-none outline-none text-white placeholder:text-white/30 text-lg h-8"
                         />
                         {isLoading && <Loader2 className="w-5 h-5 animate-spin text-emerald-500" />}
@@ -141,7 +141,7 @@ export function SearchDialog({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                         {!query && (
                             <div className="p-8 text-center">
                                 <p className="text-sm text-white/30">
-                                    Search for <span className="text-emerald-400 font-mono">$TSLA</span>, <span className="text-emerald-400 font-mono">$VOLV</span><br />
+                                    Search for stocks, tickers<br />
                                     or community members.
                                 </p>
                             </div>

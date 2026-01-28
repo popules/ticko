@@ -89,6 +89,9 @@ export async function GET(request: Request) {
             // Total Portfolio Value = Current Holdings Value + Cash
             const totalValue = totalCurrentValueSek + cashBalance;
 
+            // Calculate P&L for leaderboard
+            const pnl = Math.round(totalValue - startingCapital);
+
             // Upsert snapshot
             await supabase.from("portfolio_snapshots").upsert({
                 user_id: profile.id,
@@ -98,6 +101,12 @@ export async function GET(request: Request) {
             }, {
                 onConflict: "user_id,snapshot_date"
             });
+
+            // Update profiles with PnL for leaderboard
+            await supabase.from("profiles").update({
+                paper_total_pnl: pnl,
+                paper_season_pnl: pnl,
+            }).eq("id", profile.id);
 
             snapshotsCreated++;
         }
