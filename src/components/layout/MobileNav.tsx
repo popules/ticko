@@ -25,7 +25,7 @@ export function MobileNav() {
     ];
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#0B0F17]/95 backdrop-blur-xl border-t border-white/10 safe-area-inset-bottom">
+        <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#0B0F17]/95 backdrop-blur-xl border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
             <div className="flex items-center justify-around py-2 px-4">
                 {navItems.map((item, idx) => {
                     const isActive = item.href ? pathname === item.href : false;

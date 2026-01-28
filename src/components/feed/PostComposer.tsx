@@ -252,7 +252,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                 </div>
             )}
 
-            <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-2">
+            <div className="flex flex-wrap items-center justify-between pt-4 border-t border-white/5 mt-2 gap-y-3">
                 <div className="flex items-center gap-2">
                     {/* Media Tools */}
                     <button
@@ -341,7 +341,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
                     )}
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 ml-auto">
                     {/* Char counter */}
                     <span className={`text-xs font-medium tabular-nums ${isOverLimit ? "text-rose-500" : "text-white/20"}`}>
                         {charCount}/{maxChars}

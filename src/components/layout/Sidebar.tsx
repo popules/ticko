@@ -79,7 +79,9 @@ export function Sidebar() {
                     <TickoLogo />
                 </Link>
                 <div className="flex items-center gap-2">
-                    <NotificationBell />
+                    <div className="hidden md:block">
+                        <NotificationBell align="left" />
+                    </div>
                     {/* Mobile close button */}
                     <button
                         onClick={() => setMobileOpen(false)}
@@ -197,7 +199,7 @@ export function Sidebar() {
                     <TickoLogo />
                 </Link>
                 {user ? (
-                    <NotificationBell />
+                    <NotificationBell align="right" />
                 ) : (
                     <Link
                         href="/login"
