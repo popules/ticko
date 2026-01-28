@@ -561,17 +561,36 @@ export default function PaperTradingPage() {
                                     <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center mx-auto mb-4">
                                         <Gamepad2 className="w-8 sm:w-10 h-8 sm:h-10 text-violet-400" />
                                     </div>
-                                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2">No virtual holdings</h3>
+                                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Ready to make your first trade?</h3>
                                     <p className="text-white/40 mb-6 max-w-md mx-auto text-sm">
-                                        You have ${cashBalance.toLocaleString("en-US")} virtual dollars to invest.
-                                        Go to a stock page and click &quot;Paper Trade&quot;!
+                                        You have <span className="text-emerald-400 font-bold">${cashBalance.toLocaleString("en-US")}</span> virtual dollars to invest.
                                     </p>
+
+                                    {/* Step by step guide */}
+                                    <div className="max-w-sm mx-auto mb-8 p-4 rounded-2xl bg-white/[0.04] border border-white/10 text-left">
+                                        <p className="text-xs font-bold text-white/60 uppercase tracking-wider mb-3">How to buy your first stock:</p>
+                                        <div className="space-y-3">
+                                            <div className="flex items-start gap-3">
+                                                <span className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs font-bold shrink-0">1</span>
+                                                <p className="text-sm text-white/70">Search for a stock (e.g. AAPL, TSLA)</p>
+                                            </div>
+                                            <div className="flex items-start gap-3">
+                                                <span className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs font-bold shrink-0">2</span>
+                                                <p className="text-sm text-white/70">Click the green <span className="text-emerald-400 font-semibold">"Paper Trade"</span> button</p>
+                                            </div>
+                                            <div className="flex items-start gap-3">
+                                                <span className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs font-bold shrink-0">3</span>
+                                                <p className="text-sm text-white/70">Enter amount and click <span className="font-semibold text-white">Buy</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <Link
                                         href="/discover"
                                         className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-xl font-bold transition-transform hover:scale-105"
                                     >
                                         <Plus className="w-4 h-4" />
-                                        Discover stocks
+                                        Find stocks to trade
                                     </Link>
                                 </div>
                             ) : (
