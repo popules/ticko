@@ -80,7 +80,7 @@ export default function ProfilePage() {
         <div className="flex min-h-screen">
             <Sidebar />
 
-            <main className="flex-1 border-r border-white/10 p-4 sm:p-8 overflow-y-auto h-screen scrollbar-hide pb-24 md:pb-8">
+            <main className="flex-1 border-r border-white/10 p-4 sm:p-8 pb-24 md:pb-8">
                 {isLoading ? (
                     <div className="h-full flex flex-col items-center justify-center gap-4">
                         <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />

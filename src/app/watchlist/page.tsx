@@ -101,49 +101,48 @@ export default function WatchlistPage() {
                     ) : (
                         <div className="space-y-3">
                             {stocks.map((stock: any) => (
-                                <div
-                                    key={stock.symbol}
-                                    className="group flex items-center justify-between p-5 bg-white/[0.04] rounded-2xl hover:bg-white/[0.08] transition-all border border-white/[0.08] hover:border-white/[0.12]"
-                                >
-                                    <Link href={`/stock/${stock.symbol}`} className="flex items-center gap-4 flex-1">
-                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 flex items-center justify-center border border-emerald-500/20">
-                                            <Star className="w-5 h-5 text-emerald-400 fill-emerald-400" />
+                                <div className="group flex items-center justify-between p-3 sm:p-5 bg-white/[0.04] rounded-2xl hover:bg-white/[0.08] transition-all border border-white/[0.08] hover:border-white/[0.12]">
+                                    <Link href={`/stock/${stock.symbol}`} className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 flex items-center justify-center border border-emerald-500/20 shrink-0">
+                                            <Star className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 fill-emerald-400" />
                                         </div>
-                                        <div>
+                                        <div className="min-w-0">
                                             <div className="flex items-center gap-2">
-                                                <span className="font-bold text-white text-lg">${stock.symbol.split('.')[0]}</span>
-                                                <span className="text-white/40 text-sm">{stock.name}</span>
+                                                <span className="font-bold text-white text-base sm:text-lg truncate">${stock.symbol.split('.')[0]}</span>
                                             </div>
-                                            <p className="text-sm text-white/50 tabular-nums">
-                                                {stock.currencySymbol === 'kr'
-                                                    ? `${(stock.price ?? 0).toFixed(2)} kr`
-                                                    : `${stock.currencySymbol}${(stock.price ?? 0).toFixed(2)}`}
-                                            </p>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-white/40 text-xs sm:text-sm truncate max-w-[80px] sm:max-w-none">{stock.name}</span>
+                                                <p className="text-xs sm:text-sm text-white/50 tabular-nums">
+                                                    {stock.currencySymbol === 'kr'
+                                                        ? `${(stock.price ?? 0).toFixed(2)} kr`
+                                                        : `${stock.currencySymbol}${(stock.price ?? 0).toFixed(2)}`}
+                                                </p>
+                                            </div>
                                         </div>
                                     </Link>
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2 sm:gap-4 pl-2">
                                         <div className="text-right">
                                             <span
-                                                className={`flex items-center gap-1 text-lg font-bold tabular-nums ${(stock.changePercent ?? 0) >= 0 ? "text-emerald-400" : "text-rose-400"
+                                                className={`flex items-center justify-end gap-1 text-sm sm:text-lg font-bold tabular-nums ${(stock.changePercent ?? 0) >= 0 ? "text-emerald-400" : "text-rose-400"
                                                     }`}
                                             >
                                                 {(stock.changePercent ?? 0) >= 0 ? (
-                                                    <TrendingUp className="w-4 h-4" />
+                                                    <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
                                                 ) : (
-                                                    <TrendingDown className="w-4 h-4" />
+                                                    <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4" />
                                                 )}
-                                                {(stock.changePercent ?? 0) >= 0 ? "+" : ""}
+                                                <span className="hidden sm:inline">{(stock.changePercent ?? 0) >= 0 ? "+" : ""}</span>
                                                 {(stock.changePercent ?? 0).toFixed(2)}%
                                             </span>
-                                            <p className="text-xs text-white/30">today</p>
+                                            <p className="text-[10px] sm:text-xs text-white/30">today</p>
                                         </div>
                                         <button
                                             onClick={() => toggleWatch.mutate(stock.symbol)}
                                             disabled={toggleWatch.isPending}
-                                            className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-rose-500/20 text-white/40 hover:text-rose-400 transition-all border border-white/10 flex items-center justify-center"
+                                            className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-rose-500/20 text-white/40 hover:text-rose-400 transition-all border border-white/10 flex items-center justify-center shrink-0"
                                             title="Remove from watchlist"
                                         >
-                                            <X className="w-4 h-4" />
+                                            <X className="w-3 h-3 sm:w-4 sm:h-4" />
                                         </button>
                                     </div>
                                 </div>

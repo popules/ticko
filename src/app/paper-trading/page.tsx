@@ -634,9 +634,11 @@ export default function PaperTradingPage() {
                                                     <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl bg-gradient-to-br from-violet-400 to-fuchsia-600 flex items-center justify-center text-white font-black text-[10px] sm:text-xs shrink-0">
                                                         {item.symbol.split('.')[0].slice(0, 4)}
                                                     </div>
-                                                    <div className="min-w-0">
+                                                    <div className="min-w-0 flex-1">
                                                         <div className="flex items-center gap-2">
-                                                            <p className="font-bold text-white tracking-tight truncate">${item.symbol}</p>
+                                                            <p className="font-bold text-white tracking-tight truncate text-sm sm:text-base">
+                                                                ${item.symbol.split('.')[0]}
+                                                            </p>
                                                             <span className="px-1.5 py-0.5 rounded bg-violet-500/20 text-[8px] font-bold text-violet-400 uppercase shrink-0">
                                                                 Paper
                                                             </span>
@@ -646,10 +648,11 @@ export default function PaperTradingPage() {
                                                                 </span>
                                                             )}
                                                         </div>
-                                                        <div className="flex flex-wrap items-center gap-1 mt-0.5 text-[10px] text-white/50">
+                                                        <p className="text-xs text-white/50 truncate max-w-[120px] sm:max-w-none">
+                                                            {item.name}
+                                                        </p>
+                                                        <div className="flex flex-wrap items-center gap-1 mt-0.5 text-[10px] text-white/50 sm:hidden">
                                                             <span>{item.shares} pcs</span>
-                                                            <span>•</span>
-                                                            <span>Avg: {item.buy_price.toLocaleString("en-US", { maximumFractionDigits: 2 })}</span>
                                                         </div>
                                                     </div>
                                                 </Link>
