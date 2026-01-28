@@ -153,7 +153,7 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-5 border border-white/10 shadow-lg relative group focus-within:bg-white/[0.06] transition-colors">
+        <form id="tour-post-composer" onSubmit={handleSubmit} className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-5 border border-white/10 shadow-lg relative group focus-within:bg-white/[0.06] transition-colors">
             {/* Ticker badge */}
             {tickerFilter && (
                 <div className="mb-3 flex items-center gap-2">

@@ -8,6 +8,8 @@ import { MobileNav } from "@/components/layout/MobileNav";
 import { SearchProvider } from "@/providers/SearchProvider";
 import { CookieConsent } from "@/components/ui/CookieConsent";
 import { Analytics } from "@vercel/analytics/react";
+import { TourProvider } from "@/providers/TourProvider";
+import { TourOverlay } from "@/components/ui/TourOverlay";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -60,6 +62,9 @@ export const metadata: Metadata = {
   },
 };
 
+
+// ... existing imports
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -70,12 +75,15 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`}>
         <QueryProvider>
           <AuthProvider>
-            <SearchProvider>
-              {children}
-              <MobileNav />
-              <CookieConsent />
-              <Analytics />
-            </SearchProvider>
+            <TourProvider>
+              <SearchProvider>
+                {children}
+                <MobileNav />
+                <CookieConsent />
+                <TourOverlay />
+                <Analytics />
+              </SearchProvider>
+            </TourProvider>
           </AuthProvider>
         </QueryProvider>
       </body>

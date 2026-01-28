@@ -110,10 +110,18 @@ export function Sidebar() {
                 {navItems.map((item) => {
                     const isActive = pathname === item.href ||
                         (item.href !== "/" && pathname.startsWith(item.href));
+                    const getTourId = (href: string) => {
+                        if (href === "/paper-trading") return "tour-paper-trading-link";
+                        if (href === "/market") return "tour-market-link";
+                        if (href === "/leaderboard") return "tour-leaderboard-link";
+                        return undefined;
+                    };
+
                     return (
                         <Link
                             key={item.href}
                             href={item.href}
+                            id={getTourId(item.href)}
                             onClick={() => setMobileOpen(false)}
                             className={`flex items-center justify-between px-4 py-2.5 rounded-2xl transition-all group ${isActive
                                 ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"

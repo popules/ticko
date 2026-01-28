@@ -46,9 +46,13 @@ const slides = [
     },
 ];
 
+
+import { useTour } from "@/providers/TourProvider";
+
 export function OnboardingModal() {
     const { user } = useAuth();
     const router = useRouter();
+    const { startTour } = useTour();
     const [isOpen, setIsOpen] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -100,9 +104,16 @@ export function OnboardingModal() {
         if (currentSlide < slides.length - 1) {
             setCurrentSlide(currentSlide + 1);
         } else {
-            // On last slide, redirect to paper trading
+            // On last slide, finish onboarding and start tour
             handleClose();
-            router.push("/paper-trading");
+            startTour(); // Start the interactive tour
+            // We stay on the current page to start the tour, or redirect if needed.
+            // Since tour starts with "Portfolio" (Paper Trading), we could redirect there.
+            // But let's stay on dashboard if possible, or redirect if the specific step requires it.
+            // The steps target Sidebar items which are always visible.
+            // However, the first step is "Your Portfolio". If we are on Home, we can see Sidebar.
+            // Let's NOT redirect to paper-trading immediately, let the tour guide them.
+            // router.push("/paper-trading"); // Removed implicit redirect to allow tour to guide
         }
     };
 
