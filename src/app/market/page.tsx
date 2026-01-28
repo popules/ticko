@@ -257,29 +257,29 @@ export default function MarketPage() {
                                     Based on {sentimentData?.totalPosts || 0} posts in the last 24 hours.
                                 </p>
 
-                                <div className="flex items-center justify-center gap-8 py-8">
+                                <div className="flex items-center justify-center gap-4 sm:gap-8 py-8 transform scale-90 sm:scale-100 origin-center">
                                     <div className="text-center">
-                                        <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center shadow-lg shadow-rose-500/30 ${sentimentData?.dominant === "fear" ? "ring-4 ring-rose-500/30" : ""
+                                        <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center shadow-lg shadow-rose-500/30 ${sentimentData?.dominant === "fear" ? "ring-4 ring-rose-500/30" : ""
                                             }`}>
-                                            <span className="text-2xl font-black text-white">{sentimentData?.fear || 30}%</span>
+                                            <span className="text-xl sm:text-2xl font-black text-white">{sentimentData?.fear || 30}%</span>
                                         </div>
                                         <p className={`text-xs font-bold uppercase tracking-widest mt-3 ${sentimentData?.dominant === "fear" ? "text-rose-400" : "text-white/40"
                                             }`}>Fear</p>
                                     </div>
-                                    <div className="h-16 w-px bg-white/10" />
+                                    <div className="h-12 sm:h-16 w-px bg-white/10" />
                                     <div className="text-center">
-                                        <div className={`w-32 h-32 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-xl shadow-emerald-500/40 ${sentimentData?.dominant === "greed" ? "ring-4 ring-emerald-500/20" : ""
+                                        <div className={`w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-xl shadow-emerald-500/40 ${sentimentData?.dominant === "greed" ? "ring-4 ring-emerald-500/20" : ""
                                             }`}>
-                                            <span className="text-4xl font-black text-white">{sentimentData?.greed || 50}%</span>
+                                            <span className="text-3xl sm:text-4xl font-black text-white">{sentimentData?.greed || 50}%</span>
                                         </div>
                                         <p className={`text-xs font-bold uppercase tracking-widest mt-3 ${sentimentData?.dominant === "greed" ? "text-emerald-400" : "text-white/40"
                                             }`}>Greed</p>
                                     </div>
-                                    <div className="h-16 w-px bg-white/10" />
+                                    <div className="h-12 sm:h-16 w-px bg-white/10" />
                                     <div className="text-center">
-                                        <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-white/20 to-white/10 flex items-center justify-center shadow-lg ${sentimentData?.dominant === "neutral" ? "ring-4 ring-white/20" : ""
+                                        <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-white/20 to-white/10 flex items-center justify-center shadow-lg ${sentimentData?.dominant === "neutral" ? "ring-4 ring-white/20" : ""
                                             }`}>
-                                            <span className="text-2xl font-black text-white/70">{sentimentData?.neutral || 20}%</span>
+                                            <span className="text-xl sm:text-2xl font-black text-white/70">{sentimentData?.neutral || 20}%</span>
                                         </div>
                                         <p className="text-xs font-bold text-white/40 uppercase tracking-widest mt-3">Neutral</p>
                                     </div>

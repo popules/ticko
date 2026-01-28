@@ -140,7 +140,7 @@ export default function WatchlistPage() {
                                         <button
                                             onClick={() => toggleWatch.mutate(stock.symbol)}
                                             disabled={toggleWatch.isPending}
-                                            className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-rose-500/20 text-white/40 hover:text-rose-400 transition-all border border-white/10"
+                                            className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-rose-500/20 text-white/40 hover:text-rose-400 transition-all border border-white/10 flex items-center justify-center"
                                             title="Remove from watchlist"
                                         >
                                             <X className="w-4 h-4" />

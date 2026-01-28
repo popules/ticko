@@ -344,7 +344,7 @@ export default function PaperTradingPage() {
                 <Sidebar />
             </div>
 
-            <main className="flex-1 min-w-0 border-r border-white/10">
+            <main className="flex-1 min-w-0 border-r border-white/10 pb-24 md:pb-0">
                 {/* Header */}
                 <header className="sticky top-0 z-10 backdrop-blur-xl bg-[#020617]/80 border-b border-white/10 px-4 sm:px-6 py-4 sm:py-5 md:mt-0">
                     <div className="flex items-center justify-between">
