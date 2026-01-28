@@ -5,6 +5,10 @@ import { Mail, MessageSquare, Send, Loader2, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { TickoLogo } from "@/components/ui/TickoLogo";
 import Link from "next/link";
+import { useAuth } from "@/providers/AuthProvider";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { RightPanel } from "@/components/layout/RightPanel";
+import { AppFooter } from "@/components/layout/AppFooter";
 
 export default function ContactPage() {
     const [name, setName] = useState("");
@@ -39,6 +43,162 @@ export default function ContactPage() {
         }
     };
 
+    const { user } = useAuth();
+
+    const Content = () => (
+        <div className="max-w-4xl mx-auto">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center mb-16"
+            >
+                <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">Contact Us</h1>
+                <p className="text-white/50 text-lg max-w-xl mx-auto">
+                    Do you have questions, suggestions, or just want to say hi? We usually answer within 24 hours.
+                </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-5 gap-12">
+                {/* Contact Info */}
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="md:col-span-2 space-y-8"
+                >
+                    <div className="p-6 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-xl">
+                        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
+                            <Mail className="w-6 h-6 text-emerald-400" />
+                        </div>
+                        <h3 className="text-lg font-bold mb-1">Email</h3>
+                        <p className="text-emerald-400 font-medium">hello@tickomarkets.com</p>
+                    </div>
+
+                    <div className="p-6 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-xl">
+                        <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-4">
+                            <MessageSquare className="w-6 h-6 text-blue-400" />
+                        </div>
+                        <h3 className="text-lg font-bold mb-1">Support</h3>
+                        <p className="text-white/50 text-sm leading-relaxed">
+                            For technical help or reports, send an email and our team will help you as soon as possible.
+                        </p>
+                    </div>
+                </motion.div>
+
+                {/* Contact Form */}
+                <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="md:col-span-3"
+                >
+                    {isSuccess ? (
+                        <div className="h-full flex flex-col items-center justify-center p-12 text-center bg-emerald-500/5 border border-emerald-500/20 rounded-3xl backdrop-blur-xl">
+                            <div className="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mb-6">
+                                <CheckCircle2 className="w-10 h-10 text-emerald-400" />
+                            </div>
+                            <h2 className="text-2xl font-bold mb-2">Thanks for your message!</h2>
+                            <p className="text-white/50 mb-8 lowercase text-sm">We have received your message and will get back to you shortly.</p>
+                            <button
+                                onClick={() => setIsSuccess(false)}
+                                className="px-8 py-3 bg-white text-black rounded-full font-bold text-sm transform transition-all active:scale-95"
+                            >
+                                Send another one
+                            </button>
+                        </div>
+                    ) : (
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="grid sm:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Name</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+                                        placeholder="Your name"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Email</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+                                        placeholder="your@email.com"
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Subject</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={subject}
+                                    onChange={(e) => setSubject(e.target.value)}
+                                    className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+                                    placeholder="What can we help you with?"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Message</label>
+                                <textarea
+                                    required
+                                    rows={6}
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
+                                    className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all resize-none"
+                                    placeholder="Tell us more..."
+                                />
+                            </div>
+
+                            {error && (
+                                <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm">
+                                    {error}
+                                </div>
+                            )}
+
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-[#020617] rounded-full font-bold text-base shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 transform active:scale-[0.98] disabled:opacity-50"
+                            >
+                                {isSubmitting ? (
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                ) : (
+                                    <>
+                                        Send message
+                                        <Send className="w-4 h-4" />
+                                    </>
+                                )}
+                            </button>
+                        </form>
+                    )}
+                </motion.div>
+            </div>
+        </div>
+    );
+
+    // Authenticated View
+    if (user) {
+        return (
+            <div className="flex min-h-screen bg-[#020617]">
+                <Sidebar />
+                <main className="flex-1 border-x border-white/5 overflow-y-auto flex flex-col">
+                    <div className="p-6 md:p-12 pb-8 flex-1">
+                        <Content />
+                    </div>
+                    <AppFooter />
+                </main>
+                <RightPanel />
+            </div>
+        );
+    }
+
+    // Public View
     return (
         <div className="min-h-screen bg-[#020617] text-white selection:bg-emerald-500/30 overflow-x-hidden font-sans">
             {/* Background Gradients */}
@@ -58,139 +218,8 @@ export default function ContactPage() {
                 </div>
             </nav>
 
-            <main className="relative pt-32 pb-20 px-6 z-10 max-w-4xl mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-center mb-16"
-                >
-                    <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">Contact Us</h1>
-                    <p className="text-white/50 text-lg max-w-xl mx-auto">
-                        Do you have questions, suggestions, or just want to say hi? We usually answer within 24 hours.
-                    </p>
-                </motion.div>
-
-                <div className="grid md:grid-cols-5 gap-12">
-                    {/* Contact Info */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="md:col-span-2 space-y-8"
-                    >
-                        <div className="p-6 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-xl">
-                            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
-                                <Mail className="w-6 h-6 text-emerald-400" />
-                            </div>
-                            <h3 className="text-lg font-bold mb-1">Email</h3>
-                            <p className="text-emerald-400 font-medium">hello@tickomarkets.com</p>
-                        </div>
-
-                        <div className="p-6 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-xl">
-                            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-4">
-                                <MessageSquare className="w-6 h-6 text-blue-400" />
-                            </div>
-                            <h3 className="text-lg font-bold mb-1">Support</h3>
-                            <p className="text-white/50 text-sm leading-relaxed">
-                                For technical help or reports, send an email and our team will help you as soon as possible.
-                            </p>
-                        </div>
-                    </motion.div>
-
-                    {/* Contact Form */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="md:col-span-3"
-                    >
-                        {isSuccess ? (
-                            <div className="h-full flex flex-col items-center justify-center p-12 text-center bg-emerald-500/5 border border-emerald-500/20 rounded-3xl backdrop-blur-xl">
-                                <div className="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mb-6">
-                                    <CheckCircle2 className="w-10 h-10 text-emerald-400" />
-                                </div>
-                                <h2 className="text-2xl font-bold mb-2">Thanks for your message!</h2>
-                                <p className="text-white/50 mb-8 lowercase text-sm">We have received your message and will get back to you shortly.</p>
-                                <button
-                                    onClick={() => setIsSuccess(false)}
-                                    className="px-8 py-3 bg-white text-black rounded-full font-bold text-sm transform transition-all active:scale-95"
-                                >
-                                    Send another one
-                                </button>
-                            </div>
-                        ) : (
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <div className="grid sm:grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Name</label>
-                                        <input
-                                            type="text"
-                                            required
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
-                                            className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                                            placeholder="Your name"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Email</label>
-                                        <input
-                                            type="email"
-                                            required
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                                            placeholder="your@email.com"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Subject</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={subject}
-                                        onChange={(e) => setSubject(e.target.value)}
-                                        className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                                        placeholder="What can we help you with?"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-white/40 uppercase tracking-widest pl-1">Message</label>
-                                    <textarea
-                                        required
-                                        rows={6}
-                                        value={message}
-                                        onChange={(e) => setMessage(e.target.value)}
-                                        className="w-full bg-white/[0.06] border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all resize-none"
-                                        placeholder="Tell us more..."
-                                    />
-                                </div>
-
-                                {error && (
-                                    <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm">
-                                        {error}
-                                    </div>
-                                )}
-
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-[#020617] rounded-full font-bold text-base shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 transform active:scale-[0.98] disabled:opacity-50"
-                                >
-                                    {isSubmitting ? (
-                                        <Loader2 className="w-5 h-5 animate-spin" />
-                                    ) : (
-                                        <>
-                                            Send message
-                                            <Send className="w-4 h-4" />
-                                        </>
-                                    )}
-                                </button>
-                            </form>
-                        )}
-                    </motion.div>
-                </div>
+            <main className="relative pt-32 pb-20 px-6 z-10">
+                <Content />
             </main>
 
             {/* Simple Footer */}
