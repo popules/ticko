@@ -15,6 +15,8 @@ const PUBLIC_ROUTES = [
     '/auth/update-password',
     '/api/og',
     '/api/og/trade-card',
+    '/sitemap.xml',
+    '/robots.txt',
 ];
 
 // Routes that start with these prefixes are public
