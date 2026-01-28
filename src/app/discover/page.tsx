@@ -111,14 +111,24 @@ export default function DiscoveryPage() {
                 </AnimatePresence>
 
                 {/* Header Info - Now in normal flow */}
-                <div className="text-center space-y-2 mb-12 shrink-0">
+                <div className="text-center space-y-4 mb-12 shrink-0">
                     <h1 className="text-2xl font-black text-white tracking-widest uppercase">
                         Trend Radar
                     </h1>
-                    <div className="flex items-center gap-2 justify-center text-white/40 text-xs font-medium uppercase tracking-widest">
-                        <Info className="w-3.5 h-3.5" />
-                        Swipe right to watch • Swipe left for next
+
+                    {/* Swipe instructions - more prominent */}
+                    <div className="flex items-center justify-center gap-6">
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.06] border border-white/10">
+                            <span className="text-lg">👈</span>
+                            <span className="text-white/60 text-sm font-medium">Skip</span>
+                        </div>
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                            <span className="text-lg">👉</span>
+                            <span className="text-emerald-400 text-sm font-bold">Add to Watchlist</span>
+                        </div>
                     </div>
+
+                    <p className="text-white/30 text-xs">Drag the card left or right, or tap "View Analysis" to explore</p>
                 </div>
 
                 <div className="w-full max-w-sm flex-1 flex items-center justify-center min-h-[500px]">

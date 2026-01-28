@@ -15,7 +15,7 @@ import { TradingInsights } from "@/components/portfolio/TradingInsights";
 import {
     Gamepad2, TrendingUp, TrendingDown, Loader2, Plus, DollarSign,
     Sparkles, AlertTriangle, Coins, RotateCcw, Trophy, Clock,
-    History, BarChart3, Wallet, ArrowUpRight, ArrowDownRight, Lock, Share2, Brain
+    History, BarChart3, Wallet, ArrowUpRight, ArrowDownRight, Lock, Share2, Brain, Search
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
@@ -592,6 +592,18 @@ export default function PaperTradingPage() {
                                         <Plus className="w-4 h-4" />
                                         Find stocks to trade
                                     </Link>
+
+                                    {/* Quick search alternative */}
+                                    <div className="mt-6 max-w-sm mx-auto">
+                                        <p className="text-xs text-white/40 mb-3">Or search directly:</p>
+                                        <div
+                                            onClick={() => router.push('/stock/AAPL')}
+                                            className="flex items-center gap-3 px-4 py-3 bg-white/[0.04] rounded-xl border border-white/10 hover:border-emerald-500/30 transition-all cursor-pointer group"
+                                        >
+                                            <Search className="w-4 h-4 text-white/40 group-hover:text-emerald-400 transition-colors" />
+                                            <span className="text-white/40 text-sm">Try searching for AAPL, TSLA, NVDA...</span>
+                                        </div>
+                                    </div>
                                 </div>
                             ) : (
                                 <div className="space-y-3">

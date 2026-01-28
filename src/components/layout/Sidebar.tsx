@@ -29,9 +29,9 @@ import { motion, AnimatePresence } from "framer-motion";
 // Navigation Items
 const navItems = [
     { icon: Home, label: UI_STRINGS.home, href: "/" },
-    { icon: Sparkles, label: UI_STRINGS.discovery, href: "/discover", isNew: true },
+    { icon: Sparkles, label: UI_STRINGS.discovery, href: "/discover" },
     { icon: TrendingUp, label: UI_STRINGS.markets, href: "/market" },
-    { icon: Gamepad2, label: "Paper Trading", href: "/paper-trading", badge: "🎮" },
+    { icon: Gamepad2, label: "Paper Trading", href: "/paper-trading" },
     { icon: Star, label: UI_STRINGS.watchlist, href: "/watchlist" },
     { icon: Trophy, label: "Leaderboard", href: "/leaderboard" },
     { icon: User, label: UI_STRINGS.profile, href: "/profile" },
@@ -121,17 +121,9 @@ export function Sidebar() {
                                 }`}
                         >
                             <div className="flex items-center gap-3">
-                                <item.icon className={`w-4 h-4 ${isActive ? "text-emerald-400" : item.isNew ? "text-emerald-400" : (item as any).badge ? "text-violet-400" : ""}`} />
+                                <item.icon className={`w-4 h-4 ${isActive ? "text-emerald-400" : ""}`} />
                                 <span className="text-[13px] font-medium">{item.label}</span>
                             </div>
-                            {item.isNew && (
-                                <span className="text-[9px] font-bold bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-md border border-emerald-500/20 group-hover:bg-emerald-500/30 transition-colors">
-                                    NEW
-                                </span>
-                            )}
-                            {(item as any).badge && (
-                                <span className="text-sm">{(item as any).badge}</span>
-                            )}
                         </Link>
                     );
                 })}
