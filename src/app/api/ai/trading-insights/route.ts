@@ -130,8 +130,21 @@ Write in English. Be personal and specific - reference their actual numbers.`;
 
         const insight = response.choices[0].message.content;
 
+        // Calculate confidence based on data quality
+        // More trades = higher confidence
+        const tradeCount = transactions.length;
+        let confidence: "low" | "medium" | "high" = "low";
+        if (tradeCount >= 20) confidence = "high";
+        else if (tradeCount >= 5) confidence = "medium";
+
         return NextResponse.json({
             insight,
+            confidence,
+            dataSources: [
+                `${transactions.length} transactions analyzed`,
+                `${sells.length} completed trades`,
+                "Real-time price data",
+            ],
             stats: {
                 totalTrades: transactions.length,
                 winRate: winRate.toFixed(1),

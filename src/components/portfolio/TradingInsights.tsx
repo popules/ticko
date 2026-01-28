@@ -11,6 +11,8 @@ interface TradingInsightsProps {
 interface InsightData {
     insight: string | null;
     message?: string;
+    confidence?: "low" | "medium" | "high";
+    dataSources?: string[];
     stats?: {
         totalTrades: number;
         winRate: string;
@@ -161,6 +163,27 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                             <p className="text-sm text-white/80 leading-relaxed whitespace-pre-line">
                                 {data.insight}
                             </p>
+
+                            {/* AI Transparency Footer */}
+                            <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                                {data.confidence && (
+                                    <div className="flex items-center gap-2">
+                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${data.confidence === "high"
+                                                ? "bg-emerald-500/20 text-emerald-400"
+                                                : data.confidence === "medium"
+                                                    ? "bg-amber-500/20 text-amber-400"
+                                                    : "bg-white/10 text-white/40"
+                                            }`}>
+                                            {data.confidence} confidence
+                                        </span>
+                                    </div>
+                                )}
+                                {data.dataSources && (
+                                    <div className="text-[10px] text-white/30">
+                                        Based on: {data.dataSources.slice(0, 2).join(", ")}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </motion.div>
                 ) : (

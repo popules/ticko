@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
-import { Trophy, Medal, TrendingUp, TrendingDown, User, Crown, Loader2, Gamepad2, RotateCcw, Calendar, Clock, ChevronDown, History } from "lucide-react";
+import { Trophy, Medal, TrendingUp, TrendingDown, User, Crown, Loader2, Gamepad2, RotateCcw, Calendar, Clock, ChevronDown, History, Info } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Sidebar } from "@/components/layout/Sidebar";
@@ -251,6 +251,26 @@ export default function LeaderboardPage() {
                             <Medal className="w-4 h-4" />
                             Reputation
                         </button>
+                    </div>
+
+                    {/* How Scores Work - Info Box */}
+                    <div className="mb-6 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                        <div className="flex items-start gap-3">
+                            <Info className="w-4 h-4 text-white/40 mt-0.5 flex-shrink-0" />
+                            {activeTab === "paper" ? (
+                                <div className="text-xs text-white/50 space-y-1">
+                                    <p className="font-medium text-white/70">How Paper Trading Scores Work</p>
+                                    <p>Rankings based on portfolio profit/loss. Start with $10,000 virtual dollars, trade real stocks with real prices. Your P&L is tracked and updated daily.</p>
+                                    <p className="text-white/30">Note: 30-minute lock on positions to prevent gaming.</p>
+                                </div>
+                            ) : (
+                                <div className="text-xs text-white/50 space-y-1">
+                                    <p className="font-medium text-white/70">How Reputation Points Work</p>
+                                    <p><span className="text-emerald-400">+10</span> per post • <span className="text-emerald-400">+5</span> per reaction received • <span className="text-emerald-400">+2</span> per reply</p>
+                                    <p>Share quality analysis and engage with the community to climb the ranks!</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Paper Trading Sub-tabs */}
