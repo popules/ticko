@@ -10,15 +10,6 @@ export function AppFooter() {
                     <Link href="/community-guidelines" className="hover:text-white/60 transition-colors">
                         Community Guidelines
                     </Link>
-                    <Link href="/terms" className="hover:text-white/60 transition-colors">
-                        Terms
-                    </Link>
-                    <Link href="/privacy" className="hover:text-white/60 transition-colors">
-                        Privacy
-                    </Link>
-                    <Link href="/about" className="hover:text-white/60 transition-colors">
-                        About
-                    </Link>
                     <Link href="/contact" className="hover:text-white/60 transition-colors">
                         Contact
                     </Link>
