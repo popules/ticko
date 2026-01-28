@@ -60,12 +60,12 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                         </div>
                     </div>
 
-                    <Link href={`/stock/${stock.symbol}`} className="block hover:opacity-80 transition-opacity">
+                    <div>
                         <h2 className="text-4xl font-black text-white tracking-tighter mb-1">
                             ${stock.symbol}
                         </h2>
                         <p className="text-white/60 font-medium truncate">{stock.name}</p>
-                    </Link>
+                    </div>
                 </div>
 
                 {/* Ticko Discovery Hook Card */}

@@ -155,16 +155,17 @@ function format52WeekRange(low: number | undefined, high: number | undefined, sy
 
 export async function fetchDiscoveryStocks(): Promise<StockData[]> {
     try {
-        // Core curated list to ALWAYS be available
+        // Core curated list - US stocks only (popular S&P 500 + trending tech)
         const curated = [
-            'VOLV-B.ST', 'AZN.ST', 'SEB-A.ST', 'ERIC-B.ST', 'HM-B.ST', 'ABB.ST', 'TELIA.ST', 'INVE-B.ST', 'SAND.ST', // SE
-            'TSLA', 'NVDA', 'AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META', 'NFLX', 'AMD', 'PLTR', 'COST', 'V', 'UBER' // US
+            'TSLA', 'NVDA', 'AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META', 'NFLX', 'AMD', 'PLTR',
+            'COST', 'V', 'UBER', 'CRM', 'PYPL', 'SQ', 'SHOP', 'COIN', 'SNOW', 'ABNB',
+            'DIS', 'NKE', 'SBUX', 'MCD', 'WMT', 'HD', 'BA', 'GS', 'JPM', 'BAC'
         ];
 
-        // 1. Try to fetch trending symbols from Yahoo
+        // 1. Try to fetch trending symbols from Yahoo (US market)
         let symbols = [...curated];
         try {
-            const trending: any = await yf.trendingSymbols('SE'); // Start with Swedish trending
+            const trending: any = await yf.trendingSymbols('US');
             if (trending?.quotes) {
                 symbols = [...new Set([...symbols, ...trending.quotes.map((q: any) => q.symbol)])];
             }

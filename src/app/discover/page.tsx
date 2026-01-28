@@ -111,27 +111,14 @@ export default function DiscoveryPage() {
                 </AnimatePresence>
 
                 {/* Header Info - Now in normal flow */}
-                <div className="text-center space-y-4 mb-12 shrink-0">
-                    <h1 className="text-2xl font-black text-white tracking-widest uppercase">
+                <div className="text-center mb-8 shrink-0">
+                    <h1 className="text-2xl font-black text-white tracking-widest uppercase mb-2">
                         Trend Radar
                     </h1>
-
-                    {/* Swipe instructions - more prominent */}
-                    <div className="flex items-center justify-center gap-6">
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.06] border border-white/10">
-                            <span className="text-lg">👈</span>
-                            <span className="text-white/60 text-sm font-medium">Skip</span>
-                        </div>
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                            <span className="text-lg">👉</span>
-                            <span className="text-emerald-400 text-sm font-bold">Add to Watchlist</span>
-                        </div>
-                    </div>
-
-                    <p className="text-white/30 text-xs">Drag the card left or right, or tap "View Analysis" to explore</p>
+                    <p className="text-white/40 text-sm">AI-curated stocks for you</p>
                 </div>
 
-                <div className="w-full max-w-sm flex-1 flex items-center justify-center min-h-[500px]">
+                <div className="w-full max-w-sm flex-1 flex flex-col items-center justify-center">
                     {isLoading ? (
                         <div className="flex flex-col items-center gap-4">
                             <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
@@ -140,40 +127,62 @@ export default function DiscoveryPage() {
                             </p>
                         </div>
                     ) : (
-                        <div className="relative w-full aspect-[3/4] perspective-1000">
-                            <AnimatePresence mode="popLayout">
-                                {currentIndex < stocks.length ? (
-                                    stocks.slice(currentIndex, currentIndex + 2).reverse().map((stock, idx) => (
-                                        <DiscoveryCard
-                                            key={stock.symbol}
-                                            stock={stock}
-                                            active={idx === 1} // Index 1 is the top card because of reverse()
-                                            onSwipe={handleSwipe}
-                                        />
-                                    ))
-                                ) : (
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        className="w-full h-full flex flex-col items-center justify-center text-center p-8 bg-white/[0.04] backdrop-blur-3xl rounded-[2.5rem] border border-white/10"
-                                    >
-                                        <div className="w-20 h-20 rounded-3xl bg-emerald-500/10 flex items-center justify-center mb-6">
-                                            <RefreshCw className="w-10 h-10 text-emerald-400" />
-                                        </div>
-                                        <h2 className="text-2xl font-black text-white mb-2">You're all caught up!</h2>
-                                        <p className="text-white/50 text-sm mb-8 leading-relaxed">
-                                            You've seen all the hottest trends for today. Check back later for new AI insights.
-                                        </p>
-                                        <button
-                                            onClick={loadDiscovery}
-                                            className="px-8 py-4 btn-gradient text-white rounded-2xl font-bold text-sm"
+                        <>
+                            <div className="relative w-full aspect-[3/4] mb-6">
+                                <AnimatePresence mode="popLayout">
+                                    {currentIndex < stocks.length ? (
+                                        stocks.slice(currentIndex, currentIndex + 2).reverse().map((stock, idx) => (
+                                            <DiscoveryCard
+                                                key={stock.symbol}
+                                                stock={stock}
+                                                active={idx === 1}
+                                                onSwipe={handleSwipe}
+                                            />
+                                        ))
+                                    ) : (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="w-full h-full flex flex-col items-center justify-center text-center p-8 bg-white/[0.04] backdrop-blur-3xl rounded-[2.5rem] border border-white/10"
                                         >
-                                            Refresh feed
-                                        </button>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
+                                            <div className="w-20 h-20 rounded-3xl bg-emerald-500/10 flex items-center justify-center mb-6">
+                                                <RefreshCw className="w-10 h-10 text-emerald-400" />
+                                            </div>
+                                            <h2 className="text-2xl font-black text-white mb-2">You're all caught up!</h2>
+                                            <p className="text-white/50 text-sm mb-8 leading-relaxed">
+                                                You've seen all the hottest trends for today. Check back later for new AI insights.
+                                            </p>
+                                            <button
+                                                onClick={loadDiscovery}
+                                                className="px-8 py-4 btn-gradient text-white rounded-2xl font-bold text-sm"
+                                            >
+                                                Refresh feed
+                                            </button>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+
+                            {/* Action buttons - always visible when there are stocks */}
+                            {currentIndex < stocks.length && (
+                                <div className="flex items-center justify-center gap-4 w-full max-w-xs">
+                                    <button
+                                        onClick={() => handleSwipe("left")}
+                                        className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.06] border border-white/10 hover:bg-white/10 transition-all group"
+                                    >
+                                        <span className="text-xl">👈</span>
+                                        <span className="text-white/60 font-bold group-hover:text-white transition-colors">Skip</span>
+                                    </button>
+                                    <button
+                                        onClick={() => handleSwipe("right")}
+                                        className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-all group"
+                                    >
+                                        <span className="text-xl">⭐</span>
+                                        <span className="text-emerald-400 font-bold group-hover:text-emerald-300 transition-colors">Watch</span>
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </main>

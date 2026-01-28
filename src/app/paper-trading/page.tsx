@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { useAuth } from "@/providers/AuthProvider";
+import { useSearch } from "@/providers/SearchProvider";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import { getPaperTradingSettings } from "@/config/subscription";
 import { awardAchievement } from "@/lib/achievements";
@@ -56,6 +57,7 @@ type TabType = "portfolio" | "history" | "graph" | "insights";
 
 export default function PaperTradingPage() {
     const { user, isLoading: authLoading } = useAuth();
+    const { open: openSearch } = useSearch();
     const router = useRouter();
 
     // Tab state
@@ -597,11 +599,11 @@ export default function PaperTradingPage() {
                                     <div className="mt-6 max-w-sm mx-auto">
                                         <p className="text-xs text-white/40 mb-3">Or search directly:</p>
                                         <div
-                                            onClick={() => router.push('/stock/AAPL')}
+                                            onClick={() => openSearch()}
                                             className="flex items-center gap-3 px-4 py-3 bg-white/[0.04] rounded-xl border border-white/10 hover:border-emerald-500/30 transition-all cursor-pointer group"
                                         >
                                             <Search className="w-4 h-4 text-white/40 group-hover:text-emerald-400 transition-colors" />
-                                            <span className="text-white/40 text-sm">Try searching for AAPL, TSLA, NVDA...</span>
+                                            <span className="text-white/40 text-sm">Search for AAPL, TSLA, NVDA...</span>
                                         </div>
                                     </div>
                                 </div>
