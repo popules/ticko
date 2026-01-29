@@ -176,10 +176,10 @@ export function Sidebar() {
             </div>
 
             {/* Footer Links for logged-in users */}
-            <div className="px-4 pb-4 hidden md:block">
-                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-white/20">
-                    <Link href="/community-guidelines" className="hover:text-white/50 transition-colors">Guidelines</Link>
-                    <Link href="/contact" className="hover:text-white/50 transition-colors">Contact</Link>
+            <div className="px-4 pb-4">
+                <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-white/50">
+                    <Link href="/community-guidelines" className="hover:text-white transition-colors">Guidelines</Link>
+                    <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
                 </div>
             </div>
         </>
