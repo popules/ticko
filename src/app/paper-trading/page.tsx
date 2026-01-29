@@ -637,7 +637,7 @@ export default function PaperTradingPage() {
                                                     <div className="min-w-0 flex-1">
                                                         <div className="flex items-center gap-2">
                                                             <p className="font-bold text-white tracking-tight truncate text-sm sm:text-base">
-                                                                ${item.symbol.split('.')[0]}
+                                                                ${(item.symbol || '').split('.')[0]}
                                                             </p>
                                                             <span className="px-1.5 py-0.5 rounded bg-violet-500/20 text-[8px] font-bold text-violet-400 uppercase shrink-0">
                                                                 Paper
@@ -648,7 +648,7 @@ export default function PaperTradingPage() {
                                                                 </span>
                                                             )}
                                                         </div>
-                                                        <p className="text-xs text-white/50 truncate max-w-[120px] sm:max-w-none">
+                                                        <p className="text-xs text-white/50 truncate">
                                                             {item.name}
                                                         </p>
                                                         <div className="flex flex-wrap items-center gap-1 mt-0.5 text-[10px] text-white/50 sm:hidden">

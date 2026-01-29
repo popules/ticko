@@ -133,7 +133,7 @@ export default function MarketPage() {
                     </div>
                 </header>
 
-                <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide">
+                <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide pb-24">
                     {isInitialLoading ? (
                         <div className="h-96 flex flex-col items-center justify-center gap-4">
                             <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />

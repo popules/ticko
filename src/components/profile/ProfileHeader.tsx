@@ -15,6 +15,7 @@ interface ProfileHeaderProps {
         location?: string | null;
         created_at: string;
         accuracy?: number;
+        avatar_url?: string | null;
     };
     isOwnProfile?: boolean;
 }
@@ -40,6 +41,12 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
         fetchStats();
     }, [profile?.id, user]);
 
+    useEffect(() => {
+        if (profile) {
+            setCurrentProfile(profile);
+        }
+    }, [profile]);
+
     const joinedDate = new Date(currentProfile.created_at).toLocaleDateString('en-US', {
         month: 'long',
         year: 'numeric'
@@ -54,19 +61,27 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
 
     return (
         <>
-            <div className="relative p-8 rounded-[2.5rem] bg-white/[0.04] border border-white/10 backdrop-blur-3xl overflow-hidden mb-8">
+            <div className="relative p-8 rounded-[2.5rem] bg-white/[0.04] border border-white/10 backdrop-blur-3xl mb-8">
                 {/* Background Glow */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[100px] -mr-32 -mt-32" />
                 <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 rounded-full blur-[80px] -ml-24 -mb-24" />
 
                 <div className="relative flex flex-col md:flex-row gap-8 items-start md:items-center">
                     {/* Avatar */}
-                    <div className="relative group">
+                    <div className="relative group shrink-0">
                         <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-gradient-to-br from-emerald-400 to-blue-600 flex items-center justify-center p-[2px]">
-                            <div className="w-full h-full rounded-[1.4rem] bg-[#0B0F17] flex items-center justify-center overflow-hidden">
-                                <span className="text-3xl md:text-4xl font-black text-white/80">
-                                    {currentProfile.username.charAt(0).toUpperCase()}
-                                </span>
+                            <div className="w-full h-full rounded-[1.4rem] bg-[#0B0F17] flex items-center justify-center overflow-hidden relative">
+                                {currentProfile.avatar_url ? (
+                                    <img
+                                        src={currentProfile.avatar_url}
+                                        alt={currentProfile.username}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <span className="text-3xl md:text-4xl font-black text-white/80">
+                                        {currentProfile.username.charAt(0).toUpperCase()}
+                                    </span>
+                                )}
                             </div>
                         </div>
                         <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center border-4 border-[#0B0F17] shadow-lg">
