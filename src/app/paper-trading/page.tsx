@@ -684,11 +684,11 @@ export default function PaperTradingPage() {
 
 
 
-                                                <div className="text-right mx-2 sm:mx-4 shrink-0">
+                                                <div className="text-right mx-2 shrink-0">
                                                     <p className="text-xs sm:text-sm font-bold text-white tabular-nums">{item.shares} pcs</p>
                                                 </div>
 
-                                                <div className="text-right mr-2 sm:mr-6 shrink-0">
+                                                <div className="text-right mr-3 shrink-0">
                                                     <p className="font-bold text-white tabular-nums text-sm sm:text-base">
                                                         ${currentValueSek.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                                     </p>
@@ -699,10 +699,13 @@ export default function PaperTradingPage() {
                                                 </div>
 
                                                 <button
-                                                    onClick={() => setSellItem(item)}
-                                                    className="px-3 sm:px-4 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-bold opacity-0 group-hover:opacity-100 transition-all border border-emerald-500/20 flex items-center gap-1.5 shrink-0"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setSellItem(item);
+                                                    }}
+                                                    className="px-3 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-bold transition-all border border-emerald-500/20 flex items-center gap-1.5 shrink-0"
                                                 >
-                                                    <DollarSign className="w-3.5 h-3.5" />
+                                                    <DollarSign className="w-4 h-4" />
                                                     <span className="hidden sm:inline">Sell</span>
                                                 </button>
                                             </motion.div>
