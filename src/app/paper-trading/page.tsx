@@ -639,16 +639,13 @@ export default function PaperTradingPage() {
                                                             <p className="font-bold text-white tracking-tight truncate text-sm sm:text-base">
                                                                 {(item.symbol || '').split('.')[0]}
                                                             </p>
-                                                            <span className="px-1.5 py-0.5 rounded bg-violet-500/20 text-[8px] font-bold text-violet-400 uppercase shrink-0">
-                                                                Paper
-                                                            </span>
                                                             {item.locked_until && new Date(item.locked_until) > new Date() && (
                                                                 <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-[8px] font-bold text-amber-400 flex items-center gap-0.5 shrink-0" title="Fair Play: Position locked">
                                                                     <Lock className="w-2.5 h-2.5" />
                                                                 </span>
                                                             )}
                                                         </div>
-                                                        <p className="text-xs text-white/50 truncate">
+                                                        <p className="text-xs text-white/50 line-clamp-2 leading-tight">
                                                             {item.name}
                                                         </p>
                                                         <div className="flex flex-wrap items-center gap-1 mt-0.5 text-[10px] text-white/50 sm:hidden">
