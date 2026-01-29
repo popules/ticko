@@ -51,7 +51,7 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
     });
 
     return (
-        <div className="relative p-8 rounded-[2.5rem] bg-white/[0.04] border border-white/10 backdrop-blur-3xl mb-8">
+        <div className="relative p-8 rounded-[2.5rem] bg-white/[0.04] border border-white/10 backdrop-blur-3xl mb-8 overflow-hidden">
             {/* Background Glow */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[100px] -mr-32 -mt-32" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 rounded-full blur-[80px] -ml-24 -mb-24" />

@@ -228,7 +228,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                                 </div>
                                             </div>
 
-                                            <div className="grid grid-cols-2 gap-2">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                                 <a
                                                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`I'm up ${pnlPercent.toFixed(1)}% on $${item.symbol} in the Ticko challenge! 🚀\n\nCan you beat me? 👇\nhttps://tickomarkets.com`)}&url=${encodeURIComponent("https://tickomarkets.com")}`}
                                                     target="_blank"
