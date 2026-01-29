@@ -18,6 +18,7 @@ export default function ContactPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const { user } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,8 +26,6 @@ export default function ContactPage() {
         setError(null);
 
         try {
-            // We'll use a generic API endpoint or simply log it for now
-            // If you have a contact API endpoint, we can use it here
             const res = await fetch("/api/email/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -43,9 +42,7 @@ export default function ContactPage() {
         }
     };
 
-    const { user } = useAuth();
-
-    const Content = () => (
+    const content = (
         <div className="max-w-4xl mx-auto">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -189,7 +186,7 @@ export default function ContactPage() {
                 <Sidebar />
                 <main className="flex-1 border-x border-white/5 overflow-y-auto flex flex-col">
                     <div className="p-6 md:p-12 pb-8 flex-1">
-                        <Content />
+                        {content}
                     </div>
                     <AppFooter />
                 </main>
@@ -219,7 +216,7 @@ export default function ContactPage() {
             </nav>
 
             <main className="relative pt-32 pb-20 px-6 z-10">
-                <Content />
+                {content}
             </main>
 
             {/* Simple Footer */}
