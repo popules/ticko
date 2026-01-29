@@ -6,13 +6,15 @@ import { supabase } from "@/lib/supabase/client";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
-import { Save, Loader2, LogOut, Lock, Trash2, AlertTriangle } from "lucide-react";
+import { Save, Loader2, LogOut, Lock, Trash2, AlertTriangle, MapPin } from "lucide-react";
 
 export default function SettingsPage() {
     const { user, signOut } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [username, setUsername] = useState("");
+    const [bio, setBio] = useState("");
+    const [location, setLocation] = useState("");
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
@@ -39,6 +41,8 @@ export default function SettingsPage() {
             if (data) {
                 const profileData = data as any;
                 setUsername(profileData.username || "");
+                setBio(profileData.bio || "");
+                setLocation(profileData.location || "");
                 setAvatarUrl(profileData.avatar_url);
             }
             setIsLoading(false);
@@ -56,7 +60,11 @@ export default function SettingsPage() {
         try {
             const { error } = await (supabase as any)
                 .from("profiles")
-                .update({ username })
+                .update({
+                    username: username.trim(),
+                    bio: bio.trim(),
+                    location: location.trim()
+                })
                 .eq("id", user.id);
 
             if (error) throw error;
