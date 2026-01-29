@@ -55,6 +55,22 @@ export async function middleware(request: NextRequest) {
         },
     })
 
+    // 1. Handle Domain Redirects (ticko.se -> tickomarkets.com)
+    // We check the 'host' header because request.nextUrl.hostname can be 'localhost' in some environments
+    const host = request.headers.get('host') || '';
+    const isOldDomain = host.includes('ticko.se');
+
+    if (isOldDomain) {
+        const url = new URL(request.url);
+        url.hostname = 'tickomarkets.com';
+        url.port = ''; // Ensure standard ports for production
+        url.protocol = 'https:';
+        url.pathname = '/'; // Redirect everything to homepage
+        url.search = ''; // Clear query params for a clean slate
+
+        return NextResponse.redirect(url);
+    }
+
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
