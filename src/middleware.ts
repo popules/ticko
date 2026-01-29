@@ -25,6 +25,7 @@ const PUBLIC_PREFIXES = [
     '/api/cron',
     '/api/market',
     '/api/stock',  // Stock profile data - public for SEO
+    '/learn',      // Trading Academy - public for SEO
     '/_next',
     '/favicon',
     '/icons',
