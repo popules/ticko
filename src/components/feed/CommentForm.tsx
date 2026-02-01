@@ -42,7 +42,7 @@ export function CommentForm({ postId, postOwnerId, onCommentAdded }: CommentForm
                         user_id: postOwnerId,
                         actor_id: user.id,
                         type: "comment",
-                        post_id: postId
+                        entity_id: postId
                     });
             }
 
@@ -64,7 +64,7 @@ export function CommentForm({ postId, postOwnerId, onCommentAdded }: CommentForm
                                 user_id: mentionedUser.id,
                                 actor_id: user.id,
                                 type: "mention",
-                                post_id: postId
+                                entity_id: postId
                             });
                     }
                 }
