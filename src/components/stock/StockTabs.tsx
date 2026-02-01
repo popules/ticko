@@ -33,15 +33,20 @@ interface StockTabsProps {
         pe: number | null;
         week52Range: string;
     };
+    header?: React.ReactNode;
 }
 
-export function StockTabs({ ticker, currencySymbol, stock }: StockTabsProps) {
+export function StockTabs({ ticker, currencySymbol, stock, header }: StockTabsProps) {
     const [activeTab, setActiveTab] = useState<TabId>("overview");
 
     return (
         <div className="flex flex-col h-full overflow-x-hidden">
-            {/* Tab Bar */}
-            <div className="sticky top-[88px] z-10 bg-[#020617]/95 backdrop-blur-xl border-b border-white/10">
+            {/* Sticky Container for Header + Tabs */}
+            <div className="sticky top-0 z-20 bg-[#020617]/95 backdrop-blur-xl border-b border-white/10">
+                {/* Optional Header (Mobile/Desktop consistent) */}
+                {header}
+
+                {/* Tab Bar */}
                 <div className="flex overflow-x-auto scrollbar-hide px-4 md:px-6 gap-1 max-w-full">
                     {tabs.map((tab) => (
                         <button

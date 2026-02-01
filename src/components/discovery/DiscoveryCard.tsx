@@ -32,7 +32,7 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                 y: active ? 0 : 20,
             }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className={`absolute w-full max-w-sm aspect-[3/4] rounded-[2.5rem] p-8 border border-white/10 backdrop-blur-2xl shadow-2xl cursor-grab active:cursor-grabbing select-none overflow-hidden ${active ? "z-20" : "z-10"
+            className={`absolute w-full max-w-sm aspect-[3/4] rounded-[2.5rem] p-6 md:p-8 border border-white/10 backdrop-blur-2xl shadow-2xl cursor-grab active:cursor-grabbing select-none overflow-hidden ${active ? "z-20" : "z-10"
                 }`}
             style={{
                 background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
@@ -44,7 +44,7 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
 
             <div className="relative h-full flex flex-col justify-between">
                 {/* Header */}
-                <div className="space-y-4">
+                <div className="space-y-3 md:space-y-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 shadow-lg shadow-emerald-500/10">
                             <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
@@ -61,7 +61,7 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                     </div>
 
                     <div>
-                        <h2 className="text-4xl font-black text-white tracking-tighter mb-1">
+                        <h2 className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1">
                             ${stock.symbol}
                         </h2>
                         <p className="text-white/60 font-medium truncate">{stock.name}</p>
@@ -69,12 +69,12 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                 </div>
 
                 {/* Ticko Discovery Hook Card */}
-                <div className="bg-gradient-to-br from-violet-500/20 to-fuchsia-500/10 rounded-[1.5rem] p-6 border border-violet-500/20 shadow-inner relative overflow-hidden">
+                <div className="bg-gradient-to-br from-violet-500/20 to-fuchsia-500/10 rounded-[1.5rem] p-5 md:p-6 border border-violet-500/20 shadow-inner relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 opacity-10">
                         <Sparkles className="w-12 h-12 text-white" />
                     </div>
 
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center justify-between mb-2 md:mb-3">
                         <div className="flex items-center gap-2">
                             <Target className="w-4 h-4 text-violet-400" />
                             <span className="text-[10px] font-black text-violet-400 uppercase tracking-widest">
@@ -90,18 +90,18 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                             </div>
                         )}
                     </div>
-                    <p className="text-lg font-semibold text-white leading-snug italic">
+                    <p className="text-base md:text-lg font-semibold text-white leading-snug italic">
                         "{stock.discoveryHook}"
                     </p>
                 </div>
 
                 {/* Footer Stats */}
-                <div className="space-y-6">
+                <div className="space-y-4 md:space-y-6">
                     <div className="flex items-end justify-between">
                         <div>
                             <p className="text-xs text-white/40 mb-1">{UI_STRINGS.currentPrice}</p>
                             <div className="flex items-baseline gap-2">
-                                <span className="text-3xl font-black text-white tabular-nums">
+                                <span className="text-2xl md:text-3xl font-black text-white tabular-nums">
                                     {(stock.currencySymbol || '$') === 'kr' ? `${stock.price.toFixed(2)} kr` : `${stock.currencySymbol || '$'}${stock.price.toFixed(2)}`}
                                 </span>
                             </div>

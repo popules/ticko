@@ -235,7 +235,7 @@ export default function LeaderboardPage() {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#020617]">
+        <div className="flex flex-col md:flex-row min-h-screen bg-[#020617]">
             <Sidebar />
             <main className="flex-1 border-x border-white/5 overflow-y-auto">
                 <div className="max-w-2xl mx-auto pt-4 pb-20 px-4 pt-[max(1rem,env(safe-area-inset-top))]">

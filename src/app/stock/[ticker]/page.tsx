@@ -67,42 +67,7 @@ export default async function StockPage({ params }: StockPageProps) {
             {/* Main Content */}
             <main className="flex-1 lg:border-r border-white/10 overflow-x-hidden min-w-0">
                 <StockErrorBoundary>
-                    {/* Header with back button - STICKY outside tabs */}
-                    <header className="sticky top-0 z-20 backdrop-blur-xl bg-[#020617]/90 border-b border-white/10 px-4 md:px-6 py-4 md:py-5">
-                        <div className="flex items-center gap-3 md:gap-4">
-                            <Link
-                                href="/"
-                                className="p-2 -ml-2 rounded-xl hover:bg-white/[0.06] text-white/60 hover:text-white transition-colors"
-                            >
-                                <ArrowLeft className="w-5 h-5" />
-                            </Link>
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2">
-                                    <h1 className="text-lg md:text-xl font-bold text-white truncate">
-                                        ${upperTicker}
-                                    </h1>
-                                    <span className="text-white/40 hidden sm:inline">·</span>
-                                    <span className="text-white/60 text-sm md:text-base truncate hidden sm:inline">{stock.name}</span>
-                                </div>
-                                <div className="flex items-center gap-2 md:gap-3 mt-0.5 md:mt-1">
-                                    <span className="text-xl md:text-2xl font-bold tabular-nums text-white">
-                                        {stock.currencySymbol === 'kr' ? `${(stock.price ?? 0).toFixed(2)} kr` : `${stock.currencySymbol}${(stock.price ?? 0).toFixed(2)}`}
-                                    </span>
-                                    <span
-                                        className={`text-xs md:text-sm font-medium tabular-nums ${((stock.change ?? 0) >= 0) ? "text-emerald-400" : "text-rose-400"
-                                            }`}
-                                    >
-                                        {((stock.change ?? 0) >= 0) ? "+" : ""}
-                                        {(stock.changePercent ?? 0).toFixed(2)}%
-                                        <span className="opacity-50 ml-1 font-normal hidden sm:inline">today</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <StockPageActions symbol={upperTicker} />
-                        </div>
-                    </header>
-
-                    {/* Tabbed Content */}
+                    {/* Tabbed Content with Integrated Header */}
                     <StockTabs
                         ticker={upperTicker}
                         currencySymbol={stock.currencySymbol}
@@ -112,6 +77,41 @@ export default async function StockPage({ params }: StockPageProps) {
                             pe: stock.pe,
                             week52Range: stock.week52Range,
                         }}
+                        header={
+                            <div className="px-4 md:px-6 py-4 md:py-5">
+                                <div className="flex items-center gap-3 md:gap-4">
+                                    <Link
+                                        href="/"
+                                        className="p-2 -ml-2 rounded-xl hover:bg-white/[0.06] text-white/60 hover:text-white transition-colors"
+                                    >
+                                        <ArrowLeft className="w-5 h-5" />
+                                    </Link>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2">
+                                            <h1 className="text-lg md:text-xl font-bold text-white truncate">
+                                                ${upperTicker}
+                                            </h1>
+                                            <span className="text-white/40 hidden sm:inline">·</span>
+                                            <span className="text-white/60 text-sm md:text-base truncate hidden sm:inline">{stock.name}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 md:gap-3 mt-0.5 md:mt-1">
+                                            <span className="text-xl md:text-2xl font-bold tabular-nums text-white">
+                                                {stock.currencySymbol === 'kr' ? `${(stock.price ?? 0).toFixed(2)} kr` : `${stock.currencySymbol}${(stock.price ?? 0).toFixed(2)}`}
+                                            </span>
+                                            <span
+                                                className={`text-xs md:text-sm font-medium tabular-nums ${((stock.change ?? 0) >= 0) ? "text-emerald-400" : "text-rose-400"
+                                                    }`}
+                                            >
+                                                {((stock.change ?? 0) >= 0) ? "+" : ""}
+                                                {(stock.changePercent ?? 0).toFixed(2)}%
+                                                <span className="opacity-50 ml-1 font-normal hidden sm:inline">today</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <StockPageActions symbol={upperTicker} />
+                                </div>
+                            </div>
+                        }
                     />
                 </StockErrorBoundary>
             </main>
