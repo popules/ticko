@@ -229,3 +229,34 @@ Below: first a full list of **what’s already implemented** (so we don’t re-b
 ## What You Already Have (No Duplication)
 
 See the **Already implemented** section at the top for the full list (notifications, APIs, Academy, seasons, leaderboards, achievements, push, reports, etc.). Each phase above has a **New vs existing** line so you only build what’s not there. Use this doc as the single source of truth for "what’s next"; adjust dates and scope per your capacity.
+
+### 5.4 App Store Launch Checklist (iOS & Android)
+
+**Timeline & Approvals:**
+- **Apple Developer account:** Request **2+ weeks before** you plan to submit (company accounts take ~2 weeks to approve).
+- **App Review:** Budget **2–4+ weeks** from first submit to approval. Apple review is iterative; feedback comes in small chunks with 1–2 day delays per round.
+- **Android:** Generally faster/smoother, but still plan for 1–2 weeks for first release.
+
+**iOS-Specific:**
+- **Test on iPad:** Apple tests on iPad; fix any clipping, overflow, or layout issues before submission.
+- **Paywall/IAP:** Either **fully disable** Pro upsell/paywall in the review build, or have **full, compliant** IAP setup (subscription, banking, App Store Connect config). Don't leave a "could be activated" grey zone — Apple will flag it and require full config.
+- **Sign in with Apple:** Required if you have other social logins (Google, etc.). Implement early and test thoroughly; OAuth can be painful.
+
+**Onboarding & Trial Strategy:**
+- **Reduce friction:** Consider a **no-credit-card Pro trial** (e.g. 7–14 days full access, no payment info required) to maximize usage and learning before conversion.
+- **Data point:** One app saw 1,000+ downloads and 200+ signups after removing credit card requirement for trial (vs. very low usage when card was required).
+- **Strategy:** Get users into core value (Arena, Ticko AI, feed) first, then measure conversion after trial. Optimize for learning and usage, not signup friction.
+
+**Native Work:**
+- **Expect native code:** Even with Capacitor/Expo, plan time in **Xcode** (iOS) and **Android Studio** for store compliance, deep links, push notifications, and device-specific bugs. It's not 100% in the shared layer.
+- **OAuth:** Apple Sign-In and other OAuth flows often require native tweaks; factor this into the timeline.
+
+**Pre-Launch:**
+- [ ] Apple Developer account created (2+ weeks before submit)
+- [ ] Test on iPad and fix clipping/layout issues
+- [ ] Paywall: either disabled or fully configured for review
+- [ ] Sign in with Apple implemented and tested
+- [ ] Trial strategy decided: credit card required or not?
+- [ ] Native projects (Xcode/Android Studio) set up for final tweaks
+- [ ] Screenshots, title, subtitle, description ready
+- [ ] Legal disclaimers in app and store listing
