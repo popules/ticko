@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { Sparkles, Loader2, RefreshCw, X } from "lucide-react";
+import { Sparkles, Loader2, RefreshCw, X, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ProUpsellModal } from "@/components/ui/ProUpsellModal";
 
 // Get time-appropriate report config
 function getReportConfig() {
@@ -39,14 +40,25 @@ export function MorningReport() {
     const [report, setReport] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
+    const [limitReached, setLimitReached] = useState(false);
+    const [showProModal, setShowProModal] = useState(false);
 
     const reportConfig = useMemo(() => getReportConfig(), []);
 
     const fetchReport = async () => {
         setIsLoading(true);
+        setLimitReached(false);
         try {
             const res = await fetch("/api/ai/morning-report");
             const data = await res.json();
+            
+            // Handle 402 - limit reached
+            if (res.status === 402 && data.error === "limit_reached") {
+                setLimitReached(true);
+                setReport(null);
+                return;
+            }
+            
             if (data.report) {
                 setReport(data.report);
             } else if (data.message) {
@@ -114,6 +126,20 @@ export function MorningReport() {
                         <Loader2 className="w-5 h-5 animate-spin text-emerald-400" />
                         <p className="text-xs text-white/30 font-medium italic">Analyzing the market for you...</p>
                     </div>
+                ) : limitReached ? (
+                    <div className="py-6 flex flex-col items-center justify-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-violet-500/20 flex items-center justify-center">
+                            <Star className="w-6 h-6 text-violet-400" />
+                        </div>
+                        <p className="text-sm text-white/60 text-center">Daily AI limit reached</p>
+                        <button
+                            onClick={() => setShowProModal(true)}
+                            className="px-4 py-2 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold hover:opacity-90 transition-opacity flex items-center gap-1"
+                        >
+                            <Star className="w-3 h-3" />
+                            Upgrade to Pro
+                        </button>
+                    </div>
                 ) : report ? (
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -140,6 +166,14 @@ export function MorningReport() {
                     ))}
                 </div>
             </div>
+
+            {/* Pro Upsell Modal */}
+            {showProModal && (
+                <ProUpsellModal
+                    trigger="ai_limit"
+                    onClose={() => setShowProModal(false)}
+                />
+            )}
         </motion.div>
     );
 }

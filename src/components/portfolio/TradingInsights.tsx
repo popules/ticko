@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Brain, Loader2, Sparkles, RefreshCw, TrendingUp, Target, Clock } from "lucide-react";
+import { Brain, Loader2, Sparkles, RefreshCw, TrendingUp, Target, Clock, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ProUpsellModal } from "@/components/ui/ProUpsellModal";
 
 interface TradingInsightsProps {
     userId: string;
@@ -11,6 +12,7 @@ interface TradingInsightsProps {
 interface InsightData {
     insight: string | null;
     message?: string;
+    error?: string;
     confidence?: "low" | "medium" | "high";
     dataSources?: string[];
     stats?: {
@@ -27,10 +29,13 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
     const [data, setData] = useState<InsightData | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [hasRequested, setHasRequested] = useState(false);
+    const [showProModal, setShowProModal] = useState(false);
+    const [limitReached, setLimitReached] = useState(false);
 
     const fetchInsights = async () => {
         setIsLoading(true);
         setHasRequested(true);
+        setLimitReached(false);
 
         try {
             const response = await fetch("/api/ai/trading-insights", {
@@ -40,6 +45,15 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
             });
 
             const result = await response.json();
+            
+            // Handle 402 - limit reached
+            if (response.status === 402 && result.error === "limit_reached") {
+                setLimitReached(true);
+                setShowProModal(true);
+                setData(null);
+                return;
+            }
+
             setData(result);
         } catch (error) {
             console.error("Failed to fetch insights:", error);
@@ -186,6 +200,31 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                             </div>
                         </div>
                     </motion.div>
+                ) : limitReached ? (
+                    <motion.div
+                        key="limit"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="text-center py-6"
+                    >
+                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center">
+                            <Star className="w-8 h-8 text-violet-400" />
+                        </div>
+                        <p className="text-white/60 text-sm mb-2">
+                            You've used your 3 free AI analyses today
+                        </p>
+                        <p className="text-white/40 text-xs mb-4">
+                            Upgrade to Pro for unlimited insights
+                        </p>
+                        <button
+                            onClick={() => setShowProModal(true)}
+                            className="px-6 py-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold text-sm hover:opacity-90 transition-opacity flex items-center gap-2 mx-auto"
+                        >
+                            <Star className="w-4 h-4" />
+                            Upgrade to Pro
+                        </button>
+                    </motion.div>
                 ) : (
                     <motion.div
                         key="message"
@@ -195,7 +234,7 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                         className="text-center py-6"
                     >
                         <p className="text-white/50 text-sm mb-4">
-                            {data?.message || (data as any)?.error || "Something went wrong during the analysis. Please try again."}
+                            {data?.message || data?.error || "Something went wrong during the analysis. Please try again."}
                         </p>
 
                         {/* Retry button inside the empty state */}
@@ -208,6 +247,14 @@ export function TradingInsights({ userId }: TradingInsightsProps) {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Pro Upsell Modal */}
+            {showProModal && (
+                <ProUpsellModal
+                    trigger="ai_limit"
+                    onClose={() => setShowProModal(false)}
+                />
+            )}
         </div>
     );
 }

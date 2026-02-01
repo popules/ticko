@@ -1,16 +1,18 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MessageSquare, X, Send, Sparkles, Loader2, Bot, User } from "lucide-react";
+import { MessageSquare, X, Send, Sparkles, Loader2, Bot, User, Star } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { AnimatePresence, motion } from "framer-motion";
 import { TickoLogo } from "@/components/ui/TickoLogo";
+import { ProUpsellModal } from "@/components/ui/ProUpsellModal";
 
 interface Message {
     id: string;
     role: "user" | "assistant";
     content: string;
     timestamp: number;
+    isLimitReached?: boolean;
 }
 
 export function TickoCopilot() {
@@ -26,6 +28,7 @@ export function TickoCopilot() {
     ]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [showProModal, setShowProModal] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -63,9 +66,23 @@ export function TickoCopilot() {
                 }),
             });
 
+            const data = await res.json();
+
+            // Handle 402 - limit reached
+            if (res.status === 402 && data.error === "limit_reached") {
+                const limitMsg: Message = {
+                    id: (Date.now() + 1).toString(),
+                    role: "assistant",
+                    content: "You've used your 3 free AI messages today. Upgrade to Pro for unlimited access!",
+                    timestamp: Date.now(),
+                    isLimitReached: true,
+                };
+                setMessages((prev) => [...prev, limitMsg]);
+                return;
+            }
+
             if (!res.ok) throw new Error("Failed");
 
-            const data = await res.json();
             const botMsg: Message = {
                 id: (Date.now() + 1).toString(),
                 role: "assistant",
@@ -144,19 +161,34 @@ export function TickoCopilot() {
                                 >
                                     <div
                                         className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === "assistant"
-                                            ? "bg-emerald-500/10 text-emerald-400"
+                                            ? msg.isLimitReached ? "bg-violet-500/10 text-violet-400" : "bg-emerald-500/10 text-emerald-400"
                                             : "bg-white/10 text-white"
                                             }`}
                                     >
-                                        {msg.role === "assistant" ? <Bot className="w-4 h-4" /> : <User className="w-4 h-4" />}
+                                        {msg.role === "assistant" ? (
+                                            msg.isLimitReached ? <Star className="w-4 h-4" /> : <Bot className="w-4 h-4" />
+                                        ) : (
+                                            <User className="w-4 h-4" />
+                                        )}
                                     </div>
                                     <div
                                         className={`max-w-[75%] p-3 rounded-2xl text-sm leading-relaxed ${msg.role === "assistant"
-                                            ? "bg-white/[0.04] text-white/90 border border-white/5 rounded-tl-none"
+                                            ? msg.isLimitReached 
+                                                ? "bg-violet-500/10 text-white/90 border border-violet-500/20 rounded-tl-none"
+                                                : "bg-white/[0.04] text-white/90 border border-white/5 rounded-tl-none"
                                             : "bg-emerald-500 text-[#020617] font-medium rounded-tr-none"
                                             }`}
                                     >
                                         {msg.content}
+                                        {msg.isLimitReached && (
+                                            <button
+                                                onClick={() => setShowProModal(true)}
+                                                className="mt-2 w-full px-3 py-2 rounded-lg bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-1"
+                                            >
+                                                <Star className="w-3 h-3" />
+                                                Upgrade to Pro
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -203,6 +235,14 @@ export function TickoCopilot() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Pro Upsell Modal */}
+            {showProModal && (
+                <ProUpsellModal
+                    trigger="ai_limit"
+                    onClose={() => setShowProModal(false)}
+                />
+            )}
         </>
     );
 }
