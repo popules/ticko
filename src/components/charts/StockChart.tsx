@@ -115,11 +115,11 @@ export function StockChart({ symbol, theme = "dark", height = 400 }: StockChartP
     }, [tradingViewSymbol, theme]);
 
     return (
-        <div className="rounded-2xl overflow-hidden border border-white/10 bg-[#0B0F17]">
+        <div className="rounded-2xl overflow-hidden border border-white/10 bg-[#0B0F17] max-w-full">
             <div
                 ref={containerRef}
-                className="tradingview-widget-container"
-                style={{ height: `${height}px`, width: "100%" }}
+                className="tradingview-widget-container overflow-hidden"
+                style={{ height: `${height}px`, width: "100%", maxWidth: "100%" }}
             >
                 <div className="tradingview-widget-container__widget" style={{ height: "100%", width: "100%" }} />
             </div>

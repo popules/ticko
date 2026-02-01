@@ -39,10 +39,10 @@ export function StockTabs({ ticker, currencySymbol, stock }: StockTabsProps) {
     const [activeTab, setActiveTab] = useState<TabId>("overview");
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full overflow-x-hidden">
             {/* Tab Bar */}
             <div className="sticky top-[88px] z-10 bg-[#020617]/95 backdrop-blur-xl border-b border-white/10">
-                <div className="flex overflow-x-auto scrollbar-hide px-4 md:px-6 gap-1">
+                <div className="flex overflow-x-auto scrollbar-hide px-4 md:px-6 gap-1 max-w-full">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
@@ -64,9 +64,9 @@ export function StockTabs({ ticker, currencySymbol, stock }: StockTabsProps) {
             </div>
 
             {/* Tab Content */}
-            <div className="flex-1">
+            <div className="flex-1 overflow-x-hidden">
                 {activeTab === "overview" && (
-                    <div className="p-4 md:p-6 space-y-6 animate-in fade-in duration-300">
+                    <div className="p-4 md:p-6 space-y-6 animate-in fade-in duration-300 overflow-x-hidden">
                         {/* Key Stats Grid */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                             <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-4 md:p-5 border border-white/10">

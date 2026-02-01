@@ -58,14 +58,14 @@ export default async function StockPage({ params }: StockPageProps) {
     }
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen overflow-x-hidden">
             {/* Left Sidebar - Hidden on mobile */}
             <div className="hidden lg:block">
                 <Sidebar />
             </div>
 
             {/* Main Content */}
-            <main className="flex-1 lg:border-r border-white/10">
+            <main className="flex-1 lg:border-r border-white/10 overflow-x-hidden min-w-0">
                 <StockErrorBoundary>
                     {/* Header with back button - STICKY outside tabs */}
                     <header className="sticky top-0 z-20 backdrop-blur-xl bg-[#020617]/90 border-b border-white/10 px-4 md:px-6 py-4 md:py-5">

@@ -85,7 +85,7 @@ export default function DiscoveryPage() {
         <div className="flex min-h-screen">
             <Sidebar />
 
-            <main className="flex-1 flex flex-col items-center border-r border-white/10 relative overflow-y-auto overflow-x-hidden pt-12 pb-24 px-6 md:px-12">
+            <main className="flex-1 flex flex-col items-center border-r border-white/10 relative overflow-y-auto overflow-x-hidden pt-[max(3rem,calc(env(safe-area-inset-top)+1rem))] pb-24 px-6 md:px-12">
                 {/* Background Decorations */}
                 <div className="fixed inset-0 -z-10 pointer-events-none">
                     <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-600/10 rounded-full blur-[120px]" />
