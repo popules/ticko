@@ -45,6 +45,28 @@ export async function GET(request: NextRequest) {
 
             // Actually, for now, let's keep the redirect to root which is the standard flow,
             // and relying on OnboardingModal (client-side) to force the username choice.
+            // Check for new user (Google Signup) to send welcome email
+            const createdAt = new Date(data.user.created_at || "");
+            const now = new Date();
+            const isNewUser = (now.getTime() - createdAt.getTime()) < 15000; // 15 seconds threshold
+
+            if (isNewUser && data.user.email) {
+                // Determine username: try metadata first, then fallback to email prefix
+                const username = data.user.user_metadata?.full_name ||
+                    data.user.user_metadata?.name ||
+                    data.user.email.split('@')[0];
+
+                // Fire and forget welcome email
+                fetch(`${requestUrl.origin}/api/email/welcome`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: data.user.email,
+                        username: username
+                    })
+                }).catch(err => console.error("Failed to send OAuth welcome email:", err));
+            }
+
             return NextResponse.redirect(new URL("/", requestUrl.origin));
         }
     }
