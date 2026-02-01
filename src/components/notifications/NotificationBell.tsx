@@ -124,7 +124,7 @@ export function NotificationBell({ align = "right" }: NotificationBellProps) {
                             initial={{ opacity: 0, y: 10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                            className={`absolute ${align === "left" ? "left-0" : "right-0"} mt-4 w-80 bg-[#0B0F17]/95 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl z-[999] overflow-hidden`}
+                            className={`fixed top-16 ${align === "left" ? "left-64 ml-4" : "right-4"} w-80 bg-[#0B0F17]/95 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl z-[9999] overflow-hidden`}
                         >
                             <div className="p-5 border-b border-white/10 flex items-center justify-between">
                                 <h3 className="text-sm font-bold text-white uppercase tracking-widest">Notifications</h3>
