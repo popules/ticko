@@ -42,13 +42,30 @@ export async function POST() {
                 email_confirm: true
             });
 
-            if (authError) {
-                console.error(`Failed to create auth for ${bot.username}:`, authError);
-                results.push({ username: bot.username, status: 'error', error: authError.message });
-                continue;
-            }
+            let userId: string;
 
-            const userId = authData.user.id;
+            if (authError) {
+                // If user exists, try to get them
+                if (authError.message.includes("already")) {
+                    const { data: { users }, error: listUserError } = await getSupabaseAdmin().auth.admin.listUsers();
+                    const match = users?.find(u => u.email === email);
+
+                    if (match) {
+                        userId = match.id;
+                        // Continue to profile creation/update
+                    } else {
+                        console.error(`Auth error and user not found in list:`, listUserError);
+                        results.push({ username: bot.username, status: 'error', error: "Auth exists but user not found" });
+                        continue;
+                    }
+                } else {
+                    console.error(`Failed to create auth for ${bot.username}:`, authError);
+                    results.push({ username: bot.username, status: 'error', error: authError.message });
+                    continue;
+                }
+            } else {
+                userId = authData.user.id;
+            }
 
             // 3. Create or Update Profile
             const { error: profileError } = await getSupabaseAdmin()
