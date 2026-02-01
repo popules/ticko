@@ -169,7 +169,7 @@ export function WhatIsHappening() {
             {/* Trending Stocks Section - Always show */}
             <div className="relative p-5 rounded-[2rem] border border-white/10 bg-gradient-to-br from-orange-500/5 via-transparent to-rose-500/5 backdrop-blur-xl overflow-hidden group">
                 {/* Background glow */}
-                <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 blur-[80px] rounded-full -mr-20 -mt-20" />
+                <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 blur-[80px] rounded-full -mr-20 -mt-20 pointer-events-none" />
 
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
@@ -184,7 +184,7 @@ export function WhatIsHappening() {
                     </div>
                     <Link
                         href="/trending"
-                        className="flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors"
+                        className="flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors px-2 py-1 -mr-2 rounded-lg hover:bg-white/5 relative z-10"
                     >
                         View all <ArrowRight className="w-3 h-3" />
                     </Link>
