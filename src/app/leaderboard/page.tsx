@@ -4,13 +4,15 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
-import { Trophy, Medal, TrendingUp, TrendingDown, User, Crown, Loader2, Gamepad2, RotateCcw, Calendar, Clock, ChevronDown, History, Info } from "lucide-react";
+import { Trophy, Medal, TrendingUp, TrendingDown, User, Crown, Loader2, Gamepad2, RotateCcw, Calendar, Clock, ChevronDown, History, Info, Shield } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
+import { LeagueLeaderboard } from "@/components/league/LeagueLeaderboard";
+import { Database } from "@/types/database";
 
 interface Leader {
     id: string;
@@ -42,12 +44,27 @@ interface SeasonWinner {
     ended_at: string;
 }
 
-type LeaderboardTab = "reputation" | "paper";
+type LeaderboardTab = "league" | "reputation" | "paper";
 type PaperTimeframe = "season" | "alltime";
+type MyLeague = Database['public']['Tables']['league_placements']['Row'] & {
+    leagues: Database['public']['Tables']['leagues']['Row'] | null;
+};
 
 export default function LeaderboardPage() {
-    const [activeTab, setActiveTab] = useState<LeaderboardTab>("paper");
+    // Default to "league" if implemented, but for smooth rollout maybe keep "paper" or switch to "league"
+    const [activeTab, setActiveTab] = useState<LeaderboardTab>("league");
     const [paperTimeframe, setPaperTimeframe] = useState<PaperTimeframe>("season");
+
+    // My League Query
+    const { data: myLeague, isLoading: isMyLeagueLoading } = useQuery<MyLeague | null>({
+        queryKey: ["my-league"],
+        queryFn: async () => {
+            const res = await fetch("/api/league/current");
+            if (res.status === 401) return null; // Not logged in
+            if (!res.ok) return null;
+            return res.json();
+        }
+    });
 
     // Reputation leaderboard
     const { data: reputationLeaders, isLoading: isRepLoading } = useQuery<Leader[]>({
@@ -163,7 +180,9 @@ export default function LeaderboardPage() {
 
     const isLoading = activeTab === "reputation"
         ? isRepLoading
-        : (paperTimeframe === "season" ? isPaperSeasonLoading : isPaperAllTimeLoading);
+        : activeTab === "league"
+            ? isMyLeagueLoading
+            : (paperTimeframe === "season" ? isPaperSeasonLoading : isPaperAllTimeLoading);
 
     const leaders = activeTab === "reputation"
         ? reputationLeaders
@@ -251,6 +270,16 @@ export default function LeaderboardPage() {
                             <Medal className="w-4 h-4" />
                             Reputation
                         </button>
+                        <button
+                            onClick={() => setActiveTab("league")}
+                            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "league"
+                                ? "bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30"
+                                : "text-white/40 hover:text-white/60"
+                                }`}
+                        >
+                            <Shield className="w-4 h-4" />
+                            My League
+                        </button>
                     </div>
 
                     {/* How Scores Work - Info Box */}
@@ -263,6 +292,12 @@ export default function LeaderboardPage() {
                                     <p>Rankings based on portfolio profit/loss. Start with $10,000 virtual dollars, trade real stocks with real prices. Your P&L is tracked and updated daily.</p>
                                     <p className="text-white/30">Positions are locked for 30 minutes after buying to ensure fair competition.</p>
                                 </div>
+                            ) : activeTab === "league" ? (
+                                <div className="text-xs text-white/50 space-y-1">
+                                    <p className="font-medium text-white/70">How Leagues Work</p>
+                                    <p>Compete against players of similar skill level. Top 3 promote to the next league tier.</p>
+                                    <p className="text-white/30">Leagues reset every season. Climb from Bronze to Diamond!</p>
+                                </div>
                             ) : (
                                 <div className="text-xs text-white/50 space-y-1">
                                     <p className="font-medium text-white/70">How Reputation Points Work</p>
@@ -272,6 +307,34 @@ export default function LeaderboardPage() {
                             )}
                         </div>
                     </div>
+
+                    {/* League Tab Content */}
+                    {activeTab === "league" && (
+                        <div>
+                            {myLeague && myLeague.leagues ? (
+                                <LeagueLeaderboard
+                                    leagueId={myLeague.league_id}
+                                    leagueName={myLeague.leagues.name}
+                                    leagueTier={myLeague.leagues.tier}
+                                    currentUserId={myLeague.user_id}
+                                />
+                            ) : (
+                                <div className="text-center py-12 bg-white/[0.02] rounded-xl border border-white/5">
+                                    <h3 className="text-xl font-bold text-white mb-2">Join the Arena</h3>
+                                    <p className="text-white/40 mb-6 max-w-sm mx-auto">
+                                        You haven't been assigned to a league yet. Make some trades or engage in the community to get placed!
+                                    </p>
+                                    <Link
+                                        href="/paper-trading"
+                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold transition-colors"
+                                    >
+                                        <Gamepad2 className="w-4 h-4" />
+                                        Start Trading
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     {/* Paper Trading Sub-tabs */}
                     {activeTab === "paper" && (

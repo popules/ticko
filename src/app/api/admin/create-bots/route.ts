@@ -50,10 +50,10 @@ export async function POST() {
 
             const userId = authData.user.id;
 
-            // 3. Create Profile
+            // 3. Create or Update Profile
             const { error: profileError } = await getSupabaseAdmin()
                 .from('profiles')
-                .insert({
+                .upsert({
                     id: userId,
                     username: bot.username,
                     display_name: bot.name,

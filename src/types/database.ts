@@ -72,6 +72,37 @@ export interface TickerSentiment {
     total_posts: number;
 }
 
+export interface League {
+    id: string;
+    season_id: string;
+    name: string;
+    tier: number;
+    min_level: number;
+    max_level: number | null;
+    created_at: string;
+}
+
+export interface LeaguePlacement {
+    id: string;
+    league_id: string;
+    user_id: string;
+    joined_at: string;
+    rank_in_league: number | null;
+    // Joined league data
+    leagues?: League;
+    // Joined profile data
+    profiles?: Profile;
+}
+
+export interface LearnProgress {
+    id: string;
+    user_id: string;
+    module_id: string;
+    lesson_id: string;
+    completed_at: string;
+    xp_awarded: number;
+}
+
 // Supabase database type definitions
 export type Database = {
     public: {
@@ -113,6 +144,44 @@ export type Database = {
                 Row: Watchlist;
                 Insert: { user_id: string; ticker_symbol: string };
                 Update: { ticker_symbol?: string };
+            };
+            leagues: {
+                Row: League;
+                Insert: {
+                    season_id: string;
+                    name: string;
+                    tier: number;
+                    min_level: number;
+                    max_level?: number | null;
+                };
+                Update: {
+                    name?: string;
+                    min_level?: number;
+                    max_level?: number | null;
+                };
+            };
+            league_placements: {
+                Row: LeaguePlacement;
+                Insert: {
+                    league_id: string;
+                    user_id: string;
+                    rank_in_league?: number | null;
+                };
+                Update: {
+                    rank_in_league?: number | null;
+                };
+            };
+            learn_progress: {
+                Row: LearnProgress;
+                Insert: {
+                    user_id: string;
+                    module_id: string;
+                    lesson_id: string;
+                    xp_awarded?: number;
+                };
+                Update: {
+                    xp_awarded?: number;
+                };
             };
         };
         Enums: {

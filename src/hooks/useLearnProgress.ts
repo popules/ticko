@@ -1,102 +1,91 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-
-const STORAGE_KEY = "ticko-learn-progress";
+import { useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface LearnProgress {
     completedLessons: string[]; // Format: "moduleId/lessonId"
 }
 
-function getInitialProgress(): LearnProgress {
-    if (typeof window === "undefined") {
-        return { completedLessons: [] };
-    }
-
-    try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            return JSON.parse(stored);
-        }
-    } catch (e) {
-        console.error("Failed to load learn progress:", e);
-    }
-
-    return { completedLessons: [] };
-}
-
 export function useLearnProgress() {
-    const [progress, setProgress] = useState<LearnProgress>({
-        completedLessons: [],
+    const queryClient = useQueryClient();
+
+    // Fetch progress from API
+    const { data, isLoading } = useQuery({
+        queryKey: ["learn-progress"],
+        queryFn: async () => {
+            const res = await fetch("/api/learn/progress");
+            if (!res.ok) return { completedLessons: [] };
+            return res.json() as Promise<LearnProgress>;
+        },
     });
-    const [isLoaded, setIsLoaded] = useState(false);
 
-    // Load from localStorage on mount
-    useEffect(() => {
-        setProgress(getInitialProgress());
-        setIsLoaded(true);
-    }, []);
-
-    // Save to localStorage when progress changes
-    useEffect(() => {
-        if (isLoaded) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-        }
-    }, [progress, isLoaded]);
+    // Mutation to mark lesson complete
+    const mutation = useMutation({
+        mutationFn: async ({ moduleId, lessonId }: { moduleId: string; lessonId: string }) => {
+            const res = await fetch("/api/learn/progress", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ moduleId, lessonId }),
+            });
+            if (!res.ok) throw new Error("Failed to save progress");
+            return res.json();
+        },
+        onSuccess: (data, variables) => {
+            // Optimistic update or refetch
+            queryClient.invalidateQueries({ queryKey: ["learn-progress"] });
+            queryClient.invalidateQueries({ queryKey: ["profile"] }); // Update XP
+        },
+    });
 
     const markLessonComplete = useCallback(
         (moduleId: string, lessonId: string) => {
-            const key = `${moduleId}/${lessonId}`;
-            setProgress((prev) => {
-                if (prev.completedLessons.includes(key)) {
-                    return prev;
-                }
-                return {
-                    ...prev,
-                    completedLessons: [...prev.completedLessons, key],
-                };
-            });
+            mutation.mutate({ moduleId, lessonId });
         },
-        []
+        [mutation]
     );
+
+    const completedLessons = data?.completedLessons || [];
 
     const isLessonComplete = useCallback(
         (moduleId: string, lessonId: string): boolean => {
-            return progress.completedLessons.includes(`${moduleId}/${lessonId}`);
+            return completedLessons.includes(`${moduleId}/${lessonId}`);
         },
-        [progress.completedLessons]
+        [completedLessons]
     );
 
     const getModuleProgress = useCallback(
         (moduleId: string, totalLessons: number): number => {
-            const completed = progress.completedLessons.filter((key) =>
+            const completed = completedLessons.filter((key) =>
                 key.startsWith(`${moduleId}/`)
             ).length;
             return totalLessons > 0 ? (completed / totalLessons) * 100 : 0;
         },
-        [progress.completedLessons]
+        [completedLessons]
     );
 
     const getTotalProgress = useCallback(
         (totalLessons: number): number => {
             return totalLessons > 0
-                ? (progress.completedLessons.length / totalLessons) * 100
+                ? (completedLessons.length / totalLessons) * 100
                 : 0;
         },
-        [progress.completedLessons]
+        [completedLessons]
     );
 
     const resetProgress = useCallback(() => {
-        setProgress({ completedLessons: [] });
-    }, []);
+        // For testing purposes, we might want to support this, but with API it's harder.
+        // We could call a DELETE endpoint, but for now let's just invalidate/refetch.
+        queryClient.setQueryData(["learn-progress"], { completedLessons: [] });
+    }, [queryClient]);
 
     return {
-        completedCount: progress.completedLessons.length,
+        completedCount: completedLessons.length,
         markLessonComplete,
         isLessonComplete,
         getModuleProgress,
         getTotalProgress,
         resetProgress,
-        isLoaded,
+        isLoaded: !isLoading,
     };
 }

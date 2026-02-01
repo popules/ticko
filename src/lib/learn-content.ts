@@ -225,6 +225,160 @@ Paper trading is the perfect place to practice this!`,
         ],
     },
     {
+        id: "analysis-101",
+        title: "Analysis 101",
+        description: "Predicting price movements",
+        emoji: "📈",
+        lessons: [
+            {
+                id: "support-resistance",
+                title: "Support & Resistance",
+                description: "The floor and the ceiling",
+                emoji: "🧱",
+                content: `Prices rarely move in a straight line. They bounce.
+
+**Support (The Floor):**
+Price level where a stock has trouble falling below. Buyers step in here. It's like a trampoline!
+
+**Resistance (The Ceiling):**
+Price level where a stock has trouble rising above. Sellers step in here.
+
+**Strategy:**
+- Buy at Support
+- Sell at Resistance
+
+If price breaks through resistance, that "ceiling" often becomes the new "floor" (support)!`,
+                ctaText: "Find support levels",
+                ctaLink: "/market",
+            },
+            {
+                id: "trend-lines",
+                title: "The Trend is Your Friend",
+                description: "Up, down, or sideways",
+                emoji: "↘️",
+                content: `Don't swim against the current.
+
+**Uptrend:**
+Higher highs and higher lows. The chart looks like a staircase going up.
+--> **Strategy:** Buy the dips.
+
+**Downtrend:**
+Lower highs and lower lows. A staircase going down.
+--> **Strategy:** Stay away or short sell.
+
+**Sideways:**
+Price is stuck in a range.
+--> **Strategy:** Buy low, sell high within the range.`,
+                ctaText: "Check trending stocks",
+                ctaLink: "/stocks/trending",
+            },
+            {
+                id: "volume",
+                title: "Volume Speaks Louder",
+                description: "Is the move real?",
+                emoji: "🔊",
+                content: `**Volume** = How many shares are traded.
+
+It confirms price moves:
+- **Big move + High volume** = Real conviction. The move is likely to continue.
+- **Big move + Low volume** = Suspicious. Might be a fake-out.
+
+Think of volume as the "fuel" for the price movement. No fuel = the car stops.`,
+                ctaText: "See high volume stocks",
+                ctaLink: "/market",
+            },
+        ],
+    },
+    {
+        id: "fundamentals",
+        title: "Fundamental Basics",
+        description: "What is the company worth?",
+        emoji: "🏢",
+        lessons: [
+            {
+                id: "market-cap",
+                title: "Market Cap",
+                description: "The price tag of the company",
+                emoji: "🏷️",
+                content: `Stock Price ≠ Company Value.
+
+**Market Cap = Share Price × Total Shares**
+
+Example:
+- Company A: $10 stock × 1B shares = **$10B Market Cap**
+- Company B: $100 stock × 10M shares = **$1B Market Cap**
+
+Company A is 10x bigger, even though its stock price is lower!
+
+- **Large Cap:** Safer, slower growth (Apple, Microsoft)
+- **Small Cap:** Riskier, potential for huge growth`,
+                ctaText: "Compare market caps",
+                ctaLink: "/discover",
+            },
+            {
+                id: "pe-ratio",
+                title: "P/E Ratio",
+                description: "Are you paying too much?",
+                emoji: "⚖️",
+                content: `**P/E = Price / Earnings**
+
+It measures how expensive a stock is relative to how much money the company makes.
+
+- **Low P/E (<15):** "Cheap" or "Value" stock. (Banks, Oil, Old Tech)
+- **High P/E (>30):** "Expensive" or "Growth" stock. Investors expect huge future growth. (Tesla, AI stocks)
+
+**No P/E?** The company is losing money (no earnings).`,
+                ctaText: "Find value stocks",
+                ctaLink: "/discover",
+            },
+        ],
+    },
+    {
+        id: "psychology",
+        title: "Trading Psychology",
+        description: "Master your mind",
+        emoji: "🧠",
+        lessons: [
+            {
+                id: "fomo",
+                title: "FOMO Kills",
+                description: "Fear Of Missing Out",
+                emoji: "😱",
+                content: `You see a stock skyrocket 50% in a day. You feel an itch. "If I buy now, I can still make money!"
+
+**STOP.**
+
+This is FOMO. Buying at the top because of emotion is the #1 way beginners lose money.
+
+**The Rule:**
+If you feel excited and desperate to buy, it's usually time to sell.
+If you feel scared to buy because it dropped, it might be time to buy.`,
+                ctaText: "Stay cool & trade",
+                ctaLink: "/paper-trading",
+            },
+            {
+                id: "revenge-trading",
+                title: "Revenge Trading",
+                description: "Don't fight the market",
+                emoji: "😡",
+                content: `You just lost $500 on a bad trade. You're angry. You want it back NOW.
+
+So you double your bet size on a risky trade to "make it back."
+
+**This is Revenge Trading.**
+And it ends in disaster.
+
+**What to do:**
+1. Close the laptop.
+2. Take a walk.
+3. Accept the loss.
+4. Come back tomorrow with a clear head.`,
+                ctaText: "Practice discipline",
+                ctaLink: "/paper-trading",
+            },
+        ],
+    },
+    {
         id: "community",
         title: "Competing & Community",
         description: "Trade with friends",
