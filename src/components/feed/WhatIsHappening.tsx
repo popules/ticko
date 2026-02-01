@@ -183,7 +183,7 @@ export function WhatIsHappening() {
                         </div>
                     </div>
                     <Link
-                        href="/upptack"
+                        href="/trending"
                         className="flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors"
                     >
                         View all <ArrowRight className="w-3 h-3" />
