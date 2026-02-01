@@ -19,6 +19,7 @@ import {
     Menu,
     X,
     Swords,
+    Flame,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { APP_CONFIG, UI_STRINGS } from "@/config/app";
@@ -36,6 +37,7 @@ import { supabase } from "@/lib/supabase/client";
 const navItems = [
     { icon: Home, label: UI_STRINGS.home, href: "/" },
     { icon: Sparkles, label: UI_STRINGS.discovery, href: "/discover" },
+    { icon: Flame, label: "Trending", href: "/trending" },
     { icon: TrendingUp, label: UI_STRINGS.markets, href: "/market" },
     { icon: GraduationCap, label: "Ticko Academy", href: "/learn" },
     { icon: Swords, label: "The Arena", href: "/arena" },
