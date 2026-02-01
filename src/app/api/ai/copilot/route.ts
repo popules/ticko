@@ -30,25 +30,113 @@ export async function POST(request: Request) {
 
         const { message, contextTicker, history } = await request.json();
 
-        let contextData = "";
+        // ========================================
+        // FETCH USER'S PERSONAL TICKO DATA
+        // ========================================
+
+        // 1. Get user's portfolio positions
+        const { data: portfolio } = await supabase
+            .from("portfolio")
+            .select("symbol, shares, avg_cost, created_at")
+            .eq("user_id", user.id);
+
+        // 2. Get user's recent transactions (last 20)
+        const { data: transactions } = await supabase
+            .from("transactions")
+            .select("symbol, type, shares, price, realized_pnl, created_at")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(20);
+
+        // 3. Get user's watchlist
+        const { data: watchlist } = await supabase
+            .from("watchlists")
+            .select("ticker_symbol")
+            .eq("user_id", user.id);
+
+        // 4. Get user's profile for cash balance
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("paper_balance, reputation_score")
+            .eq("id", user.id)
+            .single();
+
+        // Calculate portfolio stats
+        let totalInvested = 0;
+        let portfolioSummary = "";
+        if (portfolio && portfolio.length > 0) {
+            const positions = portfolio.map(p => {
+                const invested = p.shares * p.avg_cost;
+                totalInvested += invested;
+                return `${p.symbol}: ${p.shares} shares @ $${p.avg_cost.toFixed(2)} avg`;
+            });
+            portfolioSummary = positions.join("\n");
+        }
+
+        // Calculate recent trading stats
+        let tradingStats = "";
+        if (transactions && transactions.length > 0) {
+            const sells = transactions.filter(t => t.type === "sell");
+            const totalPnl = sells.reduce((sum, t) => sum + (t.realized_pnl || 0), 0);
+            const wins = sells.filter(t => (t.realized_pnl || 0) > 0).length;
+            const winRate = sells.length > 0 ? (wins / sells.length * 100).toFixed(0) : "N/A";
+            
+            const recentTrades = transactions.slice(0, 5).map(t => 
+                `${t.type.toUpperCase()} ${t.symbol}: ${t.shares} @ $${t.price.toFixed(2)}${t.realized_pnl ? ` (${t.realized_pnl >= 0 ? '+' : ''}$${t.realized_pnl.toFixed(0)})` : ''}`
+            ).join("\n");
+            
+            tradingStats = `
+Recent trades:
+${recentTrades}
+
+Stats: ${sells.length} closed trades, ${winRate}% win rate, ${totalPnl >= 0 ? '+' : ''}$${totalPnl.toFixed(0)} total P&L`;
+        }
+
+        // Build personal context
+        let personalContext = `
+========================================
+USER'S PERSONAL TICKO DATA:
+========================================
+
+CASH BALANCE: $${(profile?.paper_balance || 10000).toLocaleString()}
+TOTAL INVESTED: $${totalInvested.toLocaleString()}
+REPUTATION LEVEL: ${profile?.reputation_score || 0} XP
+
+CURRENT POSITIONS:
+${portfolioSummary || "No open positions"}
+
+${tradingStats || "No completed trades yet"}
+
+WATCHLIST: ${watchlist?.map(w => w.ticker_symbol).join(", ") || "Empty"}
+========================================
+`;
+
+        let stockContext = "";
 
         // If the user is looking at a specific stock, fetch data for it
         if (contextTicker) {
             const stock = await fetchStockData(contextTicker);
             if (stock) {
-                contextData = `
-STOCK DATA:
-• Name: ${stock.name} (${stock.symbol})
-• Price: ${stock.price} ${stock.currency}
+                // Check if user owns this stock
+                const userPosition = portfolio?.find(p => p.symbol === contextTicker.toUpperCase());
+                const positionInfo = userPosition 
+                    ? `\nUSER OWNS: ${userPosition.shares} shares @ $${userPosition.avg_cost.toFixed(2)} avg cost`
+                    : "\nUSER DOES NOT OWN THIS STOCK";
+
+                stockContext = `
+CURRENTLY VIEWING - ${stock.symbol}:
+• Name: ${stock.name}
+• Price: $${stock.price} ${stock.currency}
 • Daily change: ${stock.changePercent >= 0 ? '+' : ''}${stock.changePercent.toFixed(2)}%
 • P/E ratio: ${stock.pe || 'N/A'}
 • Market cap: ${stock.marketCap || 'N/A'}
-• 52-week H/L: ${stock.week52Range || 'N/A'}
-                `;
+• 52-week H/L: ${stock.week52Range || 'N/A'}${positionInfo}
+`;
             }
         }
 
-        const systemPrompt = COPILOT_SYSTEM_PROMPT(contextData);
+        const fullContext = personalContext + stockContext;
+        const systemPrompt = COPILOT_SYSTEM_PROMPT(fullContext);
 
         const messages = [
             { role: "system", content: systemPrompt },
