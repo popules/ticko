@@ -40,7 +40,7 @@ export function StockTabs({ ticker, currencySymbol, stock, header }: StockTabsPr
     const [activeTab, setActiveTab] = useState<TabId>("overview");
 
     return (
-        <div className="flex flex-col h-full overflow-x-hidden">
+        <div className="flex flex-col overflow-x-hidden pb-24">
             {/* Sticky Container for Header + Tabs */}
             <div className="sticky top-0 z-20 bg-[#020617]/95 backdrop-blur-xl border-b border-white/10">
                 {/* Optional Header (Mobile/Desktop consistent) */}

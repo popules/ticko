@@ -69,7 +69,7 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                 </div>
 
                 {/* Ticko Discovery Hook Card */}
-                <div className="bg-gradient-to-br from-violet-500/20 to-fuchsia-500/10 rounded-[1.5rem] p-5 md:p-6 border border-violet-500/20 shadow-inner relative overflow-hidden">
+                <div className="bg-gradient-to-br from-violet-500/20 to-fuchsia-500/10 rounded-[1.5rem] p-4 md:p-6 border border-violet-500/20 shadow-inner relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 opacity-10">
                         <Sparkles className="w-12 h-12 text-white" />
                     </div>
@@ -90,7 +90,7 @@ export function DiscoveryCard({ stock, onSwipe, active }: DiscoveryCardProps) {
                             </div>
                         )}
                     </div>
-                    <p className="text-base md:text-lg font-semibold text-white leading-snug italic">
+                    <p className="text-sm md:text-lg font-semibold text-white leading-snug italic">
                         "{stock.discoveryHook}"
                     </p>
                 </div>

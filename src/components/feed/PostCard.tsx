@@ -72,7 +72,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                     {/* Header */}
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center flex-wrap gap-2 mb-2">
                         <Link
                             href={`/profile/${post.user_id}`}
                             className="text-[15px] font-bold text-white truncate hover:text-emerald-400 transition-colors"
