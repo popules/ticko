@@ -4,19 +4,23 @@ import { useState, useEffect, useCallback } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Send, Loader2, Reply, ChevronDown, ChevronUp } from "lucide-react";
+import { MessageCircle, Send, Loader2, Reply, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import { ReactionBar } from "./ReactionBar";
+import { getLevel, getLevelColor } from "@/lib/level-system";
+import Link from "next/link";
 
 interface Comment {
     id: string;
+    user_id: string;
     content: string;
     created_at: string;
     parent_id: string | null;
     profiles: {
         username: string;
         avatar_url: string | null;
+        reputation_score?: number;
     } | null;
     replies?: Comment[];
 }
@@ -36,6 +40,7 @@ function CommentItem({
     setReplyContent,
     isSubmitting,
     handleSubmitReply,
+    handleDelete,
     user,
 }: {
     comment: Comment;
@@ -46,11 +51,22 @@ function CommentItem({
     setReplyContent: (content: string) => void;
     isSubmitting: boolean;
     handleSubmitReply: (parentId: string) => void;
+    handleDelete: (commentId: string) => void;
     user: any;
 }) {
     const [showReplies, setShowReplies] = useState(true);
+    const [isDeleting, setIsDeleting] = useState(false);
     const hasReplies = comment.replies && comment.replies.length > 0;
     const maxDepth = 4; // Max nesting level to prevent infinite indentation
+    const isOwnComment = user?.id === comment.user_id;
+    const level = comment.profiles?.reputation_score !== undefined ? getLevel(comment.profiles.reputation_score) : null;
+
+    const onDelete = async () => {
+        if (!confirm("Delete this comment?")) return;
+        setIsDeleting(true);
+        await handleDelete(comment.id);
+        setIsDeleting(false);
+    };
 
     return (
         <motion.div
@@ -60,22 +76,42 @@ function CommentItem({
         >
             <div className={`flex gap-3 ${depth > 0 ? 'ml-6 pl-3 border-l border-white/10' : ''}`}>
                 {/* Avatar */}
-                <div className={`${depth === 0 ? 'w-8 h-8' : 'w-6 h-6'} rounded-lg bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
-                    {comment.profiles?.username?.charAt(0).toUpperCase() || "?"}
-                </div>
+                <Link href={`/profile/${comment.user_id}`} className="flex-shrink-0">
+                    <div className={`${depth === 0 ? 'w-8 h-8' : 'w-6 h-6'} rounded-lg bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center text-white text-xs font-bold hover:scale-105 transition-transform cursor-pointer`}>
+                        {comment.profiles?.username?.charAt(0).toUpperCase() || "?"}
+                    </div>
+                </Link>
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                        <span className={`${depth === 0 ? 'text-sm' : 'text-xs'} font-semibold text-white`}>
+                        <Link 
+                            href={`/profile/${comment.user_id}`}
+                            className={`${depth === 0 ? 'text-sm' : 'text-xs'} font-semibold text-white hover:text-emerald-400 transition-colors`}
+                        >
                             {comment.profiles?.username || "Anonymous"}
-                        </span>
+                        </Link>
+                        {level !== null && (
+                            <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold border ${getLevelColor(level)}`}>
+                                Lvl {level}
+                            </span>
+                        )}
                         <span className="text-xs text-white/30">
                             {formatDistanceToNow(new Date(comment.created_at), {
                                 addSuffix: true,
                                 locale: enUS
                             })}
                         </span>
+                        {isOwnComment && (
+                            <button
+                                onClick={onDelete}
+                                disabled={isDeleting}
+                                className="ml-auto text-white/20 hover:text-rose-400 transition-colors opacity-0 group-hover:opacity-100"
+                                title="Delete comment"
+                            >
+                                {isDeleting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Trash2 className="w-3 h-3" />}
+                            </button>
+                        )}
                     </div>
                     <p className={`${depth === 0 ? 'text-sm' : 'text-xs'} text-white/80 break-words`}>
                         {comment.content}
@@ -157,6 +193,7 @@ function CommentItem({
                             setReplyContent={setReplyContent}
                             isSubmitting={isSubmitting}
                             handleSubmitReply={handleSubmitReply}
+                            handleDelete={handleDelete}
                             user={user}
                         />
                     ))}
@@ -210,12 +247,14 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
             .from("comments")
             .select(`
                 id,
+                user_id,
                 content,
                 created_at,
                 parent_id,
                 profiles (
                     username,
-                    avatar_url
+                    avatar_url,
+                    reputation_score
                 )
             `)
             .eq("post_id", postId)
@@ -227,6 +266,23 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
         }
         setIsLoading(false);
     }, [postId]);
+
+    const handleDelete = async (commentId: string) => {
+        if (!user || !supabase) return;
+
+        const { error } = await (supabase as any)
+            .from("comments")
+            .delete()
+            .eq("id", commentId)
+            .eq("user_id", user.id); // Ensure user owns the comment
+
+        if (!error) {
+            setCount(prev => Math.max(0, prev - 1));
+            fetchComments();
+        } else {
+            console.error("Delete comment error:", error);
+        }
+    };
 
     useEffect(() => {
         if (!isExpanded) return;
@@ -354,6 +410,7 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
                                             setReplyContent={setReplyContent}
                                             isSubmitting={isSubmitting}
                                             handleSubmitReply={handleSubmitReply}
+                                            handleDelete={handleDelete}
                                             user={user}
                                         />
                                     ))}
