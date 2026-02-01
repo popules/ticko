@@ -239,16 +239,21 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
 
         setIsSubmitting(true);
 
-        const { error } = await (supabase as any)
+        const { data, error } = await (supabase as any)
             .from("comments")
             .insert({
                 post_id: postId,
                 user_id: user.id,
                 content: newComment.trim(),
                 parent_id: null,
-            });
+            })
+            .select();
 
-        if (!error) {
+        if (error) {
+            console.error("Comment insert error:", error);
+            alert(`Failed to post comment: ${error.message}`);
+        } else {
+            console.log("Comment posted:", data);
             setCount(prev => prev + 1);
             setNewComment("");
             fetchComments(); // Refetch to get updated tree
@@ -262,16 +267,21 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
 
         setIsSubmitting(true);
 
-        const { error } = await (supabase as any)
+        const { data, error } = await (supabase as any)
             .from("comments")
             .insert({
                 post_id: postId,
                 user_id: user.id,
                 content: replyContent.trim(),
                 parent_id: parentId,
-            });
+            })
+            .select();
 
-        if (!error) {
+        if (error) {
+            console.error("Reply insert error:", error);
+            alert(`Failed to post reply: ${error.message}`);
+        } else {
+            console.log("Reply posted:", data);
             setCount(prev => prev + 1);
             setReplyContent("");
             setReplyingTo(null);
