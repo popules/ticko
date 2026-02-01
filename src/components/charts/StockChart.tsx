@@ -90,13 +90,13 @@ export function StockChart({ symbol, theme = "dark", height = 400 }: StockChartP
             backgroundColor: "rgba(2, 6, 23, 1)", // Match app background
             gridColor: "rgba(255, 255, 255, 0.03)", // Subtle grid
             hide_top_toolbar: true, // Cleaner look
-            hide_legend: false, // Show OHLC and % change
+            hide_legend: true, // Hide the confusing % change - we show better stats below
             hide_side_toolbar: true, // Cleaner look
             allow_symbol_change: false, // Lock to current symbol
             save_image: false,
             calendar: false,
             hide_volume: true, // Cleaner like Avanza
-            withdateranges: true, // Date range selector
+            withdateranges: true, // Date range selector at bottom
             support_host: "https://www.tradingview.com",
         });
 
