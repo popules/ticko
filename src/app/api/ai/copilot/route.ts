@@ -66,9 +66,11 @@ export async function POST(request: Request) {
         let portfolioSummary = "";
         if (portfolio && portfolio.length > 0) {
             const positions = portfolio.map(p => {
-                const invested = p.shares * p.avg_cost;
+                const shares = p.shares || 0;
+                const avgCost = p.avg_cost || 0;
+                const invested = shares * avgCost;
                 totalInvested += invested;
-                return `${p.symbol}: ${p.shares} shares @ $${p.avg_cost.toFixed(2)} avg`;
+                return `${p.symbol}: ${shares} shares @ $${avgCost.toFixed(2)} avg`;
             });
             portfolioSummary = positions.join("\n");
         }
@@ -81,9 +83,12 @@ export async function POST(request: Request) {
             const wins = sells.filter(t => (t.realized_pnl || 0) > 0).length;
             const winRate = sells.length > 0 ? (wins / sells.length * 100).toFixed(0) : "N/A";
             
-            const recentTrades = transactions.slice(0, 5).map(t => 
-                `${t.type.toUpperCase()} ${t.symbol}: ${t.shares} @ $${t.price.toFixed(2)}${t.realized_pnl ? ` (${t.realized_pnl >= 0 ? '+' : ''}$${t.realized_pnl.toFixed(0)})` : ''}`
-            ).join("\n");
+            const recentTrades = transactions.slice(0, 5).map(t => {
+                const price = t.price || 0;
+                const shares = t.shares || 0;
+                const pnl = t.realized_pnl;
+                return `${(t.type || 'trade').toUpperCase()} ${t.symbol}: ${shares} @ $${price.toFixed(2)}${pnl ? ` (${pnl >= 0 ? '+' : ''}$${pnl.toFixed(0)})` : ''}`;
+            }).join("\n");
             
             tradingStats = `
 Recent trades:
@@ -159,9 +164,13 @@ CURRENTLY VIEWING - ${stock.symbol}:
         return NextResponse.json({ reply });
 
     } catch (error: any) {
-        console.error("Copilot error:", error);
+        console.error("Copilot error:", error?.message || error);
+        console.error("Copilot error stack:", error?.stack);
         return NextResponse.json(
-            { reply: "I'm having trouble connecting to the market right now. Please try again in a moment." },
+            { 
+                reply: "I'm having trouble right now. Please try again in a moment.",
+                debug: process.env.NODE_ENV === "development" ? error?.message : undefined
+            },
             { status: 500 }
         );
     }

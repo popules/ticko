@@ -110,24 +110,25 @@ export function TickoAI() {
 
     return (
         <>
-            {/* Toggle Button */}
+            {/* Toggle Button - positioned above mobile nav on mobile, bottom-right on desktop */}
             <button
                 onClick={() => setIsOpen(true)}
-                className={`fixed bottom-6 right-6 p-4 rounded-full shadow-[0_0_40px_-5px_rgba(139,92,246,0.5)] transition-all transform hover:scale-105 z-50 ${isOpen ? "scale-0 opacity-0 pointer-events-none" : "bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white"
-                    }`}
+                className={`fixed p-3.5 sm:p-4 rounded-full shadow-[0_0_40px_-5px_rgba(139,92,246,0.5)] transition-all transform hover:scale-105 z-40 ${isOpen ? "scale-0 opacity-0 pointer-events-none" : "bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white"
+                    } bottom-24 right-4 sm:bottom-6 sm:right-6`}
             >
                 <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse" />
-                <Brain className="w-6 h-6 relative z-10" />
+                <Brain className="w-5 h-5 sm:w-6 sm:h-6 relative z-10" />
             </button>
 
-            {/* Chat Window */}
+            {/* Chat Window - Full screen on mobile, floating on desktop */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="fixed bottom-6 right-6 w-96 h-[600px] max-h-[80vh] bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden"
+                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                        className="fixed z-50 overflow-hidden bg-[#0f172a] border border-white/10 shadow-2xl flex flex-col
+                            inset-0 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-96 sm:h-[600px] sm:max-h-[80vh] sm:rounded-2xl"
                     >
                         {/* Header */}
                         <div className="p-4 border-b border-white/10 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 flex items-center justify-between backdrop-blur-md">
