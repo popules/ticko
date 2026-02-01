@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useQueryClient } from "@tanstack/react-query";
 import { Gamepad2, X, Loader2, TrendingUp, AlertTriangle, Wallet, ArrowLeftRight, PartyPopper, Lock } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/lib/supabase/client";
@@ -21,6 +22,7 @@ const Portal = ({ children }: { children: React.ReactNode }) => {
 };
 
 export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
+    const queryClient = useQueryClient();
     const { user } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
@@ -144,6 +146,18 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
 
             if (!res.ok) {
                 throw new Error(data.error || "Purchase failed");
+            }
+
+            // Trigger Challenge Progress (Action: 'trade')
+            try {
+                await fetch("/api/challenges/progress", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ actionType: "trade" }),
+                });
+                queryClient.invalidateQueries({ queryKey: ["active-challenges"] });
+            } catch (err) {
+                console.error("Failed to update challenge progress", err);
             }
 
             setSuccess(true);

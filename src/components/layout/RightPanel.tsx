@@ -4,6 +4,7 @@ import { Plus, Eye, X, Loader2 } from "lucide-react";
 import { fetchStockData } from "@/lib/stocks-api";
 import { SentimentHeatmap } from "@/components/analysis/SentimentHeatmap";
 import { TrendingTickers } from "@/components/discovery/TrendingTickers";
+import { ChallengesWidget } from "@/components/dashboard/ChallengesWidget";
 import { UI_STRINGS } from "@/config/app";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -70,6 +71,11 @@ export function RightPanel() {
 
     return (
         <aside className="hidden md:flex w-80 h-screen sticky top-0 flex-col border-l border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-y-auto scrollbar-hide">
+            {/* Daily Challenges */}
+            <div className="p-4 pb-0">
+                <ChallengesWidget />
+            </div>
+
             {/* Market Overview */}
             <div className="p-5 border-b border-white/10">
                 <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4">

@@ -31,10 +31,23 @@ export function useLearnProgress() {
             if (!res.ok) throw new Error("Failed to save progress");
             return res.json();
         },
-        onSuccess: (data, variables) => {
+        onSuccess: async (data, variables) => {
             // Optimistic update or refetch
             queryClient.invalidateQueries({ queryKey: ["learn-progress"] });
             queryClient.invalidateQueries({ queryKey: ["profile"] }); // Update XP
+
+            // Trigger Challenge Progress (Action: 'lesson')
+            try {
+                await fetch("/api/challenges/progress", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ actionType: "lesson" }),
+                });
+                // Invalidate challenges to show progress in widget
+                queryClient.invalidateQueries({ queryKey: ["active-challenges"] });
+            } catch (err) {
+                console.error("Failed to update challenge progress", err);
+            }
         },
     });
 

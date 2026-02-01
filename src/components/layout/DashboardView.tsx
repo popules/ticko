@@ -5,6 +5,7 @@ import { RightPanel } from "@/components/layout/RightPanel";
 import { FeedStream } from "@/components/feed/FeedStream";
 import { OnboardingModal } from "@/components/onboarding/OnboardingModal";
 import { DashboardAcademyCard } from "@/components/learn/DashboardAcademyCard";
+import { ChallengesWidget } from "@/components/dashboard/ChallengesWidget";
 import { APP_CONFIG } from "@/config/app";
 
 export function DashboardView() {
@@ -25,6 +26,9 @@ export function DashboardView() {
                 {/* Feed Content */}
                 <div className="p-4 md:p-6">
                     <DashboardAcademyCard />
+                    <div className="lg:hidden mb-6">
+                        <ChallengesWidget />
+                    </div>
                     <FeedStream />
                 </div>
             </main>

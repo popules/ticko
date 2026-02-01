@@ -2,6 +2,32 @@ export type SentimentType = "bull" | "bear";
 export type ReactionType = "up" | "down";
 export type PredictionStatus = "pending" | "correct" | "incorrect";
 
+export type ChallengeType = 'daily' | 'weekly';
+export type ChallengeCategory = 'trading' | 'social' | 'learning';
+
+export interface Challenge {
+    id: string;
+    type: ChallengeType;
+    category: ChallengeCategory;
+    title: string;
+    description: string;
+    target_count: number;
+    xp_reward: number;
+    cash_reward: number;
+    is_active: boolean;
+    created_at: string;
+}
+
+export interface UserChallenge {
+    id: string;
+    user_id: string;
+    challenge_id: string;
+    current_count: number;
+    is_completed: boolean;
+    completed_at: string | null;
+    expires_at: string;
+}
+
 export interface Profile {
     id: string;
     username: string;
@@ -181,6 +207,42 @@ export type Database = {
                 };
                 Update: {
                     xp_awarded?: number;
+                };
+            };
+            challenges: {
+                Row: Challenge;
+                Insert: {
+                    type: ChallengeType;
+                    category: ChallengeCategory;
+                    title: string;
+                    description: string;
+                    target_count: number;
+                    xp_reward: number;
+                    cash_reward?: number;
+                    is_active?: boolean;
+                };
+                Update: {
+                    title?: string;
+                    description?: string;
+                    target_count?: number;
+                    xp_reward?: number;
+                    is_active?: boolean;
+                };
+            };
+            user_challenges: {
+                Row: UserChallenge;
+                Insert: {
+                    user_id: string;
+                    challenge_id: string;
+                    current_count?: number;
+                    is_completed?: boolean;
+                    completed_at?: string | null;
+                    expires_at: string;
+                };
+                Update: {
+                    current_count?: number;
+                    is_completed?: boolean;
+                    completed_at?: string | null;
                 };
             };
         };

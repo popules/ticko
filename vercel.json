@@ -17,8 +17,11 @@
             "schedule": "0 0 * * *"
         },
         {
-            "path": "/api/cron/season-reset",
             "schedule": "0 0 1 * *"
+        },
+        {
+            "path": "/api/cron/daily-maintenance",
+            "schedule": "0 0 * * *"
         }
     ]
 }

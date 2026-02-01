@@ -113,6 +113,18 @@ export function PostComposer({ onNewPost, tickerFilter }: PostComposerProps) {
             // Award XP for posting
             await awardXp(user.id, XP_PER_POST);
 
+            // Trigger Challenge Progress (Action: 'comment' mapped to social)
+            // TODO: Distinguish between 'post' and 'comment' if needed later
+            try {
+                await fetch("/api/challenges/progress", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ actionType: "comment" }),
+                });
+            } catch (err) {
+                console.error("Failed to update challenge progress", err);
+            }
+
             setContent("");
             setSentiment(null);
             setGifUrl(null);
