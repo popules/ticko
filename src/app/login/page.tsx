@@ -101,7 +101,7 @@ export default function LoginPage() {
                             {/* Forgot password link */}
                             <div className="flex justify-end mt-2">
                                 <Link
-                                    href="/aterstall-losenord"
+                                    href="/reset-password"
                                     className="text-sm text-gray-400 hover:text-white/70 transition-colors"
                                 >
                                     Forgot password?
@@ -176,7 +176,7 @@ export default function LoginPage() {
                     {/* Register link */}
                     <p className="text-center text-white/50 mt-6">
                         Don't have an account?{" "}
-                        <Link href="/registrera" className="text-emerald-400 hover:text-emerald-300 font-bold">
+                        <Link href="/register" className="text-emerald-400 hover:text-emerald-300 font-bold">
                             Sign up
                         </Link>
                     </p>
