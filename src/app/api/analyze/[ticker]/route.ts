@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 import { openai } from "@/lib/openai";
 import { fetchStockData } from "@/lib/stocks-api";
+import { checkAndIncrementAIUsage, createLimitReachedResponse } from "@/lib/ai-metering";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 interface AnalysisResult {
     ticker: string;
@@ -17,6 +23,23 @@ export async function GET(
 ) {
     const { ticker } = await params;
     const upperTicker = ticker.toUpperCase();
+
+    // Check authentication
+    const cookieStore = await cookies();
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+        global: { headers: { Cookie: cookieStore.toString() } },
+    });
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check AI usage metering
+    const metering = await checkAndIncrementAIUsage(supabase, user.id);
+    if (!metering.allowed) {
+        return NextResponse.json(createLimitReachedResponse(), { status: 402 });
+    }
 
     // Check if API key is configured
     if (!process.env.OPENAI_API_KEY) {

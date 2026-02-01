@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { TrendingUp, TrendingDown, Brain, Activity, Loader2 } from "lucide-react";
+import { TrendingUp, TrendingDown, Brain, Activity, Loader2, Star } from "lucide-react";
 import { UI_STRINGS } from "@/config/app";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
+import { ProUpsellModal } from "@/components/ui/ProUpsellModal";
 
 interface AIValuationCardProps {
     ticker: string;
@@ -17,6 +19,7 @@ interface AIAnalysisRes {
     reasoning: string;
     sentiment: "bullish" | "bearish" | "neutral";
     confidence: number;
+    error?: string;
 }
 
 interface SentimentRes {
@@ -28,15 +31,27 @@ interface SentimentRes {
 }
 
 export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCardProps) {
+    const [showProModal, setShowProModal] = useState(false);
+    const [limitReached, setLimitReached] = useState(false);
+
     // 1. Fetch AI Analysis from our OpenAI route
     const { data: aiData, isLoading: isAiLoading, error: aiError } = useQuery<AIAnalysisRes>({
         queryKey: ["ai-analysis", ticker],
         queryFn: async () => {
             const res = await fetch(`/api/analyze/${ticker}`);
+            const data = await res.json();
+            
+            // Handle 402 - limit reached
+            if (res.status === 402 && data.error === "limit_reached") {
+                setLimitReached(true);
+                throw new Error("limit_reached");
+            }
+            
             if (!res.ok) throw new Error("AI analysis failed");
-            return res.json();
+            return data;
         },
         staleTime: 1000 * 60 * 10, // 10 minutes cache
+        retry: false, // Don't retry on limit reached
     });
 
     // 2. Fetch real Community Sentiment from Supabase RPC
@@ -65,11 +80,38 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
         );
     }
 
+    if (limitReached || (aiError && (aiError as Error).message === "limit_reached")) {
+        return (
+            <>
+                <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-8 border border-violet-500/20 text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center">
+                        <Star className="w-8 h-8 text-violet-400" />
+                    </div>
+                    <p className="text-white font-semibold mb-2">Daily AI Limit Reached</p>
+                    <p className="text-sm text-white/50 mb-4">You've used your 3 free AI analyses today</p>
+                    <button
+                        onClick={() => setShowProModal(true)}
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold text-sm hover:opacity-90 transition-opacity inline-flex items-center gap-2"
+                    >
+                        <Star className="w-4 h-4" />
+                        Upgrade to Pro
+                    </button>
+                </div>
+                {showProModal && (
+                    <ProUpsellModal
+                        trigger="ai_limit"
+                        onClose={() => setShowProModal(false)}
+                    />
+                )}
+            </>
+        );
+    }
+
     if (aiError) {
         return (
             <div className="bg-white/[0.04] backdrop-blur-xl rounded-2xl p-8 border border-white/10 text-center">
                 <p className="text-rose-400">Could not perform AI analysis</p>
-                <p className="text-sm text-white/40 mt-2">Check OpenAI API key in .env.local</p>
+                <p className="text-sm text-white/40 mt-2">Please try again later</p>
             </div>
         );
     }
