@@ -258,7 +258,7 @@ export default function LeaderboardPage() {
                                 }`}
                         >
                             <Gamepad2 className="w-4 h-4" />
-                            Paper Trading
+                            Arena
                         </button>
                         <button
                             onClick={() => setActiveTab("reputation")}
@@ -288,7 +288,7 @@ export default function LeaderboardPage() {
                             <Info className="w-4 h-4 text-white/40 mt-0.5 flex-shrink-0" />
                             {activeTab === "paper" ? (
                                 <div className="text-xs text-white/50 space-y-1">
-                                    <p className="font-medium text-white/70">How Paper Trading Scores Work</p>
+                                    <p className="font-medium text-white/70">How Arena Scores Work</p>
                                     <p>Rankings based on portfolio profit/loss. Start with $10,000 virtual dollars, trade real stocks with real prices. Your P&L is tracked and updated daily.</p>
                                     <p className="text-white/30">Positions are locked for 30 minutes after buying to ensure fair competition.</p>
                                 </div>
@@ -325,11 +325,11 @@ export default function LeaderboardPage() {
                                         You haven't been assigned to a league yet. Make some trades or engage in the community to get placed!
                                     </p>
                                     <Link
-                                        href="/paper-trading"
+                                        href="/arena"
                                         className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold transition-colors"
                                     >
                                         <Gamepad2 className="w-4 h-4" />
-                                        Start Trading
+                                        Enter The Arena
                                     </Link>
                                 </div>
                             )}

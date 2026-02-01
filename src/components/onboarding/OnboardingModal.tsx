@@ -113,7 +113,7 @@ export function OnboardingModal() {
             // The steps target Sidebar items which are always visible.
             // However, the first step is "Your Portfolio". If we are on Home, we can see Sidebar.
             // Let's NOT redirect to paper-trading immediately, let the tour guide them.
-            // router.push("/paper-trading"); // Removed implicit redirect to allow tour to guide
+            // router.push("/arena"); // Removed implicit redirect to allow tour to guide
         }
     };
 

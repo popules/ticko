@@ -150,11 +150,11 @@ Zoomed out, the market almost always goes up over decades.`,
 - Test strategies before going live
 - Build confidence and track record
 
-On Ticko, you start with **$10,000 in virtual cash**. Use it to buy and sell real stocks at real prices.
+In **The Arena**, you start with **$10,000 in virtual cash**. Use it to buy and sell real stocks at real prices.
 
 Your performance is tracked on the leaderboard!`,
                 ctaText: "Start paper trading",
-                ctaLink: "/paper-trading",
+                ctaLink: "/arena",
             },
             {
                 id: "how-to-buy",

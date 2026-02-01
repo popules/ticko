@@ -69,8 +69,12 @@ export default function SeederPage() {
                 body: JSON.stringify({ ticker, count })
             });
             const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data.error || `Request failed with status ${res.status}`);
+            }
             addLog(`Generated ${data.count} posts!`);
         } catch (e: any) {
+            console.error(e);
             addLog(`Error: ${e.message}`);
         }
         setIsLoading(false);

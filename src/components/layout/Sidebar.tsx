@@ -18,6 +18,7 @@ import {
     LogOut,
     Menu,
     X,
+    Swords,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { APP_CONFIG, UI_STRINGS } from "@/config/app";
@@ -33,7 +34,7 @@ const navItems = [
     { icon: Sparkles, label: UI_STRINGS.discovery, href: "/discover" },
     { icon: TrendingUp, label: UI_STRINGS.markets, href: "/market" },
     { icon: GraduationCap, label: "Ticko Academy", href: "/learn" },
-    { icon: Gamepad2, label: "Paper Trading", href: "/paper-trading" },
+    { icon: Swords, label: "The Arena", href: "/arena" },
     { icon: Star, label: UI_STRINGS.watchlist, href: "/watchlist" },
     { icon: Trophy, label: "Leaderboard", href: "/leaderboard" },
     { icon: User, label: UI_STRINGS.profile, href: "/profile" },
@@ -115,7 +116,7 @@ export function Sidebar() {
                     const isActive = pathname === item.href ||
                         (item.href !== "/" && pathname.startsWith(item.href));
                     const getTourId = (href: string) => {
-                        if (href === "/paper-trading") return "tour-paper-trading-link";
+                        if (href === "/arena") return "tour-arena-link";
                         if (href === "/market") return "tour-market-link";
                         if (href === "/leaderboard") return "tour-leaderboard-link";
                         return undefined;

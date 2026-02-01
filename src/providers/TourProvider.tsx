@@ -33,9 +33,9 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
     const [steps, setSteps] = useState<Step[]>([
         {
             id: "portfolio",
-            targetId: "tour-paper-trading-link",
+            targetId: "tour-arena-link",
             title: "Your $10,000 Portfolio 💰",
-            content: "Access your paper trading dashboard here. You start with $10k virtual cash to practice risk-free.",
+            content: "Enter the Arena to manage your portfolio. You start with $10k virtual cash to practice risk-free.",
             position: "right"
         },
         {

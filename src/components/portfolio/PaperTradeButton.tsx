@@ -193,7 +193,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                 className="flex items-center gap-2 px-3 py-2 rounded-xl bg-violet-500/10 border border-violet-500/30 text-violet-400 text-sm font-bold hover:bg-violet-500/20 transition-all group"
             >
                 <Gamepad2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                <span className="hidden sm:inline">Paper Trade</span>
+                <span className="hidden sm:inline">Trade (Arena)</span>
             </button>
 
             <AnimatePresence>
@@ -220,7 +220,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                             <Gamepad2 className="w-5 h-5 text-white" />
                                         </div>
                                         <div>
-                                            <h2 className="text-lg font-bold text-white">Paper Trade</h2>
+                                            <h2 className="text-lg font-bold text-white">Arena Trade</h2>
                                             <p className="text-xs text-white/40">Buy ${symbol}</p>
                                         </div>
                                     </div>
@@ -389,7 +389,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                         ) : (
                                             <>
                                                 <Gamepad2 className="w-4 h-4" />
-                                                Buy (Paper)
+                                                Buy (Arena)
                                             </>
                                         )}
                                     </button>

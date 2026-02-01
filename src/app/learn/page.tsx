@@ -119,10 +119,10 @@ export default function LearnPage() {
                     Ready to put your knowledge to practice?
                 </p>
                 <Link
-                    href="/paper-trading"
+                    href="/arena"
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 text-white font-semibold hover:bg-emerald-600 transition-colors"
                 >
-                    Start Paper Trading
+                    Enter The Arena
                     <ChevronRight className="w-4 h-4" />
                 </Link>
             </motion.div>

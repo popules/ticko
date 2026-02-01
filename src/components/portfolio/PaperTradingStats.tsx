@@ -95,7 +95,7 @@ export function PaperTradingStats({ userId, compact = false }: PaperTradingStats
                 <span className={`font-bold tabular-nums ${stats.totalPL >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
                     {stats.totalPL >= 0 ? "+" : ""}{stats.plPercent.toFixed(1)}%
                 </span>
-                <span className="text-white/30">paper</span>
+                <span className="text-white/30">arena</span>
             </div>
         );
     }
@@ -105,7 +105,7 @@ export function PaperTradingStats({ userId, compact = false }: PaperTradingStats
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                     <Gamepad2 className="w-4 h-4 text-violet-400" />
-                    <h4 className="text-xs font-bold text-violet-400 uppercase tracking-widest">Paper Trading</h4>
+                    <h4 className="text-xs font-bold text-violet-400 uppercase tracking-widest">The Arena</h4>
                 </div>
                 <span className="text-[8px] px-1.5 py-0.5 rounded bg-violet-500/20 text-violet-400 font-bold uppercase">
                     Simulation
@@ -144,7 +144,7 @@ export function PaperTradingStats({ userId, compact = false }: PaperTradingStats
             </div>
 
             <Link
-                href="/paper-trading"
+                href="/arena"
                 className="mt-4 block text-center text-xs text-violet-400/70 hover:text-violet-400 transition-colors"
             >
                 See leaderboard →

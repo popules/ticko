@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Search, TrendingUp, Wallet, User } from "lucide-react";
+import { Home, Search, TrendingUp, Wallet, User, Swords } from "lucide-react";
 import { useSearch } from "@/providers/SearchProvider";
 import { useAuth } from "@/providers/AuthProvider";
 
@@ -20,7 +20,7 @@ export function MobileNav() {
         { icon: Home, label: "Home", href: "/" },
         { icon: Search, label: "Search", action: open },
         { icon: TrendingUp, label: "Market", href: "/market" },
-        { icon: Wallet, label: "Paper Trading", href: "/paper-trading" },
+        { icon: Swords, label: "Arena", href: "/arena" },
         { icon: User, label: "Profile", href: "/profile" },
     ];
 

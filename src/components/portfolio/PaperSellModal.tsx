@@ -187,7 +187,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.5 }}
-                                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🎮 Paper Trading win on Ticko!\n\n$${item.symbol}: +${pnlPercent.toFixed(1)}% \n\nJoin: tickomarkets.com`)}`}
+                                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🎮 Arena win on Ticko!\n\n$${item.symbol}: +${pnlPercent.toFixed(1)}% \n\nJoin: tickomarkets.com`)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold hover:scale-105 transition-transform"
