@@ -14,11 +14,7 @@ export default function RegisterPage() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [acceptedTerms, setAcceptedTerms] = useState(false);
-    const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -59,7 +55,8 @@ export default function RegisterPage() {
                 body: JSON.stringify({ email, username })
             }).catch(console.error);
 
-            router.push("/");
+            setIsSuccess(true);
+            setIsLoading(false);
         }
     };
 
@@ -71,6 +68,48 @@ export default function RegisterPage() {
             setIsGoogleLoading(false);
         }
     };
+
+    if (isSuccess) {
+        return (
+            <div className="min-h-screen flex items-center justify-center p-4">
+                {/* Background gradients */}
+                <div className="fixed inset-0 -z-10">
+                    <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl" />
+                    <div className="absolute bottom-1/3 left-1/4 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl" />
+                </div>
+
+                <div className="w-full max-w-md">
+                    <div className="text-center mb-8">
+                        <Link href="/" className="inline-flex items-center justify-center">
+                            <TickoLogo />
+                        </Link>
+                    </div>
+
+                    <div className="bg-white/[0.04] backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl text-center">
+                        <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <Mail className="w-8 h-8 text-emerald-400" />
+                        </div>
+                        <h1 className="text-2xl font-bold text-white mb-4">Check your email</h1>
+                        <p className="text-white/60 mb-8 leading-relaxed">
+                            We've sent a confirmation link to <span className="text-white font-medium">{email}</span>. Please click the link to verify your account and start using Ticko.
+                        </p>
+
+                        <div className="space-y-4">
+                            <Link
+                                href="/login"
+                                className="block w-full py-4 bg-white/10 hover:bg-white/20 text-white rounded-2xl font-semibold text-base transition-all"
+                            >
+                                Go to Login
+                            </Link>
+                            <p className="text-sm text-white/40">
+                                Didn't receive the email? Check your spam folder.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
