@@ -247,7 +247,7 @@ export function Sidebar() {
             <div className="md:hidden h-16" />
 
             {/* Desktop Sidebar */}
-            <aside className="hidden md:flex w-64 h-screen sticky top-0 flex-col border-r border-white/10 bg-white/[0.02] backdrop-blur-xl z-50">
+            <aside className="hidden md:flex w-64 h-screen sticky top-0 flex-col border-r border-white/10 bg-white/[0.02] backdrop-blur-xl z-[100]">
                 <SidebarContent />
             </aside>
 
