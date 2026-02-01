@@ -69,6 +69,41 @@ function validateWebhookSignature(
 }
 
 /**
+ * Activate Pro subscription for user
+ */
+async function activateProSubscription(userId: string, periodEnd: string): Promise<void> {
+    const supabaseAdmin = getSupabaseAdmin();
+
+    await supabaseAdmin
+        .from("profiles")
+        .update({
+            is_pro: true,
+            pro_expires_at: periodEnd,
+            watchlist_limit: 50, // Upgrade watchlist limit
+        })
+        .eq("id", userId);
+
+    console.log(`Pro subscription activated for user: ${userId}, expires: ${periodEnd}`);
+}
+
+/**
+ * Deactivate Pro subscription for user
+ */
+async function deactivateProSubscription(userId: string): Promise<void> {
+    const supabaseAdmin = getSupabaseAdmin();
+
+    await supabaseAdmin
+        .from("profiles")
+        .update({
+            is_pro: false,
+            watchlist_limit: 10, // Reset to free limit
+        })
+        .eq("id", userId);
+
+    console.log(`Pro subscription deactivated for user: ${userId}`);
+}
+
+/**
  * Reset user's paper trading portfolio after successful payment
  */
 async function resetPortfolioAfterPayment(userId: string): Promise<void> {
@@ -160,6 +195,35 @@ export async function POST(request: NextRequest) {
             // Verify this is for portfolio reset product
             if (checkout.metadata?.action === "portfolio_reset") {
                 await resetPortfolioAfterPayment(userId);
+            }
+        }
+
+        // Handle subscription events
+        if (event.type === "subscription.created" || event.type === "subscription.updated") {
+            const subscription = event.data;
+            const userId = subscription.metadata?.userId as string;
+
+            if (!userId) {
+                console.error("No userId in subscription metadata");
+                return NextResponse.json({ received: true }, { status: 202 });
+            }
+
+            // Check if subscription is active
+            if (subscription.status === "active") {
+                const periodEnd = subscription.current_period_end || subscription.ended_at;
+                await activateProSubscription(userId, periodEnd);
+            } else if (subscription.status === "canceled" || subscription.status === "expired") {
+                await deactivateProSubscription(userId);
+            }
+        }
+
+        // Handle subscription cancellation
+        if (event.type === "subscription.canceled" || event.type === "subscription.revoked") {
+            const subscription = event.data;
+            const userId = subscription.metadata?.userId as string;
+
+            if (userId) {
+                await deactivateProSubscription(userId);
             }
         }
 

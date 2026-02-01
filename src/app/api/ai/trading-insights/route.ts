@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 import { openai } from "@/lib/openai";
+import { checkAndIncrementAIUsage, createLimitReachedResponse } from "@/lib/ai-metering";
 
 /**
  * API Route: /api/ai/trading-insights
@@ -25,6 +27,12 @@ export async function POST(request: Request) {
             process.env.NEXT_PUBLIC_SUPABASE_URL,
             serviceRoleKey
         );
+
+        // Check AI usage metering (use service role client to read profile)
+        const metering = await checkAndIncrementAIUsage(supabase, userId);
+        if (!metering.allowed) {
+            return NextResponse.json(createLimitReachedResponse(), { status: 402 });
+        }
 
         // Fetch user's trading history
         const { data: transactions, error: txError } = await supabase

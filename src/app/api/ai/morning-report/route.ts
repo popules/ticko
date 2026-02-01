@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { openai } from "@/lib/openai";
 import { fetchStockData } from "@/lib/stocks-api";
 import { REPORT_SYSTEM_PROMPT, getTimeGreeting } from "@/config/ai-prompts";
+import { checkAndIncrementAIUsage, createLimitReachedResponse } from "@/lib/ai-metering";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -17,6 +18,12 @@ export async function GET(_request: Request) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check AI usage metering
+    const metering = await checkAndIncrementAIUsage(supabase, user.id);
+    if (!metering.allowed) {
+        return NextResponse.json(createLimitReachedResponse(), { status: 402 });
     }
 
     try {

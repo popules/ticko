@@ -35,6 +35,14 @@ export interface Profile {
     reputation_score: number;
     created_at: string;
     updated_at: string;
+    // Pro subscription fields
+    is_pro?: boolean;
+    pro_expires_at?: string | null;
+    // AI usage metering
+    ai_usage_count?: number;
+    ai_usage_date?: string | null;
+    // Watchlist limit
+    watchlist_limit?: number;
 }
 
 export interface Post {
@@ -140,11 +148,21 @@ export type Database = {
                     username: string;
                     avatar_url?: string | null;
                     reputation_score?: number;
+                    is_pro?: boolean;
+                    pro_expires_at?: string | null;
+                    ai_usage_count?: number;
+                    ai_usage_date?: string | null;
+                    watchlist_limit?: number;
                 };
                 Update: {
                     username?: string;
                     avatar_url?: string | null;
                     reputation_score?: number;
+                    is_pro?: boolean;
+                    pro_expires_at?: string | null;
+                    ai_usage_count?: number;
+                    ai_usage_date?: string | null;
+                    watchlist_limit?: number;
                 };
             };
             posts: {

@@ -10,6 +10,7 @@ import { getUserRank } from "@/lib/ranks";
 import { getLevel, getProgressToNextLevel } from "@/lib/level-system";
 import { FollowButton } from "../social/FollowButton";
 import { useAuth } from "@/providers/AuthProvider";
+import { ProBadgeInline } from "@/components/ui/ProBadge";
 
 interface ProfileHeaderProps {
     profile: {
@@ -20,6 +21,7 @@ interface ProfileHeaderProps {
         created_at: string;
         accuracy?: number;
         avatar_url?: string | null;
+        is_pro?: boolean;
     };
     isOwnProfile?: boolean;
 }
@@ -76,9 +78,12 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                 <div className="flex-1 space-y-4">
                     <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
                         <div>
-                            <h1 className="text-2xl md:text-3xl font-black text-white tracking-tighter mb-1">
-                                {currentProfile.username}
-                            </h1>
+                            <div className="flex items-center gap-2 mb-1">
+                                <h1 className="text-2xl md:text-3xl font-black text-white tracking-tighter">
+                                    {currentProfile.username}
+                                </h1>
+                                {(currentProfile as any).is_pro && <ProBadgeInline />}
+                            </div>
                             <div className="flex items-center gap-4 text-white/50 text-sm font-medium">
                                 <span className="flex items-center gap-1.5">
                                     <Calendar className="w-4 h-4" />

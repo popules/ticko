@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
 import { Trophy, Medal, TrendingUp, TrendingDown, User, Crown, Loader2, Gamepad2, RotateCcw, Calendar, Clock, ChevronDown, History, Info, Shield } from "lucide-react";
+import { ProBadge } from "@/components/ui/ProBadge";
 import Image from "next/image";
 import Link from "next/link";
 import { Sidebar } from "@/components/layout/Sidebar";
@@ -473,7 +474,7 @@ export default function LeaderboardPage() {
                                     <div className="text-center">
                                         <div className="flex items-center justify-center gap-1">
                                             <p className="font-bold text-white text-sm truncate max-w-full">@{leaders[1].username}</p>
-                                            {leaders[1].is_pro && <span className="text-amber-400 text-xs">👑</span>}
+                                            {leaders[1].is_pro && <ProBadge size="xs" />}
                                         </div>
                                         <p className={`text-xs font-medium ${getScoreColor(leaders[1], 1)}`}>
                                             {getScoreDisplay(leaders[1])}
@@ -512,7 +513,7 @@ export default function LeaderboardPage() {
                                     <div className="text-center">
                                         <div className="flex items-center justify-center gap-1">
                                             <p className="font-bold text-white text-base truncate max-w-full">@{leaders[0].username}</p>
-                                            {leaders[0].is_pro && <span className="text-amber-400">👑</span>}
+                                            {leaders[0].is_pro && <ProBadge size="sm" />}
                                         </div>
                                         <p className={`text-sm font-bold ${getScoreColor(leaders[0], 0)}`}>
                                             {getScoreDisplay(leaders[0])}
@@ -543,7 +544,7 @@ export default function LeaderboardPage() {
                                     <div className="text-center">
                                         <div className="flex items-center justify-center gap-1">
                                             <p className="font-bold text-white text-sm truncate max-w-full">@{leaders[2].username}</p>
-                                            {leaders[2].is_pro && <span className="text-amber-400 text-xs">👑</span>}
+                                            {leaders[2].is_pro && <ProBadge size="xs" />}
                                         </div>
                                         <p className={`text-xs font-medium ${getScoreColor(leaders[2], 2)}`}>
                                             {getScoreDisplay(leaders[2])}
@@ -581,7 +582,7 @@ export default function LeaderboardPage() {
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-1">
                                             <h3 className="font-bold text-white text-sm truncate">@{user.username}</h3>
-                                            {user.is_pro && <span className="text-amber-400 text-xs">👑</span>}
+                                            {user.is_pro && <ProBadge size="xs" />}
                                         </div>
                                         {activeTab === "paper" && user.paper_reset_count && user.paper_reset_count > 0 && (
                                             <span className="text-[10px] text-amber-400/60 flex items-center gap-1">

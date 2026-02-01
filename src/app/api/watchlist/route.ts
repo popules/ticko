@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { fetchStockData } from '@/lib/stocks-api';
+import { isUserPro } from '@/lib/ai-metering';
 
 export const dynamic = 'force-dynamic';
+
+const FREE_WATCHLIST_LIMIT = 10;
+const PRO_WATCHLIST_LIMIT = 50;
 
 export async function GET() {
     try {
@@ -139,6 +143,35 @@ export async function POST(request: Request) {
             console.log(`Watchlist: Removed ${ticker} for user ${user.id}`);
             return NextResponse.json({ status: 'removed' });
         } else {
+            // Check watchlist limit before adding
+            const { count: currentCount } = await (supabase as any)
+                .from('watchlists')
+                .select('*', { count: 'exact', head: true })
+                .eq('user_id', user.id);
+
+            // Get user's Pro status
+            const { data: profile } = await (supabase as any)
+                .from('profiles')
+                .select('is_pro, pro_expires_at')
+                .eq('id', user.id)
+                .single();
+
+            const isPro = profile ? isUserPro(profile) : false;
+            const limit = isPro ? PRO_WATCHLIST_LIMIT : FREE_WATCHLIST_LIMIT;
+
+            if ((currentCount || 0) >= limit) {
+                return NextResponse.json({
+                    error: 'watchlist_limit_reached',
+                    message: isPro 
+                        ? `You've reached the Pro watchlist limit of ${PRO_WATCHLIST_LIMIT} stocks.`
+                        : `You've reached the free watchlist limit of ${FREE_WATCHLIST_LIMIT} stocks. Upgrade to Pro for ${PRO_WATCHLIST_LIMIT}+ slots.`,
+                    limit,
+                    current: currentCount,
+                    isPro,
+                    upgrade_url: '/pro'
+                }, { status: 402 });
+            }
+
             const { error: insertError } = await (supabase as any)
                 .from('watchlists')
                 .insert({ user_id: user.id, ticker_symbol: ticker });

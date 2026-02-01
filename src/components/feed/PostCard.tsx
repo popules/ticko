@@ -17,6 +17,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import type { Post } from "@/types/database";
+import { ProBadge } from "@/components/ui/ProBadge";
 
 interface PostCardProps {
     post: Post & {
@@ -24,6 +25,7 @@ interface PostCardProps {
             username: string;
             avatar_url: string | null;
             reputation_score: number;
+            is_pro?: boolean;
         };
         polls?: any[];
         comment_count?: number;
@@ -75,9 +77,10 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                     <div className="flex items-center flex-wrap gap-2 mb-2">
                         <Link
                             href={`/profile/${post.user_id}`}
-                            className="text-[15px] font-bold text-white truncate hover:text-emerald-400 transition-colors"
+                            className="text-[15px] font-bold text-white truncate hover:text-emerald-400 transition-colors flex items-center gap-1.5"
                         >
                             {profile?.username || "Anonymous"}
+                            {profile?.is_pro && <ProBadge size="xs" />}
                         </Link>
 
                         {/* Level Badge */}

@@ -16,8 +16,10 @@ import { TradingInsights } from "@/components/portfolio/TradingInsights";
 import {
     Gamepad2, TrendingUp, TrendingDown, Loader2, Plus, DollarSign,
     Sparkles, AlertTriangle, Coins, RotateCcw, Trophy, Clock,
-    History, BarChart3, Wallet, ArrowUpRight, ArrowDownRight, Lock, Share2, Brain, Search
+    History, BarChart3, Wallet, ArrowUpRight, ArrowDownRight, Lock, Share2, Brain, Search, Star, Target
 } from "lucide-react";
+import { ProBadgeInline } from "@/components/ui/ProBadge";
+import { ProUpsellModal } from "@/components/ui/ProUpsellModal";
 import { motion, AnimatePresence } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
 import { useQuery } from "@tanstack/react-query";
@@ -68,7 +70,7 @@ type MyLeague = Database['public']['Tables']['league_placements']['Row'] & {
     leagues: Database['public']['Tables']['leagues']['Row'] | null;
 };
 
-type TabType = "portfolio" | "history" | "graph" | "insights";
+type TabType = "portfolio" | "history" | "graph" | "insights" | "performance";
 
 export default function ArenaPage() {
     const { user, isLoading: authLoading } = useAuth();
@@ -109,6 +111,18 @@ export default function ArenaPage() {
     const [isResetting, setIsResetting] = useState(false);
     const [showResetModal, setShowResetModal] = useState(false);
     const [showPaidResetModal, setShowPaidResetModal] = useState(false);
+    const [showProUpsellModal, setShowProUpsellModal] = useState(false);
+
+    // Performance stats (calculated from transactions)
+    const [performanceStats, setPerformanceStats] = useState<{
+        winRate: number;
+        avgHoldDays: number;
+        bestTrade: { symbol: string; pnl: number } | null;
+        worstTrade: { symbol: string; pnl: number } | null;
+        totalTrades: number;
+        wins: number;
+        losses: number;
+    } | null>(null);
 
     // Fetch Current Season
     const { data: currentSeason } = useQuery<Season | null>({
@@ -238,6 +252,78 @@ export default function ArenaPage() {
 
         fetchHistory();
     }, [activeTab, user]);
+
+    // Calculate performance stats when tab changes (Pro feature)
+    useEffect(() => {
+        if (activeTab !== "performance" || !user || !supabase || !isPro) return;
+
+        const calculatePerformance = async () => {
+            const { data: allTransactions } = await (supabase as any)
+                .from("transactions")
+                .select("*")
+                .eq("user_id", user.id)
+                .order("created_at", { ascending: true });
+
+            if (!allTransactions || allTransactions.length === 0) {
+                setPerformanceStats(null);
+                return;
+            }
+
+            const buys = allTransactions.filter((t: any) => t.type === "buy");
+            const sells = allTransactions.filter((t: any) => t.type === "sell");
+
+            if (sells.length === 0) {
+                setPerformanceStats({
+                    winRate: 0,
+                    avgHoldDays: 0,
+                    bestTrade: null,
+                    worstTrade: null,
+                    totalTrades: allTransactions.length,
+                    wins: 0,
+                    losses: 0
+                });
+                return;
+            }
+
+            const wins = sells.filter((t: any) => (t.realized_pnl || 0) > 0);
+            const losses = sells.filter((t: any) => (t.realized_pnl || 0) < 0);
+            const winRate = (wins.length / sells.length) * 100;
+
+            // Calculate average hold time
+            const holdTimes: number[] = [];
+            for (const sell of sells) {
+                const correspondingBuy = buys.find(
+                    (b: any) => b.symbol === sell.symbol && new Date(b.created_at) < new Date(sell.created_at)
+                );
+                if (correspondingBuy) {
+                    const holdMs = new Date(sell.created_at).getTime() - new Date(correspondingBuy.created_at).getTime();
+                    const holdDays = holdMs / (1000 * 60 * 60 * 24);
+                    holdTimes.push(holdDays);
+                }
+            }
+            const avgHoldDays = holdTimes.length > 0
+                ? holdTimes.reduce((a, b) => a + b, 0) / holdTimes.length
+                : 0;
+
+            // Find best and worst trades
+            const bestTrade = sells.reduce((best: any, t: any) =>
+                (t.realized_pnl || 0) > (best?.realized_pnl || -Infinity) ? t : best, sells[0]);
+            const worstTrade = sells.reduce((worst: any, t: any) =>
+                (t.realized_pnl || 0) < (worst?.realized_pnl || Infinity) ? t : worst, sells[0]);
+
+            setPerformanceStats({
+                winRate,
+                avgHoldDays,
+                bestTrade: bestTrade ? { symbol: bestTrade.symbol, pnl: bestTrade.realized_pnl || 0 } : null,
+                worstTrade: worstTrade ? { symbol: worstTrade.symbol, pnl: worstTrade.realized_pnl || 0 } : null,
+                totalTrades: allTransactions.length,
+                wins: wins.length,
+                losses: losses.length
+            });
+        };
+
+        calculatePerformance();
+    }, [activeTab, user, isPro]);
 
     // Fetch graph data when tab changes
     useEffect(() => {
@@ -581,6 +667,23 @@ export default function ArenaPage() {
                         <Brain className="w-4 h-4" />
                         Ticko AI
                     </button>
+                    <button
+                        onClick={() => {
+                            if (!isPro) {
+                                setShowProUpsellModal(true);
+                            } else {
+                                setActiveTab("performance");
+                            }
+                        }}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === "performance"
+                            ? "bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-400 border border-violet-500/30"
+                            : "bg-white/[0.04] text-white/60 border border-white/10 hover:text-white"
+                            }`}
+                    >
+                        <Target className="w-4 h-4" />
+                        Performance
+                        {!isPro && <Lock className="w-3 h-3 ml-1 text-white/40" />}
+                    </button>
                 </div >
 
                 {/* Tab Content */}
@@ -914,6 +1017,85 @@ export default function ArenaPage() {
                             <TradingInsights userId={user.id} />
                         )
                     }
+
+                    {
+                        activeTab === "performance" && isPro && (
+                            <div className="space-y-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center">
+                                        <Target className="w-5 h-5 text-violet-400" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                                            Performance Analytics
+                                            <ProBadgeInline />
+                                        </h3>
+                                        <p className="text-xs text-white/40">Deep dive into your trading patterns</p>
+                                    </div>
+                                </div>
+
+                                {!performanceStats ? (
+                                    <div className="text-center py-12">
+                                        <Target className="w-12 h-12 text-white/20 mx-auto mb-4" />
+                                        <h3 className="text-lg font-bold text-white mb-2">No completed trades yet</h3>
+                                        <p className="text-white/40 text-sm">Sell some positions to see your performance stats.</p>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {/* Win Rate Card */}
+                                        <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20">
+                                            <div className="flex items-center justify-between mb-4">
+                                                <span className="text-sm text-white/60">Win Rate</span>
+                                                <span className={`text-3xl font-black tabular-nums ${performanceStats.winRate >= 50 ? "text-emerald-400" : "text-rose-400"}`}>
+                                                    {performanceStats.winRate.toFixed(1)}%
+                                                </span>
+                                            </div>
+                                            <div className="flex gap-4 text-sm">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-3 h-3 rounded-full bg-emerald-400" />
+                                                    <span className="text-white/60">{performanceStats.wins} wins</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-3 h-3 rounded-full bg-rose-400" />
+                                                    <span className="text-white/60">{performanceStats.losses} losses</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Stats Grid */}
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
+                                                <p className="text-xs text-white/40 mb-1">Total Trades</p>
+                                                <p className="text-2xl font-black text-white tabular-nums">{performanceStats.totalTrades}</p>
+                                            </div>
+                                            <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10">
+                                                <p className="text-xs text-white/40 mb-1">Avg Hold Time</p>
+                                                <p className="text-2xl font-black text-white tabular-nums">{performanceStats.avgHoldDays.toFixed(1)} <span className="text-sm text-white/40">days</span></p>
+                                            </div>
+                                        </div>
+
+                                        {/* Best/Worst Trades */}
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {performanceStats.bestTrade && (
+                                                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                                                    <p className="text-xs text-emerald-400/60 mb-1">Best Trade</p>
+                                                    <p className="font-bold text-white">${performanceStats.bestTrade.symbol}</p>
+                                                    <p className="text-emerald-400 font-bold tabular-nums">+${performanceStats.bestTrade.pnl.toLocaleString("en-US", { maximumFractionDigits: 0 })}</p>
+                                                </div>
+                                            )}
+                                            {performanceStats.worstTrade && (
+                                                <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
+                                                    <p className="text-xs text-rose-400/60 mb-1">Worst Trade</p>
+                                                    <p className="font-bold text-white">${performanceStats.worstTrade.symbol}</p>
+                                                    <p className="text-rose-400 font-bold tabular-nums">${performanceStats.worstTrade.pnl.toLocaleString("en-US", { maximumFractionDigits: 0 })}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        )
+                    }
                 </div >
             </main >
 
@@ -1009,6 +1191,16 @@ export default function ArenaPage() {
             {
                 showPaidResetModal && (
                     <PaidResetModal onClose={() => setShowPaidResetModal(false)} />
+                )
+            }
+
+            {/* Pro Upsell Modal */}
+            {
+                showProUpsellModal && (
+                    <ProUpsellModal
+                        trigger="portfolio_stats"
+                        onClose={() => setShowProUpsellModal(false)}
+                    />
                 )
             }
         </div >

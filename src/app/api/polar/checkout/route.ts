@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { createCheckoutSession } from "@/lib/polar";
+import { createCheckoutSession, CheckoutProduct } from "@/lib/polar";
 
 export async function POST(request: NextRequest) {
     try {
+        // Get product from query param (default to reset for backwards compatibility)
+        const { searchParams } = new URL(request.url);
+        const product = (searchParams.get("product") as CheckoutProduct) || "reset";
+
         // Get authenticated user
         const cookieStore = await cookies();
         const supabase = createServerClient(
@@ -38,7 +42,8 @@ export async function POST(request: NextRequest) {
         // Create checkout session
         const result = await createCheckoutSession(
             user.id,
-            profile?.email || user.email
+            profile?.email || user.email,
+            product
         );
 
         if ("error" in result) {
