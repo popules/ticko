@@ -10,6 +10,7 @@ import { CookieConsent } from "@/components/ui/CookieConsent";
 import { Analytics } from "@vercel/analytics/react";
 import { TourProvider } from "@/providers/TourProvider";
 import { TourOverlay } from "@/components/ui/TourOverlay";
+import { TickoAI } from "@/components/ai/TickoAI";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -79,6 +80,7 @@ export default function RootLayout({
               <SearchProvider>
                 {children}
                 <MobileNav />
+                <TickoAI />
                 <CookieConsent />
                 <TourOverlay />
                 <Analytics />

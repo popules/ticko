@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MessageSquare, X, Send, Sparkles, Loader2, Bot, User, Star } from "lucide-react";
+import { MessageSquare, X, Send, Sparkles, Loader2, Bot, User, Star, Brain } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { AnimatePresence, motion } from "framer-motion";
-import { TickoLogo } from "@/components/ui/TickoLogo";
 import { ProUpsellModal } from "@/components/ui/ProUpsellModal";
 
 interface Message {
@@ -15,14 +14,14 @@ interface Message {
     isLimitReached?: boolean;
 }
 
-export function TickoCopilot() {
+export function TickoAI() {
     const { user } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
         {
             id: "welcome",
             role: "assistant",
-            content: "Hi! I am your Ticko Copilot. I can help you with market analysis, stock data, or sentiment checks. What's on your mind today?",
+            content: "Hey! I'm Ticko AI - your personal trading assistant. I know your portfolio, your trades, and your watchlist. Ask me anything!",
             timestamp: Date.now(),
         },
     ]);
@@ -114,11 +113,11 @@ export function TickoCopilot() {
             {/* Toggle Button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className={`fixed bottom-6 right-6 p-4 rounded-full shadow-[0_0_40px_-5px_rgba(16,185,129,0.5)] transition-all transform hover:scale-105 z-50 ${isOpen ? "scale-0 opacity-0 pointer-events-none" : "bg-gradient-to-r from-emerald-500 to-teal-600 text-white"
+                className={`fixed bottom-6 right-6 p-4 rounded-full shadow-[0_0_40px_-5px_rgba(139,92,246,0.5)] transition-all transform hover:scale-105 z-50 ${isOpen ? "scale-0 opacity-0 pointer-events-none" : "bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white"
                     }`}
             >
                 <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse" />
-                <Sparkles className="w-6 h-6 relative z-10" />
+                <Brain className="w-6 h-6 relative z-10" />
             </button>
 
             {/* Chat Window */}
@@ -131,16 +130,16 @@ export function TickoCopilot() {
                         className="fixed bottom-6 right-6 w-96 h-[600px] max-h-[80vh] bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden"
                     >
                         {/* Header */}
-                        <div className="p-4 border-b border-white/10 bg-white/[0.02] flex items-center justify-between backdrop-blur-md">
+                        <div className="p-4 border-b border-white/10 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 flex items-center justify-between backdrop-blur-md">
                             <div className="flex items-center gap-2">
-                                <div className="p-1.5 bg-emerald-500/10 rounded-lg">
-                                    <Bot className="w-5 h-5 text-emerald-400" />
+                                <div className="p-1.5 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-lg">
+                                    <Brain className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-white text-sm">Ticko Copilot</h3>
-                                    <p className="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                                        Online
+                                    <h3 className="font-bold text-white text-sm">Ticko AI</h3>
+                                    <p className="text-[10px] text-violet-400 font-medium flex items-center gap-1">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+                                        Personal Assistant
                                     </p>
                                 </div>
                             </div>
@@ -161,12 +160,12 @@ export function TickoCopilot() {
                                 >
                                     <div
                                         className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === "assistant"
-                                            ? msg.isLimitReached ? "bg-violet-500/10 text-violet-400" : "bg-emerald-500/10 text-emerald-400"
+                                            ? msg.isLimitReached ? "bg-violet-500/10 text-violet-400" : "bg-violet-500/10 text-violet-400"
                                             : "bg-white/10 text-white"
                                             }`}
                                     >
                                         {msg.role === "assistant" ? (
-                                            msg.isLimitReached ? <Star className="w-4 h-4" /> : <Bot className="w-4 h-4" />
+                                            msg.isLimitReached ? <Star className="w-4 h-4" /> : <Brain className="w-4 h-4" />
                                         ) : (
                                             <User className="w-4 h-4" />
                                         )}
@@ -176,7 +175,7 @@ export function TickoCopilot() {
                                             ? msg.isLimitReached 
                                                 ? "bg-violet-500/10 text-white/90 border border-violet-500/20 rounded-tl-none"
                                                 : "bg-white/[0.04] text-white/90 border border-white/5 rounded-tl-none"
-                                            : "bg-emerald-500 text-[#020617] font-medium rounded-tr-none"
+                                            : "bg-violet-500 text-white font-medium rounded-tr-none"
                                             }`}
                                     >
                                         {msg.content}
@@ -192,13 +191,13 @@ export function TickoCopilot() {
                                     </div>
                                 </div>
                             ))}
-                            {isLoading && (
+                                {isLoading && (
                                 <div className="flex gap-3">
-                                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-emerald-500/10 text-emerald-400">
-                                        <Bot className="w-4 h-4" />
+                                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-violet-500/10 text-violet-400">
+                                        <Brain className="w-4 h-4" />
                                     </div>
                                     <div className="bg-white/[0.04] p-4 rounded-2xl rounded-tl-none border border-white/5">
-                                        <Loader2 className="w-4 h-4 animate-spin text-white/40" />
+                                        <Loader2 className="w-4 h-4 animate-spin text-violet-400" />
                                     </div>
                                 </div>
                             )}
@@ -217,19 +216,19 @@ export function TickoCopilot() {
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
-                                    placeholder="Ask about the market..."
-                                    className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] transition-all pr-12"
+                                    placeholder="Ask about your portfolio, a stock, the market..."
+                                    className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-violet-500/50 focus:bg-white/[0.08] transition-all pr-12"
                                 />
                                 <button
                                     type="submit"
                                     disabled={!input.trim() || isLoading}
-                                    className="absolute right-2 p-1.5 bg-emerald-500 text-[#020617] rounded-lg disabled:opacity-50 disabled:bg-emerald-500/50 hover:bg-emerald-400 transition-colors"
+                                    className="absolute right-2 p-1.5 bg-violet-500 text-white rounded-lg disabled:opacity-50 disabled:bg-violet-500/50 hover:bg-violet-400 transition-colors"
                                 >
                                     <Send className="w-4 h-4" />
                                 </button>
                             </form>
                             <p className="text-[10px] text-center text-white/30 mt-2 px-2 leading-tight">
-                                <strong>Important:</strong> Ticko AI does not constitute financial advice. Historical returns are no guarantee of future gains. Always do your own analysis.
+                                Ticko AI is for information only, not financial advice.
                             </p>
                         </div>
                     </motion.div>
