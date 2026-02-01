@@ -32,20 +32,25 @@ export function PerformanceMetrics({ symbol }: PerformanceMetricsProps) {
     }
 
     const periods = [
+        { label: "1D", value: data.performance["1D"] },
+        { label: "5D", value: data.performance["5D"] },
+        { label: "1M", value: data.performance["1M"] },
+        { label: "3M", value: data.performance["3M"] },
+        { label: "6M", value: data.performance["6M"] },
         { label: "YTD", value: data.performance.YTD },
         { label: "1Y", value: data.performance["1Y"] },
         { label: "5Y", value: data.performance["5Y"] },
     ];
 
     return (
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
             {periods.map(({ label, value }) => {
                 if (value === null) return null;
                 const isPositive = value >= 0;
                 return (
                     <div
                         key={label}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold tabular-nums ${isPositive
+                        className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold tabular-nums ${isPositive
                             ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                             : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
                             }`}
@@ -55,7 +60,7 @@ export function PerformanceMetrics({ symbol }: PerformanceMetricsProps) {
                         ) : (
                             <TrendingDown className="w-3 h-3" />
                         )}
-                        <span className="text-white/60 font-medium">{label}:</span>
+                        <span className="text-white/50 font-medium">{label}:</span>
                         {isPositive ? "+" : ""}{value.toFixed(1)}%
                     </div>
                 );

@@ -16,10 +16,27 @@ export async function GET(request: Request) {
     try {
         // Get historical data for performance calculations
         const now = new Date();
+        
+        // Define all time periods
+        const oneDayAgo = new Date(now);
+        oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+        
+        const fiveDaysAgo = new Date(now);
+        fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+        
+        const oneMonthAgo = new Date(now);
+        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+        
+        const threeMonthsAgo = new Date(now);
+        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+        
+        const sixMonthsAgo = new Date(now);
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        
+        const startOfYear = new Date(now.getFullYear(), 0, 1);
+        
         const oneYearAgo = new Date(now);
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-
-        const startOfYear = new Date(now.getFullYear(), 0, 1);
 
         const fiveYearsAgo = new Date(now);
         fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
@@ -37,6 +54,9 @@ export async function GET(request: Request) {
 
         // Get current price (most recent close)
         const currentPrice = historical[historical.length - 1].close;
+        
+        // Get previous close for 1D calculation
+        const previousClose = historical.length > 1 ? historical[historical.length - 2].close : null;
 
         // Calculate performance for different periods
         const findClosestPrice = (targetDate: Date) => {
@@ -52,8 +72,12 @@ export async function GET(request: Request) {
             return closest?.close || null;
         };
 
-        const oneYearPrice = findClosestPrice(oneYearAgo);
+        const fiveDayPrice = findClosestPrice(fiveDaysAgo);
+        const oneMonthPrice = findClosestPrice(oneMonthAgo);
+        const threeMonthPrice = findClosestPrice(threeMonthsAgo);
+        const sixMonthPrice = findClosestPrice(sixMonthsAgo);
         const ytdPrice = findClosestPrice(startOfYear);
+        const oneYearPrice = findClosestPrice(oneYearAgo);
         const fiveYearPrice = historical[0]?.close || null;
 
         const calcChange = (oldPrice: number | null, newPrice: number) => {
@@ -65,8 +89,13 @@ export async function GET(request: Request) {
             symbol,
             currentPrice,
             performance: {
-                '1Y': calcChange(oneYearPrice, currentPrice),
+                '1D': calcChange(previousClose, currentPrice),
+                '5D': calcChange(fiveDayPrice, currentPrice),
+                '1M': calcChange(oneMonthPrice, currentPrice),
+                '3M': calcChange(threeMonthPrice, currentPrice),
+                '6M': calcChange(sixMonthPrice, currentPrice),
                 'YTD': calcChange(ytdPrice, currentPrice),
+                '1Y': calcChange(oneYearPrice, currentPrice),
                 '5Y': calcChange(fiveYearPrice, currentPrice),
             }
         });
