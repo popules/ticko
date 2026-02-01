@@ -23,6 +23,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Area, Area
 import { useQuery } from "@tanstack/react-query";
 import { ChallengesWidget } from "@/components/dashboard/ChallengesWidget";
 import { Database } from "@/types/database";
+import { LeagueBadge } from "@/components/arena/LeagueBadge";
 
 const USD_TO_SEK = 10.5;
 
@@ -440,30 +441,35 @@ export default function ArenaPage() {
                             </div>
 
                             <div className="relative z-10 flex flex-col sm:flex-row justify-between gap-6">
-                                <div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <span className="px-2 py-0.5 rounded-full bg-violet-500/20 border border-violet-500/30 text-[10px] font-bold text-violet-400 uppercase tracking-wider">
-                                            {currentSeason?.name?.replace(/Säsong/g, "Season") || "Season 1"}
-                                        </span>
-                                        {currentSeason?.end_date && (
-                                            <span className="text-[10px] font-medium text-white/40 flex items-center gap-1">
-                                                <Clock className="w-3 h-3" />
-                                                Ends {new Date(currentSeason.end_date).toLocaleDateString()}
-                                            </span>
-                                        )}
+                                <div className="flex items-start gap-4">
+                                    <div className="shrink-0 pt-1">
+                                        <LeagueBadge tier={myLeague?.leagues?.name || "unranked"} size="lg" />
                                     </div>
-                                    <h2 className="text-2xl font-black text-white mb-1">
-                                        {myLeague?.leagues?.name || "Unranked"}
-                                    </h2>
-                                    <p className="text-white/60 text-sm max-w-sm">
-                                        {myLeague
-                                            ? `You are ranked #${myLeague.rank_in_league} in your league. Top 3 promote!`
-                                            : "Complete trades to get placed in a league."}
-                                    </p>
-                                    <div className="mt-4 flex gap-3">
-                                        <Link href="/leaderboard" className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-colors">
-                                            View Leaderboard
-                                        </Link>
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <span className="px-2 py-0.5 rounded-full bg-violet-500/20 border border-violet-500/30 text-[10px] font-bold text-violet-400 uppercase tracking-wider">
+                                                {currentSeason?.name?.replace(/Säsong/g, "Season") || "Season 1"}
+                                            </span>
+                                            {currentSeason?.end_date && (
+                                                <span className="text-[10px] font-medium text-white/40 flex items-center gap-1">
+                                                    <Clock className="w-3 h-3" />
+                                                    Ends {new Date(currentSeason.end_date).toLocaleDateString()}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <h2 className="text-2xl font-black text-white mb-1">
+                                            {myLeague?.leagues?.name || "Unranked"}
+                                        </h2>
+                                        <p className="text-white/60 text-sm max-w-sm">
+                                            {myLeague
+                                                ? `You are ranked #${myLeague.rank_in_league} in your league. Top 3 promote!`
+                                                : "Complete trades to get placed in a league."}
+                                        </p>
+                                        <div className="mt-4 flex gap-3">
+                                            <Link href="/leaderboard" className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-colors">
+                                                View Leaderboard
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
 

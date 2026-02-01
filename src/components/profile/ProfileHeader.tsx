@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Shield, Calendar, MapPin, Pencil } from "lucide-react";
 import { ShareButton } from "@/components/ui/ShareButton";
+import { UserAvatar } from "@/components/ui/UserAvatar";
 import { BadgeRack } from "./BadgeRack";
 import { getUserRank } from "@/lib/ranks";
+import { getLevel, getProgressToNextLevel } from "@/lib/level-system";
 import { FollowButton } from "../social/FollowButton";
 import { useAuth } from "@/providers/AuthProvider";
 
@@ -59,21 +61,12 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
             <div className="relative flex flex-col md:flex-row gap-8 items-start md:items-center">
                 {/* Avatar */}
                 <div className="relative group shrink-0">
-                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-gradient-to-br from-emerald-400 to-blue-600 flex items-center justify-center p-[2px]">
-                        <div className="w-full h-full rounded-[1.4rem] bg-[#0B0F17] flex items-center justify-center overflow-hidden relative">
-                            {currentProfile.avatar_url ? (
-                                <img
-                                    src={currentProfile.avatar_url}
-                                    alt={currentProfile.username}
-                                    className="w-full h-full object-cover"
-                                />
-                            ) : (
-                                <span className="text-3xl md:text-4xl font-black text-white/80">
-                                    {currentProfile.username.charAt(0).toUpperCase()}
-                                </span>
-                            )}
-                        </div>
-                    </div>
+                    <UserAvatar
+                        src={currentProfile.avatar_url}
+                        username={currentProfile.username}
+                        frame={(currentProfile as any).avatar_frame}
+                        size="2xl"
+                    />
                     <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center border-4 border-[#0B0F17] shadow-lg">
                         <Shield className="w-4 h-4 text-white" />
                     </div>
@@ -146,15 +139,35 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                         </div>
                         <div>
                             {(() => {
-                                const rank = getUserRank((currentProfile as any).reputation_score || 0);
+                                const score = (currentProfile as any).reputation_score || 0;
+                                const rank = getUserRank(score);
+                                const level = getLevel(score);
+                                const progress = getProgressToNextLevel(score);
+
                                 return (
-                                    <>
+                                    <div className="flex flex-col items-start gap-1">
                                         <div className="flex items-center gap-2">
-                                            <span className="text-lg">{rank.emoji}</span>
-                                            <p className={`text-xl font-black ${rank.color}`}>{rank.name}</p>
+                                            <span className="text-2xl">{rank.emoji}</span>
+                                            <div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className={`text-xl font-black ${rank.color}`}>{rank.name}</span>
+                                                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold border border-white/20 bg-white/5 text-white/50">
+                                                        Lvl {level}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Rank (Lvl {rank.level})</p>
-                                    </>
+                                        {/* Progress Bar */}
+                                        <div className="w-full max-w-[120px] h-1.5 bg-white/10 rounded-full overflow-hidden mt-1">
+                                            <div
+                                                style={{ width: `${progress}%` }}
+                                                className={`h-full ${rank.color.replace('text-', 'bg-')}`}
+                                            />
+                                        </div>
+                                        <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mt-0.5">
+                                            {progress}% to next level
+                                        </p>
+                                    </div>
                                 );
                             })()}
                         </div>

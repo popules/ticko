@@ -27,6 +27,10 @@ import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { useAuth } from "@/providers/AuthProvider";
 import { useSearch } from "@/providers/SearchProvider";
 import { motion, AnimatePresence } from "framer-motion";
+import { XPBar } from "@/components/profile/XPBar";
+import { LevelUpModal } from "@/components/profile/LevelUpModal";
+import { UserAvatar } from "@/components/ui/UserAvatar";
+import { supabase } from "@/lib/supabase/client";
 
 // Navigation Items
 const navItems = [
@@ -45,6 +49,8 @@ export function Sidebar() {
     const { user, signOut } = useAuth();
     const pathname = usePathname();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [showLevelUp, setShowLevelUp] = useState(false);
+    const [newLevel, setNewLevel] = useState(0);
 
     // Close mobile menu on route change
     useEffect(() => {
@@ -72,6 +78,17 @@ export function Sidebar() {
             return data.stocks || [];
         },
         refetchInterval: 60000,
+    });
+
+    // Fetch user profile for XP/Level
+    const { data: profile } = useQuery<any>({
+        queryKey: ["profile", user?.id],
+        queryFn: async () => {
+            if (!user) return null;
+            const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+            return data;
+        },
+        enabled: !!user,
     });
 
     const SidebarContent = () => (
@@ -144,6 +161,19 @@ export function Sidebar() {
 
             {/* Spacer */}
             <div className="flex-1 md:block hidden" />
+
+            {/* XP Bar */}
+            {user && (
+                <div className="px-4 pb-3">
+                    <XPBar
+                        xp={profile?.reputation_score || 0}
+                        onLevelUp={(lvl) => {
+                            setNewLevel(lvl);
+                            setShowLevelUp(true);
+                        }}
+                    />
+                </div>
+            )}
 
             {/* Footer */}
             <div className="p-3 border-t border-white/10 space-y-1">
@@ -247,6 +277,13 @@ export function Sidebar() {
                     </>
                 )}
             </AnimatePresence>
+
+            {/* Global Level Up Modal */}
+            <LevelUpModal
+                isOpen={showLevelUp}
+                level={newLevel}
+                onClose={() => setShowLevelUp(false)}
+            />
         </>
     );
 }
