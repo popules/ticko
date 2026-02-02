@@ -66,11 +66,26 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
         setCurrentStepIndex(0);
     }, []);
 
-    const closeTour = useCallback(() => {
+    const closeTour = useCallback(async () => {
         setIsOpen(false);
-        // Mark as completed
+
+        // Mark as completed in local storage
+        const hasCompletedBefore = localStorage.getItem(TOUR_COMPLETED_KEY);
         localStorage.setItem(TOUR_COMPLETED_KEY, "true");
-    }, []);
+
+        // Award XP for completion if this is the first time
+        if (user && !hasCompletedBefore) {
+            try {
+                await fetch("/api/xp/award", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount: 50, reason: "onboarding_complete" }),
+                });
+            } catch (err) {
+                console.error("Failed to award tour XP:", err);
+            }
+        }
+    }, [user]);
 
     const nextStep = useCallback(() => {
         if (currentStepIndex < steps.length - 1) {

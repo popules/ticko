@@ -1,4 +1,6 @@
-import { supabase } from "./supabase/client";
+import { supabase as browserSupabase } from "./supabase/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/database";
 
 // Achievement definitions with criteria
 export interface Achievement {
@@ -247,19 +249,25 @@ export const RARITY_COLORS: Record<Achievement["rarity"], string> = {
     epic: "text-purple-400 bg-purple-500/10 border-purple-500/20",
     legendary: "text-amber-400 bg-amber-500/10 border-amber-500/20",
 };
+
 /**
  * Award XP (Reputation) to a user for an action
  */
-export async function awardXp(userId: string, amount: number): Promise<boolean> {
+export async function awardXp(
+    userId: string,
+    amount: number,
+    supabaseClient?: SupabaseClient<Database>
+): Promise<boolean> {
+    const client = supabaseClient || browserSupabase;
     try {
-        const { data: profile } = await supabase
+        const { data: profile } = await client
             .from("profiles")
             .select("reputation_score")
             .eq("id", userId)
             .single();
 
         if (profile) {
-            const { error } = await (supabase as any)
+            const { error } = await (client as any)
                 .from("profiles")
                 .update({
                     reputation_score: ((profile as any).reputation_score || 0) + amount,
@@ -290,23 +298,28 @@ export const RARITY_NAMES: Record<Achievement["rarity"], string> = {
 /**
  * Award an achievement to a user
  */
-export async function awardAchievement(userId: string, achievementKey: string): Promise<boolean> {
+export async function awardAchievement(
+    userId: string,
+    achievementKey: string,
+    supabaseClient?: SupabaseClient<Database>
+): Promise<boolean> {
+    const client = supabaseClient || browserSupabase;
     const achievement = Object.values(ACHIEVEMENTS).find(a => a.key === achievementKey);
     if (!achievement) return false;
 
     try {
         // Check if user already has this achievement
-        const { data: existing } = await supabase
+        const { data: existing } = await client
             .from("user_achievements")
             .select("id")
             .eq("user_id", userId)
             .eq("achievement_key", achievementKey)
-            .single();
+            .maybeSingle();
 
         if (existing) return false; // Already has it
 
         // Award the achievement
-        const { error } = await (supabase as any)
+        const { error } = await (client as any)
             .from("user_achievements")
             .insert({
                 user_id: userId,
@@ -320,14 +333,14 @@ export async function awardAchievement(userId: string, achievementKey: string): 
         }
 
         // Update user's reputation with achievement points
-        const { data: profile } = await supabase
+        const { data: profile } = await client
             .from("profiles")
             .select("reputation_score")
             .eq("id", userId)
             .single();
 
         if (profile) {
-            await (supabase as any)
+            await (client as any)
                 .from("profiles")
                 .update({
                     reputation_score: ((profile as any).reputation_score || 0) + achievement.points,
@@ -336,7 +349,7 @@ export async function awardAchievement(userId: string, achievementKey: string): 
         }
 
         // Create notification
-        await (supabase as any).from("notifications").insert({
+        await (client as any).from("notifications").insert({
             user_id: userId,
             type: "achievement",
             title: `🏆 New Achievement: ${achievement.name}!`,
@@ -354,7 +367,11 @@ export async function awardAchievement(userId: string, achievementKey: string): 
 /**
  * Check all achievements for a user and award any new ones
  */
-export async function checkAchievements(userId: string): Promise<string[]> {
+export async function checkAchievements(
+    userId: string,
+    supabaseClient?: SupabaseClient<Database>
+): Promise<string[]> {
+    const client = supabaseClient || browserSupabase;
     const awarded: string[] = [];
 
     try {
@@ -369,17 +386,17 @@ export async function checkAchievements(userId: string): Promise<string[]> {
             { count: correctPredictions },
             { data: profile },
         ] = await Promise.all([
-            supabase.from("posts").select("*", { count: "exact", head: true }).eq("user_id", userId),
-            supabase.from("follows").select("*", { count: "exact", head: true }).eq("following_id", userId),
-            supabase.from("reactions").select("*", { count: "exact", head: true }).eq("user_id", userId),
-            supabase.from("comments").select("*", { count: "exact", head: true }).eq("user_id", userId),
-            supabase.from("watchlists").select("*", { count: "exact", head: true }).eq("user_id", userId),
-            supabase.from("portfolio").select("*", { count: "exact", head: true }).eq("user_id", userId),
-            supabase.from("posts").select("*", { count: "exact", head: true })
+            client.from("posts").select("*", { count: "exact", head: true }).eq("user_id", userId),
+            client.from("follows").select("*", { count: "exact", head: true }).eq("following_id", userId),
+            client.from("reactions").select("*", { count: "exact", head: true }).eq("user_id", userId),
+            client.from("comments").select("*", { count: "exact", head: true }).eq("user_id", userId),
+            client.from("watchlists").select("*", { count: "exact", head: true }).eq("user_id", userId),
+            client.from("portfolio").select("*", { count: "exact", head: true }).eq("user_id", userId),
+            client.from("posts").select("*", { count: "exact", head: true })
                 .eq("user_id", userId)
                 .eq("is_prediction", true)
                 .eq("prediction_status", "correct"),
-            supabase.from("profiles").select("reputation_score, created_at").eq("id", userId).single(),
+            client.from("profiles").select("reputation_score, created_at").eq("id", userId).single(),
         ]);
 
         const reputation = (profile as any)?.reputation_score || 0;
@@ -414,7 +431,7 @@ export async function checkAchievements(userId: string): Promise<string[]> {
 
         for (const [key, condition] of checks) {
             if (condition) {
-                const wasAwarded = await awardAchievement(userId, key);
+                const wasAwarded = await awardAchievement(userId, key, client);
                 if (wasAwarded) awarded.push(key);
             }
         }
@@ -428,9 +445,13 @@ export async function checkAchievements(userId: string): Promise<string[]> {
 /**
  * Get all achievements for a user
  */
-export async function getUserAchievements(userId: string): Promise<Achievement[]> {
+export async function getUserAchievements(
+    userId: string,
+    supabaseClient?: SupabaseClient<Database>
+): Promise<Achievement[]> {
+    const client = supabaseClient || browserSupabase;
     try {
-        const { data } = await (supabase as any)
+        const { data } = await (client as any)
             .from("user_achievements")
             .select("achievement_key, awarded_at")
             .eq("user_id", userId)
@@ -447,8 +468,12 @@ export async function getUserAchievements(userId: string): Promise<Achievement[]
 }
 
 // Legacy export for backwards compatibility
-export async function checkAndAwardAchievement(userId: string, key: string) {
-    return awardAchievement(userId, key);
+export async function checkAndAwardAchievement(
+    userId: string,
+    key: string,
+    supabaseClient?: SupabaseClient<Database>
+) {
+    return awardAchievement(userId, key, supabaseClient);
 }
 
 /**
@@ -458,21 +483,23 @@ export async function checkAndAwardAchievement(userId: string, key: string) {
 export async function checkPaperTradingAchievements(
     userId: string,
     totalPortfolioValue: number,
-    realizedPnl: number
+    realizedPnl: number,
+    supabaseClient?: SupabaseClient<Database>
 ): Promise<string[]> {
+    const client = supabaseClient || browserSupabase;
     const awarded: string[] = [];
     const STARTING_CAPITAL = 10000; // $10k USD
 
     try {
         // 1. Check PAPER_10X (reached $100k = 10x starting capital)
         if (totalPortfolioValue >= 100000) {
-            const wasAwarded = await awardAchievement(userId, "paper_10x");
+            const wasAwarded = await awardAchievement(userId, "paper_10x", client);
             if (wasAwarded) awarded.push("paper_10x");
         }
 
         // 2. Check PAPER_STREAK_3 (3 profitable sells in a row)
         if (realizedPnl > 0) {
-            const { data: recentSells } = await (supabase as any)
+            const { data: recentSells } = await (client as any)
                 .from("transactions")
                 .select("realized_pnl")
                 .eq("user_id", userId)
@@ -483,14 +510,14 @@ export async function checkPaperTradingAchievements(
             if (recentSells && recentSells.length >= 3) {
                 const allProfitable = recentSells.every((s: any) => s.realized_pnl > 0);
                 if (allProfitable) {
-                    const wasAwarded = await awardAchievement(userId, "paper_streak_3");
+                    const wasAwarded = await awardAchievement(userId, "paper_streak_3", client);
                     if (wasAwarded) awarded.push("paper_streak_3");
                 }
             }
         }
 
         // 3. Check PAPER_DIVERSIFIED (10+ different stocks in portfolio)
-        const { data: portfolio } = await (supabase as any)
+        const { data: portfolio } = await (client as any)
             .from("portfolio")
             .select("symbol")
             .eq("user_id", userId);
@@ -498,14 +525,10 @@ export async function checkPaperTradingAchievements(
         if (portfolio) {
             const uniqueSymbols = new Set(portfolio.map((p: any) => p.symbol));
             if (uniqueSymbols.size >= 10) {
-                const wasAwarded = await awardAchievement(userId, "paper_diversified");
+                const wasAwarded = await awardAchievement(userId, "paper_diversified", client);
                 if (wasAwarded) awarded.push("paper_diversified");
             }
         }
-
-        // 4. Check PAPER_COMEBACK (went from -50% to positive)
-        // This requires tracking historical low, skip for now as it's complex
-
     } catch (e) {
         console.error("Paper trading achievement check error:", e);
     }

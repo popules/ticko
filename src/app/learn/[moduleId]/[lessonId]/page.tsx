@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, CheckCircle2, ExternalLink } from "lucide-react";
 import {
     getModuleById,
@@ -11,8 +11,9 @@ import {
     LEARN_CONTENT,
 } from "@/lib/learn-content";
 import { useLearnProgress } from "@/hooks/useLearnProgress";
-import { use, useEffect } from "react";
+import { use, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import confetti from "canvas-confetti";
 
 interface LessonPageProps {
     params: Promise<{ moduleId: string; lessonId: string }>;
@@ -22,18 +23,34 @@ export default function LessonPage({ params }: LessonPageProps) {
     const { moduleId, lessonId } = use(params);
     const module = getModuleById(moduleId);
     const lesson = getLessonById(moduleId, lessonId);
-    const { markLessonComplete, isLessonComplete, isLoaded } = useLearnProgress();
+    const { markLessonComplete, isLessonComplete, isLoaded, mutationData } = useLearnProgress();
+    const [showCelebration, setShowCelebration] = useState(false);
 
     // Mark as complete when user views the lesson
     useEffect(() => {
-        if (isLoaded && lesson) {
+        if (isLoaded && lesson && !isLessonComplete(moduleId, lessonId)) {
             // Small delay so user actually sees the content
             const timer = setTimeout(() => {
                 markLessonComplete(moduleId, lessonId);
-            }, 1000); // 1 second
+            }, 2000); // 2 seconds
             return () => clearTimeout(timer);
         }
-    }, [isLoaded, lesson, moduleId, lessonId, markLessonComplete]);
+    }, [isLoaded, lesson, moduleId, lessonId, markLessonComplete, isLessonComplete]);
+
+    // Handle celebration when XP is awarded
+    useEffect(() => {
+        if (mutationData?.success && mutationData?.xpAwarded > 0) {
+            setShowCelebration(true);
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ["#10b981", "#34d399", "#6ee7b7", "#ffffff"]
+            });
+            const timer = setTimeout(() => setShowCelebration(false), 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [mutationData]);
 
     if (!module || !lesson) {
         notFound();
@@ -45,7 +62,27 @@ export default function LessonPage({ params }: LessonPageProps) {
     const isComplete = isLessonComplete(moduleId, lessonId);
 
     return (
-        <div className="max-w-2xl mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto px-4 py-8 relative">
+            {/* XP Celebration Toast */}
+            <AnimatePresence>
+                {showCelebration && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.8, y: -20 }}
+                        className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none"
+                    >
+                        <div className="bg-emerald-500 text-[#020617] px-6 py-3 rounded-2xl font-black shadow-2xl shadow-emerald-500/40 flex items-center gap-3">
+                            <span className="text-xl">🎓</span>
+                            <div className="flex flex-col">
+                                <span className="text-xs uppercase tracking-widest opacity-70">Lesson Complete!</span>
+                                <span className="text-lg">+10 XP Reputation</span>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Breadcrumb */}
             <motion.div
                 initial={{ opacity: 0, x: -20 }}

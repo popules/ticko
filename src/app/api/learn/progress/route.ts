@@ -80,7 +80,7 @@ export async function POST(request: Request) {
         }
 
         // 3. Award XP
-        await awardXp(user.id, xpAmount);
+        await awardXp(user.id, xpAmount, supabase);
 
         return NextResponse.json({ success: true, xpAwarded: xpAmount });
 

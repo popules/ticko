@@ -100,5 +100,7 @@ export function useLearnProgress() {
         getTotalProgress,
         resetProgress,
         isLoaded: !isLoading,
+        isMutationPending: mutation.isPending,
+        mutationData: mutation.data,
     };
 }

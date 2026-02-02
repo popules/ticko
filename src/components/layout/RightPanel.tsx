@@ -4,6 +4,7 @@ import { Plus, Eye, X, Loader2 } from "lucide-react";
 import { fetchStockData } from "@/lib/stocks-api";
 import { SentimentHeatmap } from "@/components/analysis/SentimentHeatmap";
 import { TrendingTickers } from "@/components/discovery/TrendingTickers";
+import { SuggestedUsers } from "@/components/discovery/SuggestedUsers";
 import { ChallengesWidget } from "@/components/dashboard/ChallengesWidget";
 import { UI_STRINGS } from "@/config/app";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -110,6 +111,9 @@ export function RightPanel() {
                         )}
                     </div>
                 </div>
+
+                {/* Suggested Users */}
+                <SuggestedUsers />
 
                 {/* Trending Tickers */}
                 <TrendingTickers />
