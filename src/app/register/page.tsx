@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, User, ArrowRight, Loader2 } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
-import { APP_CONFIG } from "@/config/app";
 import { TickoLogo } from "@/components/ui/TickoLogo";
 
 export default function RegisterPage() {
@@ -126,17 +125,16 @@ export default function RegisterPage() {
 
             <div className="w-full max-w-md">
                 {/* Logo */}
-                <div className="text-center mb-8">
-                    <Link href="/" className="inline-flex items-center justify-center">
+                <div className="text-center mb-10">
+                    <Link href="/" className="inline-flex items-center justify-center transform scale-150">
                         <TickoLogo />
                     </Link>
-                    <p className="text-sm text-white/60 mt-6">{APP_CONFIG.tagline}</p>
                 </div>
 
                 {/* Register card */}
                 <div className="bg-white/[0.04] backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl">
                     <h1 className="text-2xl font-bold text-white mb-2">Create account</h1>
-                    <p className="text-white/50 mb-6">Join {APP_CONFIG.name} today</p>
+                    <p className="text-white/50 mb-6">Join Ticko today</p>
 
                     {/* Google Signup - First for better conversion */}
                     <button
@@ -266,7 +264,7 @@ export default function RegisterPage() {
                                 className="mt-1 h-4 w-4 rounded border-white/20 bg-white/5 text-emerald-500 focus:ring-emerald-500/30 focus:ring-offset-0"
                             />
                             <span className="text-sm text-white/60 leading-relaxed">
-                                I accept the <Link href="/villkor" className="text-emerald-400 hover:underline" target="_blank">terms of service</Link> and <Link href="/integritet" className="text-emerald-400 hover:underline" target="_blank">privacy policy</Link>, and understand that Ticko does not provide financial advice.
+                                I accept the <Link href="/terms" className="text-emerald-400 hover:underline" target="_blank">terms of service</Link> and <Link href="/privacy" className="text-emerald-400 hover:underline" target="_blank">privacy policy</Link>, and understand that Ticko does not provide financial advice.
                             </span>
                         </label>
 

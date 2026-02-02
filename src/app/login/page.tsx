@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
-import { APP_CONFIG } from "@/config/app";
 import { TickoLogo } from "@/components/ui/TickoLogo";
 
 export default function LoginPage() {
@@ -51,17 +50,16 @@ export default function LoginPage() {
 
             <div className="w-full max-w-md">
                 {/* Logo */}
-                <div className="text-center mb-8">
-                    <Link href="/" className="inline-flex items-center justify-center">
+                <div className="text-center mb-10">
+                    <Link href="/" className="inline-flex items-center justify-center transform scale-150">
                         <TickoLogo />
                     </Link>
-                    <p className="text-sm text-white/60 mt-6">{APP_CONFIG.tagline}</p>
                 </div>
 
                 {/* Login card */}
                 <div className="bg-white/[0.04] backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl">
                     <h1 className="text-2xl font-bold text-white mb-2">Welcome back</h1>
-                    <p className="text-white/50 mb-8">Log in to continue to {APP_CONFIG.name}</p>
+                    <p className="text-white/50 mb-8">Log in to continue to Ticko</p>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         {/* Email */}
