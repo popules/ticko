@@ -203,8 +203,18 @@ export default function TermsPage() {
                     ))}
                 </div>
 
+                {/* Operator Info */}
+                <div className="mt-12 p-6 rounded-2xl bg-white/[0.02] border border-white/10 text-center">
+                    <p className="text-white/60 text-sm">
+                        <strong className="text-white/80">Service Operator:</strong> Ticko is operated by Anton Åberg, based in Sweden.
+                    </p>
+                    <p className="text-white/40 text-xs mt-2">
+                        Legal inquiries: <a href="mailto:legal@tickomarkets.com" className="text-emerald-400 hover:underline">legal@tickomarkets.com</a>
+                    </p>
+                </div>
+
                 {/* Footer */}
-                <div className="mt-12 text-center">
+                <div className="mt-8 text-center">
                     <Link
                         href="/"
                         className="text-white/40 hover:text-white/60 transition-colors text-sm"

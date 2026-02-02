@@ -5,6 +5,10 @@ import Link from "next/link";
 import { ChevronDown, HelpCircle, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TickoLogo } from "@/components/ui/TickoLogo";
+import { useAuth } from "@/providers/AuthProvider";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { RightPanel } from "@/components/layout/RightPanel";
+import { AppFooter } from "@/components/layout/AppFooter";
 
 interface FAQItem {
     question: string;
@@ -127,22 +131,10 @@ function FAQAccordion({ item, isOpen, onToggle }: { item: FAQItem; isOpen: boole
 
 export default function FAQPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
+    const { user } = useAuth();
 
-    return (
-        <div className="min-h-screen bg-[#020617] text-white">
-            {/* Nav */}
-            <nav className="fixed top-0 w-full z-50 border-b border-white/[0.05] bg-[#020617]/70 backdrop-blur-xl">
-                <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
-                        <ArrowLeft className="w-4 h-4" />
-                        <span className="text-sm font-medium">Back</span>
-                    </Link>
-                    <TickoLogo />
-                </div>
-            </nav>
-
-            <main className="pt-32 pb-24 px-6">
-                <div className="max-w-3xl mx-auto">
+    const content = (
+        <div className="max-w-3xl mx-auto">
                     {/* Header */}
                     <div className="text-center mb-16">
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 mb-6">
@@ -200,7 +192,53 @@ export default function FAQPage() {
                         <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
                     </div>
                 </div>
+    );
+
+    // Authenticated View
+    if (user) {
+        return (
+            <div className="flex min-h-screen bg-[#020617]">
+                <Sidebar />
+                <main className="flex-1 border-x border-white/5 overflow-y-auto flex flex-col">
+                    <div className="p-6 md:p-12 pb-8 flex-1">
+                        {content}
+                    </div>
+                    <AppFooter />
+                </main>
+                <RightPanel />
+            </div>
+        );
+    }
+
+    // Public View
+    return (
+        <div className="min-h-screen bg-[#020617] text-white">
+            {/* Nav */}
+            <nav className="fixed top-0 w-full z-50 border-b border-white/[0.05] bg-[#020617]/70 backdrop-blur-xl">
+                <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+                    <Link href="/" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+                        <ArrowLeft className="w-4 h-4" />
+                        <span className="text-sm font-medium">Back</span>
+                    </Link>
+                    <TickoLogo />
+                </div>
+            </nav>
+
+            <main className="pt-32 pb-24 px-6">
+                {content}
             </main>
+
+            {/* Simple Footer */}
+            <footer className="border-t border-white/[0.05] bg-[#01040f] py-12 px-6">
+                <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                    <TickoLogo />
+                    <div className="flex gap-8 text-sm font-medium text-white/40">
+                        <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                        <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+                        <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }

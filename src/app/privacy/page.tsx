@@ -175,8 +175,18 @@ export default function PrivacyPage() {
                     ))}
                 </div>
 
+                {/* Data Controller */}
+                <div className="mt-12 p-6 rounded-2xl bg-white/[0.02] border border-white/10 text-center">
+                    <p className="text-white/60 text-sm">
+                        <strong className="text-white/80">Data Controller:</strong> Ticko is operated by Anton Åberg, based in Sweden.
+                    </p>
+                    <p className="text-white/40 text-xs mt-2">
+                        For questions about your data, contact <a href="mailto:privacy@tickomarkets.com" className="text-blue-400 hover:underline">privacy@tickomarkets.com</a>
+                    </p>
+                </div>
+
                 {/* Footer */}
-                <div className="mt-12 flex justify-center gap-6 text-sm">
+                <div className="mt-8 flex justify-center gap-6 text-sm">
                     <Link
                         href="/terms"
                         className="text-white/40 hover:text-white/60 transition-colors"
