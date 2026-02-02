@@ -94,9 +94,9 @@ export function Sidebar() {
     });
 
     const SidebarContent = () => (
-        <>
-            {/* Logo & Notifications */}
-            <div className="p-5 border-b border-white/10 flex items-center justify-between">
+        <div className="flex flex-col h-full">
+            {/* Logo & Notifications - FIXED TOP */}
+            <div className="flex-none p-5 border-b border-white/10 flex items-center justify-between bg-transparent">
                 <Link href="/" className="flex items-center" onClick={() => setMobileOpen(false)}>
                     <TickoLogo />
                 </Link>
@@ -114,106 +114,112 @@ export function Sidebar() {
                 </div>
             </div>
 
-            {/* Search Trigger */}
-            <div className="p-4">
-                <button
-                    onClick={() => {
-                        open();
-                        setMobileOpen(false);
-                    }}
-                    className="w-full flex items-center gap-3 px-4 py-3 bg-white/[0.06] rounded-2xl text-white/40 border border-white/10 hover:border-emerald-500/50 hover:text-white transition-all text-sm group"
-                >
-                    <Search className="w-4 h-4 group-hover:text-emerald-400 transition-colors" />
-                    <span>{UI_STRINGS.search}</span>
-                    <span className="ml-auto text-xs bg-white/10 px-1.5 py-0.5 rounded text-white/30 font-medium hidden sm:inline">⌘K</span>
-                </button>
-            </div>
-
-            {/* Navigation */}
-            <nav className="p-3 flex-1">
-                {navItems.map((item) => {
-                    const isActive = pathname === item.href ||
-                        (item.href !== "/" && pathname.startsWith(item.href));
-                    const getTourId = (href: string) => {
-                        if (href === "/arena") return "tour-arena-link";
-                        if (href === "/market") return "tour-market-link";
-                        if (href === "/leaderboard") return "tour-leaderboard-link";
-                        return undefined;
-                    };
-
-                    return (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            id={getTourId(item.href)}
-                            onClick={() => setMobileOpen(false)}
-                            className={`flex items-center justify-between px-4 py-2.5 rounded-2xl transition-all group ${isActive
-                                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                                : "text-white/70 hover:text-white hover:bg-white/[0.06] border border-transparent"
-                                }`}
-                        >
-                            <div className="flex items-center gap-3">
-                                <item.icon className={`w-4 h-4 ${isActive ? "text-emerald-400" : ""}`} />
-                                <span className="text-[13px] font-medium">{item.label}</span>
-                            </div>
-                        </Link>
-                    );
-                })}
-            </nav>
-
-            {/* Quick Stats - P&L and League */}
-            {user && (
-                <div className="px-4 pb-3">
-                    <QuickStats />
-                </div>
-            )}
-
-            {/* Footer */}
-            <div className="p-3 border-t border-white/10 space-y-1 bg-white/[0.02] mt-auto">
-                <Link
-                    href="/settings"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-white hover:bg-white/[0.06] transition-all"
-                >
-                    <Settings className="w-4 h-4" />
-                    <span className="text-[13px] font-medium">{UI_STRINGS.settings}</span>
-                </Link>
-                {user ? (
+            {/* SCROLLABLE CONTENT (Search + Nav) */}
+            <div className="flex-1 overflow-y-auto scrollbar-hide">
+                {/* Search Trigger */}
+                <div className="p-4">
                     <button
                         onClick={() => {
-                            signOut();
+                            open();
                             setMobileOpen(false);
                         }}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-rose-400 hover:bg-rose-400/10 transition-all group"
+                        className="w-full flex items-center gap-3 px-4 py-3 bg-white/[0.06] rounded-2xl text-white/40 border border-white/10 hover:border-emerald-500/50 hover:text-white transition-all text-sm group"
                     >
-                        <LogOut className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-                        <span className="text-[13px] font-medium">Log out</span>
+                        <Search className="w-4 h-4 group-hover:text-emerald-400 transition-colors" />
+                        <span>{UI_STRINGS.search}</span>
+                        <span className="ml-auto text-xs bg-white/10 px-1.5 py-0.5 rounded text-white/30 font-medium hidden sm:inline">⌘K</span>
                     </button>
-                ) : (
-                    <Link
-                        href="/login"
-                        onClick={() => setMobileOpen(false)}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-emerald-400 hover:bg-emerald-400/10 transition-all group"
-                    >
-                        <LogOut className="w-4 h-4 rotate-180 group-hover:-rotate-[168deg] transition-transform" />
-                        <span className="text-[13px] font-medium">Log in</span>
-                    </Link>
-                )}
+                </div>
+
+                {/* Navigation */}
+                <nav className="p-3">
+                    {navItems.map((item) => {
+                        const isActive = pathname === item.href ||
+                            (item.href !== "/" && pathname.startsWith(item.href));
+                        const getTourId = (href: string) => {
+                            if (href === "/arena") return "tour-arena-link";
+                            if (href === "/market") return "tour-market-link";
+                            if (href === "/leaderboard") return "tour-leaderboard-link";
+                            return undefined;
+                        };
+
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                id={getTourId(item.href)}
+                                onClick={() => setMobileOpen(false)}
+                                className={`flex items-center justify-between px-4 py-2.5 rounded-2xl transition-all group ${isActive
+                                    ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                                    : "text-white/70 hover:text-white hover:bg-white/[0.06] border border-transparent"
+                                    }`}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <item.icon className={`w-4 h-4 ${isActive ? "text-emerald-400" : ""}`} />
+                                    <span className="text-[13px] font-medium">{item.label}</span>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </nav>
             </div>
 
-            {/* Footer Links */}
-            <div className="px-4 pb-4 pt-2 border-t border-white/5">
-                <div className="flex items-center gap-3 text-[11px] text-white/30 flex-wrap">
-                    <Link href="/wiki" className="hover:text-white/60 transition-colors">Wiki</Link>
-                    <span className="text-white/10">·</span>
-                    <Link href="/community-guidelines" className="hover:text-white/60 transition-colors">Guidelines</Link>
-                    <span className="text-white/10">·</span>
-                    <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
-                    <span className="text-white/10">·</span>
-                    <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
+            {/* FIXED BOTTOM (Stats + Footer) */}
+            <div className="flex-none z-10 bg-transparent">
+                {/* Quick Stats - P&L and League */}
+                {user && (
+                    <div className="px-4 pb-3">
+                        <QuickStats />
+                    </div>
+                )}
+
+                {/* Footer */}
+                <div className="p-3 border-t border-white/10 space-y-1 bg-white/[0.02]">
+                    <Link
+                        href="/settings"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-white hover:bg-white/[0.06] transition-all"
+                    >
+                        <Settings className="w-4 h-4" />
+                        <span className="text-[13px] font-medium">{UI_STRINGS.settings}</span>
+                    </Link>
+                    {user ? (
+                        <button
+                            onClick={() => {
+                                signOut();
+                                setMobileOpen(false);
+                            }}
+                            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-rose-400 hover:bg-rose-400/10 transition-all group"
+                        >
+                            <LogOut className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                            <span className="text-[13px] font-medium">Log out</span>
+                        </button>
+                    ) : (
+                        <Link
+                            href="/login"
+                            onClick={() => setMobileOpen(false)}
+                            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-emerald-400 hover:bg-emerald-400/10 transition-all group"
+                        >
+                            <LogOut className="w-4 h-4 rotate-180 group-hover:-rotate-[168deg] transition-transform" />
+                            <span className="text-[13px] font-medium">Log in</span>
+                        </Link>
+                    )}
+                </div>
+
+                {/* Footer Links */}
+                <div className="px-4 pb-4 pt-2 border-t border-white/5">
+                    <div className="flex items-center gap-3 text-[11px] text-white/30 flex-wrap">
+                        <Link href="/wiki" className="hover:text-white/60 transition-colors">Wiki</Link>
+                        <span className="text-white/10">·</span>
+                        <Link href="/community-guidelines" className="hover:text-white/60 transition-colors">Guidelines</Link>
+                        <span className="text-white/10">·</span>
+                        <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
+                        <span className="text-white/10">·</span>
+                        <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
+                    </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 
     return (
