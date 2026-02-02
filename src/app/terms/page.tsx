@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Scale, AlertTriangle, Shield, Users, FileText, Lock, RefreshCw, Gavel, Coins, Timer, Ban, AlertCircle } from "lucide-react";
+import { Scale, AlertTriangle, Shield, Users, FileText, Lock, RefreshCw, Gavel, Coins, Timer, Ban, AlertCircle, UserCheck, MessageSquare } from "lucide-react";
 
 export default function TermsPage() {
     const sections = [
@@ -77,8 +77,14 @@ export default function TermsPage() {
             ]
         },
         {
+            icon: UserCheck,
+            title: "8. Age Requirement",
+            highlight: true,
+            content: "You must be at least 18 years old to create an account and use Ticko. By registering, you confirm that you meet this age requirement. If we discover that a user is under 18, the account will be terminated immediately."
+        },
+        {
             icon: Users,
-            title: "8. Rules for User Generated Content",
+            title: "9. Rules for User Generated Content",
             content: "As a user, you agree to follow applicable laws and regulations. It is strictly prohibited to:",
             list: [
                 "Spread misleading information aimed at influencing stock prices.",
@@ -88,14 +94,25 @@ export default function TermsPage() {
             footer: "Ticko reserves the right to delete content and permanently suspend accounts violating these rules without warning."
         },
         {
+            icon: MessageSquare,
+            title: "10. Appeals and Disputes",
+            content: "If your account has been suspended or terminated, you may appeal the decision:",
+            list: [
+                "Submit an appeal via email to appeals@tickomarkets.com within 14 days of the action.",
+                "Include your username and a clear explanation of why you believe the decision was incorrect.",
+                "Appeals are reviewed within 7 business days. Decisions on appeals are final."
+            ],
+            footer: "Ticko is not obligated to provide detailed reasons for account actions, but will consider appeals in good faith."
+        },
+        {
             icon: Lock,
-            title: "9. Privacy and Data Protection (GDPR)",
+            title: "11. Privacy and Data Protection (GDPR)",
             content: "By using the Service, you agree that we process your personal data in accordance with our Privacy Policy.",
             link: { href: "/privacy", text: "Read our Privacy Policy" }
         },
         {
             icon: Gavel,
-            title: "10. Applicable Law and Dispute",
+            title: "12. Applicable Law and Dispute",
             content: "These terms shall be interpreted in accordance with Swedish law. Disputes shall primarily be resolved through negotiation and secondarily by Swedish general court."
         }
     ];

@@ -63,6 +63,7 @@ export function LandingPage() {
                         <Link href="#features" className="hover:text-white transition-colors">Features</Link>
                         <Link href="#how-it-works" className="hover:text-white transition-colors">How it works</Link>
                         <Link href="#community" className="hover:text-white transition-colors">Community</Link>
+                        <Link href="/faq" className="hover:text-white transition-colors">FAQ</Link>
                         <Link href="/about" className="hover:text-white transition-colors">About</Link>
                     </div>
 
@@ -671,9 +672,10 @@ export function LandingPage() {
                             <h4 className="font-bold text-sm mb-4 text-white/60 uppercase tracking-wider">Company</h4>
                             <div className="flex flex-col gap-3 text-sm text-white/40">
                                 <Link href="/about" className="hover:text-white transition-colors">About</Link>
+                                <Link href="/faq" className="hover:text-white transition-colors">FAQ</Link>
                                 <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
-                                <a href="https://www.tickomarkets.com/terms" className="hover:text-white transition-colors">Terms of Service</a>
-                                <a href="https://www.tickomarkets.com/privacy" className="hover:text-white transition-colors">Privacy Policy</a>
+                                <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+                                <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
                             </div>
                         </div>
                     </div>
