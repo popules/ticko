@@ -81,7 +81,7 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
     return (
         <div className="space-y-4">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-amber-400" />
                     <h3 className="text-lg font-bold text-white">Achievements</h3>
@@ -89,10 +89,10 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
                         {userAchievements.length}/{allAchievements.length}
                     </span>
                 </div>
-                {allAchievements.length > 12 && (
+                {allAchievements.length > (compact ? 6 : 12) && (
                     <button
                         onClick={() => setShowAll(!showAll)}
-                        className="text-xs text-emerald-400 hover:text-emerald-300 font-medium transition-colors"
+                        className="text-xs text-emerald-400 hover:text-emerald-300 font-medium transition-colors shrink-0 ml-2"
                     >
                         {showAll ? "Show less" : "Show all"}
                     </button>
@@ -121,7 +121,7 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className={`relative p-4 rounded-2xl border transition-all ${isUnlocked
+                                className={`relative p-4 rounded-2xl border transition-all overflow-hidden ${isUnlocked
                                     ? `${RARITY_COLORS[achievement.rarity]} hover:scale-105`
                                     : "bg-white/[0.02] border-white/5 opacity-40"
                                     }`}
@@ -141,10 +141,10 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
                                             <Sparkles className="w-4 h-4 text-amber-400" />
                                         )}
                                     </div>
-                                    <h4 className="text-sm font-bold text-white mb-1 truncate">
+                                    <h4 className="text-sm font-bold text-white mb-1 truncate max-w-full">
                                         {achievement.name}
                                     </h4>
-                                    <p className="text-[10px] text-white/50 leading-tight line-clamp-2">
+                                    <p className="text-[10px] text-white/50 leading-tight line-clamp-2 break-words">
                                         {achievement.description}
                                     </p>
                                     <div className="flex items-center justify-between mt-2">

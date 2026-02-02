@@ -28,7 +28,7 @@ import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { useAuth } from "@/providers/AuthProvider";
 import { useSearch } from "@/providers/SearchProvider";
 import { motion, AnimatePresence } from "framer-motion";
-import { XPBar } from "@/components/profile/XPBar";
+import { QuickStats } from "@/components/profile/QuickStats";
 import { LevelUpModal } from "@/components/profile/LevelUpModal";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { supabase } from "@/lib/supabase/client";
@@ -164,16 +164,10 @@ export function Sidebar() {
             {/* Spacer */}
             <div className="flex-1 md:block hidden" />
 
-            {/* XP Bar */}
+            {/* Quick Stats - P&L and League */}
             {user && (
-                <div className="px-4 pb-3">
-                    <XPBar
-                        xp={profile?.reputation_score || 0}
-                        onLevelUp={(lvl) => {
-                            setNewLevel(lvl);
-                            setShowLevelUp(true);
-                        }}
-                    />
+                <div className="px-4 pb-3 hidden md:block">
+                    <QuickStats />
                 </div>
             )}
 

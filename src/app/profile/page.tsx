@@ -113,7 +113,7 @@ export default function ProfilePage() {
                                 ) : (
                                     <div className="p-12 rounded-[2rem] border border-white/5 bg-white/[0.02] text-center space-y-4">
                                         <p className="text-white/30 text-sm">You haven't shared any thoughts yet.</p>
-                                        <Link href="/upptack" className="text-emerald-400 font-bold text-sm hover:underline block">
+                                        <Link href="/discover" className="text-emerald-400 font-bold text-sm hover:underline block">
                                             Explore the market
                                         </Link>
                                     </div>
