@@ -42,6 +42,9 @@ export async function generateMetadata({ params }: StockPageProps): Promise<Meta
         "description": description
     };
 
+    const sentiment = (stock.changePercent || 0) >= 0 ? 'bull' : 'bear';
+    const ogUrl = `https://tickomarkets.com/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}&sentiment=${sentiment}`;
+
     return {
         title,
         description,
@@ -53,7 +56,7 @@ export async function generateMetadata({ params }: StockPageProps): Promise<Meta
             description,
             images: [
                 {
-                    url: `https://tickomarkets.com/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`,
+                    url: ogUrl,
                     width: 1200,
                     height: 630,
                     alt: `${stock.name} Analysis on Ticko`,
@@ -64,7 +67,7 @@ export async function generateMetadata({ params }: StockPageProps): Promise<Meta
             card: 'summary_large_image',
             title,
             description,
-            images: [`https://tickomarkets.com/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`],
+            images: [ogUrl],
         },
         other: {
             "script:ld+json": JSON.stringify(jsonLd)

@@ -8,6 +8,7 @@ import { PerformanceMetrics } from "@/components/stock/PerformanceMetrics";
 import { WatchButton } from "@/components/watchlist/WatchButton";
 import { PaperTradeButton } from "@/components/portfolio/PaperTradeButton";
 import { Brain, ArrowLeft } from "lucide-react";
+import { ShareButton } from "@/components/ui/ShareButton";
 import Link from "next/link";
 
 interface StockPageActionsProps {
@@ -32,6 +33,11 @@ export function StockPageActions({ symbol }: StockPageActionsProps) {
         <div className="flex items-center gap-2">
             <PaperTradeButton symbol={symbol} />
             <WatchButton symbol={symbol} />
+            <div className="h-8 w-px bg-white/10 mx-1" />
+            <ShareButton
+                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white transition-all"
+                iconOnly={true}
+            />
         </div>
     );
 }
