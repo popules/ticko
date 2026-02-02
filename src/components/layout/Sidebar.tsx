@@ -204,11 +204,14 @@ export function Sidebar() {
                 )}
             </div>
 
-            {/* Footer Links for logged-in users */}
-            <div className="px-4 pb-4">
-                <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-white/50">
-                    <Link href="/community-guidelines" className="hover:text-white transition-colors">Guidelines</Link>
-                    <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+            {/* Footer Links */}
+            <div className="px-4 pb-4 pt-2 border-t border-white/5 mt-auto">
+                <div className="flex items-center gap-4 text-[11px] text-white/30">
+                    <Link href="/community-guidelines" className="hover:text-white/60 transition-colors">Guidelines</Link>
+                    <span className="text-white/10">·</span>
+                    <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
+                    <span className="text-white/10">·</span>
+                    <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
                 </div>
             </div>
         </>

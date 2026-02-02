@@ -72,14 +72,14 @@ export function TrendingTickers() {
 
     if (isLoading) {
         return (
-            <div className="p-5 border-b border-white/10">
-                <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <Flame className="w-3.5 h-3.5 text-orange-400" />
+            <div className="px-4 py-3 border-b border-white/10">
+                <h3 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <Flame className="w-3 h-3 text-orange-400" />
                     Most discussed
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="h-12 bg-white/[0.03] animate-pulse rounded-xl" />
+                        <div key={i} className="h-9 bg-white/[0.03] animate-pulse rounded-lg" />
                     ))}
                 </div>
             </div>
@@ -88,12 +88,12 @@ export function TrendingTickers() {
 
     if (!trendingData || trendingData.length === 0) {
         return (
-            <div className="p-5 border-b border-white/10">
-                <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <Flame className="w-3.5 h-3.5 text-orange-400" />
+            <div className="px-4 py-3 border-b border-white/10">
+                <h3 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <Flame className="w-3 h-3 text-orange-400" />
                     Most discussed
                 </h3>
-                <p className="text-xs text-white/30 text-center py-4">
+                <p className="text-[10px] text-white/30 text-center py-3">
                     No stocks being discussed right now
                 </p>
             </div>
@@ -101,20 +101,20 @@ export function TrendingTickers() {
     }
 
     return (
-        <div className="p-5 border-b border-white/10">
-            <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4 flex items-center gap-2">
-                <Flame className="w-3.5 h-3.5 text-orange-400" />
+        <div className="px-4 py-3 border-b border-white/10">
+            <h3 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-3 flex items-center gap-2">
+                <Flame className="w-3 h-3 text-orange-400" />
                 Most discussed
             </h3>
-            <div className="space-y-2">
+            <div className="space-y-1">
                 {trendingData.map((item, index) => (
                     <Link
                         key={item.ticker_symbol}
                         href={`/stock/${item.ticker_symbol}`}
-                        className="flex items-center gap-3 p-3 bg-white/[0.04] rounded-xl hover:bg-white/[0.08] transition-all border border-white/[0.08] hover:border-white/[0.12] group"
+                        className="flex items-center gap-2.5 py-2 px-2.5 bg-white/[0.04] rounded-lg hover:bg-white/[0.08] transition-all border border-white/[0.08] hover:border-white/[0.12] group"
                     >
                         {/* Rank */}
-                        <span className={`text-sm font-black w-5 ${index === 0 ? "text-orange-400" :
+                        <span className={`text-xs font-black w-4 ${index === 0 ? "text-orange-400" :
                             index === 1 ? "text-white/60" :
                                 index === 2 ? "text-amber-600" :
                                     "text-white/30"
@@ -124,23 +124,23 @@ export function TrendingTickers() {
 
                         {/* Ticker */}
                         <div className="flex-1 min-w-0">
-                            <span className="font-bold text-white text-sm group-hover:text-emerald-400 transition-colors">
+                            <span className="font-bold text-white text-xs group-hover:text-emerald-400 transition-colors">
                                 ${item.ticker_symbol}
                             </span>
                         </div>
 
                         {/* Sentiment indicator */}
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5">
                             {item.sentiment_score !== 0 && (
                                 <TrendingUp
-                                    className={`w-3.5 h-3.5 ${item.sentiment_score > 0
+                                    className={`w-3 h-3 ${item.sentiment_score > 0
                                         ? "text-emerald-400"
                                         : "text-rose-400 rotate-180"
                                         }`}
                                 />
                             )}
-                            <span className="flex items-center gap-1 text-xs text-white/40">
-                                <MessageCircle className="w-3 h-3" />
+                            <span className="flex items-center gap-0.5 text-[10px] text-white/40">
+                                <MessageCircle className="w-2.5 h-2.5" />
                                 {item.post_count}
                             </span>
                         </div>

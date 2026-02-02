@@ -70,30 +70,30 @@ export function RightPanel() {
     });
 
     return (
-        <aside className="hidden lg:flex w-80 h-screen sticky top-0 flex-col border-l border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-y-auto scrollbar-hide">
+        <aside className="hidden lg:flex w-80 h-screen sticky top-0 flex-col border-l border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
             {/* Daily Challenges */}
-            <div className="p-4 pb-0">
+            <div className="p-4 pb-2">
                 <ChallengesWidget />
             </div>
 
             {/* Market Overview */}
-            <div className="p-5 border-b border-white/10">
-                <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4">
+            <div className="px-4 py-3 border-b border-white/10">
+                <h3 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-3">
                     {UI_STRINGS.marketOverview}
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                     {(marketData || []).map((stat: any) => (
                         <div
                             key={stat.label}
-                            className="flex items-center justify-between py-3 px-4 bg-white/[0.04] rounded-2xl border border-white/[0.08]"
+                            className="flex items-center justify-between py-2 px-3 bg-white/[0.04] rounded-xl border border-white/[0.08]"
                         >
-                            <span className="text-sm font-semibold text-white/80">{stat.label}</span>
+                            <span className="text-xs font-semibold text-white/80">{stat.label}</span>
                             <div className="text-right">
-                                <span className="text-sm font-bold tabular-nums text-white">
+                                <span className="text-xs font-bold tabular-nums text-white">
                                     {stat.value}
                                 </span>
                                 <span
-                                    className={`text-xs font-bold tabular-nums ml-2 ${stat.change >= 0 ? "text-emerald-400" : "text-rose-400"
+                                    className={`text-[10px] font-bold tabular-nums ml-1.5 ${stat.change >= 0 ? "text-emerald-400" : "text-rose-400"
                                         }`}
                                 >
                                     {stat.change >= 0 ? "+" : ""}
@@ -104,7 +104,7 @@ export function RightPanel() {
                     ))}
                     {!marketData && (
                         [1, 2, 3].map(i => (
-                            <div key={i} className="h-12 bg-white/[0.02] animate-pulse rounded-2xl" />
+                            <div key={i} className="h-10 bg-white/[0.02] animate-pulse rounded-xl" />
                         ))
                     )}
                 </div>
@@ -114,39 +114,39 @@ export function RightPanel() {
             <TrendingTickers />
 
             {/* Watchlist */}
-            <div className="flex-1 p-5">
-                <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+            <div className="flex-1 px-4 py-3">
+                <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider">
                         {UI_STRINGS.watchlist}
                     </h3>
                     <Link
                         href="/discover"
-                        className="p-2 rounded-xl hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors"
+                        className="p-1.5 rounded-lg hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors"
                         title="Discover stocks to watch"
                     >
-                        <Plus className="w-4 h-4" />
+                        <Plus className="w-3.5 h-3.5" />
                     </Link>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                     {isLoading ? (
                         [1, 2, 3].map((i) => (
-                            <div key={i} className="h-20 bg-white/[0.03] animate-pulse rounded-2xl border border-white/5" />
+                            <div key={i} className="h-14 bg-white/[0.03] animate-pulse rounded-xl border border-white/5" />
                         ))
                     ) : watchlistData && watchlistData.length > 0 ? (
-                        watchlistData.map((item: any) => (
+                        watchlistData.slice(0, 5).map((item: any) => (
                             <div
                                 key={item.symbol}
-                                className="group flex items-center justify-between p-4 bg-white/[0.04] rounded-2xl hover:bg-white/[0.08] transition-all border border-white/[0.08] hover:border-white/[0.12]"
+                                className="group flex items-center justify-between p-3 bg-white/[0.04] rounded-xl hover:bg-white/[0.08] transition-all border border-white/[0.08] hover:border-white/[0.12]"
                             >
-                                <Link href={`/stock/${item.symbol}`} className="flex items-center gap-3 flex-1 min-w-0">
-                                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center border border-white/10 flex-shrink-0">
-                                        <span className="text-xs font-bold text-white">
+                                <Link href={`/stock/${item.symbol}`} className="flex items-center gap-2.5 flex-1 min-w-0">
+                                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center border border-white/10 flex-shrink-0">
+                                        <span className="text-[10px] font-bold text-white">
                                             {item.symbol.charAt(0)}
                                         </span>
                                     </div>
                                     <div className="min-w-0 overflow-hidden">
-                                        <span className="font-semibold text-white text-sm block truncate">
+                                        <span className="font-semibold text-white text-xs block truncate">
                                             ${item.symbol.split('.')[0]}
                                         </span>
                                         <p className="text-[10px] tabular-nums text-white/50">
@@ -154,9 +154,9 @@ export function RightPanel() {
                                         </p>
                                     </div>
                                 </Link>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-1.5">
                                     <span
-                                        className={`text-sm font-medium tabular-nums ${item.changePercent >= 0 ? "text-emerald-400" : "text-rose-400"
+                                        className={`text-xs font-medium tabular-nums ${item.changePercent >= 0 ? "text-emerald-400" : "text-rose-400"
                                             }`}
                                     >
                                         {item.changePercent >= 0 ? "+" : ""}
@@ -164,17 +164,17 @@ export function RightPanel() {
                                     </span>
                                     <button
                                         onClick={() => toggleWatch.mutate(item.symbol)}
-                                        className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-white/10 text-white/50 transition-all"
+                                        className="p-1 rounded-md opacity-0 group-hover:opacity-100 hover:bg-white/10 text-white/50 transition-all"
                                     >
-                                        <X className="w-3.5 h-3.5" />
+                                        <X className="w-3 h-3" />
                                     </button>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <div className="py-12 text-center rounded-2xl bg-white/[0.02] border border-dashed border-white/10">
-                            <p className="text-xs text-white/30 uppercase tracking-widest leading-relaxed px-4">
-                                Your watchlist is empty. Add stocks to follow them live.
+                        <div className="py-8 text-center rounded-xl bg-white/[0.02] border border-dashed border-white/10">
+                            <p className="text-[10px] text-white/30 uppercase tracking-widest leading-relaxed px-3">
+                                Your watchlist is empty
                             </p>
                         </div>
                     )}
@@ -183,9 +183,9 @@ export function RightPanel() {
                 {/* Quick action - links to full watchlist page */}
                 <Link
                     href="/watchlist"
-                    className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/[0.04] hover:bg-white/[0.08] rounded-2xl text-sm text-white/60 hover:text-white transition-all border border-white/[0.08] hover:border-white/[0.12]"
+                    className="mt-3 w-full flex items-center justify-center gap-2 px-3 py-2.5 bg-white/[0.04] hover:bg-white/[0.08] rounded-xl text-xs text-white/60 hover:text-white transition-all border border-white/[0.08] hover:border-white/[0.12]"
                 >
-                    <Eye className="w-4 h-4" />
+                    <Eye className="w-3.5 h-3.5" />
                     {UI_STRINGS.viewFullWatchlist}
                 </Link>
             </div>
