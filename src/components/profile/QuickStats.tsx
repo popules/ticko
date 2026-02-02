@@ -17,11 +17,15 @@ function getLeagueFromRating(rating: number) {
 export function QuickStats() {
     const { user } = useAuth();
 
-    const { data: profile } = useQuery({
+    const { data: profile } = useQuery<{
+        paper_balance: number | null;
+        paper_season_pnl: number | null;
+        league_rating: number | null;
+    } | null>({
         queryKey: ["profile-stats", user?.id],
         queryFn: async () => {
             if (!user) return null;
-            const { data } = await supabase
+            const { data } = await (supabase as any)
                 .from("profiles")
                 .select("paper_balance, paper_season_pnl, league_rating")
                 .eq("id", user.id)
@@ -33,11 +37,11 @@ export function QuickStats() {
 
     if (!user || !profile) return null;
 
-    const balance = profile.paper_balance || 10000;
-    const seasonPnl = profile.paper_season_pnl || 0;
+    const balance = profile.paper_balance ?? 10000;
+    const seasonPnl = profile.paper_season_pnl ?? 0;
     const pnlPercent = ((balance - 10000) / 10000) * 100;
     const isUp = pnlPercent >= 0;
-    const rating = profile.league_rating || 1000;
+    const rating = profile.league_rating ?? 1000;
     const league = getLeagueFromRating(rating);
 
     return (

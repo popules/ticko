@@ -172,7 +172,7 @@ export function Sidebar() {
             )}
 
             {/* Footer */}
-            <div className="p-3 border-t border-white/10 space-y-1">
+            <div className="p-3 border-t border-white/10 space-y-1 bg-white/[0.02]">
                 <Link
                     href="/settings"
                     onClick={() => setMobileOpen(false)}
@@ -187,7 +187,7 @@ export function Sidebar() {
                             signOut();
                             setMobileOpen(false);
                         }}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/40 hover:text-rose-400 hover:bg-rose-400/10 transition-all group"
+                        className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/70 hover:text-rose-400 hover:bg-rose-400/10 transition-all group"
                     >
                         <LogOut className="w-4 h-4 group-hover:rotate-12 transition-transform" />
                         <span className="text-[13px] font-medium">Log out</span>
