@@ -23,13 +23,12 @@ export async function POST(request: Request) {
         }
 
         // 2. Validate Input
-        if (!symbol || !shares || shares <= 0 || !['buy', 'sell'].includes(type)) {
+        if (!symbol || !shares || shares <= 0 || !['buy', 'sell', 'short', 'cover'].includes(type)) {
             return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
         }
 
-        // 3. Fetch REAL Price from Server Side (Yahoo Finance)
+        // 3. Fetch REAL Price from Server Side
         const stockData = await fetchStockData(symbol);
-
         if (!stockData) {
             return NextResponse.json({ error: 'Could not verify stock price' }, { status: 500 });
         }
@@ -37,115 +36,221 @@ export async function POST(request: Request) {
         const currentPrice = stockData.price;
         const currentCurrency = stockData.currency || 'USD';
 
-        // Calculate costs in SEK
+        // Calculate trade value in SEK for checks
         const rate = currentCurrency === 'USD' ? USD_TO_SEK : 1;
-        const totalCostSek = shares * currentPrice * rate;
+        const tradeValueSek = shares * currentPrice * rate;
+
+        // 4. Get Current Portfolio State (Netting Logic)
+        const { data: existingPosition } = await admin
+            .from("portfolio")
+            .select("*")
+            .eq("user_id", user.id)
+            .eq("symbol", symbol)
+            .single();
+
+        const currentShares = existingPosition?.shares || 0;
+
+        // 5. Get Cash Balance
+        const { data: allHoldings } = await admin
+            .from("portfolio")
+            .select("shares, buy_price, currency")
+            .eq("user_id", user.id);
+
+        let totalInvestedSek = 0;
+        // Note: For short positions (negative shares), the "Invested" amount is negative? 
+        // No, standard accounting: 
+        // Long: Asset (Positive Value)
+        // Short: Liability (Negative Value) + Cash Proceeds (Positive Cash)
+        // Net Liquidation Value = Cash + (Shares * Price)
+
+        // Simplified Cash Calculation for this "Game":
+        // We track "Invested" as "Cost to Open".
+        // This is complex. Let's start FRESH with a simpler Cash model if possible, 
+        // but we have to respect existing logic: Cash = 10000 - sum(invested).
+        // If we Short, we effectively "Un-invest" (Cash goes UP).
+        // So standard logic works: If shares is negative, it reduces "totalInvested", increasing Cash?
+        // Wait, NO. If I short, I have Liability. 
+        // Let's stick to the Plan: 
+        // Short Entry -> Cash Increases (Proceeds).
+        // But we need to lock Margin. 
+
+        // Let's calculate "Free Cash" via the standard way:
+        // Cash = 10000 - sum(position_cost).
+        // If Shorting: Cost is negative? No, that increases cash. Correct.
+        // But we need to BLOCK withdrawing that cash.
+        // For this MVP: 
+        // Cash Balance = 10000 - TotalCostBasis.
+
+        (allHoldings || []).forEach((item: any) => {
+            const itemRate = item.currency === "USD" ? USD_TO_SEK : 1;
+            // For Long: shares * price = Postive Cost.
+            // For Short: shares (-10) * price = Negative Cost. 
+            // 10000 - (-1000) = 11000 Cash. This is "Proceeds credited".
+            totalInvestedSek += item.shares * item.buy_price * itemRate;
+        });
+
+        const cashBalance = STARTING_CAPITAL - totalInvestedSek;
+
+        // === EXECUTION LOGIC ===
 
         if (type === 'buy') {
-            // === BUY LOGIC ===
+            // Rule: Cannot Buy if Short (Must Cover first)
+            if (currentShares < 0) {
+                return NextResponse.json({ error: 'Position is net Short. Use "Buy to Cover" instead.' }, { status: 400 });
+            }
 
-            // Calculate current balance
-            const { data: portfolio } = await admin
-                .from("portfolio")
-                .select("shares, buy_price, currency")
-                .eq("user_id", user.id);
-
-            let totalInvested = 0;
-            (portfolio || []).forEach((item: any) => {
-                const itemRate = item.currency === "USD" ? USD_TO_SEK : 1;
-                totalInvested += item.shares * item.buy_price * itemRate;
-            });
-
-            const cashBalance = STARTING_CAPITAL - totalInvested;
-
-            if (cashBalance < totalCostSek) {
+            // Cost Check
+            if (cashBalance < tradeValueSek) {
                 return NextResponse.json({ error: 'Insufficient funds' }, { status: 400 });
             }
 
-            // Lock for 30 mins
-            const lockedUntil = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+            // Upsert Portfolio (Add Shares)
+            if (existingPosition) {
+                // Weighted Average Price Update
+                const newShares = currentShares + shares;
+                const totalCost = (currentShares * existingPosition.buy_price) + (shares * currentPrice);
+                const newAvgPrice = totalCost / newShares;
 
-            // Execute Trade (Add to Portfolio) - Using ADMIN
-            const { error: insertError } = await admin
-                .from("portfolio")
-                .insert({
+                await admin.from("portfolio").update({
+                    shares: newShares,
+                    buy_price: newAvgPrice // Update avg price
+                }).eq("id", existingPosition.id);
+            } else {
+                await admin.from("portfolio").insert({
                     user_id: user.id,
-                    symbol: symbol,
+                    symbol,
                     name: stockData.name || name,
-                    shares: shares,
+                    shares,
                     buy_price: currentPrice,
-                    currency: currentCurrency,
-                    locked_until: lockedUntil,
+                    currency: currentCurrency
                 });
-
-            if (insertError) throw insertError;
-
-            // Log Transaction - Using ADMIN
-            await admin.from("transactions").insert({
-                user_id: user.id,
-                symbol: symbol,
-                name: stockData.name || name,
-                type: "buy",
-                shares: shares,
-                price: currentPrice,
-                currency: currentCurrency,
-                total_sek: totalCostSek,
-                realized_pnl: 0,
-            });
-
-            return NextResponse.json({ success: true, price: currentPrice });
+            }
 
         } else if (type === 'sell') {
-            // === SELL LOGIC ===
-            const { portfolioId } = await request.json();
-
-            if (!portfolioId) {
-                return NextResponse.json({ error: 'Portfolio ID required for sell' }, { status: 400 });
+            // Rule: Cannot Sell if no shares or Short
+            if (currentShares <= 0) {
+                return NextResponse.json({ error: 'No shares to sell' }, { status: 400 });
+            }
+            if (shares > currentShares) {
+                return NextResponse.json({ error: 'Cannot sell more than you own' }, { status: 400 });
             }
 
-            // Verify ownership and shares - Using ADMIN
-            const { data: lot } = await admin
-                .from("portfolio")
-                .select("*")
-                .eq("id", portfolioId)
-                .eq("user_id", user.id)
-                .single();
-
-            if (!lot || lot.shares < shares) {
-                return NextResponse.json({ error: 'Invalid share count or ownership' }, { status: 400 });
+            // Update/Delete Portfolio
+            if (shares === currentShares) {
+                await admin.from("portfolio").delete().eq("id", existingPosition.id);
+            } else {
+                await admin.from("portfolio").update({
+                    shares: currentShares - shares
+                    // Avg price stays same on partial sell
+                }).eq("id", existingPosition.id);
             }
 
-            // Check Lock
-            if (lot.locked_until && new Date(lot.locked_until) > new Date()) {
-                return NextResponse.json({ error: 'Position is locked' }, { status: 400 });
-            }
-
-            // Calculate PnL
-            const buyPriceSek = lot.buy_price * (lot.currency === 'USD' ? USD_TO_SEK : 1);
+            // PnL Calc
+            const buyPriceSek = existingPosition.buy_price * rate;
             const sellPriceSek = currentPrice * rate;
             const pnl = (sellPriceSek - buyPriceSek) * shares;
 
-            // Execute Trade - Using ADMIN
-            if (lot.shares === shares) {
-                await admin.from("portfolio").delete().eq("id", portfolioId);
-            } else {
-                await admin.from("portfolio").update({ shares: lot.shares - shares }).eq("id", portfolioId);
+            // Log PnL (Logic later)
+            // ...
+
+        } else if (type === 'short') {
+            // Rule: Cannot Short if Long (Must Sell first)
+            if (currentShares > 0) {
+                return NextResponse.json({ error: 'Position is net Long. Sell existing shares first.' }, { status: 400 });
             }
 
-            // Log Transaction - Using ADMIN
-            await admin.from("transactions").insert({
-                user_id: user.id,
-                symbol: symbol,
-                name: lot.name,
-                type: "sell",
-                shares: shares,
-                price: currentPrice,
-                currency: currentCurrency,
-                total_sek: shares * sellPriceSek,
-                realized_pnl: pnl,
-            });
+            // Margin Check: 
+            // We require User to have Cash > TradeValue (50% Margin roughly, effectively 100% cash secured).
+            // Example: Short $1000 of TSLA. Need >$1000 Cash. 
+            // After Trade: Cash becomes ($Existing + $1000). 
+            // "Invested" becomes (-$1000). Total "Invested" calculation handles this?
+            // If Invested is -1000, Cash = 10000 - (-1000) = 11000.
+            // Safety: We must ensure they can't create Infinite Cash.
 
-            // Update Streak & XP - Using ADMIN
+            if (cashBalance < tradeValueSek) {
+                return NextResponse.json({ error: 'Insufficient collateral (Cash) to open short.' }, { status: 400 });
+            }
+
+            if (existingPosition) {
+                // Check if already short
+                const newShares = currentShares - shares; // e.g. -10 - 10 = -20
+                // Weighted Average?
+                // Avg "Entry" Price for Short.
+                // Current (-10 @ $100) + New (-10 @ $110). 
+                // CostBasis (-1000) + (-1100) = -2100.
+                // New shares -20. Avg = 105. COrrect.
+                const totalCost = (currentShares * existingPosition.buy_price) + (-shares * currentPrice);
+                const newAvgPrice = totalCost / newShares; // -2100 / -20 = 105.
+
+                await admin.from("portfolio").update({
+                    shares: newShares,
+                    buy_price: newAvgPrice
+                }).eq("id", existingPosition.id);
+            } else {
+                await admin.from("portfolio").insert({
+                    user_id: user.id,
+                    symbol,
+                    name: stockData.name || name,
+                    shares: -shares, // Negative Shares!
+                    buy_price: currentPrice,
+                    currency: currentCurrency
+                });
+            }
+
+        } else if (type === 'cover') {
+            // Rule: Must be Short
+            if (currentShares >= 0) {
+                return NextResponse.json({ error: 'No short position to cover.' }, { status: 400 });
+            }
+            if (shares > Math.abs(currentShares)) {
+                return NextResponse.json({ error: 'Cannot cover more than open short position.' }, { status: 400 });
+            }
+
+            // Buying back to 0
+            if (shares === Math.abs(currentShares)) {
+                await admin.from("portfolio").delete().eq("id", existingPosition.id);
+            } else {
+                await admin.from("portfolio").update({
+                    shares: currentShares + shares // -10 + 5 = -5
+                    // Avg price stays same
+                }).eq("id", existingPosition.id);
+            }
+
+            // PnL Calc for Short
+            // Entry Price $100. Current (Cover) Price $80. Profit $20.
+            // Formula: (Entry - Exit) * Shares.
+            const entryPriceSek = existingPosition.buy_price * rate;
+            const exitPriceSek = currentPrice * rate;
+            const pnl = (entryPriceSek - exitPriceSek) * shares;
+            // Note: Positive if Entry > Exit. Correct.
+
+            // ... PnL Logging
+        }
+
+        // 6. Log Transaction (Universal)
+        // Calculate PnL if closing
+        let realizedPnl = 0;
+        if (type === 'sell') {
+            realizedPnl = (currentPrice * rate - existingPosition!.buy_price * rate) * shares;
+        } else if (type === 'cover') {
+            realizedPnl = (existingPosition!.buy_price * rate - currentPrice * rate) * shares;
+        }
+
+        await admin.from("transactions").insert({
+            user_id: user.id,
+            symbol,
+            name: stockData.name || name,
+            type,
+            shares: shares, // Always positive in log? Or match direction?
+            // "Shares traded". Usually positive integer in logs. Direction is 'type'.
+            price: currentPrice,
+            currency: currentCurrency,
+            total_sek: tradeValueSek,
+            realized_pnl: realizedPnl
+        });
+
+        // 7. Update Streak Logic (If Closing Position)
+        if (type === 'sell' || type === 'cover') {
             try {
                 const { data: profile } = await admin
                     .from("profiles")
@@ -156,9 +261,9 @@ export async function POST(request: Request) {
                 const currentStreak = profile?.paper_win_streak || 0;
                 const currentRep = profile?.reputation_score || 0;
 
-                if (pnl > 0) {
+                if (realizedPnl > 0) {
                     const newStreak = currentStreak + 1;
-                    const xpEarned = calculateTradeXP(pnl, newStreak);
+                    const xpEarned = calculateTradeXP(realizedPnl, newStreak);
                     await admin.from("profiles").update({
                         paper_win_streak: newStreak,
                         paper_best_streak: Math.max(newStreak, profile?.paper_best_streak || 0),
@@ -172,9 +277,9 @@ export async function POST(request: Request) {
             } catch (e) {
                 console.error("Streak/XP update failed:", e);
             }
-
-            return NextResponse.json({ success: true, pnl, totalProceeds: shares * sellPriceSek });
         }
+
+        return NextResponse.json({ success: true, price: currentPrice });
 
     } catch (error: any) {
         console.error('Trade API Error:', error);
