@@ -681,10 +681,10 @@ export default function ArenaPage() {
                         Performance
                         {!isPro && <Lock className="w-3 h-3 ml-1 text-white/40" />}
                     </button>
-                </div >
+                </div>
 
                 {/* Tab Content */}
-                < div className="p-4 sm:p-6" >
+                <div className="p-4 sm:p-6">
                     {activeTab === "portfolio" && (
                         <div>
                             {portfolio.length === 0 ? (
@@ -1093,111 +1093,112 @@ export default function ArenaPage() {
                             </div>
                         )
                     }
-                </div >
+                </div>
+            </div>
 
 
-                {/* Sell Modal */}
-                {
-                    sellItem && (
-                        <PaperSellModal
-                            item={sellItem}
-                            userId={user.id}
-                            onClose={() => setSellItem(null)}
-                            onSold={handleSold}
-                        />
-                    )
-                }
+            {/* Sell Modal */}
+            {
+                sellItem && (
+                    <PaperSellModal
+                        item={sellItem}
+                        userId={user.id}
+                        onClose={() => setSellItem(null)}
+                        onSold={handleSold}
+                    />
+                )
+            }
 
-                {/* Reset Confirmation Modal */}
-                <AnimatePresence>
-                    {showResetModal && (
+            {/* Reset Confirmation Modal */}
+            <AnimatePresence>
+                {showResetModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+                        onClick={() => setShowResetModal(false)}
+                    >
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
-                            onClick={() => setShowResetModal(false)}
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.95, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-full max-w-md bg-[#0B0F17] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
                         >
-                            <motion.div
-                                initial={{ scale: 0.95, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                exit={{ scale: 0.95, opacity: 0 }}
-                                onClick={(e) => e.stopPropagation()}
-                                className="w-full max-w-md bg-[#0B0F17] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
-                            >
-                                <div className="p-6 border-b border-white/10 bg-gradient-to-r from-rose-500/10 to-orange-500/10">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center">
-                                            <RotateCcw className="w-5 h-5 text-rose-400" />
-                                        </div>
-                                        <div>
-                                            <h2 className="text-lg font-bold text-white">Reset Portfolio</h2>
-                                            <p className="text-xs text-white/40">Are you sure?</p>
-                                        </div>
+                            <div className="p-6 border-b border-white/10 bg-gradient-to-r from-rose-500/10 to-orange-500/10">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center">
+                                        <RotateCcw className="w-5 h-5 text-rose-400" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-lg font-bold text-white">Reset Portfolio</h2>
+                                        <p className="text-xs text-white/40">Are you sure?</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="p-6 space-y-4">
+                                <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
+                                    <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                                    <div className="text-sm text-amber-400/80">
+                                        <p className="font-bold mb-1">This will:</p>
+                                        <ul className="list-disc list-inside text-xs space-y-1">
+                                            <li>Delete all your virtual holdings</li>
+                                            <li>Reset your cash to $10,000</li>
+                                            <li>Increase your reset counter (visible to others)</li>
+                                        </ul>
                                     </div>
                                 </div>
 
-                                <div className="p-6 space-y-4">
-                                    <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
-                                        <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                                        <div className="text-sm text-amber-400/80">
-                                            <p className="font-bold mb-1">This will:</p>
-                                            <ul className="list-disc list-inside text-xs space-y-1">
-                                                <li>Delete all your virtual holdings</li>
-                                                <li>Reset your cash to $10,000</li>
-                                                <li>Increase your reset counter (visible to others)</li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                <p className="text-sm text-white/50 text-center">
+                                    You have reset <span className="text-white font-bold">{resetCount}</span> time{resetCount !== 1 ? "s" : ""} before.
+                                </p>
+                            </div>
 
-                                    <p className="text-sm text-white/50 text-center">
-                                        You have reset <span className="text-white font-bold">{resetCount}</span> time{resetCount !== 1 ? "s" : ""} before.
-                                    </p>
-                                </div>
-
-                                <div className="p-6 pt-0 flex gap-3">
-                                    <button
-                                        onClick={() => setShowResetModal(false)}
-                                        className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] text-white/60 font-bold hover:bg-white/10 transition-colors"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        onClick={handleReset}
-                                        disabled={isResetting}
-                                        className="flex-1 px-4 py-3 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 font-bold transition-colors flex items-center justify-center gap-2 border border-rose-500/30"
-                                    >
-                                        {isResetting ? (
-                                            <Loader2 className="w-5 h-5 animate-spin" />
-                                        ) : (
-                                            <>
-                                                <RotateCcw className="w-4 h-4" />
-                                                Yes, reset
-                                            </>
-                                        )}
-                                    </button>
-                                </div>
-                            </motion.div>
+                            <div className="p-6 pt-0 flex gap-3">
+                                <button
+                                    onClick={() => setShowResetModal(false)}
+                                    className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] text-white/60 font-bold hover:bg-white/10 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleReset}
+                                    disabled={isResetting}
+                                    className="flex-1 px-4 py-3 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 font-bold transition-colors flex items-center justify-center gap-2 border border-rose-500/30"
+                                >
+                                    {isResetting ? (
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                    ) : (
+                                        <>
+                                            <RotateCcw className="w-4 h-4" />
+                                            Yes, reset
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         </motion.div>
-                    )}
-                </AnimatePresence>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-                {/* Paid Reset Modal */}
-                {
-                    showPaidResetModal && (
-                        <PaidResetModal onClose={() => setShowPaidResetModal(false)} />
-                    )
-                }
+            {/* Paid Reset Modal */}
+            {
+                showPaidResetModal && (
+                    <PaidResetModal onClose={() => setShowPaidResetModal(false)} />
+                )
+            }
 
-                {/* Pro Upsell Modal */}
-                {
-                    showProUpsellModal && (
-                        <ProUpsellModal
-                            trigger="portfolio_stats"
-                            onClose={() => setShowProUpsellModal(false)}
-                        />
-                    )
-                }
+            {/* Pro Upsell Modal */}
+            {
+                showProUpsellModal && (
+                    <ProUpsellModal
+                        trigger="portfolio_stats"
+                        onClose={() => setShowProUpsellModal(false)}
+                    />
+                )
+            }
         </AppLayout>
     );
 }
