@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { PostCard } from "@/components/feed/PostCard";
 import { CommentForm } from "@/components/feed/CommentForm";
 import { CommentList } from "@/components/feed/CommentList";
@@ -41,37 +40,31 @@ export default function PostPage() {
 
     if (isLoading) {
         return (
-            <div className="flex min-h-screen bg-[#020617]">
-                <Sidebar />
-                <main className="flex-1 flex items-center justify-center border-x border-white/5">
+            <AppLayout showRightPanel={true}>
+                <div className="flex-1 flex items-center justify-center h-full">
                     <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
-                </main>
-                <RightPanel />
-            </div>
+                </div>
+            </AppLayout>
         );
     }
 
     if (!post) {
         return (
-            <div className="flex min-h-screen bg-[#020617]">
-                <Sidebar />
-                <main className="flex-1 flex flex-col items-center justify-center border-x border-white/5 p-8 text-center">
+            <AppLayout showRightPanel={true}>
+                <div className="flex-1 flex flex-col items-center justify-center p-8 text-center h-full">
                     <h1 className="text-2xl font-bold text-white mb-2">Post not found</h1>
                     <Link href="/" className="text-emerald-400 hover:text-emerald-300 flex items-center gap-2">
                         <MoveLeft className="w-4 h-4" />
                         Back to feed
                     </Link>
-                </main>
-                <RightPanel />
-            </div>
+                </div>
+            </AppLayout>
         );
     }
 
     return (
-        <div className="flex min-h-screen bg-[#020617]">
-            <Sidebar />
-
-            <main className="flex-1 border-x border-white/5">
+        <AppLayout showRightPanel={true}>
+            <div className="flex-1">
                 <div className="sticky top-0 z-20 bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 p-4 flex items-center gap-4">
                     <Link href="/" className="p-2 hover:bg-white/5 rounded-full text-white/60 hover:text-white transition-colors">
                         <MoveLeft className="w-5 h-5" />
@@ -93,9 +86,7 @@ export default function PostPage() {
                         <CommentList postId={id} refreshTrigger={refreshComments} />
                     </div>
                 </div>
-            </main>
-
-            <RightPanel />
-        </div>
+            </div>
+        </AppLayout>
     );
 }

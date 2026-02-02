@@ -6,8 +6,7 @@ import { motion } from "framer-motion";
 import { TickoLogo } from "@/components/ui/TickoLogo";
 import Link from "next/link";
 import { useAuth } from "@/providers/AuthProvider";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { AppFooter } from "@/components/layout/AppFooter";
 
 export default function ContactPage() {
@@ -182,16 +181,14 @@ export default function ContactPage() {
     // Authenticated View
     if (user) {
         return (
-            <div className="flex min-h-screen bg-[#020617]">
-                <Sidebar />
-                <main className="flex-1 border-x border-white/5 overflow-y-auto flex flex-col">
+            <AppLayout showRightPanel={true}>
+                <div className="flex-1 overflow-y-auto flex flex-col">
                     <div className="p-6 md:p-12 pb-8 flex-1">
                         {content}
                     </div>
                     <AppFooter />
-                </main>
-                <RightPanel />
-            </div>
+                </div>
+            </AppLayout>
         );
     }
 

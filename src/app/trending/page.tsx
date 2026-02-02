@@ -4,8 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Flame, MessageCircle, TrendingUp, TrendingDown, Loader2, Clock } from "lucide-react";
 import Link from "next/link";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -109,10 +108,8 @@ export default function TrendingPage() {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
-            <Sidebar />
-
-            <main className="flex-1 min-w-0 pb-24 md:pb-0">
+        <AppLayout showRightPanel={true}>
+            <div className="flex-1 min-w-0 pb-24 md:pb-0">
                 {/* Header */}
                 <header className="sticky top-0 z-10 backdrop-blur-xl bg-[#020617]/80 border-b border-white/10 px-4 sm:px-6 py-4 sm:py-5">
                     <div className="flex items-center justify-between">
@@ -132,11 +129,10 @@ export default function TrendingPage() {
                                 <button
                                     key={range}
                                     onClick={() => setTimeRange(range)}
-                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                                        timeRange === range
+                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${timeRange === range
                                             ? "bg-orange-500/20 text-orange-400 border border-orange-500/30"
                                             : "text-white/50 hover:text-white"
-                                    }`}
+                                        }`}
                                 >
                                     {range}
                                 </button>
@@ -179,12 +175,11 @@ export default function TrendingPage() {
                                         className="flex items-center gap-4 p-4 bg-white/[0.04] rounded-2xl border border-white/10 hover:bg-white/[0.06] hover:border-white/20 transition-all group"
                                     >
                                         {/* Rank */}
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm ${
-                                            index === 0 ? "bg-orange-500/20 text-orange-400 border border-orange-500/30" :
-                                            index === 1 ? "bg-white/10 text-white/60 border border-white/20" :
-                                            index === 2 ? "bg-amber-500/10 text-amber-500/60 border border-amber-500/20" :
-                                            "bg-white/[0.04] text-white/30 border border-white/10"
-                                        }`}>
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm ${index === 0 ? "bg-orange-500/20 text-orange-400 border border-orange-500/30" :
+                                                index === 1 ? "bg-white/10 text-white/60 border border-white/20" :
+                                                    index === 2 ? "bg-amber-500/10 text-amber-500/60 border border-amber-500/20" :
+                                                        "bg-white/[0.04] text-white/30 border border-white/10"
+                                            }`}>
                                             {index + 1}
                                         </div>
 
@@ -195,11 +190,10 @@ export default function TrendingPage() {
                                                     ${stock.ticker_symbol}
                                                 </span>
                                                 {stock.sentiment_score !== 0 && (
-                                                    <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                                                        stock.sentiment_score > 0 
-                                                            ? "bg-emerald-500/20 text-emerald-400" 
+                                                    <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${stock.sentiment_score > 0
+                                                            ? "bg-emerald-500/20 text-emerald-400"
                                                             : "bg-rose-500/20 text-rose-400"
-                                                    }`}>
+                                                        }`}>
                                                         {stock.sentiment_score > 0 ? (
                                                             <TrendingUp className="w-3 h-3" />
                                                         ) : (
@@ -237,9 +231,7 @@ export default function TrendingPage() {
                         </div>
                     )}
                 </div>
-            </main>
-
-            <RightPanel />
-        </div>
+            </div>
+        </AppLayout>
     );
 }

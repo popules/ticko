@@ -22,18 +22,12 @@ export function AppLayout({
     className = ""
 }: AppLayoutProps) {
     return (
-        <div className="flex min-h-screen overflow-x-hidden relative">
-            {/* Sidebar Background Extensions - fills full page height on desktop */}
-            <div className="hidden lg:block fixed left-0 top-0 bottom-0 w-64 bg-white/[0.02] border-r border-white/10 -z-10" />
-            {showRightPanel && (
-                <div className="hidden lg:block fixed right-0 top-0 bottom-0 w-80 bg-white/[0.02] border-l border-white/10 -z-10" />
-            )}
-
+        <div className="flex h-screen overflow-hidden bg-[#020617]">
             {/* Left Sidebar */}
             <Sidebar />
 
             {/* Main Content */}
-            <main className={`flex-1 min-w-0 lg:border-r border-white/10 pb-20 md:pb-0 ${className}`}>
+            <main className={`flex-1 min-w-0 overflow-y-auto lg:border-r border-white/10 pb-20 md:pb-0 scrollbar-hide ${className}`}>
                 {children}
                 {showFooter && <AppFooter />}
             </main>

@@ -1,7 +1,6 @@
 "use client";
 
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Star, X, TrendingUp, TrendingDown, Plus, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -68,9 +67,8 @@ export default function WatchlistPage() {
     const stocks = watchlistData?.stocks || [];
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
-            <Sidebar />
-            <main className="flex-1 min-w-0 p-4 md:p-8 pb-24 md:pb-8">
+        <AppLayout showRightPanel={true}>
+            <div className="flex-1 min-w-0 p-4 md:p-8 pb-24 md:pb-8">
                 <div className="max-w-4xl mx-auto">
                     <div className="flex items-center justify-between mb-8">
                         <div>
@@ -151,8 +149,7 @@ export default function WatchlistPage() {
                         </div>
                     )}
                 </div>
-            </main>
-            <RightPanel />
-        </div>
+            </div>
+        </AppLayout>
     );
 }

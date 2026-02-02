@@ -214,8 +214,6 @@ export function Sidebar() {
                         <Link href="/community-guidelines" className="hover:text-white/60 transition-colors">Guidelines</Link>
                         <span className="text-white/10">·</span>
                         <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
-                        <span className="text-white/10">·</span>
-                        <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
                     </div>
                 </div>
             </div>

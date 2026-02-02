@@ -6,8 +6,7 @@ import { ChevronDown, HelpCircle, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TickoLogo } from "@/components/ui/TickoLogo";
 import { useAuth } from "@/providers/AuthProvider";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { AppFooter } from "@/components/layout/AppFooter";
 
 interface FAQItem {
@@ -135,78 +134,76 @@ export default function FAQPage() {
 
     const content = (
         <div className="max-w-3xl mx-auto">
-                    {/* Header */}
-                    <div className="text-center mb-16">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 mb-6">
-                            <HelpCircle className="w-8 h-8 text-emerald-400" />
-                        </div>
-                        <h1 className="text-4xl font-bold text-white mb-4">Frequently Asked Questions</h1>
-                        <p className="text-white/50 max-w-lg mx-auto">
-                            Everything you need to know about Ticko. Can't find what you're looking for? <Link href="/contact" className="text-emerald-400 hover:underline">Contact us</Link>.
-                        </p>
-                    </div>
+            {/* Header */}
+            <div className="text-center mb-16">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 mb-6">
+                    <HelpCircle className="w-8 h-8 text-emerald-400" />
+                </div>
+                <h1 className="text-4xl font-bold text-white mb-4">Frequently Asked Questions</h1>
+                <p className="text-white/50 max-w-lg mx-auto">
+                    Everything you need to know about Ticko. Can't find what you're looking for? <Link href="/contact" className="text-emerald-400 hover:underline">Contact us</Link>.
+                </p>
+            </div>
 
-                    {/* FAQ by Category */}
-                    {categories.map((category) => (
-                        <div key={category} className="mb-12">
-                            <h2 className="text-lg font-bold text-white/80 mb-4 flex items-center gap-2">
-                                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                {category}
-                            </h2>
-                            <div className="space-y-3">
-                                {faqs
-                                    .filter(f => f.category === category)
-                                    .map((faq, idx) => {
-                                        const globalIdx = faqs.findIndex(f => f.question === faq.question);
-                                        return (
-                                            <FAQAccordion
-                                                key={idx}
-                                                item={faq}
-                                                isOpen={openIndex === globalIdx}
-                                                onToggle={() => setOpenIndex(openIndex === globalIdx ? null : globalIdx)}
-                                            />
-                                        );
-                                    })}
-                            </div>
-                        </div>
-                    ))}
-
-                    {/* CTA */}
-                    <div className="mt-16 text-center p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
-                        <h3 className="text-xl font-bold mb-2">Ready to start your $10k challenge?</h3>
-                        <p className="text-white/50 mb-6">Join thousands of traders learning risk-free.</p>
-                        <Link
-                            href="/register"
-                            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] rounded-full font-bold hover:shadow-lg hover:shadow-emerald-500/20 transition-all"
-                        >
-                            Get Started Free
-                        </Link>
-                    </div>
-
-                    {/* Footer Links */}
-                    <div className="mt-12 flex justify-center gap-6 text-sm text-white/40">
-                        <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-                        <span>|</span>
-                        <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-                        <span>|</span>
-                        <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+            {/* FAQ by Category */}
+            {categories.map((category) => (
+                <div key={category} className="mb-12">
+                    <h2 className="text-lg font-bold text-white/80 mb-4 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        {category}
+                    </h2>
+                    <div className="space-y-3">
+                        {faqs
+                            .filter(f => f.category === category)
+                            .map((faq, idx) => {
+                                const globalIdx = faqs.findIndex(f => f.question === faq.question);
+                                return (
+                                    <FAQAccordion
+                                        key={idx}
+                                        item={faq}
+                                        isOpen={openIndex === globalIdx}
+                                        onToggle={() => setOpenIndex(openIndex === globalIdx ? null : globalIdx)}
+                                    />
+                                );
+                            })}
                     </div>
                 </div>
+            ))}
+
+            {/* CTA */}
+            <div className="mt-16 text-center p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
+                <h3 className="text-xl font-bold mb-2">Ready to start your $10k challenge?</h3>
+                <p className="text-white/50 mb-6">Join thousands of traders learning risk-free.</p>
+                <Link
+                    href="/register"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] rounded-full font-bold hover:shadow-lg hover:shadow-emerald-500/20 transition-all"
+                >
+                    Get Started Free
+                </Link>
+            </div>
+
+            {/* Footer Links */}
+            <div className="mt-12 flex justify-center gap-6 text-sm text-white/40">
+                <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+                <span>|</span>
+                <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+                <span>|</span>
+                <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+            </div>
+        </div>
     );
 
     // Authenticated View
     if (user) {
         return (
-            <div className="flex min-h-screen bg-[#020617]">
-                <Sidebar />
-                <main className="flex-1 border-x border-white/5 overflow-y-auto flex flex-col">
+            <AppLayout showRightPanel={true}>
+                <div className="flex-1 overflow-y-auto flex flex-col">
                     <div className="p-6 md:p-12 pb-8 flex-1">
                         {content}
                     </div>
                     <AppFooter />
-                </main>
-                <RightPanel />
-            </div>
+                </div>
+            </AppLayout>
         );
     }
 

@@ -8,8 +8,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
 import { motion } from "framer-motion";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 
 interface Notification {
     id: string;
@@ -98,20 +97,17 @@ export default function AlertsPage() {
 
     if (isLoading) {
         return (
-            <div className="flex min-h-screen bg-[#020617]">
-                <Sidebar />
-                <main className="flex-1 flex items-center justify-center border-x border-white/5">
+            <AppLayout showRightPanel={true}>
+                <div className="flex-1 flex items-center justify-center h-full">
                     <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
-                </main>
-                <RightPanel />
-            </div>
+                </div>
+            </AppLayout>
         );
     }
 
     return (
-        <div className="flex min-h-screen bg-[#020617]">
-            <Sidebar />
-            <main className="flex-1 border-x border-white/5 overflow-y-auto">
+        <AppLayout showRightPanel={true}>
+            <div className="flex-1 overflow-y-auto">
                 <div className="max-w-2xl mx-auto py-8 px-4">
                     <div className="flex items-center justify-between mb-8">
                         <h1 className="text-2xl font-extrabold text-white tracking-tight">Notifications</h1>
@@ -174,8 +170,7 @@ export default function AlertsPage() {
                         )}
                     </div>
                 </div>
-            </main>
-            <RightPanel />
-        </div>
+            </div>
+        </AppLayout>
     );
 }

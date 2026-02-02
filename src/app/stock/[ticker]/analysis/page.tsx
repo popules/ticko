@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import Link from "next/link";
 import { ArrowLeft, TrendingUp, TrendingDown, AlertTriangle, Zap, Loader2, Brain, ShieldCheck, ShieldAlert, ShieldQuestion } from "lucide-react";
 import { motion } from "framer-motion";
@@ -71,10 +70,8 @@ export default function DeepDiveAnalysisPage() {
     const riskStyle = data?.riskLevel ? riskStyles[data.riskLevel] || riskStyles["Medium"] : riskStyles["Medium"];
 
     return (
-        <div className="flex min-h-screen">
-            <Sidebar />
-
-            <main className="flex-1 border-r border-white/10 overflow-y-auto h-screen scrollbar-hide">
+        <AppLayout showRightPanel={true}>
+            <div className="flex-1 overflow-y-auto h-full scrollbar-hide">
                 {/* Header */}
                 <header className="sticky top-0 z-10 backdrop-blur-xl bg-[#020617]/80 border-b border-white/10 px-6 py-5">
                     <div className="flex items-center gap-4">
@@ -206,9 +203,7 @@ export default function DeepDiveAnalysisPage() {
                         </motion.div>
                     ) : null}
                 </div>
-            </main>
-
-            <RightPanel />
-        </div>
+            </div>
+        </AppLayout>
     );
 }

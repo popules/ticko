@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/lib/supabase/client";
@@ -81,10 +80,8 @@ export default function PublicProfilePage() {
     }, [userId, user, router]);
 
     return (
-        <div className="flex min-h-screen">
-            <Sidebar />
-
-            <main className="flex-1 border-r border-white/10 p-8 overflow-y-auto h-screen scrollbar-hide">
+        <AppLayout showRightPanel={true}>
+            <div className="p-4 md:p-8">
                 {isLoading ? (
                     <div className="h-full flex flex-col items-center justify-center gap-4">
                         <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
@@ -154,9 +151,7 @@ export default function PublicProfilePage() {
                         </div>
                     </motion.div>
                 )}
-            </main>
-
-            <RightPanel />
-        </div>
+            </div>
+        </AppLayout>
     );
 }

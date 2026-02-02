@@ -2,8 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { UI_STRINGS } from "@/config/app";
 import { Loader2, TrendingUp, TrendingDown, Activity, Monitor, Landmark, Flame, HeartPulse, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
@@ -98,10 +97,8 @@ export default function MarketPage() {
 
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
-            <div className="shrink-0 lg:h-screen lg:sticky lg:top-0"><Sidebar /></div>
-
-            <main className="flex-1 min-w-0 border-r border-white/10 flex flex-col overflow-hidden">
+        <AppLayout showRightPanel={true}>
+            <div className="flex-1 flex flex-col min-h-0">
                 {/* Header */}
                 <header className="px-4 sm:px-8 py-4 sm:py-6 border-b border-white/10 bg-[#0B0F17]/50 backdrop-blur-xl md:mt-0">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -133,7 +130,7 @@ export default function MarketPage() {
                     </div>
                 </header>
 
-                <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide pb-24">
+                <div className="p-8 space-y-8 pb-24">
                     {isInitialLoading ? (
                         <div className="h-96 flex flex-col items-center justify-center gap-4">
                             <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
@@ -288,9 +285,7 @@ export default function MarketPage() {
                         </>
                     )}
                 </div>
-            </main >
-
-            <RightPanel />
-        </div >
+            </div>
+        </AppLayout>
     );
 }

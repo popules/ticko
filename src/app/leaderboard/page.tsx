@@ -9,8 +9,7 @@ import { ProBadge } from "@/components/ui/ProBadge";
 import { LeagueRankBadge } from "@/components/ui/LeagueRankBadge";
 import Image from "next/image";
 import Link from "next/link";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import { LeagueLeaderboard } from "@/components/league/LeagueLeaderboard";
@@ -204,13 +203,11 @@ export default function LeaderboardPage() {
 
     if (isLoading) {
         return (
-            <div className="flex min-h-screen bg-[#020617]">
-                <Sidebar />
-                <main className="flex-1 flex items-center justify-center border-x border-white/5">
+            <AppLayout showRightPanel={true}>
+                <div className="flex-1 flex items-center justify-center p-6 h-full">
                     <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
-                </main>
-                <RightPanel />
-            </div>
+                </div>
+            </AppLayout>
         );
     }
 
@@ -238,391 +235,387 @@ export default function LeaderboardPage() {
     };
 
     return (
-        <div className="flex flex-col md:flex-row min-h-screen bg-[#020617]">
-            <Sidebar />
-            <main className="flex-1 border-x border-white/5 overflow-y-auto">
-                <div className="max-w-2xl mx-auto pt-4 pb-20 px-4 pt-[max(1rem,env(safe-area-inset-top))]">
-                    {/* Header */}
-                    <div className="text-center mb-6">
-                        <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 mb-4 shadow-[0_0_30px_-10px_rgba(234,179,8,0.3)]">
-                            <Trophy className="w-8 h-8 text-yellow-400" />
-                        </div>
-                        <h1 className="text-2xl font-extrabold text-white mb-2 tracking-tight">Leaderboard</h1>
-                        <p className="text-sm text-white/40">The best stock analysts in the world</p>
+        <AppLayout showRightPanel={true}>
+            <div className="max-w-2xl mx-auto pt-4 pb-20 px-4 pt-[max(1rem,env(safe-area-inset-top))]">
+                {/* Header */}
+                <div className="text-center mb-6">
+                    <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 mb-4 shadow-[0_0_30px_-10px_rgba(234,179,8,0.3)]">
+                        <Trophy className="w-8 h-8 text-yellow-400" />
                     </div>
+                    <h1 className="text-2xl font-extrabold text-white mb-2 tracking-tight">Leaderboard</h1>
+                    <p className="text-sm text-white/40">The best stock analysts in the world</p>
+                </div>
 
-                    {/* Tab Selector */}
-                    <div className="flex gap-2 mb-4 p-1 bg-white/[0.04] rounded-xl border border-white/10">
-                        <button
-                            onClick={() => setActiveTab("paper")}
-                            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "paper"
-                                ? "bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-400 border border-violet-500/30"
-                                : "text-white/40 hover:text-white/60"
-                                }`}
-                        >
-                            <Gamepad2 className="w-4 h-4" />
-                            Arena
-                        </button>
-                        <button
-                            onClick={() => setActiveTab("reputation")}
-                            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "reputation"
-                                ? "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-400 border border-yellow-500/30"
-                                : "text-white/40 hover:text-white/60"
-                                }`}
-                        >
-                            <Medal className="w-4 h-4" />
-                            Reputation
-                        </button>
-                        <button
-                            onClick={() => setActiveTab("league")}
-                            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "league"
-                                ? "bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30"
-                                : "text-white/40 hover:text-white/60"
-                                }`}
-                        >
-                            <Shield className="w-4 h-4" />
-                            My League
-                        </button>
-                    </div>
+                {/* Tab Selector */}
+                <div className="flex gap-2 mb-4 p-1 bg-white/[0.04] rounded-xl border border-white/10">
+                    <button
+                        onClick={() => setActiveTab("paper")}
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "paper"
+                            ? "bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-400 border border-violet-500/30"
+                            : "text-white/40 hover:text-white/60"
+                            }`}
+                    >
+                        <Gamepad2 className="w-4 h-4" />
+                        Arena
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("reputation")}
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "reputation"
+                            ? "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-400 border border-yellow-500/30"
+                            : "text-white/40 hover:text-white/60"
+                            }`}
+                    >
+                        <Medal className="w-4 h-4" />
+                        Reputation
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("league")}
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-sm transition-all ${activeTab === "league"
+                            ? "bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30"
+                            : "text-white/40 hover:text-white/60"
+                            }`}
+                    >
+                        <Shield className="w-4 h-4" />
+                        My League
+                    </button>
+                </div>
 
-                    {/* How Scores Work - Info Box */}
-                    <div className="mb-8 p-4 rounded-xl bg-white/[0.02] border border-white/5 relative z-10">
-                        <div className="flex items-start gap-3">
-                            <Info className="w-4 h-4 text-white/40 mt-0.5 flex-shrink-0" />
-                            {activeTab === "paper" ? (
-                                <div className="text-xs text-white/50 space-y-1">
-                                    <p className="font-medium text-white/70">How Arena Scores Work</p>
-                                    <p>Rankings based on portfolio profit/loss. Start with $10,000 virtual dollars, trade real stocks with real prices. Your P&L is tracked and updated daily.</p>
-                                    <p className="text-white/30">Positions are locked for 30 minutes after buying to ensure fair competition.</p>
-                                </div>
-                            ) : activeTab === "league" ? (
-                                <div className="text-xs text-white/50 space-y-1">
-                                    <p className="font-medium text-white/70">How Leagues Work</p>
-                                    <p>Compete against players of similar skill level. Top 3 promote to the next league tier.</p>
-                                    <p className="text-white/30">Leagues reset every season. Climb from Bronze to Diamond!</p>
-                                </div>
-                            ) : (
-                                <div className="text-xs text-white/50 space-y-1">
-                                    <p className="font-medium text-white/70">How Reputation Points Work</p>
-                                    <p><span className="text-emerald-400">+10</span> per post • <span className="text-emerald-400">+5</span> per reaction received • <span className="text-emerald-400">+2</span> per reply</p>
-                                    <p>Share quality analysis and engage with the community to climb the ranks!</p>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* League Tab Content */}
-                    {activeTab === "league" && (
-                        <div>
-                            {myLeague && myLeague.leagues ? (
-                                <LeagueLeaderboard
-                                    leagueId={myLeague.league_id}
-                                    leagueName={myLeague.leagues.name}
-                                    leagueTier={myLeague.leagues.tier}
-                                    currentUserId={myLeague.user_id}
-                                />
-                            ) : (
-                                <div className="text-center py-12 bg-white/[0.02] rounded-xl border border-white/5">
-                                    <h3 className="text-xl font-bold text-white mb-2">Join the Arena</h3>
-                                    <p className="text-white/40 mb-6 max-w-sm mx-auto">
-                                        You haven't been assigned to a league yet. Make some trades or engage in the community to get placed!
-                                    </p>
-                                    <Link
-                                        href="/arena"
-                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold transition-colors"
-                                    >
-                                        <Gamepad2 className="w-4 h-4" />
-                                        Enter The Arena
-                                    </Link>
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Paper Trading Sub-tabs */}
-                    {activeTab === "paper" && (
-                        <div className="mb-6 space-y-4">
-                            {/* Season/All-time Toggle */}
-                            <div className="flex gap-2 p-1 bg-white/[0.02] rounded-lg border border-white/5">
-                                <button
-                                    onClick={() => setPaperTimeframe("season")}
-                                    className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-xs font-bold transition-all ${paperTimeframe === "season"
-                                        ? "bg-violet-500/20 text-violet-400 border border-violet-500/20"
-                                        : "text-white/40 hover:text-white/60"
-                                        }`}
-                                >
-                                    <Calendar className="w-3 h-3" />
-                                    {currentSeasonName}
-                                </button>
-                                <button
-                                    onClick={() => setPaperTimeframe("alltime")}
-                                    className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-xs font-bold transition-all ${paperTimeframe === "alltime"
-                                        ? "bg-violet-500/20 text-violet-400 border border-violet-500/20"
-                                        : "text-white/40 hover:text-white/60"
-                                        }`}
-                                >
-                                    <Trophy className="w-3 h-3" />
-                                    All-time
-                                </button>
+                {/* How Scores Work - Info Box */}
+                <div className="mb-8 p-4 rounded-xl bg-white/[0.02] border border-white/5 relative z-10">
+                    <div className="flex items-start gap-3">
+                        <Info className="w-4 h-4 text-white/40 mt-0.5 flex-shrink-0" />
+                        {activeTab === "paper" ? (
+                            <div className="text-xs text-white/50 space-y-1">
+                                <p className="font-medium text-white/70">How Arena Scores Work</p>
+                                <p>Rankings based on portfolio profit/loss. Start with $10,000 virtual dollars, trade real stocks with real prices. Your P&L is tracked and updated daily.</p>
+                                <p className="text-white/30">Positions are locked for 30 minutes after buying to ensure fair competition.</p>
                             </div>
+                        ) : activeTab === "league" ? (
+                            <div className="text-xs text-white/50 space-y-1">
+                                <p className="font-medium text-white/70">How Leagues Work</p>
+                                <p>Compete against players of similar skill level. Top 3 promote to the next league tier.</p>
+                                <p className="text-white/30">Leagues reset every season. Climb from Bronze to Diamond!</p>
+                            </div>
+                        ) : (
+                            <div className="text-xs text-white/50 space-y-1">
+                                <p className="font-medium text-white/70">How Reputation Points Work</p>
+                                <p><span className="text-emerald-400">+10</span> per post • <span className="text-emerald-400">+5</span> per reaction received • <span className="text-emerald-400">+2</span> per reply</p>
+                                <p>Share quality analysis and engage with the community to climb the ranks!</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
 
-                            {/* Season Info Banner */}
-                            {paperTimeframe === "season" && (
-                                <div className="p-4 rounded-xl bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20">
-                                    <div className="flex items-center justify-between">
+                {/* League Tab Content */}
+                {activeTab === "league" && (
+                    <div>
+                        {myLeague && myLeague.leagues ? (
+                            <LeagueLeaderboard
+                                leagueId={myLeague.league_id}
+                                leagueName={myLeague.leagues.name}
+                                leagueTier={myLeague.leagues.tier}
+                                currentUserId={myLeague.user_id}
+                            />
+                        ) : (
+                            <div className="text-center py-12 bg-white/[0.02] rounded-xl border border-white/5">
+                                <h3 className="text-xl font-bold text-white mb-2">Join the Arena</h3>
+                                <p className="text-white/40 mb-6 max-w-sm mx-auto">
+                                    You haven't been assigned to a league yet. Make some trades or engage in the community to get placed!
+                                </p>
+                                <Link
+                                    href="/arena"
+                                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold transition-colors"
+                                >
+                                    <Gamepad2 className="w-4 h-4" />
+                                    Enter The Arena
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Paper Trading Sub-tabs */}
+                {activeTab === "paper" && (
+                    <div className="mb-6 space-y-4">
+                        {/* Season/All-time Toggle */}
+                        <div className="flex gap-2 p-1 bg-white/[0.02] rounded-lg border border-white/5">
+                            <button
+                                onClick={() => setPaperTimeframe("season")}
+                                className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-xs font-bold transition-all ${paperTimeframe === "season"
+                                    ? "bg-violet-500/20 text-violet-400 border border-violet-500/20"
+                                    : "text-white/40 hover:text-white/60"
+                                    }`}
+                            >
+                                <Calendar className="w-3 h-3" />
+                                {currentSeasonName}
+                            </button>
+                            <button
+                                onClick={() => setPaperTimeframe("alltime")}
+                                className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-xs font-bold transition-all ${paperTimeframe === "alltime"
+                                    ? "bg-violet-500/20 text-violet-400 border border-violet-500/20"
+                                    : "text-white/40 hover:text-white/60"
+                                    }`}
+                            >
+                                <Trophy className="w-3 h-3" />
+                                All-time
+                            </button>
+                        </div>
+
+                        {/* Season Info Banner */}
+                        {paperTimeframe === "season" && (
+                            <div className="p-4 rounded-xl bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-sm font-bold text-white">{currentSeasonName}</p>
+                                        <p className="text-xs text-white/40">Who takes the crown?</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
+                                            <Clock className="w-3 h-3" />
+                                            {daysUntilReset} day{daysUntilReset !== 1 ? "s" : ""} left
+                                        </div>
+                                        <p className="text-[10px] text-white/30">Monthly reset</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Last Season Winner */}
+                        {seasonWinners && seasonWinners.length > 0 && paperTimeframe === "season" && (
+                            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <Crown className="w-5 h-5 text-amber-400" />
                                         <div>
-                                            <p className="text-sm font-bold text-white">{currentSeasonName}</p>
-                                            <p className="text-xs text-white/40">Who takes the crown?</p>
-                                        </div>
-                                        <div className="text-right">
-                                            <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
-                                                <Clock className="w-3 h-3" />
-                                                {daysUntilReset} day{daysUntilReset !== 1 ? "s" : ""} left
-                                            </div>
-                                            <p className="text-[10px] text-white/30">Monthly reset</p>
+                                            <p className="text-xs text-amber-400/60 uppercase tracking-wider">Last Season</p>
+                                            <p className="text-sm font-bold text-white">@{seasonWinners[0].winner_username}</p>
                                         </div>
                                     </div>
+                                    <span className="text-emerald-400 font-bold text-sm">
+                                        ${seasonWinners[0].final_value?.toLocaleString("en-US", { maximumFractionDigits: 0 })}
+                                    </span>
                                 </div>
-                            )}
+                            </div>
+                        )}
 
-                            {/* Last Season Winner */}
-                            {seasonWinners && seasonWinners.length > 0 && paperTimeframe === "season" && (
-                                <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-3">
-                                            <Crown className="w-5 h-5 text-amber-400" />
-                                            <div>
-                                                <p className="text-xs text-amber-400/60 uppercase tracking-wider">Last Season</p>
-                                                <p className="text-sm font-bold text-white">@{seasonWinners[0].winner_username}</p>
-                                            </div>
-                                        </div>
-                                        <span className="text-emerald-400 font-bold text-sm">
-                                            ${seasonWinners[0].final_value?.toLocaleString("en-US", { maximumFractionDigits: 0 })}
-                                        </span>
+                        {/* Season History (Collapsible) */}
+                        {seasonWinners && seasonWinners.length > 1 && paperTimeframe === "season" && (
+                            <div className="rounded-xl border border-white/10 overflow-hidden">
+                                <button
+                                    onClick={() => setShowSeasonHistory(!showSeasonHistory)}
+                                    className="w-full p-3 flex items-center justify-between bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
+                                >
+                                    <div className="flex items-center gap-2 text-white/50">
+                                        <History className="w-4 h-4" />
+                                        <span className="text-xs font-bold">Hall of Fame</span>
+                                        <span className="text-[10px] text-white/30">({seasonWinners.length} seasons)</span>
                                     </div>
-                                </div>
-                            )}
+                                    <ChevronDown className={`w-4 h-4 text-white/30 transition-transform ${showSeasonHistory ? "rotate-180" : ""}`} />
+                                </button>
 
-                            {/* Season History (Collapsible) */}
-                            {seasonWinners && seasonWinners.length > 1 && paperTimeframe === "season" && (
-                                <div className="rounded-xl border border-white/10 overflow-hidden">
-                                    <button
-                                        onClick={() => setShowSeasonHistory(!showSeasonHistory)}
-                                        className="w-full p-3 flex items-center justify-between bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
-                                    >
-                                        <div className="flex items-center gap-2 text-white/50">
-                                            <History className="w-4 h-4" />
-                                            <span className="text-xs font-bold">Hall of Fame</span>
-                                            <span className="text-[10px] text-white/30">({seasonWinners.length} seasons)</span>
-                                        </div>
-                                        <ChevronDown className={`w-4 h-4 text-white/30 transition-transform ${showSeasonHistory ? "rotate-180" : ""}`} />
-                                    </button>
-
-                                    {showSeasonHistory && (
-                                        <div className="border-t border-white/5">
-                                            {seasonWinners.map((winner, idx) => (
-                                                <div
-                                                    key={winner.season_id}
-                                                    className={`flex items-center justify-between p-3 ${idx !== seasonWinners.length - 1 ? "border-b border-white/5" : ""}`}
-                                                >
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="w-6 h-6 rounded-full bg-amber-500/10 flex items-center justify-center">
-                                                            <Crown className="w-3 h-3 text-amber-400" />
-                                                        </div>
-                                                        <div>
-                                                            <p className="text-xs text-white/40">{formatSeasonName(winner.season_name)}</p>
-                                                            <p className="text-sm font-bold text-white">@{winner.winner_username}</p>
-                                                        </div>
+                                {showSeasonHistory && (
+                                    <div className="border-t border-white/5">
+                                        {seasonWinners.map((winner, idx) => (
+                                            <div
+                                                key={winner.season_id}
+                                                className={`flex items-center justify-between p-3 ${idx !== seasonWinners.length - 1 ? "border-b border-white/5" : ""}`}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-6 h-6 rounded-full bg-amber-500/10 flex items-center justify-center">
+                                                        <Crown className="w-3 h-3 text-amber-400" />
                                                     </div>
-                                                    <div className="text-right">
-                                                        <p className="text-emerald-400 font-bold text-sm tabular-nums">
-                                                            ${winner.final_value?.toLocaleString("en-US", { maximumFractionDigits: 0 })}
-                                                        </p>
-                                                        <p className="text-[10px] text-white/30">
-                                                            {winner.ended_at ? new Date(winner.ended_at).toLocaleDateString("en-US") : ""}
-                                                        </p>
+                                                    <div>
+                                                        <p className="text-xs text-white/40">{formatSeasonName(winner.season_name)}</p>
+                                                        <p className="text-sm font-bold text-white">@{winner.winner_username}</p>
                                                     </div>
                                                 </div>
-                                            ))}
+                                                <div className="text-right">
+                                                    <p className="text-emerald-400 font-bold text-sm tabular-nums">
+                                                        ${winner.final_value?.toLocaleString("en-US", { maximumFractionDigits: 0 })}
+                                                    </p>
+                                                    <p className="text-[10px] text-white/30">
+                                                        {winner.ended_at ? new Date(winner.ended_at).toLocaleDateString("en-US") : ""}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Top 3 Podium */}
+                {showPodium && leaders && (
+                    <div className="grid grid-cols-3 gap-4 items-end mb-12">
+                        {/* 2nd Place */}
+                        <Link href={`/profile/${leaders[1].username}`} className="order-1 group">
+                            <div className="relative flex flex-col items-center">
+                                <div className="relative mb-3 transition-transform group-hover:-translate-y-2 duration-300">
+                                    <div className="w-20 h-20 rounded-full p-1 bg-gradient-to-b from-slate-300 to-slate-500">
+                                        <div className="w-full h-full rounded-full overflow-hidden bg-[#020617] relative">
+                                            {leaders[1].avatar_url ? (
+                                                <Image src={leaders[1].avatar_url} alt={leaders[1].username} fill className="object-cover" />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-slate-400/20">
+                                                    <User className="w-8 h-8 text-slate-400" />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-slate-700 border-2 border-[#020617] flex items-center justify-center text-xs font-bold text-white shadow-lg">
+                                        2
+                                    </div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="flex items-center justify-center gap-1">
+                                        <p className="font-bold text-white text-sm truncate max-w-full">@{leaders[1].username}</p>
+                                        {leaders[1].is_pro && <ProBadge size="xs" />}
+                                    </div>
+                                    <p className={`text-xs font-medium ${getScoreColor(leaders[1], 1)}`}>
+                                        {getScoreDisplay(leaders[1])}
+                                    </p>
+                                </div>
+                            </div>
+                        </Link>
+
+                        {/* 1st Place */}
+                        <Link href={`/profile/${leaders[0].username}`} className="order-2 group z-10 -mt-4">
+                            <div className="relative flex flex-col items-center pt-6">
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 text-yellow-400">
+                                    <Crown className="w-6 h-6 fill-yellow-400/20" />
+                                </div>
+                                <div className="relative mb-3 transition-transform group-hover:-translate-y-2 duration-300">
+                                    <div className={`w-24 h-24 rounded-full p-1 shadow-[0_0_50px_-10px_rgba(234,179,8,0.4)] ${activeTab === "paper"
+                                        ? "bg-gradient-to-b from-violet-300 via-violet-400 to-fuchsia-500"
+                                        : "bg-gradient-to-b from-yellow-300 via-yellow-400 to-orange-500"
+                                        }`}>
+                                        <div className="w-full h-full rounded-full overflow-hidden bg-[#020617] relative">
+                                            {leaders[0].avatar_url ? (
+                                                <Image src={leaders[0].avatar_url} alt={leaders[0].username} fill className="object-cover" />
+                                            ) : (
+                                                <div className={`w-full h-full flex items-center justify-center ${activeTab === "paper" ? "bg-violet-400/20" : "bg-yellow-400/20"
+                                                    }`}>
+                                                    <User className={`w-10 h-10 ${activeTab === "paper" ? "text-violet-400" : "text-yellow-400"}`} />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className={`absolute -bottom-3 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full border-2 border-[#020617] flex items-center justify-center text-sm font-bold shadow-lg ${activeTab === "paper" ? "bg-violet-500 text-white" : "bg-yellow-500 text-[#020617]"
+                                        }`}>
+                                        1
+                                    </div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="flex items-center justify-center gap-1">
+                                        <p className="font-bold text-white text-base truncate max-w-full">@{leaders[0].username}</p>
+                                        {leaders[0].is_pro && <ProBadge size="sm" />}
+                                    </div>
+                                    <p className={`text-sm font-bold ${getScoreColor(leaders[0], 0)}`}>
+                                        {getScoreDisplay(leaders[0])}
+                                    </p>
+                                </div>
+                            </div>
+                        </Link>
+
+                        {/* 3rd Place */}
+                        <Link href={`/profile/${leaders[2].username}`} className="order-3 group">
+                            <div className="relative flex flex-col items-center">
+                                <div className="relative mb-3 transition-transform group-hover:-translate-y-2 duration-300">
+                                    <div className="w-20 h-20 rounded-full p-1 bg-gradient-to-b from-orange-400 to-amber-700">
+                                        <div className="w-full h-full rounded-full overflow-hidden bg-[#020617] relative">
+                                            {leaders[2].avatar_url ? (
+                                                <Image src={leaders[2].avatar_url} alt={leaders[2].username} fill className="object-cover" />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-orange-400/20">
+                                                    <User className="w-8 h-8 text-orange-400" />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-amber-800 border-2 border-[#020617] flex items-center justify-center text-xs font-bold text-white shadow-lg">
+                                        3
+                                    </div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="flex items-center justify-center gap-1">
+                                        <p className="font-bold text-white text-sm truncate max-w-full">@{leaders[2].username}</p>
+                                        {leaders[2].is_pro && <ProBadge size="xs" />}
+                                    </div>
+                                    <p className={`text-xs font-medium ${getScoreColor(leaders[2], 2)}`}>
+                                        {getScoreDisplay(leaders[2])}
+                                    </p>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+                )}
+
+                {/* List View */}
+                <div className="bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
+                    {leaders?.slice(listStartIndex).map((user, index) => {
+                        const rank = listStartIndex + index + 1;
+                        const pnl = paperTimeframe === "season" ? (user.paper_season_pnl || 0) : (user.paper_total_pnl || 0);
+
+                        return (
+                            <Link
+                                href={`/profile/${user.username}`}
+                                key={user.id}
+                                className="flex items-center gap-4 p-4 border-b border-white/5 hover:bg-white/[0.02] transition-colors last:border-0"
+                            >
+                                <div className="w-8 font-bold text-white/30 text-center">
+                                    {rank}
+                                </div>
+                                <div className="relative w-10 h-10 rounded-full overflow-hidden bg-white/10">
+                                    {user.avatar_url ? (
+                                        <Image src={user.avatar_url} alt={user.username} fill className="object-cover" />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <User className="w-5 h-5 text-white/40" />
                                         </div>
                                     )}
                                 </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Top 3 Podium */}
-                    {showPodium && leaders && (
-                        <div className="grid grid-cols-3 gap-4 items-end mb-12">
-                            {/* 2nd Place */}
-                            <Link href={`/profile/${leaders[1].username}`} className="order-1 group">
-                                <div className="relative flex flex-col items-center">
-                                    <div className="relative mb-3 transition-transform group-hover:-translate-y-2 duration-300">
-                                        <div className="w-20 h-20 rounded-full p-1 bg-gradient-to-b from-slate-300 to-slate-500">
-                                            <div className="w-full h-full rounded-full overflow-hidden bg-[#020617] relative">
-                                                {leaders[1].avatar_url ? (
-                                                    <Image src={leaders[1].avatar_url} alt={leaders[1].username} fill className="object-cover" />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center bg-slate-400/20">
-                                                        <User className="w-8 h-8 text-slate-400" />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-slate-700 border-2 border-[#020617] flex items-center justify-center text-xs font-bold text-white shadow-lg">
-                                            2
-                                        </div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="flex items-center justify-center gap-1">
-                                            <p className="font-bold text-white text-sm truncate max-w-full">@{leaders[1].username}</p>
-                                            {leaders[1].is_pro && <ProBadge size="xs" />}
-                                        </div>
-                                        <p className={`text-xs font-medium ${getScoreColor(leaders[1], 1)}`}>
-                                            {getScoreDisplay(leaders[1])}
-                                        </p>
-                                    </div>
-                                </div>
-                            </Link>
-
-                            {/* 1st Place */}
-                            <Link href={`/profile/${leaders[0].username}`} className="order-2 group z-10 -mt-4">
-                                <div className="relative flex flex-col items-center pt-6">
-                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 text-yellow-400">
-                                        <Crown className="w-6 h-6 fill-yellow-400/20" />
-                                    </div>
-                                    <div className="relative mb-3 transition-transform group-hover:-translate-y-2 duration-300">
-                                        <div className={`w-24 h-24 rounded-full p-1 shadow-[0_0_50px_-10px_rgba(234,179,8,0.4)] ${activeTab === "paper"
-                                            ? "bg-gradient-to-b from-violet-300 via-violet-400 to-fuchsia-500"
-                                            : "bg-gradient-to-b from-yellow-300 via-yellow-400 to-orange-500"
-                                            }`}>
-                                            <div className="w-full h-full rounded-full overflow-hidden bg-[#020617] relative">
-                                                {leaders[0].avatar_url ? (
-                                                    <Image src={leaders[0].avatar_url} alt={leaders[0].username} fill className="object-cover" />
-                                                ) : (
-                                                    <div className={`w-full h-full flex items-center justify-center ${activeTab === "paper" ? "bg-violet-400/20" : "bg-yellow-400/20"
-                                                        }`}>
-                                                        <User className={`w-10 h-10 ${activeTab === "paper" ? "text-violet-400" : "text-yellow-400"}`} />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className={`absolute -bottom-3 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full border-2 border-[#020617] flex items-center justify-center text-sm font-bold shadow-lg ${activeTab === "paper" ? "bg-violet-500 text-white" : "bg-yellow-500 text-[#020617]"
-                                            }`}>
-                                            1
-                                        </div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="flex items-center justify-center gap-1">
-                                            <p className="font-bold text-white text-base truncate max-w-full">@{leaders[0].username}</p>
-                                            {leaders[0].is_pro && <ProBadge size="sm" />}
-                                        </div>
-                                        <p className={`text-sm font-bold ${getScoreColor(leaders[0], 0)}`}>
-                                            {getScoreDisplay(leaders[0])}
-                                        </p>
-                                    </div>
-                                </div>
-                            </Link>
-
-                            {/* 3rd Place */}
-                            <Link href={`/profile/${leaders[2].username}`} className="order-3 group">
-                                <div className="relative flex flex-col items-center">
-                                    <div className="relative mb-3 transition-transform group-hover:-translate-y-2 duration-300">
-                                        <div className="w-20 h-20 rounded-full p-1 bg-gradient-to-b from-orange-400 to-amber-700">
-                                            <div className="w-full h-full rounded-full overflow-hidden bg-[#020617] relative">
-                                                {leaders[2].avatar_url ? (
-                                                    <Image src={leaders[2].avatar_url} alt={leaders[2].username} fill className="object-cover" />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center bg-orange-400/20">
-                                                        <User className="w-8 h-8 text-orange-400" />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-amber-800 border-2 border-[#020617] flex items-center justify-center text-xs font-bold text-white shadow-lg">
-                                            3
-                                        </div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="flex items-center justify-center gap-1">
-                                            <p className="font-bold text-white text-sm truncate max-w-full">@{leaders[2].username}</p>
-                                            {leaders[2].is_pro && <ProBadge size="xs" />}
-                                        </div>
-                                        <p className={`text-xs font-medium ${getScoreColor(leaders[2], 2)}`}>
-                                            {getScoreDisplay(leaders[2])}
-                                        </p>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
-                    )}
-
-                    {/* List View */}
-                    <div className="bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
-                        {leaders?.slice(listStartIndex).map((user, index) => {
-                            const rank = listStartIndex + index + 1;
-                            const pnl = paperTimeframe === "season" ? (user.paper_season_pnl || 0) : (user.paper_total_pnl || 0);
-
-                            return (
-                                <Link
-                                    href={`/profile/${user.username}`}
-                                    key={user.id}
-                                    className="flex items-center gap-4 p-4 border-b border-white/5 hover:bg-white/[0.02] transition-colors last:border-0"
-                                >
-                                    <div className="w-8 font-bold text-white/30 text-center">
-                                        {rank}
-                                    </div>
-                                    <div className="relative w-10 h-10 rounded-full overflow-hidden bg-white/10">
-                                        {user.avatar_url ? (
-                                            <Image src={user.avatar_url} alt={user.username} fill className="object-cover" />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center">
-                                                <User className="w-5 h-5 text-white/40" />
-                                            </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-1">
+                                        <h3 className="font-bold text-white text-sm truncate">@{user.username}</h3>
+                                        {user.league_rating && user.league_rating > 0 && (
+                                            <LeagueRankBadge rating={user.league_rating} size="xs" />
                                         )}
+                                        {user.is_pro && <ProBadge size="xs" />}
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-1">
-                                            <h3 className="font-bold text-white text-sm truncate">@{user.username}</h3>
-                                            {user.league_rating && user.league_rating > 0 && (
-                                                <LeagueRankBadge rating={user.league_rating} size="xs" />
-                                            )}
-                                            {user.is_pro && <ProBadge size="xs" />}
-                                        </div>
-                                        {activeTab === "paper" && user.paper_reset_count && user.paper_reset_count > 0 && (
-                                            <span className="text-[10px] text-amber-400/60 flex items-center gap-1">
-                                                <RotateCcw className="w-2.5 h-2.5" /> {user.paper_reset_count} resets
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div className="text-right flex items-center gap-1">
-                                        {activeTab === "paper" && (
-                                            pnl >= 0
-                                                ? <TrendingUp className="w-4 h-4 text-emerald-400" />
-                                                : <TrendingDown className="w-4 h-4 text-rose-400" />
-                                        )}
-                                        <span className={`font-bold text-sm ${activeTab === "reputation"
-                                            ? "text-white"
-                                            : pnl >= 0 ? "text-emerald-400" : "text-rose-400"
-                                            }`}>
-                                            {getScoreDisplay(user)}
+                                    {activeTab === "paper" && user.paper_reset_count && user.paper_reset_count > 0 && (
+                                        <span className="text-[10px] text-amber-400/60 flex items-center gap-1">
+                                            <RotateCcw className="w-2.5 h-2.5" /> {user.paper_reset_count} resets
                                         </span>
-                                    </div>
-                                </Link>
-                            );
-                        })}
-                    </div>
-
-                    {(!leaders || leaders.length === 0) && (
-                        <div className="text-center py-12 text-white/40">
-                            {activeTab === "paper"
-                                ? "No one has paper traded yet. Be the first!"
-                                : "No users found."}
-                        </div>
-                    )}
+                                    )}
+                                </div>
+                                <div className="text-right flex items-center gap-1">
+                                    {activeTab === "paper" && (
+                                        pnl >= 0
+                                            ? <TrendingUp className="w-4 h-4 text-emerald-400" />
+                                            : <TrendingDown className="w-4 h-4 text-rose-400" />
+                                    )}
+                                    <span className={`font-bold text-sm ${activeTab === "reputation"
+                                        ? "text-white"
+                                        : pnl >= 0 ? "text-emerald-400" : "text-rose-400"
+                                        }`}>
+                                        {getScoreDisplay(user)}
+                                    </span>
+                                </div>
+                            </Link>
+                        );
+                    })}
                 </div>
-            </main>
-            <RightPanel />
-        </div>
+
+                {(!leaders || leaders.length === 0) && (
+                    <div className="text-center py-12 text-white/40">
+                        {activeTab === "paper"
+                            ? "No one has paper traded yet. Be the first!"
+                            : "No users found."}
+                    </div>
+                )}
+            </div>
+        </AppLayout>
     );
 }

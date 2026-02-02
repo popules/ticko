@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { AchievementsDisplay } from "@/components/profile/AchievementsDisplay";
 import { useAuth } from "@/providers/AuthProvider";
@@ -60,9 +59,8 @@ export default function ProfilePage() {
 
     if (!user) {
         return (
-            <div className="flex min-h-screen">
-                <Sidebar />
-                <main className="flex-1 flex items-center justify-center p-6 text-center">
+            <AppLayout showRightPanel={true}>
+                <div className="flex-1 flex items-center justify-center p-6 text-center h-full">
                     <div className="space-y-4">
                         <h1 className="text-2xl font-black text-white uppercase tracking-widest">Log in to view profile</h1>
                         <p className="text-white/50">You must be logged in to view your personal page.</p>
@@ -70,22 +68,16 @@ export default function ProfilePage() {
                             Log in
                         </Link>
                     </div>
-                </main>
-                <RightPanel />
-            </div>
+                </div>
+            </AppLayout>
         );
     }
 
     return (
-        <div className="flex min-h-screen relative">
-            {/* Sidebar Background Extensions - fills full page height on desktop */}
-            <div className="hidden lg:block fixed left-0 top-0 bottom-0 w-64 bg-white/[0.02] border-r border-white/10 -z-10" />
-            <div className="hidden lg:block fixed right-0 top-0 bottom-0 w-80 bg-white/[0.02] border-l border-white/10 -z-10" />
-            <Sidebar />
-
-            <main className="flex-1 border-r border-white/10 px-3 pt-16 pb-20 sm:px-8 sm:pt-20 md:pb-8">
+        <AppLayout showRightPanel={true}>
+            <div className="px-3 pt-4 sm:px-8 sm:pt-8 md:pb-8">
                 {isLoading ? (
-                    <div className="h-full flex flex-col items-center justify-center gap-4">
+                    <div className="h-[50vh] flex flex-col items-center justify-center gap-4">
                         <Loader2 className="w-10 h-10 animate-spin text-emerald-400" />
                         <p className="text-white/40 font-bold uppercase tracking-widest text-xs">
                             Loading profile...
@@ -200,9 +192,7 @@ export default function ProfilePage() {
                         </div>
                     </motion.div>
                 )}
-            </main>
-
-            <RightPanel />
-        </div>
+            </div>
+        </AppLayout>
     );
 }

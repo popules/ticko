@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { RightPanel } from "@/components/layout/RightPanel";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { useAuth } from "@/providers/AuthProvider";
 import { useSearch } from "@/providers/SearchProvider";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
@@ -435,21 +434,18 @@ export default function ArenaPage() {
 
     if (authLoading || isLoading) {
         return (
-            <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
-                <Sidebar />
-                <main className="flex-1 flex items-center justify-center">
+            <AppLayout showRightPanel={true}>
+                <div className="flex-1 flex items-center justify-center h-full">
                     <Loader2 className="w-8 h-8 animate-spin text-white/40" />
-                </main>
-                <RightPanel />
-            </div>
+                </div>
+            </AppLayout>
         );
     }
 
     if (!user) {
         return (
-            <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
-                <Sidebar />
-                <main className="flex-1 flex items-center justify-center">
+            <AppLayout showRightPanel={true}>
+                <div className="flex-1 flex items-center justify-center h-full">
                     <div className="text-center">
                         <Gamepad2 className="w-16 h-16 text-white/20 mx-auto mb-4" />
                         <h2 className="text-xl font-bold text-white mb-2">Log in to enter The Arena</h2>
@@ -457,9 +453,8 @@ export default function ArenaPage() {
                             Log in →
                         </Link>
                     </div>
-                </main>
-                <RightPanel />
-            </div>
+                </div>
+            </AppLayout>
         );
     }
 
@@ -472,10 +467,8 @@ export default function ArenaPage() {
         .reduce((sum, t) => sum + (t.realized_pnl || 0), 0);
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
-            <Sidebar />
-
-            <main className="flex-1 min-w-0 border-r border-white/10 pb-24 md:pb-0">
+        <AppLayout showRightPanel={true}>
+            <div className="flex-1 min-w-0 pb-24 md:pb-0">
                 {/* Header */}
                 <header className="sticky top-0 z-10 backdrop-blur-xl bg-[#020617]/80 border-b border-white/10 px-4 sm:px-6 py-4 sm:py-5 md:mt-0">
                     <div className="flex items-center justify-between">
@@ -1101,112 +1094,110 @@ export default function ArenaPage() {
                         )
                     }
                 </div >
-            </main >
 
-            <RightPanel />
 
-            {/* Sell Modal */}
-            {
-                sellItem && (
-                    <PaperSellModal
-                        item={sellItem}
-                        userId={user.id}
-                        onClose={() => setSellItem(null)}
-                        onSold={handleSold}
-                    />
-                )
-            }
+                {/* Sell Modal */}
+                {
+                    sellItem && (
+                        <PaperSellModal
+                            item={sellItem}
+                            userId={user.id}
+                            onClose={() => setSellItem(null)}
+                            onSold={handleSold}
+                        />
+                    )
+                }
 
-            {/* Reset Confirmation Modal */}
-            <AnimatePresence>
-                {showResetModal && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
-                        onClick={() => setShowResetModal(false)}
-                    >
+                {/* Reset Confirmation Modal */}
+                <AnimatePresence>
+                    {showResetModal && (
                         <motion.div
-                            initial={{ scale: 0.95, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.95, opacity: 0 }}
-                            onClick={(e) => e.stopPropagation()}
-                            className="w-full max-w-md bg-[#0B0F17] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+                            onClick={() => setShowResetModal(false)}
                         >
-                            <div className="p-6 border-b border-white/10 bg-gradient-to-r from-rose-500/10 to-orange-500/10">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center">
-                                        <RotateCcw className="w-5 h-5 text-rose-400" />
-                                    </div>
-                                    <div>
-                                        <h2 className="text-lg font-bold text-white">Reset Portfolio</h2>
-                                        <p className="text-xs text-white/40">Are you sure?</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="p-6 space-y-4">
-                                <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
-                                    <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                                    <div className="text-sm text-amber-400/80">
-                                        <p className="font-bold mb-1">This will:</p>
-                                        <ul className="list-disc list-inside text-xs space-y-1">
-                                            <li>Delete all your virtual holdings</li>
-                                            <li>Reset your cash to $10,000</li>
-                                            <li>Increase your reset counter (visible to others)</li>
-                                        </ul>
+                            <motion.div
+                                initial={{ scale: 0.95, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.95, opacity: 0 }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="w-full max-w-md bg-[#0B0F17] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+                            >
+                                <div className="p-6 border-b border-white/10 bg-gradient-to-r from-rose-500/10 to-orange-500/10">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center">
+                                            <RotateCcw className="w-5 h-5 text-rose-400" />
+                                        </div>
+                                        <div>
+                                            <h2 className="text-lg font-bold text-white">Reset Portfolio</h2>
+                                            <p className="text-xs text-white/40">Are you sure?</p>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <p className="text-sm text-white/50 text-center">
-                                    You have reset <span className="text-white font-bold">{resetCount}</span> time{resetCount !== 1 ? "s" : ""} before.
-                                </p>
-                            </div>
+                                <div className="p-6 space-y-4">
+                                    <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
+                                        <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                                        <div className="text-sm text-amber-400/80">
+                                            <p className="font-bold mb-1">This will:</p>
+                                            <ul className="list-disc list-inside text-xs space-y-1">
+                                                <li>Delete all your virtual holdings</li>
+                                                <li>Reset your cash to $10,000</li>
+                                                <li>Increase your reset counter (visible to others)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                            <div className="p-6 pt-0 flex gap-3">
-                                <button
-                                    onClick={() => setShowResetModal(false)}
-                                    className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] text-white/60 font-bold hover:bg-white/10 transition-colors"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={handleReset}
-                                    disabled={isResetting}
-                                    className="flex-1 px-4 py-3 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 font-bold transition-colors flex items-center justify-center gap-2 border border-rose-500/30"
-                                >
-                                    {isResetting ? (
-                                        <Loader2 className="w-5 h-5 animate-spin" />
-                                    ) : (
-                                        <>
-                                            <RotateCcw className="w-4 h-4" />
-                                            Yes, reset
-                                        </>
-                                    )}
-                                </button>
-                            </div>
+                                    <p className="text-sm text-white/50 text-center">
+                                        You have reset <span className="text-white font-bold">{resetCount}</span> time{resetCount !== 1 ? "s" : ""} before.
+                                    </p>
+                                </div>
+
+                                <div className="p-6 pt-0 flex gap-3">
+                                    <button
+                                        onClick={() => setShowResetModal(false)}
+                                        className="flex-1 px-4 py-3 rounded-xl bg-white/[0.06] text-white/60 font-bold hover:bg-white/10 transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleReset}
+                                        disabled={isResetting}
+                                        className="flex-1 px-4 py-3 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 font-bold transition-colors flex items-center justify-center gap-2 border border-rose-500/30"
+                                    >
+                                        {isResetting ? (
+                                            <Loader2 className="w-5 h-5 animate-spin" />
+                                        ) : (
+                                            <>
+                                                <RotateCcw className="w-4 h-4" />
+                                                Yes, reset
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            </motion.div>
                         </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    )}
+                </AnimatePresence>
 
-            {/* Paid Reset Modal */}
-            {
-                showPaidResetModal && (
-                    <PaidResetModal onClose={() => setShowPaidResetModal(false)} />
-                )
-            }
+                {/* Paid Reset Modal */}
+                {
+                    showPaidResetModal && (
+                        <PaidResetModal onClose={() => setShowPaidResetModal(false)} />
+                    )
+                }
 
-            {/* Pro Upsell Modal */}
-            {
-                showProUpsellModal && (
-                    <ProUpsellModal
-                        trigger="portfolio_stats"
-                        onClose={() => setShowProUpsellModal(false)}
-                    />
-                )
-            }
-        </div >
+                {/* Pro Upsell Modal */}
+                {
+                    showProUpsellModal && (
+                        <ProUpsellModal
+                            trigger="portfolio_stats"
+                            onClose={() => setShowProUpsellModal(false)}
+                        />
+                    )
+                }
+        </AppLayout>
     );
 }
