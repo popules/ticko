@@ -1,5 +1,6 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+import { getLeagueFromRating } from "@/lib/leagues";
 
 export async function GET() {
     const supabase = await createSupabaseServerClient();
@@ -11,19 +12,46 @@ export async function GET() {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const { data, error } = await supabase
-            .from("league_placements")
-            .select("*, leagues(*)")
-            .eq("user_id", user.id)
-            .maybeSingle();
+        // Get user's rating
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("league_rating, paper_season_pnl, username")
+            .eq("id", user.id)
+            .single();
 
-        if (error) {
-            console.error("Error fetching user league:", error);
-            return NextResponse.json({ error: "Database error" }, { status: 500 });
+        if (!profile) {
+            return NextResponse.json({ error: "Profile not found" }, { status: 404 });
         }
 
-        // Return null if not in a league yet (frontend handles "Join League" CTA)
-        return NextResponse.json(data || null);
+        const rating = profile.league_rating || 1000;
+        const league = getLeagueFromRating(rating);
+
+        // Get rank within this league (how many people in same tier have higher P&L)
+        const { count } = await supabase
+            .from("profiles")
+            .select("*", { count: "exact", head: true })
+            .gte("league_rating", league.tier === 5 ? 2500 : league.tier === 4 ? 2000 : league.tier === 3 ? 1500 : league.tier === 2 ? 1000 : 0)
+            .lt("league_rating", league.tier === 5 ? 999999 : league.tier === 4 ? 2500 : league.tier === 3 ? 2000 : league.tier === 2 ? 1500 : 1000)
+            .gt("paper_season_pnl", profile.paper_season_pnl || 0);
+
+        const rankInLeague = (count || 0) + 1;
+
+        // Get points to next tier
+        const nextTierThreshold = league.tier === 5 ? null : 
+            league.tier === 4 ? 2500 :
+            league.tier === 3 ? 2000 :
+            league.tier === 2 ? 1500 : 1000;
+
+        const pointsToPromotion = nextTierThreshold ? nextTierThreshold - rating : null;
+
+        return NextResponse.json({
+            league: league.name,
+            tier: league.tier,
+            rating,
+            rank_in_league: rankInLeague,
+            points_to_promotion: pointsToPromotion,
+            username: profile.username,
+        });
 
     } catch (error) {
         console.error("Server error:", error);

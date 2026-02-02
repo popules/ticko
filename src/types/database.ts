@@ -43,6 +43,9 @@ export interface Profile {
     ai_usage_date?: string | null;
     // Watchlist limit
     watchlist_limit?: number;
+    // League rating (MMR)
+    league_rating?: number;
+    league_rating_updated_at?: string | null;
 }
 
 export interface Post {

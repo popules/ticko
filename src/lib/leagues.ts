@@ -5,6 +5,28 @@ import { getLevel } from "./level-system";
 type League = Database['public']['Tables']['leagues']['Row'];
 type LeaguePlacement = Database['public']['Tables']['league_placements']['Row'];
 
+/**
+ * Get league tier from MMR rating
+ */
+export function getLeagueFromRating(rating: number): { name: string; tier: number } {
+    if (rating >= 2500) return { name: "Diamond", tier: 5 };
+    if (rating >= 2000) return { name: "Platinum", tier: 4 };
+    if (rating >= 1500) return { name: "Gold", tier: 3 };
+    if (rating >= 1000) return { name: "Silver", tier: 2 };
+    return { name: "Bronze", tier: 1 };
+}
+
+/**
+ * Calculate rating change based on 7-day P&L performance
+ */
+export function calculateRatingChange(pnlPercent: number): number {
+    if (pnlPercent >= 10) return 200;   // Crushing it
+    if (pnlPercent >= 5) return 150;    // Doing well
+    if (pnlPercent > 0) return 75;      // Slight gain
+    if (pnlPercent >= -5) return -30;   // Slight loss
+    return -75;                          // Bad week
+}
+
 export async function getUserLeague(userId: string): Promise<LeaguePlacement | null> {
     try {
         const { data, error } = await supabase
