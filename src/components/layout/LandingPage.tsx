@@ -203,24 +203,18 @@ export function LandingPage() {
                     </motion.div>
 
                     <div className="grid md:grid-cols-3 gap-8 relative">
-                        {/* Connecting line */}
-                        <div className="hidden md:block absolute top-16 left-[16.66%] right-[16.66%] h-0.5 bg-gradient-to-r from-emerald-500/20 via-emerald-500/40 to-emerald-500/20" />
-
                         {[
                             {
-                                step: "01",
                                 title: "Get $10,000 instantly",
                                 desc: "Create your free account and get a portfolio filled with $10,000 in virtual money. Ready to use on the market right away.",
                                 icon: Wallet
                             },
                             {
-                                step: "02",
                                 title: "Trade smart and fair",
                                 desc: "Use Ticko AI for research and place your orders. Every buy is locked for 30 minutes to ensure a fair competition without arbitrage.",
                                 icon: TrendingUp
                             },
                             {
-                                step: "03",
                                 title: "Prove your skills",
                                 desc: "Every trade you make builds your track record. Show the community you have what it takes.",
                                 icon: Award
@@ -234,11 +228,8 @@ export function LandingPage() {
                                 transition={{ delay: i * 0.15 }}
                                 className="text-center relative"
                             >
-                                <div className="w-12 h-12 mx-auto mb-6 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-black text-lg relative z-10">
-                                    {item.step}
-                                </div>
-                                <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
-                                    <item.icon className="w-7 h-7 text-emerald-400" />
+                                <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+                                    <item.icon className="w-8 h-8 text-emerald-400" />
                                 </div>
                                 <h3 className="text-xl font-bold mb-2">{item.title}</h3>
                                 <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
