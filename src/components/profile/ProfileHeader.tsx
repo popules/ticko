@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Shield, Calendar, MapPin, Pencil } from "lucide-react";
 import { ShareButton } from "@/components/ui/ShareButton";
+import { BASE_URL } from "@/config/app";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { BadgeRack } from "./BadgeRack";
 import { getUserRank } from "@/lib/ranks";
@@ -116,7 +117,7 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                         {isOwnProfile && (
                             <div className="flex items-center gap-3">
                                 <ShareButton
-                                    url={`https://tickomarkets.com/u/${currentProfile.username}`}
+                                    url={`${BASE_URL}/u/${currentProfile.username}`}
                                     title={`${currentProfile.username} on Ticko`}
                                     iconOnly={false}
                                 />

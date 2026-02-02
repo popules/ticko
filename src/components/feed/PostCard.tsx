@@ -6,7 +6,7 @@ import { enUS } from "date-fns/locale";
 import { TrendingUp, TrendingDown, Flag, Trash2, Loader2, Gem } from "lucide-react";
 import { ShareButton } from "@/components/ui/ShareButton";
 import { renderWithCashtags } from "@/lib/cashtag";
-import { UI_STRINGS } from "@/config/app";
+import { UI_STRINGS, BASE_URL } from "@/config/app";
 import { getLevel, getLevelColor } from "@/lib/level-system";
 import { ReactionButtons } from "./ReactionButtons";
 import { ReactionBar } from "./ReactionBar";
@@ -242,7 +242,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                             )}
                             {/* Share button */}
                             <ShareButton
-                                url={`https://tickomarkets.com/post/${post.id}`}
+                                url={`${BASE_URL}/post/${post.id}`}
                                 title={`Post by ${profile?.username || 'Anonymous'} on Ticko`}
                             />
                             {/* Report button */}

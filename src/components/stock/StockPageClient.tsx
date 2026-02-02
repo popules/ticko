@@ -9,6 +9,7 @@ import { WatchButton } from "@/components/watchlist/WatchButton";
 import { PaperTradeButton } from "@/components/portfolio/PaperTradeButton";
 import { Brain, ArrowLeft } from "lucide-react";
 import { ShareButton } from "@/components/ui/ShareButton";
+import { BASE_URL } from "@/config/app";
 import Link from "next/link";
 
 interface StockPageActionsProps {
@@ -35,6 +36,7 @@ export function StockPageActions({ symbol }: StockPageActionsProps) {
             <WatchButton symbol={symbol} />
             <div className="h-8 w-px bg-white/10 mx-1" />
             <ShareButton
+                url={`${BASE_URL}/stock/${symbol}`}
                 className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white transition-all"
                 iconOnly={true}
             />
