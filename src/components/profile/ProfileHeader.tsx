@@ -116,7 +116,7 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                         {isOwnProfile && (
                             <div className="flex items-center gap-3">
                                 <ShareButton
-                                    url={`https://tickomarkets.com/profile/${profile.id}`}
+                                    url={`https://tickomarkets.com/u/${currentProfile.username}`}
                                     title={`${currentProfile.username} on Ticko`}
                                     iconOnly={false}
                                 />
