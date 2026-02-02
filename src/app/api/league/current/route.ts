@@ -23,7 +23,9 @@ export async function GET() {
             return NextResponse.json({ error: "Profile not found" }, { status: 404 });
         }
 
-        const rating = profile.league_rating || 1000;
+        // Cast to any since league_rating is new column not in generated types yet
+        const p = profile as any;
+        const rating = p.league_rating || 1000;
         const league = getLeagueFromRating(rating);
 
         // Get rank within this league (how many people in same tier have higher P&L)
@@ -32,7 +34,7 @@ export async function GET() {
             .select("*", { count: "exact", head: true })
             .gte("league_rating", league.tier === 5 ? 2500 : league.tier === 4 ? 2000 : league.tier === 3 ? 1500 : league.tier === 2 ? 1000 : 0)
             .lt("league_rating", league.tier === 5 ? 999999 : league.tier === 4 ? 2500 : league.tier === 3 ? 2000 : league.tier === 2 ? 1500 : 1000)
-            .gt("paper_season_pnl", profile.paper_season_pnl || 0);
+            .gt("paper_season_pnl", p.paper_season_pnl || 0);
 
         const rankInLeague = (count || 0) + 1;
 
@@ -50,7 +52,7 @@ export async function GET() {
             rating,
             rank_in_league: rankInLeague,
             points_to_promotion: pointsToPromotion,
-            username: profile.username,
+            username: p.username,
         });
 
     } catch (error) {

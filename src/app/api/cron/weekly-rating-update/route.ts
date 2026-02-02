@@ -8,15 +8,15 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE!;
 /**
  * Weekly Cron: Update league ratings based on 7-day P&L performance
  * 
- * Run this every Sunday at midnight (or weekly cadence)
- * Vercel cron: Add to vercel.json:
- * { "path": "/api/cron/weekly-rating-update", "schedule": "0 0 * * 0" }
+ * Run this every Sunday at 1am UTC
  */
 export async function GET(request: NextRequest) {
-    // Verify cron secret
+    // Verify cron secret (skip in dev)
     const authHeader = request.headers.get("authorization");
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (process.env.NODE_ENV === "production") {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
