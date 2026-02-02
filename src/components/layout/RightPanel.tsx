@@ -70,7 +70,7 @@ export function RightPanel() {
     });
 
     return (
-        <aside className="hidden md:flex w-80 h-screen sticky top-0 flex-col border-l border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-y-auto scrollbar-hide">
+        <aside className="hidden lg:flex w-80 h-screen sticky top-0 flex-col border-l border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-y-auto scrollbar-hide">
             {/* Daily Challenges */}
             <div className="p-4 pb-0">
                 <ChallengesWidget />

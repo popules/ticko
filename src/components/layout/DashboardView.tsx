@@ -10,7 +10,11 @@ import { APP_CONFIG } from "@/config/app";
 
 export function DashboardView() {
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
+        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden relative">
+            {/* Sidebar Background Extension - fills full height on desktop */}
+            <div className="hidden lg:block fixed left-0 top-0 bottom-0 w-64 bg-white/[0.02] border-r border-white/10 -z-10" />
+            <div className="hidden lg:block fixed right-0 top-0 bottom-0 w-80 bg-white/[0.02] border-l border-white/10 -z-10" />
+            
             {/* Onboarding Modal - Shows once for new users */}
             <OnboardingModal />
 

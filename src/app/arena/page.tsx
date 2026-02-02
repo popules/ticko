@@ -472,7 +472,11 @@ export default function ArenaPage() {
         .reduce((sum, t) => sum + (t.realized_pnl || 0), 0);
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden">
+        <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-x-hidden relative">
+            {/* Sidebar Background Extensions - fills full page height on desktop */}
+            <div className="hidden lg:block fixed left-0 top-0 bottom-0 w-64 bg-white/[0.02] border-r border-white/10 -z-10" />
+            <div className="hidden lg:block fixed right-0 top-0 bottom-0 w-80 bg-white/[0.02] border-l border-white/10 -z-10" />
+            
             <div className="shrink-0 lg:h-screen lg:sticky lg:top-0">
                 <Sidebar />
             </div>
