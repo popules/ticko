@@ -2,6 +2,10 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
+import { AppLayout } from '@/components/layout/AppLayout';
 import { ArrowLeft, BookOpen, TrendingUp, ArrowRight } from 'lucide-react';
 import { getWikiTerm, getAllWikiSlugs, WIKI_CONTENT } from '@/lib/wiki-content';
 
@@ -69,10 +73,10 @@ export default async function WikiPage({ params }: WikiPageProps) {
         .slice(0, 3);
 
     return (
-        <div className="min-h-screen bg-[#020617] text-white">
-            <div className="max-w-4xl mx-auto px-4 py-12">
+        <AppLayout showRightPanel={true}>
+            <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 pb-24">
                 {/* Breadcrumb / Back */}
-                <div className="mb-8">
+                {/* <div className="mb-8">
                     <Link
                         href="/wiki"
                         className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors"
@@ -80,6 +84,20 @@ export default async function WikiPage({ params }: WikiPageProps) {
                         <ArrowLeft className="w-4 h-4" />
                         Back to Financial Wiki
                     </Link>
+                </div> */}
+
+                {/* Sticky Header for Mobile/Desktop */}
+                <div className="sticky top-0 z-20 -mx-4 px-4 py-4 bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 mb-8 flex items-center gap-4">
+                    <Link
+                        href="/wiki"
+                        className="p-2 -ml-2 rounded-xl hover:bg-white/10 text-white/60 hover:text-white transition-colors"
+                    >
+                        <ArrowLeft className="w-5 h-5" />
+                    </Link>
+                    <div>
+                        <h2 className="font-bold text-white text-sm md:text-base line-clamp-1">{term.title}</h2>
+                        <p className="text-xs text-white/40">Financial Encyclopedia</p>
+                    </div>
                 </div>
 
                 {/* Header */}
@@ -108,21 +126,24 @@ export default async function WikiPage({ params }: WikiPageProps) {
                         prose-p:text-white/70 prose-p:leading-relaxed
                         prose-a:text-emerald-400 prose-a:no-underline hover:prose-a:underline
                         prose-li:text-white/70">
-                        <ReactMarkdown>
+                        <ReactMarkdown
+                            remarkPlugins={[remarkMath]}
+                            rehypePlugins={[rehypeKatex]}
+                        >
                             {term.content}
                         </ReactMarkdown>
                     </article>
 
                     {/* Sidebar / Related / CTA */}
-                    <aside className="space-y-8">
+                    <aside className="space-y-8 sticky top-24 h-fit">
                         {/* Practice Card */}
-                        <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 sticky top-24">
+                        <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
                             <div className="flex items-center gap-3 mb-4">
                                 <TrendingUp className="w-5 h-5 text-emerald-400" />
                                 <h3 className="font-bold text-white">Practice what you preach</h3>
                             </div>
                             <p className="text-sm text-white/60 mb-6">
-                                Don't just read about {term.title}. Practice trading strictly risk-free with $10,000 on Ticko.
+                                Don&apos;t just read about {term.title}. Practice trading strictly risk-free with $10,000 on Ticko.
                             </p>
 
                             {term.relatedStocks.length > 0 && (
@@ -175,6 +196,6 @@ export default async function WikiPage({ params }: WikiPageProps) {
                     </aside>
                 </div>
             </div>
-        </div>
+        </AppLayout>
     );
 }

@@ -201,6 +201,114 @@ While most lose money, skilled traders can profit by:
 ## Practice Bear Strategies
 Don't risk your savings trying to short the market for the first time. Use your $10,000 virtual portfolio on Ticko to practice navigating a downturn.
         `
+    },
+    {
+        slug: 'etf',
+        title: 'ETF (Exchange Traded Fund)',
+        description: 'An ETF acts like a basket of stocks that you can buy and sell instantly. It\'s the easiest way to diversify.',
+        emoji: '🧺',
+        category: 'basics',
+        relatedStocks: ['SPY', 'QQQ', 'VOO'],
+        content: `
+# What is an ETF?
+
+An **Exchange Traded Fund (ETF)** is a security that tracks an index, sector, commodity, or other asset, but which can be purchased or sold on a stock exchange the same way a regular stock can.
+
+## Why buy ETFs?
+*   **Diversification:** Buy one ticket, own 500 companies (like with [SPY](/stock/SPY)).
+*   **Lower Risk:** If one company fails, you have 499 others to save you.
+*   **Low Cost:** Cheaper than buying all those stocks individually.
+
+## Popular ETFs
+*   **SPY:** Tracks the S&P 500 (top 500 US companies).
+*   **QQQ:** Tracks the Nasdaq 100 (top tech companies).
+*   **GLD:** Tracks the price of Gold.
+        `
+    },
+    {
+        slug: 'volume',
+        title: 'Volume',
+        description: 'Volume measures the number of shares traded in a stock. High volume means high liquidity/activity.',
+        emoji: '🔊',
+        category: 'analysis',
+        relatedStocks: ['TSLA', 'AMD', 'AAPL'],
+        content: `
+# What is Volume?
+
+**Volume** is the number of shares (or contracts) traded during a specific period. It is a measure of liquidity and activity.
+
+## How to use Volume
+*   **Confirm Trends:** If price goes up and volume is high, the trend is strong (lots of people agree). If price goes up but volume is low, the trend might be weak (few buyers).
+*   **Spot Reversals:** A sudden spike in volume after a long trend can signal the end of that trend (capitulation).
+
+## Example
+If [Tesla](/stock/TSLA) usually trades 100M shares a day, but today it trades 300M shares and drops 5%, that is a **very strong signal** that big money is selling.
+        `
+    },
+    {
+        slug: 'moving-average',
+        title: 'Moving Average (SMA/EMA)',
+        description: 'Moving Averages smooth out price action to show the trend. Learn the difference between SMA and EMA.',
+        emoji: '〰️',
+        category: 'analysis',
+        relatedStocks: ['SPY', 'IWM'],
+        content: `
+# Moving Averages Explained
+
+A **Moving Average** calculates the average price of a stock over a certain number of days to smooth out noise and show the direction of the trend.
+
+## Types
+*   **SMA (Simple):** The simple average of prices. Good for long-term trends.
+*   **EMA (Exponential):** Gives more weight to recent prices. Reacts faster. Good for short-term trading.
+
+## Common Strategies
+*   **Golden Cross:** When the 50-day average crosses *above* the 200-day average. A bullish signal.
+*   **Death Cross:** When the 50-day crosses *below* the 200-day. A bearish signal.
+        `
+    },
+    {
+        slug: 'ipo',
+        title: 'IPO (Initial Public Offering)',
+        description: 'An IPO is when a private company sells shares to the public for the first time. High risk, high hype.',
+        emoji: '🔔',
+        category: 'strategy',
+        relatedStocks: ['RDDT', 'ARM'],
+        content: `
+# What is an IPO?
+
+An **Initial Public Offering (IPO)** is the process of offering shares of a private corporation to the public in a new stock issuance. It allows a company to raise capital from public investors.
+
+## The Hype Cycle
+IPOs are often surrounded by hype.
+1.  **The Pop:** Stock often jumps on the first day.
+2.  **The Drop:** Early investors (insiders) might sell after the "lock-up period" expires (usually 6 months), causing the price to crash.
+
+## Warning
+Buying IPOs on day one is risky. Volatility is extreme.
+        `
+    },
+    {
+        slug: 'blue-chip',
+        title: 'Blue Chip Stocks',
+        description: 'Blue Chip stocks are widely recognized, well-established, and financially sound companies.',
+        emoji: '💎',
+        category: 'basics',
+        relatedStocks: ['JNJ', 'KO', 'BRK.B'],
+        content: `
+# Blue Chip Stocks
+
+A **Blue Chip** is a nationally recognized, well-established, and financially sound company. Blue chips generally sell high-quality, widely accepted products and services.
+
+## Why "Blue Chip"?
+The name comes from poker, where blue chips have the highest value.
+
+## Why own them?
+*   **Safety:** They are less likely to go bankrupt.
+*   **Dividends:** Most pay reliable dividends.
+*   **Stability:** They weather recessions better than small risky companies.
+
+Examples: Coca-Cola, Johnson & Johnson, Berkshire Hathaway.
+        `
     }
 ];
 
