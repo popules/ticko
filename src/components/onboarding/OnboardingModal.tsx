@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Wallet, Trophy, Brain, MessageCircle, ChevronRight, Sparkles, User, Check, AlertCircle } from "lucide-react";
+import { Wallet, Trophy, Brain, MessageCircle, ChevronRight, Sparkles, User, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { TickoLogo } from "@/components/ui/TickoLogo";
 import { useAuth } from "@/providers/AuthProvider";
@@ -181,13 +181,12 @@ export function OnboardingModal() {
         <AnimatePresence>
             {isOpen && (
                 <>
-                    {/* Backdrop */}
+                    {/* Backdrop - no click to close, must complete onboarding */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 bg-black/90 backdrop-blur-xl z-50"
-                        onClick={handleClose}
                     />
 
                     {/* Modal */}
@@ -266,13 +265,7 @@ export function OnboardingModal() {
                                 {/* Animated glow background */}
                                 <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 ${slide.bgGlow} rounded-full blur-[100px] opacity-50 transition-colors duration-500`} />
 
-                                {/* Close button */}
-                                <button
-                                    onClick={handleClose}
-                                    className="absolute top-4 right-4 p-2 rounded-xl bg-white/[0.04] hover:bg-white/10 text-white/40 hover:text-white transition-all z-10"
-                                >
-                                    <X className="w-5 h-5" />
-                                </button>
+                                {/* No close button - must complete onboarding */}
 
                                 {/* Logo */}
                                 <div className="relative flex justify-center mb-6">
@@ -326,21 +319,15 @@ export function OnboardingModal() {
                                 </div>
 
                                 {/* Actions */}
-                                <div className="relative flex gap-3">
-                                    <button
-                                        onClick={handleClose}
-                                        className="flex-1 py-3 px-4 rounded-xl bg-white/[0.04] hover:bg-white/10 text-white/60 font-semibold transition-all border border-white/10"
-                                    >
-                                        Skip
-                                    </button>
+                                <div className="relative">
                                     <button
                                         onClick={handleNext}
-                                        className={`flex-1 py-3 px-4 rounded-xl bg-gradient-to-r ${slide.gradient} text-white font-bold flex items-center justify-center gap-2 shadow-lg transition-transform hover:scale-[1.02]`}
+                                        className={`w-full py-4 px-4 rounded-xl bg-gradient-to-r ${slide.gradient} text-white font-bold flex items-center justify-center gap-2 shadow-lg transition-transform hover:scale-[1.02]`}
                                     >
                                         {isLastSlide ? (
                                             <>
                                                 <Sparkles className="w-4 h-4" />
-                                                Start Trading
+                                                Let's Go!
                                             </>
                                         ) : (
                                             <>
