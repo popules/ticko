@@ -161,9 +161,6 @@ export function Sidebar() {
                 })}
             </nav>
 
-            {/* Spacer */}
-            <div className="flex-1 md:block hidden" />
-
             {/* Quick Stats - P&L and League */}
             {user && (
                 <div className="px-4 pb-3">
@@ -172,7 +169,7 @@ export function Sidebar() {
             )}
 
             {/* Footer */}
-            <div className="p-3 border-t border-white/10 space-y-1 bg-white/[0.02]">
+            <div className="p-3 border-t border-white/10 space-y-1 bg-white/[0.02] mt-auto">
                 <Link
                     href="/settings"
                     onClick={() => setMobileOpen(false)}
@@ -205,8 +202,10 @@ export function Sidebar() {
             </div>
 
             {/* Footer Links */}
-            <div className="px-4 pb-4 pt-2 border-t border-white/5 mt-auto">
-                <div className="flex items-center gap-4 text-[11px] text-white/30">
+            <div className="px-4 pb-4 pt-2 border-t border-white/5">
+                <div className="flex items-center gap-3 text-[11px] text-white/30 flex-wrap">
+                    <Link href="/wiki" className="hover:text-white/60 transition-colors">Wiki</Link>
+                    <span className="text-white/10">·</span>
                     <Link href="/community-guidelines" className="hover:text-white/60 transition-colors">Guidelines</Link>
                     <span className="text-white/10">·</span>
                     <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
@@ -246,7 +245,7 @@ export function Sidebar() {
             <div className="md:hidden h-16" />
 
             {/* Desktop Sidebar */}
-            <aside className="hidden md:flex w-64 h-screen sticky top-0 flex-col border-r border-white/10 bg-white/[0.02] backdrop-blur-xl z-[100] overflow-y-auto scrollbar-hide">
+            <aside className="hidden md:flex w-64 h-screen sticky top-0 flex-col border-r border-white/10 bg-white/[0.02] backdrop-blur-xl z-[100] overflow-hidden">
                 <SidebarContent />
             </aside>
 

@@ -15,11 +15,11 @@ interface AppLayoutProps {
  * Standard app layout with sidebars that extend full height.
  * Use this for all authenticated pages to ensure consistent sidebar behavior.
  */
-export function AppLayout({ 
-    children, 
-    showRightPanel = true, 
+export function AppLayout({
+    children,
+    showRightPanel = true,
     showFooter = false,
-    className = "" 
+    className = ""
 }: AppLayoutProps) {
     return (
         <div className="flex min-h-screen overflow-x-hidden relative">
@@ -40,9 +40,7 @@ export function AppLayout({
 
             {/* Right Panel */}
             {showRightPanel && (
-                <div className="hidden lg:block">
-                    <RightPanel />
-                </div>
+                <RightPanel />
             )}
         </div>
     );
