@@ -230,7 +230,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                                 <button
                                     onClick={handleDelete}
                                     disabled={isDeleting}
-                                    className="flex items-center gap-2 text-sm text-white/20 hover:text-rose-400 transition-colors disabled:opacity-50"
+                                    className="flex items-center gap-2 text-sm text-white/20 hover:text-rose-400 transition-colors disabled:opacity-50 p-2 min-w-[36px] min-h-[36px]"
                                     title="Delete post"
                                 >
                                     {isDeleting ? (
@@ -248,7 +248,7 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                             {/* Report button */}
                             <button
                                 onClick={() => setIsReportModalOpen(true)}
-                                className="flex items-center gap-2 text-sm text-white/20 hover:text-rose-400 transition-colors"
+                                className="flex items-center gap-2 text-sm text-white/20 hover:text-rose-400 transition-colors p-2 min-w-[36px] min-h-[36px]"
                                 title="Report post"
                             >
                                 <Flag className="w-4 h-4" />

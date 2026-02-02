@@ -217,7 +217,7 @@ export function Sidebar() {
     return (
         <>
             {/* Mobile Header Bar */}
-            <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#020617]/95 backdrop-blur-xl border-b border-white/10 z-50 flex items-center justify-between px-4">
+            <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-[#020617]/95 backdrop-blur-xl border-b border-white/10 z-50 flex items-center justify-between px-4">
                 <button
                     onClick={() => setMobileOpen(true)}
                     className="p-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors"

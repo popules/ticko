@@ -127,7 +127,7 @@ function CommentItem({
                         {user && depth < maxDepth && (
                             <button
                                 onClick={() => onReply(comment.id)}
-                                className="flex items-center gap-1 text-xs text-white/40 hover:text-emerald-400 transition-colors"
+                                className="flex items-center gap-1 text-xs text-white/40 hover:text-emerald-400 transition-colors py-2 px-1 min-h-[36px]"
                             >
                                 <Reply className="w-3 h-3" />
                                 Reply
@@ -149,18 +149,19 @@ function CommentItem({
                                     value={replyContent}
                                     onChange={(e) => setReplyContent(e.target.value)}
                                     placeholder={`Reply to @${comment.profiles?.username || 'Anonymous'}...`}
-                                    className="flex-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-xs text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 transition-all"
+                                    className="flex-1 px-3 py-3 bg-white/[0.04] border border-white/10 rounded-lg text-base text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 transition-all min-h-[44px]"
+                                    style={{ fontSize: '16px' }}
                                     autoFocus
                                 />
                                 <button
                                     onClick={() => handleSubmitReply(comment.id)}
                                     disabled={!replyContent.trim() || isSubmitting}
-                                    className="px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded-lg transition-all disabled:opacity-50"
+                                    className="px-3 py-3 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded-lg transition-all disabled:opacity-50 min-w-[44px] min-h-[44px] flex items-center justify-center"
                                 >
                                     {isSubmitting ? (
-                                        <Loader2 className="w-3 h-3 animate-spin" />
+                                        <Loader2 className="w-4 h-4 animate-spin" />
                                     ) : (
-                                        <Send className="w-3 h-3" />
+                                        <Send className="w-4 h-4" />
                                     )}
                                 </button>
                             </div>
@@ -437,12 +438,13 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
                                         value={newComment}
                                         onChange={(e) => setNewComment(e.target.value)}
                                         placeholder="Write a comment..."
-                                        className="flex-1 px-4 py-2.5 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 transition-all"
+                                        className="flex-1 px-4 py-3 bg-white/[0.04] border border-white/10 rounded-xl text-base text-white placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 transition-all min-h-[44px]"
+                                        style={{ fontSize: '16px' }}
                                     />
                                     <button
                                         type="submit"
                                         disabled={!newComment.trim() || isSubmitting}
-                                        className="px-4 py-2.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="px-4 py-3 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px] min-h-[44px] flex items-center justify-center"
                                     >
                                         {isSubmitting ? (
                                             <Loader2 className="w-4 h-4 animate-spin" />
