@@ -8,6 +8,7 @@ import { formatDistanceToNow } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
+import { createPortal } from "react-dom";
 
 interface NotificationBellProps {
     align?: "left" | "right";
@@ -113,8 +114,8 @@ export function NotificationBell({ align = "right" }: NotificationBellProps) {
                 )}
             </button>
 
-            <AnimatePresence>
-                {isOpen && (
+            {isOpen && createPortal(
+                <AnimatePresence>
                     <>
                         <div
                             className="fixed inset-0 z-40"
@@ -170,8 +171,9 @@ export function NotificationBell({ align = "right" }: NotificationBellProps) {
                             </Link>
                         </motion.div>
                     </>
-                )}
-            </AnimatePresence>
+                </AnimatePresence>,
+                document.body
+            )}
         </div>
     );
 }
