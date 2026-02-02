@@ -17,6 +17,8 @@ type PostWithProfile = Post & {
         username: string;
         avatar_url: string | null;
         reputation_score: number;
+        is_pro?: boolean;
+        league_rating?: number;
     } | null;
     polls?: any[];
     comments?: { count: number }[];
@@ -54,7 +56,9 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
                         profiles (
                             username,
                             avatar_url,
-                            reputation_score
+                            reputation_score,
+                            is_pro,
+                            league_rating
                         ),
                         polls (*),
                         comments (count)
@@ -157,7 +161,9 @@ export function FeedStream({ tickerFilter }: FeedStreamProps) {
               profiles (
                 username,
                 avatar_url,
-                reputation_score
+                reputation_score,
+                is_pro,
+                league_rating
               )
             `
                         )

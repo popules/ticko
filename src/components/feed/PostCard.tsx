@@ -18,6 +18,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import type { Post } from "@/types/database";
 import { ProBadge } from "@/components/ui/ProBadge";
+import { LeagueRankBadge } from "@/components/ui/LeagueRankBadge";
 
 interface PostCardProps {
     post: Post & {
@@ -26,6 +27,7 @@ interface PostCardProps {
             avatar_url: string | null;
             reputation_score: number;
             is_pro?: boolean;
+            league_rating?: number;
         };
         polls?: any[];
         comment_count?: number;
@@ -82,6 +84,11 @@ export function PostCard({ post, authorOwnsStock }: PostCardProps) {
                             {profile?.username || "Anonymous"}
                             {profile?.is_pro && <ProBadge size="xs" />}
                         </Link>
+
+                        {/* League Badge */}
+                        {profile?.league_rating !== undefined && profile.league_rating > 0 && (
+                            <LeagueRankBadge rating={profile.league_rating} size="xs" />
+                        )}
 
                         {/* Level Badge */}
                         {profile?.reputation_score !== undefined && (

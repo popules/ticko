@@ -9,6 +9,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import { ReactionBar } from "./ReactionBar";
 import { getLevel, getLevelColor } from "@/lib/level-system";
+import { LeagueRankBadge } from "@/components/ui/LeagueRankBadge";
 import Link from "next/link";
 
 interface Comment {
@@ -21,6 +22,7 @@ interface Comment {
         username: string;
         avatar_url: string | null;
         reputation_score?: number;
+        league_rating?: number;
     } | null;
     replies?: Comment[];
 }
@@ -91,6 +93,9 @@ function CommentItem({
                         >
                             {comment.profiles?.username || "Anonymous"}
                         </Link>
+                        {comment.profiles?.league_rating !== undefined && comment.profiles.league_rating > 0 && (
+                            <LeagueRankBadge rating={comment.profiles.league_rating} size="xs" />
+                        )}
                         {level !== null && (
                             <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold border ${getLevelColor(level)}`}>
                                 Lvl {level}
@@ -254,7 +259,8 @@ export function CommentThread({ postId, commentCount = 0 }: CommentThreadProps) 
                 profiles (
                     username,
                     avatar_url,
-                    reputation_score
+                    reputation_score,
+                    league_rating
                 )
             `)
             .eq("post_id", postId)
