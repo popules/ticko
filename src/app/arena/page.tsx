@@ -26,7 +26,7 @@ import { ChallengesWidget } from "@/components/dashboard/ChallengesWidget";
 import { Database } from "@/types/database";
 import { LeagueBadge } from "@/components/arena/LeagueBadge";
 
-const USD_TO_SEK = 10.5;
+const EXCHANGE_RATE_USD_SEK = 10.5;
 
 interface PortfolioItem {
     id: string;
@@ -217,21 +217,21 @@ export default function ArenaPage() {
 
             setPortfolio(enrichedPortfolio);
 
-            // Calculate totals (in SEK)
-            let totalInvestedSek = 0;
-            let totalCurrentSek = 0;
+            // Calculate totals in USD (Base)
+            let totalInvestedUsd = 0;
+            let totalCurrentUsd = 0;
 
             enrichedPortfolio.forEach((item: PortfolioItem) => {
                 const isSek = item.currency === "SEK";
-                const rate = isSek ? 1 : USD_TO_SEK;
-                const currentValue = item.shares * (item.current_price || item.buy_price) * rate;
-                const buyValue = item.shares * item.buy_price * rate;
-                totalInvestedSek += buyValue;
-                totalCurrentSek += currentValue;
+                const rateToUsd = isSek ? (1 / EXCHANGE_RATE_USD_SEK) : 1;
+                const currentValue = item.shares * (item.current_price || item.buy_price) * rateToUsd;
+                const buyValue = item.shares * item.buy_price * rateToUsd;
+                totalInvestedUsd += buyValue;
+                totalCurrentUsd += currentValue;
             });
 
-            setTotalValue(totalCurrentSek);
-            setCashBalance(STARTING_CAPITAL - totalInvestedSek);
+            setTotalValue(totalCurrentUsd);
+            setCashBalance(STARTING_CAPITAL - totalInvestedUsd);
             setIsLoading(false);
         };
 
@@ -389,8 +389,8 @@ export default function ArenaPage() {
             const item = portfolio.find(p => p.id === id);
             if (!item) return prev;
             const isSek = item.currency === "SEK";
-            const rate = isSek ? 1 : USD_TO_SEK;
-            const soldValue = sharesSold * (item.current_price || item.buy_price) * rate;
+            const rateToUsd = isSek ? (1 / EXCHANGE_RATE_USD_SEK) : 1;
+            const soldValue = sharesSold * (item.current_price || item.buy_price) * rateToUsd;
             return prev - soldValue;
         });
     };
@@ -744,12 +744,12 @@ export default function ArenaPage() {
                                     </h3>
                                     {portfolio.map((item, index) => {
                                         const isSek = item.currency === "SEK";
-                                        const rate = isSek ? 1 : USD_TO_SEK;
+                                        const rateToUsd = isSek ? (1 / EXCHANGE_RATE_USD_SEK) : 1;
                                         const currentPrice = item.current_price || item.buy_price;
-                                        const currentValueSek = item.shares * currentPrice * rate;
-                                        const buyValueSek = item.shares * item.buy_price * rate;
-                                        const pl = currentValueSek - buyValueSek;
-                                        const plPercent = ((pl / buyValueSek) * 100);
+                                        const currentValueUsd = item.shares * currentPrice * rateToUsd;
+                                        const buyValueUsd = item.shares * item.buy_price * rateToUsd;
+                                        const pl = currentValueUsd - buyValueUsd;
+                                        const plPercent = ((pl / buyValueUsd) * 100);
 
                                         return (
                                             <motion.div
@@ -816,7 +816,7 @@ export default function ArenaPage() {
 
                                                 <div className="text-right mr-3 shrink-0">
                                                     <p className="font-bold text-white tabular-nums text-sm sm:text-base">
-                                                        ${currentValueSek.toLocaleString("en-US", { maximumFractionDigits: 0 })}
+                                                        ${currentValueUsd.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                                     </p>
                                                     <div className={`flex items-center justify-end gap-1 text-xs font-bold tabular-nums ${pl >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
                                                         {pl >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}

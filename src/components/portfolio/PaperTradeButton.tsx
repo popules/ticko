@@ -10,7 +10,7 @@ import { supabase } from "@/lib/supabase/client";
 
 // Constants
 const STARTING_CAPITAL = 10000; // $10,000 USD
-const USD_TO_SEK = 10.5; // Approximate exchange rate
+const EXCHANGE_RATE_USD_SEK = 10.5; // 1 USD = 10.5 SEK
 
 interface PaperTradeButtonProps {
     symbol: string;
@@ -59,10 +59,11 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                 let myPosition = 0;
 
                 (portfolio || []).forEach((item: any) => {
-                    const priceInSek = item.currency === "USD"
-                        ? item.buy_price * USD_TO_SEK
+                    // Convert everything to USD Base
+                    const priceInUsd = item.currency === "SEK"
+                        ? item.buy_price / EXCHANGE_RATE_USD_SEK
                         : item.buy_price;
-                    totalInvested += item.shares * priceInSek;
+                    totalInvested += item.shares * priceInUsd;
 
                     if (item.symbol === symbol) {
                         myPosition = item.shares;
@@ -105,24 +106,24 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
         }
     };
 
-    // Calculate shares and cost based on input mode
-    const priceInSek = stockPrice
-        ? (stockCurrency === "USD" ? stockPrice * USD_TO_SEK : stockPrice)
+    // Calculate shares and cost in USD (Base)
+    const priceInUsd = stockPrice
+        ? (stockCurrency === "SEK" ? stockPrice / EXCHANGE_RATE_USD_SEK : stockPrice)
         : 0;
 
     let shares = 0;
-    let totalCostSek = 0;
+    let totalCostUsd = 0;
 
     if (inputMode === "shares") {
         shares = parseInt(inputValue) || 0;
-        totalCostSek = shares * priceInSek;
+        totalCostUsd = shares * priceInUsd;
     } else {
-        const amountSek = parseFloat(inputValue) || 0;
-        shares = Math.floor(amountSek / priceInSek);
-        totalCostSek = shares * priceInSek;
+        const amountUsd = parseFloat(inputValue) || 0;
+        shares = Math.floor(amountUsd / priceInUsd);
+        totalCostUsd = shares * priceInUsd;
     }
 
-    const canAfford = totalCostSek <= cashBalance && shares > 0;
+    const canAfford = totalCostUsd <= cashBalance && shares > 0;
 
     // Derived UI State
     const isShortPosition = currentShares < 0;
@@ -338,7 +339,7 @@ export function PaperTradeButton({ symbol }: PaperTradeButtonProps) {
                                             {isShorting || isShortPosition ? "Margin Required" : "Total Cost"}
                                         </span>
                                         <span className={`text-lg sm:text-xl font-black tabular-nums ${canAfford ? `text-${themeColor}-400` : "text-rose-400"}`}>
-                                            ${totalCostSek.toLocaleString("en-US", { maximumFractionDigits: 2 })}
+                                            ${totalCostUsd.toLocaleString("en-US", { maximumFractionDigits: 2 })}
                                         </span>
                                     </div>
 

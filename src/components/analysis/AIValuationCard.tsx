@@ -39,15 +39,25 @@ export function AIValuationCard({ ticker, currencySymbol = "$" }: AIValuationCar
         queryKey: ["ai-analysis", ticker],
         queryFn: async () => {
             const res = await fetch(`/api/analyze/${ticker}`);
-            const data = await res.json();
-            
+
+            let data;
+            try {
+                data = await res.json();
+            } catch (e) {
+                console.error("Failed to parse AI response:", e);
+                throw new Error("Invalid response from server");
+            }
+
             // Handle 402 - limit reached
             if (res.status === 402 && data.error === "limit_reached") {
                 setLimitReached(true);
                 throw new Error("limit_reached");
             }
-            
-            if (!res.ok) throw new Error("AI analysis failed");
+
+            if (!res.ok) {
+                console.error("AI Analysis failed:", data.error || res.statusText);
+                throw new Error(data.error || "AI analysis failed");
+            }
             return data;
         },
         staleTime: 1000 * 60 * 10, // 10 minutes cache

@@ -27,14 +27,14 @@ export function getStreakMultiplier(streak: number): number {
 /**
  * Calculate XP reward for a profitable trade
  */
-export function calculateTradeXP(profitSek: number, winStreak: number): number {
-    if (profitSek <= 0) return 0;
+export function calculateTradeXP(profitUsd: number, winStreak: number): number {
+    if (profitUsd <= 0) return 0;
 
     // Base XP for any profit
     let xp = XP_PER_PROFITABLE_TRADE;
 
-    // Bonus XP per 1000 kr profit
-    xp += Math.floor(profitSek / 1000) * XP_PER_1000_PROFIT;
+    // Bonus XP per $100 profit (Equivalent to 1000 kr in previous SEK logic)
+    xp += Math.floor(profitUsd / 100) * XP_PER_1000_PROFIT;
 
     // Apply streak multiplier
     xp = Math.floor(xp * getStreakMultiplier(winStreak));

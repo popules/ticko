@@ -6,7 +6,7 @@ import { calculateTradeXP } from '@/lib/level-system'; // Corrected import sourc
 // import { checkPaperTradingAchievements } from '@/lib/achievements';
 
 const STARTING_CAPITAL = 10000;
-const USD_TO_SEK = 10.5;
+const EXCHANGE_RATE_USD_SEK = 10.5;
 
 export const dynamic = 'force-dynamic';
 
@@ -36,9 +36,9 @@ export async function POST(request: Request) {
         const currentPrice = stockData.price;
         const currentCurrency = stockData.currency || 'USD';
 
-        // Calculate trade value in SEK for checks
-        const rate = currentCurrency === 'USD' ? USD_TO_SEK : 1;
-        const tradeValueSek = shares * currentPrice * rate;
+        // Calculate trade value in USD (Base Currency)
+        const rateToUsd = currentCurrency === 'SEK' ? (1 / EXCHANGE_RATE_USD_SEK) : 1;
+        const tradeValueUsd = shares * currentPrice * rateToUsd;
 
         // 4. Get Current Portfolio State (Netting Logic)
         const { data: existingPosition } = await admin
@@ -56,40 +56,13 @@ export async function POST(request: Request) {
             .select("shares, buy_price, currency")
             .eq("user_id", user.id);
 
-        let totalInvestedSek = 0;
-        // Note: For short positions (negative shares), the "Invested" amount is negative? 
-        // No, standard accounting: 
-        // Long: Asset (Positive Value)
-        // Short: Liability (Negative Value) + Cash Proceeds (Positive Cash)
-        // Net Liquidation Value = Cash + (Shares * Price)
-
-        // Simplified Cash Calculation for this "Game":
-        // We track "Invested" as "Cost to Open".
-        // This is complex. Let's start FRESH with a simpler Cash model if possible, 
-        // but we have to respect existing logic: Cash = 10000 - sum(invested).
-        // If we Short, we effectively "Un-invest" (Cash goes UP).
-        // So standard logic works: If shares is negative, it reduces "totalInvested", increasing Cash?
-        // Wait, NO. If I short, I have Liability. 
-        // Let's stick to the Plan: 
-        // Short Entry -> Cash Increases (Proceeds).
-        // But we need to lock Margin. 
-
-        // Let's calculate "Free Cash" via the standard way:
-        // Cash = 10000 - sum(position_cost).
-        // If Shorting: Cost is negative? No, that increases cash. Correct.
-        // But we need to BLOCK withdrawing that cash.
-        // For this MVP: 
-        // Cash Balance = 10000 - TotalCostBasis.
-
+        let totalInvestedUsd = 0;
         (allHoldings || []).forEach((item: any) => {
-            const itemRate = item.currency === "USD" ? USD_TO_SEK : 1;
-            // For Long: shares * price = Postive Cost.
-            // For Short: shares (-10) * price = Negative Cost. 
-            // 10000 - (-1000) = 11000 Cash. This is "Proceeds credited".
-            totalInvestedSek += item.shares * item.buy_price * itemRate;
+            const itemRateToUsd = item.currency === "SEK" ? (1 / EXCHANGE_RATE_USD_SEK) : 1;
+            totalInvestedUsd += item.shares * item.buy_price * itemRateToUsd;
         });
 
-        const cashBalance = STARTING_CAPITAL - totalInvestedSek;
+        const cashBalance = STARTING_CAPITAL - totalInvestedUsd;
 
         // === EXECUTION LOGIC ===
 
@@ -100,7 +73,7 @@ export async function POST(request: Request) {
             }
 
             // Cost Check
-            if (cashBalance < tradeValueSek) {
+            if (cashBalance < tradeValueUsd) {
                 return NextResponse.json({ error: 'Insufficient funds' }, { status: 400 });
             }
 
@@ -146,9 +119,9 @@ export async function POST(request: Request) {
             }
 
             // PnL Calc
-            const buyPriceSek = existingPosition.buy_price * rate;
-            const sellPriceSek = currentPrice * rate;
-            const pnl = (sellPriceSek - buyPriceSek) * shares;
+            const buyPriceUsd = existingPosition.buy_price * (existingPosition.currency === 'SEK' ? (1 / EXCHANGE_RATE_USD_SEK) : 1);
+            const sellPriceUsd = currentPrice * rateToUsd;
+            const pnl = (sellPriceUsd - buyPriceUsd) * shares;
 
             // Log PnL (Logic later)
             // ...
@@ -167,7 +140,7 @@ export async function POST(request: Request) {
             // If Invested is -1000, Cash = 10000 - (-1000) = 11000.
             // Safety: We must ensure they can't create Infinite Cash.
 
-            if (cashBalance < tradeValueSek) {
+            if (cashBalance < tradeValueUsd) {
                 return NextResponse.json({ error: 'Insufficient collateral (Cash) to open short.' }, { status: 400 });
             }
 
@@ -219,9 +192,9 @@ export async function POST(request: Request) {
             // PnL Calc for Short
             // Entry Price $100. Current (Cover) Price $80. Profit $20.
             // Formula: (Entry - Exit) * Shares.
-            const entryPriceSek = existingPosition.buy_price * rate;
-            const exitPriceSek = currentPrice * rate;
-            const pnl = (entryPriceSek - exitPriceSek) * shares;
+            const entryPriceUsd = existingPosition.buy_price * (existingPosition.currency === 'SEK' ? (1 / EXCHANGE_RATE_USD_SEK) : 1);
+            const exitPriceUsd = currentPrice * rateToUsd;
+            const pnl = (entryPriceUsd - exitPriceUsd) * shares;
             // Note: Positive if Entry > Exit. Correct.
 
             // ... PnL Logging
@@ -231,9 +204,11 @@ export async function POST(request: Request) {
         // Calculate PnL if closing
         let realizedPnl = 0;
         if (type === 'sell') {
-            realizedPnl = (currentPrice * rate - existingPosition!.buy_price * rate) * shares;
+            const entryPriceUsd = existingPosition!.buy_price * (existingPosition!.currency === 'SEK' ? (1 / EXCHANGE_RATE_USD_SEK) : 1);
+            realizedPnl = (currentPrice * rateToUsd - entryPriceUsd) * shares;
         } else if (type === 'cover') {
-            realizedPnl = (existingPosition!.buy_price * rate - currentPrice * rate) * shares;
+            const entryPriceUsd = existingPosition!.buy_price * (existingPosition!.currency === 'SEK' ? (1 / EXCHANGE_RATE_USD_SEK) : 1);
+            realizedPnl = (entryPriceUsd - currentPrice * rateToUsd) * shares;
         }
 
         await admin.from("transactions").insert({
@@ -245,7 +220,7 @@ export async function POST(request: Request) {
             // "Shares traded". Usually positive integer in logs. Direction is 'type'.
             price: currentPrice,
             currency: currentCurrency,
-            total_sek: tradeValueSek,
+            total_sek: tradeValueUsd,
             realized_pnl: realizedPnl
         });
 

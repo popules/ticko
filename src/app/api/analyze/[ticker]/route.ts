@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { openai } from "@/lib/openai";
 import { fetchStockData } from "@/lib/stocks-api";
 import { checkAndIncrementAIUsage, createLimitReachedResponse } from "@/lib/ai-metering";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 interface AnalysisResult {
     ticker: string;
@@ -24,33 +20,30 @@ export async function GET(
     const { ticker } = await params;
     const upperTicker = ticker.toUpperCase();
 
-    // Check authentication
-    const cookieStore = await cookies();
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-        global: { headers: { Cookie: cookieStore.toString() } },
-    });
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // Check AI usage metering
-    const metering = await checkAndIncrementAIUsage(supabase, user.id);
-    if (!metering.allowed) {
-        return NextResponse.json(createLimitReachedResponse(), { status: 402 });
-    }
-
-    // Check if API key is configured
-    if (!process.env.OPENAI_API_KEY) {
-        return NextResponse.json(
-            { error: "OpenAI API key not configured" },
-            { status: 500 }
-        );
-    }
-
     try {
-        // Fetch real-time stock data
+        // 1. Authenticate with standard server client
+        const supabase = await createSupabaseServerClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        // 2. Check AI usage metering
+        const metering = await checkAndIncrementAIUsage(supabase, user.id);
+        if (!metering.allowed) {
+            return NextResponse.json(createLimitReachedResponse(), { status: 402 });
+        }
+
+        // 3. Check if OpenAI is configured
+        if (!process.env.OPENAI_API_KEY) {
+            return NextResponse.json(
+                { error: "OpenAI API key not configured" },
+                { status: 500 }
+            );
+        }
+
+        // 4. Fetch real-time stock data
         const stockData = await fetchStockData(upperTicker);
 
         if (!stockData) {
@@ -61,79 +54,70 @@ export async function GET(
         }
 
         const currentPrice = stockData.price;
-        const prompt = `You are an experienced financial analyst. Analyze the stock ${stockData.name} (${upperTicker}) and provide a brief valuation.
+        const prompt = `You are an experienced financial analyst. Analyze ${stockData.name} (${upperTicker}) and provide a concise valuation.
         
-Current data:
+Current Data:
 - Price: ${currentPrice} ${stockData.currency}
 - Change: ${stockData.changePercent.toFixed(2)}%
 - Volume: ${stockData.volume}
 - Market Cap: ${stockData.marketCap}
-- P/E: ${stockData.pe}
+- P/E Rel: ${stockData.pe}
 - 52w Range: ${stockData.week52Range}
 
-Respond in the following JSON format:
+Respond ONLY with valid JSON in this format:
 {
-  "fairValue": [your estimated fair value as a number],
-  "reasoning": "[a short sentence explaining your analysis, max 100 characters]",
-  "sentiment": "[bullish/bearish/neutral]",
-  "confidence": [0-100 representing your confidence level]
-}
-
-Base your analysis on typical valuation methods and market trends. Be realistic but give a clear recommendation.`;
+  "fairValue": number,
+  "reasoning": "short sentence max 100 chars",
+  "sentiment": "bullish" | "bearish" | "neutral",
+  "confidence": number (0-100)
+}`;
 
         const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
                 {
                     role: "system",
-                    content:
-                        "You are a professional financial analyst who gives short, concise stock valuations. Always respond with valid JSON.",
+                    content: "You are a professional financial analyst. Always respond with valid JSON.",
                 },
                 {
                     role: "user",
                     content: prompt,
                 },
             ],
-            temperature: 0.7,
-            max_tokens: 200,
+            response_format: { type: "json_object" },
+            temperature: 0.5,
+            max_tokens: 300,
         });
 
-        const responseText = completion.choices[0]?.message?.content || "";
-
-        // Parse JSON from response
+        const responseText = completion.choices[0]?.message?.content || "{}";
         let analysis: Partial<AnalysisResult>;
+
         try {
-            // Extract JSON from response (handle markdown code blocks)
+            analysis = JSON.parse(responseText);
+        } catch {
+            // Robust parsing fallback
             const jsonMatch = responseText.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
                 analysis = JSON.parse(jsonMatch[0]);
             } else {
-                throw new Error("No JSON found in response");
+                throw new Error("Invalid AI response");
             }
-        } catch {
-            // Fallback response if parsing fails
-            analysis = {
-                fairValue: currentPrice * 1.1,
-                reasoning: "Technical analysis indicates potential for short-term upside.",
-                sentiment: "neutral",
-                confidence: 60,
-            };
         }
 
         const result: AnalysisResult = {
             ticker: upperTicker,
             currentPrice,
-            fairValue: analysis.fairValue || currentPrice * 1.1,
-            reasoning: analysis.reasoning || "No analysis available.",
-            sentiment: analysis.sentiment || "neutral",
+            fairValue: analysis.fairValue || currentPrice * 1.05,
+            reasoning: analysis.reasoning || "Technical indicators suggest neutral momentum.",
+            sentiment: (analysis.sentiment as any) || "neutral",
             confidence: analysis.confidence || 50,
         };
 
         return NextResponse.json(result);
-    } catch (error) {
-        console.error("OpenAI API error:", error);
+    } catch (error: any) {
+        console.error(`[AI Analyze Error] ${upperTicker}:`, error);
         return NextResponse.json(
-            { error: "Failed to analyze stock" },
+            { error: error?.message || "Failed to analyze stock" },
             { status: 500 }
         );
     }

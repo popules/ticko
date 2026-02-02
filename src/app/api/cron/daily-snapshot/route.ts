@@ -27,7 +27,7 @@ export async function GET(request: Request) {
         serviceRoleKey
     );
 
-    const USD_TO_SEK = 10.5;
+    const EXCHANGE_RATE_USD_SEK = 10.5;
 
     try {
         // 1. Fetch all profiles (to know who has pro status for starting capital)
@@ -66,16 +66,16 @@ export async function GET(request: Request) {
 
             const userTransactions = (allTransactions || []).filter((t: any) => t.user_id === profile.id);
 
-            // Calculate totals
-            let totalInvestedSek = 0;
-            let totalCurrentValueSek = 0;
+            // Calculate totals in USD (Base)
+            let totalInvestedUsd = 0;
+            let totalCurrentValueUsd = 0;
 
             for (const item of userPortfolio) {
-                const rate = item.currency === "SEK" ? 1 : USD_TO_SEK;
+                const rateToUsd = item.currency === "SEK" ? (1 / EXCHANGE_RATE_USD_SEK) : 1;
                 const price = priceMap[item.symbol] || item.buy_price; // Fallback to buy_price
 
-                totalInvestedSek += item.shares * item.buy_price * rate;
-                totalCurrentValueSek += item.shares * price * rate;
+                totalInvestedUsd += item.shares * item.buy_price * rateToUsd;
+                totalCurrentValueUsd += item.shares * price * rateToUsd;
             }
 
             const totalRealizedPnl = userTransactions.reduce((sum: number, t: any) => sum + (t.realized_pnl || 0), 0);
@@ -84,10 +84,10 @@ export async function GET(request: Request) {
             const { startingCapital } = getPaperTradingSettings(profile.is_pro || false);
 
             // Cash Balance = Start + Realized PnL - Cost Basis of Current Holdings
-            const cashBalance = startingCapital + totalRealizedPnl - totalInvestedSek;
+            const cashBalance = startingCapital + totalRealizedPnl - totalInvestedUsd;
 
             // Total Portfolio Value = Current Holdings Value + Cash
-            const totalValue = totalCurrentValueSek + cashBalance;
+            const totalValue = totalCurrentValueUsd + cashBalance;
 
             // Calculate P&L for leaderboard
             const pnl = Math.round(totalValue - startingCapital);

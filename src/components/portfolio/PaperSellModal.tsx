@@ -11,7 +11,7 @@ import { supabase } from "@/lib/supabase/client";
 import { checkPaperTradingAchievements } from "@/lib/achievements";
 import { calculateTradeXP } from "@/lib/level-system";
 
-const USD_TO_SEK = 10.5;
+const EXCHANGE_RATE_USD_SEK = 10.5;
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://tickomarkets.com";
 
 interface PortfolioItem {
@@ -65,17 +65,17 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
     const lockSeconds = Math.floor((timeRemaining % 60000) / 1000);
 
     const isSek = item.currency === "SEK";
-    const rate = isSek ? 1 : USD_TO_SEK;
+    const rateToUsd = isSek ? (1 / EXCHANGE_RATE_USD_SEK) : 1;
     const currentPrice = item.current_price || item.buy_price;
 
-    // Calculate values
-    const currentPricePerShareSek = currentPrice * rate;
-    const buyPricePerShareSek = item.buy_price * rate;
-    const totalProceeds = sharesToSell * currentPricePerShareSek;
-    const totalCost = sharesToSell * buyPricePerShareSek;
-    const pnl = totalProceeds - totalCost;
-    const pnlPercent = ((pnl / totalCost) * 100);
-    const isProfit = pnl >= 0;
+    // Calculate values in USD (Base)
+    const currentPricePerShareUsd = currentPrice * rateToUsd;
+    const buyPricePerShareUsd = item.buy_price * (isSek ? (1 / EXCHANGE_RATE_USD_SEK) : 1);
+    const totalProceedsUsd = sharesToSell * currentPricePerShareUsd;
+    const totalCostUsd = sharesToSell * buyPricePerShareUsd;
+    const pnlUsd = totalProceedsUsd - totalCostUsd;
+    const pnlPercent = ((pnlUsd / totalCostUsd) * 100);
+    const isProfit = pnlUsd >= 0;
 
     const handleSell = async () => {
         if (!supabase || sharesToSell < 1) return;
@@ -299,7 +299,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                         <div className="flex justify-between items-center">
                                             <span className="text-white/40 text-sm">Current price</span>
                                             <span className="text-white font-bold tabular-nums">
-                                                ${currentPricePerShareSek.toLocaleString("en-US", { maximumFractionDigits: 2 })}/share
+                                                ${currentPricePerShareUsd.toLocaleString("en-US", { maximumFractionDigits: 2 })}/share
                                             </span>
                                         </div>
                                     </div>
@@ -346,7 +346,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                         <div className="flex justify-between items-center mb-3">
                                             <span className="text-white/60 text-sm">You receive</span>
                                             <span className="text-xl font-black text-white tabular-nums">
-                                                ${totalProceeds.toLocaleString("en-US", { maximumFractionDigits: 0 })}
+                                                ${totalProceedsUsd.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
@@ -354,7 +354,7 @@ export function PaperSellModal({ item, userId, onClose, onSold }: PaperSellModal
                                             <div className={`flex items-center gap-1.5 font-bold tabular-nums ${isProfit ? "text-emerald-400" : "text-rose-400"
                                                 }`}>
                                                 {isProfit ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                                                {isProfit ? "+" : ""}${pnl.toLocaleString("en-US", { maximumFractionDigits: 0 })}
+                                                {isProfit ? "+" : ""}${pnlUsd.toLocaleString("en-US", { maximumFractionDigits: 0 })}
                                                 <span className="text-xs opacity-60">({isProfit ? "+" : ""}{pnlPercent.toFixed(1)}%)</span>
                                             </div>
                                         </div>
