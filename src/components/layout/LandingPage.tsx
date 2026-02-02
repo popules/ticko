@@ -672,6 +672,7 @@ export function LandingPage() {
                             <h4 className="font-bold text-sm mb-4 text-white/60 uppercase tracking-wider">Company</h4>
                             <div className="flex flex-col gap-3 text-sm text-white/40">
                                 <Link href="/about" className="hover:text-white transition-colors">About</Link>
+                                <Link href="/wiki" className="hover:text-white transition-colors">Financial Wiki</Link>
                                 <Link href="/faq" className="hover:text-white transition-colors">FAQ</Link>
                                 <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
                                 <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>

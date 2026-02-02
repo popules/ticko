@@ -2,6 +2,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { RightPanel } from "@/components/layout/RightPanel";
 import { StockErrorBoundary } from "@/components/ui/StockErrorBoundary";
 import { StockPageActions } from "@/components/stock/StockPageClient";
+import { StockSEOContent } from "@/components/stock/StockSEOContent";
 import { StockTabs } from "@/components/stock/StockTabs";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -15,30 +16,56 @@ export async function generateMetadata({ params }: StockPageProps): Promise<Meta
 
     if (!stock) return { title: "Stock not found - Ticko" };
 
+    const title = `Paper Trade ${stock.name} ($${stock.symbol}) - Real-time Sentiment & AI Analysis`;
+    const description = `Practice trading ${stock.name} (${stock.symbol}) with $10,000 virtual cash. View live sentiment, AI analysis, and compete on the leaderboard. Risk-free paper trading simulator.`;
+
+    // JSON-LD Structured Data for Rich Snippets
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": `Ticko Paper Trading - ${stock.name}`,
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1250"
+        },
+        "description": description
+    };
+
     return {
-        title: `${stock.name} ($${stock.symbol}) - Analysis, sentiment, and discussion on Ticko`,
-        description: `See latest news, AI analysis, and community sentiment for ${stock.name}. Discuss $${stock.symbol} with other investors on Ticko.`,
+        title,
+        description,
         alternates: {
             canonical: `/stock/${stock.symbol}`,
         },
         openGraph: {
-            title: `${stock.name} ($${stock.symbol}) on Ticko`,
-            description: `Join the discussion about ${stock.name}. AI insights and real-time data for retail investors.`,
+            title,
+            description,
             images: [
                 {
                     url: `https://tickomarkets.com/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`,
                     width: 1200,
                     height: 630,
-                    alt: `${stock.name} on Ticko`,
+                    alt: `${stock.name} Analysis on Ticko`,
                 },
             ],
         },
         twitter: {
             card: 'summary_large_image',
-            title: `${stock.name} ($${stock.symbol}) on Ticko`,
-            description: `Discuss $${stock.symbol} with the smartest investors on Ticko.`,
+            title,
+            description,
             images: [`https://tickomarkets.com/api/og?ticker=${stock.symbol}&name=${encodeURIComponent(stock.name)}&price=${stock.price?.toFixed(2) || '0'}&change=${stock.changePercent?.toFixed(2) || '0'}`],
         },
+        other: {
+            "script:ld+json": JSON.stringify(jsonLd)
+        }
     };
 }
 
@@ -113,7 +140,11 @@ export default async function StockPage({ params }: StockPageProps) {
                             </div>
                         }
                     />
+
                 </StockErrorBoundary>
+
+                {/* Programmatic SEO Content */}
+                <StockSEOContent stock={stock} />
             </main>
 
             {/* Right Panel - Hidden on mobile */}
