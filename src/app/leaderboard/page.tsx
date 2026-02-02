@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
 import { Trophy, Medal, TrendingUp, TrendingDown, User, Crown, Loader2, Gamepad2, RotateCcw, Calendar, Clock, ChevronDown, History, Info, Shield } from "lucide-react";
 import { ProBadge } from "@/components/ui/ProBadge";
+import { LeagueRankBadge } from "@/components/ui/LeagueRankBadge";
 import Image from "next/image";
 import Link from "next/link";
 import { Sidebar } from "@/components/layout/Sidebar";
@@ -25,6 +26,7 @@ interface Leader {
     paper_reset_count?: number;
     paper_season_number?: number;
     is_pro?: boolean;
+    league_rating?: number;
 }
 
 interface Season {
@@ -73,7 +75,7 @@ export default function LeaderboardPage() {
         queryFn: async () => {
             const { data, error } = await (supabase as any)
                 .from("profiles")
-                .select("id, username, avatar_url, reputation_score")
+                .select("id, username, avatar_url, reputation_score, league_rating")
                 .order("reputation_score", { ascending: false })
                 .limit(50);
 
@@ -88,7 +90,7 @@ export default function LeaderboardPage() {
         queryFn: async () => {
             const { data, error } = await (supabase as any)
                 .from("profiles")
-                .select("id, username, avatar_url, paper_total_pnl, paper_reset_count, is_pro")
+                .select("id, username, avatar_url, paper_total_pnl, paper_reset_count, is_pro, league_rating")
                 .not("paper_total_pnl", "is", null)
                 .order("paper_total_pnl", { ascending: false })
                 .limit(50);
@@ -104,7 +106,7 @@ export default function LeaderboardPage() {
         queryFn: async () => {
             const { data, error } = await (supabase as any)
                 .from("profiles")
-                .select("id, username, avatar_url, paper_season_pnl, paper_season_number, paper_reset_count, is_pro")
+                .select("id, username, avatar_url, paper_season_pnl, paper_season_number, paper_reset_count, is_pro, league_rating")
                 .order("paper_season_pnl", { ascending: false })
                 .limit(50);
 
@@ -582,6 +584,9 @@ export default function LeaderboardPage() {
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-1">
                                             <h3 className="font-bold text-white text-sm truncate">@{user.username}</h3>
+                                            {user.league_rating && user.league_rating > 0 && (
+                                                <LeagueRankBadge rating={user.league_rating} size="xs" />
+                                            )}
                                             {user.is_pro && <ProBadge size="xs" />}
                                         </div>
                                         {activeTab === "paper" && user.paper_reset_count && user.paper_reset_count > 0 && (

@@ -11,6 +11,7 @@ import { getLevel, getProgressToNextLevel } from "@/lib/level-system";
 import { FollowButton } from "../social/FollowButton";
 import { useAuth } from "@/providers/AuthProvider";
 import { ProBadgeInline } from "@/components/ui/ProBadge";
+import { LeagueRankBadge } from "@/components/ui/LeagueRankBadge";
 
 interface ProfileHeaderProps {
     profile: {
@@ -22,6 +23,7 @@ interface ProfileHeaderProps {
         accuracy?: number;
         avatar_url?: string | null;
         is_pro?: boolean;
+        league_rating?: number;
     };
     isOwnProfile?: boolean;
 }
@@ -82,6 +84,9 @@ export function ProfileHeader({ profile, isOwnProfile = true }: ProfileHeaderPro
                                 <h1 className="text-2xl md:text-3xl font-black text-white tracking-tighter">
                                     {currentProfile.username}
                                 </h1>
+                                {(currentProfile as any).league_rating > 0 && (
+                                    <LeagueRankBadge rating={(currentProfile as any).league_rating} size="sm" showLabel />
+                                )}
                                 {(currentProfile as any).is_pro && <ProBadgeInline />}
                             </div>
                             <div className="flex items-center gap-4 text-white/50 text-sm font-medium">
