@@ -19,7 +19,6 @@ interface AchievementsDisplayProps {
 export function AchievementsDisplay({ userId, compact = false }: AchievementsDisplayProps) {
     const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [showAll, setShowAll] = useState(false);
 
     useEffect(() => {
         async function load() {
@@ -43,7 +42,7 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
         return rarityOrder[a.rarity] - rarityOrder[b.rarity];
     });
 
-    const displayAchievements = showAll ? sortedAchievements : sortedAchievements.slice(0, compact ? 6 : 12);
+    const displayAchievements = sortedAchievements.slice(0, compact ? 6 : 12);
 
     if (isLoading) {
         return (
@@ -81,22 +80,12 @@ export function AchievementsDisplay({ userId, compact = false }: AchievementsDis
     return (
         <div className="space-y-4">
             {/* Header */}
-            <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-2">
-                    <Trophy className="w-5 h-5 text-amber-400" />
-                    <h3 className="text-lg font-bold text-white">Achievements</h3>
-                    <span className="text-xs text-white/40">
-                        {userAchievements.length}/{allAchievements.length}
-                    </span>
-                </div>
-                {allAchievements.length > (compact ? 6 : 12) && (
-                    <button
-                        onClick={() => setShowAll(!showAll)}
-                        className="text-xs text-emerald-400 hover:text-emerald-300 font-medium transition-colors shrink-0 ml-2"
-                    >
-                        {showAll ? "Show less" : "Show all"}
-                    </button>
-                )}
+            <div className="flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-amber-400" />
+                <h3 className="text-lg font-bold text-white">Achievements</h3>
+                <span className="text-xs text-white/40">
+                    {userAchievements.length}/{allAchievements.length}
+                </span>
             </div>
 
             {/* Progress bar */}

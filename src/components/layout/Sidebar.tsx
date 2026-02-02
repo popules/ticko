@@ -166,7 +166,7 @@ export function Sidebar() {
 
             {/* Quick Stats - P&L and League */}
             {user && (
-                <div className="px-4 pb-3 hidden md:block">
+                <div className="px-4 pb-3">
                     <QuickStats />
                 </div>
             )}

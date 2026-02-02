@@ -66,9 +66,15 @@ interface Season {
     is_active: boolean;
 }
 
-type MyLeague = Database['public']['Tables']['league_placements']['Row'] & {
-    leagues: Database['public']['Tables']['leagues']['Row'] | null;
-};
+// New MMR-based league response
+interface MyLeague {
+    league: string;
+    tier: number;
+    rating: number;
+    rank_in_league: number;
+    points_to_promotion: number | null;
+    username: string;
+}
 
 type TabType = "portfolio" | "history" | "graph" | "insights" | "performance";
 
@@ -529,7 +535,7 @@ export default function ArenaPage() {
                             <div className="relative z-10 flex flex-col sm:flex-row justify-between gap-6">
                                 <div className="flex items-start gap-4">
                                     <div className="shrink-0 pt-1">
-                                        <LeagueBadge tier={myLeague?.leagues?.name || "unranked"} size="lg" />
+                                        <LeagueBadge tier={myLeague?.league || "unranked"} size="lg" />
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2 mb-2">
@@ -544,12 +550,12 @@ export default function ArenaPage() {
                                             )}
                                         </div>
                                         <h2 className="text-2xl font-black text-white mb-1">
-                                            {myLeague?.leagues?.name || "Unranked"}
+                                            {myLeague?.league || "Unranked"}
                                         </h2>
                                         <p className="text-white/60 text-sm max-w-sm">
                                             {myLeague
-                                                ? `You are ranked #${myLeague.rank_in_league} in your league. Top 3 promote!`
-                                                : "Complete trades to get placed in a league."}
+                                                ? `Ranked #${myLeague.rank_in_league} in ${myLeague.league}. ${myLeague.points_to_promotion ? `${myLeague.points_to_promotion} pts to next tier!` : "Top tier!"}`
+                                                : "Start trading to get placed in a league."}
                                         </p>
                                         <div className="mt-4 flex gap-3">
                                             <Link href="/leaderboard" className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-colors">
