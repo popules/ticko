@@ -570,6 +570,12 @@ export default function ArenaPage() {
                                             {overallPL >= 0 ? "+" : ""}{overallPLPercent.toFixed(2)}%
                                         </div>
                                     </div>
+                                    <div className="p-3 rounded-2xl bg-[#020617]/40 border border-white/5 backdrop-blur-sm min-w-[120px]">
+                                        <p className="text-[10px] text-white/40 uppercase tracking-wider font-bold mb-1">Free Cash</p>
+                                        <p className="text-lg font-black text-emerald-400 tabular-nums">
+                                            ${cashBalance.toLocaleString("en-US", { maximumFractionDigits: 0 })}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

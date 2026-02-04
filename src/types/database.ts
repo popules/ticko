@@ -131,6 +131,42 @@ export interface LeaguePlacement {
     profiles?: Profile;
 }
 
+// Fantasy League Types (Friend Competitions)
+export interface FantasyLeague {
+    id: string;
+    name: string;
+    invite_code: string;
+    creator_id: string;
+    starting_capital: number;
+    start_date: string;
+    end_date: string | null;
+    duration_days: number;
+    max_members: number;
+    is_active: boolean;
+    created_at: string;
+}
+
+export interface FantasyLeagueMember {
+    id: string;
+    league_id: string;
+    user_id: string;
+    joined_at: string;
+    starting_value: number;
+    current_value: number;
+    rank_in_league: number | null;
+    // Joined data
+    fantasy_leagues?: FantasyLeague;
+    profiles?: Profile;
+}
+
+export interface FantasyLeagueSnapshot {
+    id: string;
+    league_id: string;
+    user_id: string;
+    snapshot_date: string;
+    portfolio_value: number;
+}
+
 export interface LearnProgress {
     id: string;
     user_id: string;

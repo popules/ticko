@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Bell, Heart, MessageCircle, UserPlus, Loader2 } from "lucide-react";
+import { Bell, Heart, MessageCircle, UserPlus, Loader2, Trophy, Users } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
@@ -81,17 +81,27 @@ export function NotificationBell({ align = "right" }: NotificationBellProps) {
             case "comment": return <MessageCircle className="w-4 h-4 text-blue-400" />;
             case "mention": return <span className="text-sm">@</span>;
             case "follow": return <UserPlus className="w-4 h-4 text-emerald-400" />;
+            case "league_rank_up": return <Trophy className="w-4 h-4 text-yellow-400" />;
+            case "league_invite": return <Users className="w-4 h-4 text-violet-400" />;
+            case "league_ending": return <Trophy className="w-4 h-4 text-amber-400" />;
             default: return <Bell className="w-4 h-4 text-white/40" />;
         }
     };
 
     const getMessage = (n: any) => {
         const actor = n.actor?.username || "Someone";
+        // League notifications have a custom message field
+        if (n.message) {
+            return <span>{n.message}</span>;
+        }
         switch (n.type) {
             case "like": return <span><b>{actor}</b> liked your post</span>;
             case "comment": return <span><b>{actor}</b> commented on your post</span>;
             case "mention": return <span><b>{actor}</b> mentioned you in a comment</span>;
             case "follow": return <span><b>{actor}</b> started following you</span>;
+            case "league_rank_up": return <span>You moved up in the rankings!</span>;
+            case "league_invite": return <span><b>{actor}</b> invited you to a league</span>;
+            case "league_ending": return <span>A league you're in is ending soon!</span>;
             default: return <span>New event from <b>{actor}</b></span>;
         }
     };

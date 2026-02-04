@@ -20,6 +20,7 @@ import {
     X,
     Swords,
     Flame,
+    Users,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { APP_CONFIG, UI_STRINGS } from "@/config/app";
@@ -43,6 +44,7 @@ const navItems = [
     { icon: Swords, label: "The Arena", href: "/arena" },
     { icon: Star, label: UI_STRINGS.watchlist, href: "/watchlist" },
     { icon: Trophy, label: "Leaderboard", href: "/leaderboard" },
+    { icon: Users, label: "My Leagues", href: "/leagues" },
     { icon: User, label: UI_STRINGS.profile, href: "/profile" },
 ];
 

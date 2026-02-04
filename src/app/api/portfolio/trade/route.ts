@@ -254,6 +254,17 @@ export async function POST(request: Request) {
             }
         }
 
+        // 8. Update Fantasy League Standings
+        try {
+            const { updateLeagueStandings, sendRankUpNotifications } = await import('@/lib/league-standings');
+            const rankChanges = await updateLeagueStandings(user.id);
+            if (rankChanges.length > 0) {
+                await sendRankUpNotifications(user.id, rankChanges);
+            }
+        } catch (e) {
+            console.error("League standings update failed:", e);
+        }
+
         return NextResponse.json({ success: true, price: currentPrice });
 
     } catch (error: any) {
